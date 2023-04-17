@@ -1,0 +1,336 @@
+{% extends 'baseForIndexAndArticle.html' %}
+{% load static %}
+{% load cache %}
+{% block title %}{{ blog.title }}{% endblock %}
+{% block keywords %}{{ blog.title }}{% endblock %}
+
+
+{% block left-content %}
+    <link rel="stylesheet" href="{% static 'css/article.css' %}">
+    <div id="content-article" class="container-fluid white-bg-shadow">
+        {% comment %}显示当前位置{% endcomment %}
+        <div id="nowLocation" class="p-2">
+
+            当前位置: <strong><a href="../?category={{ blog.category.title }}" id="categoryLocation"
+                             class="my-tag">{{ blog.category }}</a></strong> >>
+            <strong><a href="{% url 'article:index' blog_id=blog_id %}">{{ blog.title }}</a></strong>
+        </div>
+        {% comment %}文章部分{% endcomment %}
+        <div id="article">
+            {% comment %}标题{% endcomment %}
+            <br>
+            <h4 id="article-title" class="text-center" style="letter-spacing: 2px;">
+                <strong>{{ blog.title }}</strong></h4>
+            <br>
+            {% comment %}文章相关信息{% endcomment %}
+
+            <div id="article-info">
+                    <span class="col-md-2 ">作者: <a href="#" id="{{ blog.id }}"
+                                                   class="descUser">{{ blog.author.username }}</a></span>
+                <span class="col-md-3">浏览量:{{ blog.pv }}</span>
+                <span class="col-md-3">阅读量:{{ blog.uv }}</span>
+                <span class="col-md-3">发布:{{ blog.create_time }}</span>
+                <span class="col-md-3">更新:{{ blog.update_time }}</span>
+                {% for tag in tags %}
+                    <span class="col-md-1"><span class="iconfont"
+                                                 style="font-size: 10px">&#xeabd;</span>{{ tag.title }}</span>
+                {% endfor %}
+
+                <span v-if="is_author" class="col-md-1" id="edit-article"><a
+                        href="{% url 'article:update' blog_id=blog_id %} ">编辑文章</a></span>
+                <span v-if="is_author" @click="_delete" class="delete col-md-1">删除文章</span>
+                <br>
+                <span class="col-md-12" style="font-size: 12px">预计阅读时长:{{ blog.read_time }}</span>
+
+            </div>
+            <div id="article-content" class="p-2">{{ blog.content|safe }}</div>
+            <br>
+            {% comment %}文章内容end{% endcomment %}
+            {% comment %}文章收藏,点赞等{% endcomment %}
+            <div id="blog-extend" class="row">
+                <div id="block" class="col-9"></div>
+                <div id="action" class="col-3">
+                        <span style="display: inline-block" id="collect" @click="collect" class="p-1"
+                              :class="{ action_active:is_collected==1 }"><span
+                                class="iconfont">&#xe86d;</span>&nbsp;{[collection_status]}</span>
+
+                    <span style="display: inline-block" :class="{ action_active:is_liked==1 }"
+                          id="doCall" @click="do_call" class="p-1"><span
+                            class="iconfont">&#xec7f;</span>&nbsp;<span>{[likes]}</span> </span>
+                </div>
+            </div>
+            {% comment %}文章收藏,点赞等end{% endcomment %}
+            <br>
+
+        </div>
+        {% comment %}评论{% endcomment %}
+        <div id="comment-box">
+            <p>有什么想对作者说的吗?</p>
+            <textarea id="message" maxlength="500" v-model="content" placeholder="留下你的足迹吧~"></textarea>
+            <div class="row">
+                <span class="col-9"></span>
+                <span class='submit col-3' @click="submit">发&nbsp;表</span>
+            </div>
+
+            <div id='comment_list'>
+                <div v-for="(comment,index) in comment_list" class="comment-item rounded-lg p-2 shadow-sm"
+                     :key="comment.id">
+                    <div class="comment-item-top">
+                        <div class="img-box"><img class="rounded-circle" :src="'../'+comment.user.avatar"/>
+                        </div>
+                        <div style="padding-left: 5px;display: inline-block">
+                            <span>{[ comment.user.username]}</span>
+                            <span class="time font-weight-light">{[comment.time]}</span>
+                        </div>
+                        <span :class="{ display_none:'{{ user_id }}'!=comment.user.id }"
+                              class="delete float-right" @click="_delete(index)">删除</span>
+
+                    </div>
+                    <div>
+                        {[comment.content]}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% comment %}评论end{% endcomment %}
+
+    </div>
+{% endblock %}
+
+{% block left-content-script %}
+    <script>
+
+        function send_log() {
+            $.ajax({
+                url: '../log/action_log',
+                type: 'post',
+                data: JSON.stringify({
+                    'user': '{{ user_id }}',
+                    'blog_id': '{{ blog_id }}',
+                    'action': 7,
+                    'cost_time': read_time
+                }),
+                contentType: 'application/json',
+                {#processData: true,#}
+                success: function (data) {
+                    if (data['code'] !== '200') {
+                        toast_show(data['msg'])
+                    }
+                },
+                error: function (data) {
+                    toast_show(data['msg'])
+                }
+
+            })
+        }
+
+        // 添加 Page Visibility API 的兼容性前缀
+        var hidden, visibilityChange;
+        var read_time = 0;
+        var read_time_interval = setInterval(function () {
+            read_time += 0.1;
+        }, 100)
+        if (typeof document.hidden !== "undefined") {
+            hidden = "hidden";
+            visibilityChange = "visibilitychange";
+        } else if (typeof document.msHidden !== "undefined") {
+            hidden = "msHidden";
+            visibilityChange = "msvisibilitychange";
+        } else if (typeof document.webkitHidden !== "undefined") {
+            hidden = "webkitHidden";
+            visibilityChange = "webkitvisibilitychange";
+        }
+
+        // 添加监听器，当页面被隐藏时执行回调函数
+        document.addEventListener(visibilityChange, function () {
+            if (document[hidden]) {
+                // 页面被隐藏，执行相关操作
+                clearInterval(read_time_interval);
+                send_log();
+                read_time = 0;
+
+            } else {
+                // 页面重新获取焦点，执行相关操作
+                read_time_interval = setInterval(function () {
+                    read_time += 0.1;
+                }, 100)
+            }
+        });
+        window.addEventListener("beforeunload", function (event) {
+            event.preventDefault();
+            send_log();
+        });
+
+
+        $('#article img').addClass('shadow rounded img-thumbnail');
+        $('.img-box img').addClass('shadow rounded img-thumbnail');
+        {% comment %}博客相关的操作{% endcomment %}
+        let blog_vm = new Vue({
+            el: '#article',
+            delimiters: ["{[", "]}"],
+            data: {
+                collection_id:{{ collection_id|safe  }},
+                like_id:{{ like_id|safe  }},
+                is_collected:{{ is_collected|safe }},
+                is_liked:{{ is_liked|safe }},
+                likes:{{ likes|safe }},
+                is_login: {{ is_login|safe }},
+                is_author:{{ is_author|safe }}
+
+
+            },
+            methods: {
+                collect() {
+                    if (!this.is_login) {
+                        toast_show('请先登录!')
+                        return
+                    }
+                    this.is_collected = this.is_collected === 1 ? 0 : 1;
+                    $ajax('put', '../article/api/collection/' + this.collection_id + '/',
+                        {
+                            'id': this.collection_id,
+                            'is_canceled': this.is_collected === 1 ? 0 : 1,
+                            'user': '{{ user_id }}',
+                            'blog': '{{ blog.id }}'
+                        },
+                        function (msg) {
+                            let data = JSON.parse(msg);
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg']);
+                                return
+                            }
+                            blog_vm.collection_id = data['data']['id'];
+                        },
+                        function (msg) {
+                        }
+                    )
+                },
+                do_call() {
+                    if (!this.is_login) {
+                        toast_show('请先登录!')
+                        return
+                    }
+                    {% comment %}如果是已点赞，就是取消点赞，否则就是点赞{% endcomment %}
+                    let is_canceled = this.is_liked === 1 ? 1 : 0
+                    $ajax('put', '../article/api/like/' + this.like_id + '/', {
+                            'id': this.like_id,
+                            'is_canceled': is_canceled,
+                            'user': '{{ user_id }}',
+                            'blog': '{{ blog.id }}'
+                        },
+                        function (msg) {
+                            let data = JSON.parse(msg);
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg']);
+                                return
+                            }
+                            blog_vm.likes += (is_canceled ? -1 : 1);
+                            blog_vm.like_id = data['data']['id'];
+                            blog_vm.is_liked = is_canceled ? 0 : 1;
+                        },
+                        function (msg) {
+
+                        }
+                    )
+                },
+                _delete() {
+                    if (!this.is_login) {
+                        toast_show('请先登录!')
+                        return
+                    }
+
+                    $ajax('delete', '../article/api/article/' + '{{ blog_id }}/',
+                        {
+                            'id': '{{ blog_id }}',
+                            'user': '{{ user_id }}',
+                        },
+                        function (msg) {
+                            let data = JSON.parse(msg);
+                            toast_show(data['msg']);
+                            if (data['code'] === '200') {
+                                location.reload();
+                            }
+                        },
+                        function (msg) {
+                        })
+                }
+            },
+            computed: {
+                collection_status() {
+                    return this.is_collected === 1 ? '已收藏' : '收藏';
+                }
+            }
+
+        })
+
+        {% comment %}评论{% endcomment %}
+        let comment_vm = new Vue({
+            el: '#comment-box',
+            delimiters: ["{[", "]}"],
+            data: {
+                comment_list:{{ comment_list|safe }},
+                is_login: {{ is_login|safe }},
+                content: '',
+                delete_style: {
+                    'display': 'none',
+                }
+            },
+            methods: {
+                submit() {
+                    if (!this.is_login) {
+                        toast_show('请先登录!')
+                        return
+                    }
+                    if (this.content.length < 2) {
+                        toast_show('至少写两个字吧~')
+                        return
+                    }
+
+                    $ajax('post', '/article/api/comment/', {
+                            'blog': '{{ blog.id }}',
+                            'user': '{{ user_id }}',
+                            'content': this.content
+                        },
+                        function (msg) {
+                            let data = JSON.parse(msg)
+                            comment_vm.comment_list.unshift(data['data']);
+                            comment_vm.content = '';
+                            console.log(data)
+                        }, function (msg) {
+
+                        })
+                },
+                _delete(index) {
+
+                    if (!this.is_login) {
+                        toast_show('请先登录!')
+                        return
+                    }
+
+                    let comment_id = this.comment_list[index]['id'];
+                    $ajax('delete', '../article/api/comment/' + comment_id + '/',
+                        {
+                            'user': '{{ user_id }}',
+                        },
+                        function (msg) {
+                            let data = JSON.parse(msg);
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg'])
+                            }
+                            comment_vm.comment_list.splice(index, 1);
+
+                        }, function (msg) {
+                            toast_show(JSON.parse(msg)['msg']);
+                        }
+                    )
+
+
+                }
+            }
+        })
+
+
+    </script>
+{% endblock %}
+

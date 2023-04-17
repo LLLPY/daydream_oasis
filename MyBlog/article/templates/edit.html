@@ -1,0 +1,786 @@
+{% extends 'common.html' %}
+{% load static %}
+{% block title %}博客编辑{% endblock %}
+{% block head %}
+
+    <link rel="stylesheet" href="{% static 'css/vditor@3.9.1.css' %}"/>
+    <script src="{% static 'js/vditor@3.9.1.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/edit.css' %}">
+    {#    <script src="https://unpkg.com/vditor@3.9.1/dist/method.min.js"></script>#}
+    <style>
+        #vditor {
+            z-index: 10000000000 !important;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+    <div id="article">
+        <div id="article-info" class="row m shadow">
+            <div class="info-item col-1 text-center">
+                <a href="../" class="text-decoration-none">&nbsp;0318-SPACE</a>
+            </div>
+
+            <div class="info-item col-3 row">
+                <span class="item-title text-center col-2"> <strong>标题</strong> </span>
+                <div class="input-box col-10 h-100">
+                    <input v-model="title" type="text" placeholder="请输入标题" class="w-100 h-100 shadow-sm" maxlength="30">
+                </div>
+            </div>
+            <div class="info-item col-1 row" id="avatar">
+                <span class="item-title text-center col-4"> <strong>封面</strong> </span>
+                <div id="avatar-input-box" @mouseenter="show_avatar" @mouseleave="hide_avatar"
+                     class="col-8 h-100 text-center">
+                    <svg class="icon h-100" aria-hidden="true" v-html="avatar_icon">
+                    </svg>
+                    <span v-if="delete_button_show" class="iconfont icon-guanbi" @click="delete_avatar"></span>
+                    <img class="border rounded" v-if="avatar_show" id="avatar-preview" :src="'../'+avatar_url">
+                    <input @change="upload_file" class="h-100" type="file" accept=".png,.jpg,.jpeg,.giff" name="avatar">
+                </div>
+            </div>
+
+            {#            <div class="info-item col-2 row">#}
+            {#                <span class="item-title text-center col-2"><strong>专栏</strong> </span>#}
+            {#                <div class="input-box col-10">#}
+            {#                    <input @keyup="recommend('section')" v-model="section" type="text" placeholder="请输入专栏"#}
+            {#                           class="w-100 h-100 shadow-sm"#}
+            {#                           maxlength="10">#}
+            {#                    <ul class="w-100 bg-light">#}
+            {#                        <li v-for="(section_recommend,section_index) in section_recommend_list"#}
+            {#                            @click="choice_section(section_index)"#}
+            {#                            :key="index" class="w-100 p-2">{[section_recommend]}#}
+            {#                        </li>#}
+            {#                    </ul>#}
+            {#                </div>#}
+            {##}
+            {##}
+            {#            </div>#}
+
+            <div class="info-item col-2 row">
+                <span class="item-title text-center col-2 h-100"><strong>分类</strong> </span>
+                <div class="input-box col-10 h-100">
+                    <input @keyup="recommend('category')" @blur="_blur" v-model="category" type="text"
+                           placeholder="请输入分类"
+                           class="w-100 h-100 shadow-sm"
+                           maxlength="8">
+                    <ul class="w-100 bg-light">
+                        <li v-for="(category_recommend,category_index) in category_recommend_list"
+                            @click="choice_category(category_index)"
+                            class="w-100 p-2">{[category_recommend]}
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="info-item col-4 row">
+                <span class="item-title text-center col-2"><strong>标签</strong> </span>
+
+                <div id="tag-set" class="h-100 col-3" style="padding: 0!important;">
+                    <span v-for="(chosen_tag,tag_index) in chosen_tag_list" class="rounded tag-box">
+                        <span class="chosen_tag">{[chosen_tag]}</span>
+                        <span class="iconfont icon-guanbi" @click="delete_tag(tag_index)"></span>
+                    </span>
+                </div>
+                <div class="input-box col-7">
+                    <input @keyup="recommend('tag')" @keyup.13="add_tag" @blur="_blur" v-model="tag" type="text"
+                           placeholder="请输入标签"
+                           class="w-100 h-100 shadow-sm"
+                           maxlength="5">
+                    <ul class="w-100 bg-light">
+                        <li v-for="(tag_recommend,tag_index) in tag_recommend_list" @click="choice_tag(tag_index)"
+                            :key="tag_index" class="w-100 p-2">{[tag_recommend]}
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+
+
+            <div class="info-item col-1 text-center">
+
+                <div id="submit" style="width: 80%;margin-left: 10%;" class="h-100 text-centershadow-sm alert-primary"
+                     @click="submit">
+                    <span><strong>发&nbsp;&nbsp;布</strong> </span></div>
+            </div>
+
+        </div>
+
+
+        <div id="article-content" class="shadow">
+            <div id="vditor"></div>
+
+        </div>
+
+    </div>
+
+
+{% endblock %}
+{% block script %}
+
+
+    <script>
+        let article_info_vm = new Vue({
+            el: '#article-info',
+            delimiters: ["{[", "]}"],
+            data: {
+                title: '{{ blog.title|safe }}',
+                category: '{{ blog.category|safe }}',
+                tag: '',
+                section: '',
+                avatar_url: '{{ blog.avatar|safe }}',
+                avatar_icon: '<use xlink:href="#icon-70BasicIcons-all-35"></use>',
+                delete_button_show: 0, {% comment %}删除封面的按钮{% endcomment %}
+                avatar_show: 0,
+                category_recommend_list: [],
+                section_recommend_list: [],
+                tag_recommend_list: [],
+                chosen_tag_list: {{ tag_list|safe }},
+            },
+            computed: {},
+            methods: {
+                recommend(_type) {
+                    let keyword = '';
+                    if (_type === 'category') {
+                        keyword = this.category;
+                    } else if (_type === 'section') {
+                        keyword = this.section;
+                    } else {
+                        keyword = this.tag;
+                    }
+                    $ajax('get', `../../article/api/${_type}/`,
+                        {
+                            'keyword': keyword,
+                        },
+                        function (msg) {
+                            let data = JSON.parse(msg);
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg']);
+                                return
+                            }
+                            if (_type === 'category') {
+                                article_info_vm.category_recommend_list = data['data']['category_list']
+                            } else if (_type === 'section') {
+                                article_info_vm.section_recommend_list = data['data']['section_list']
+                            } else {
+                                article_info_vm.tag_recommend_list = data['data']['tag_list']
+                            }
+
+                        },
+                        function (msg) {
+                            toast_show(JSON.parse(msg)['msg']);
+                        }
+                    )
+                },
+                {% comment %}选择专栏{% endcomment %}
+                choice_section(index) {
+                    this.section = this.section_recommend_list[index];
+                    this.section_recommend_list = []
+
+                },
+                {% comment %}选择分类{% endcomment %}
+                choice_category(index) {
+                    this.category = this.category_recommend_list[index];
+                    this.category_recommend_list = []
+
+                },
+                {% comment %}选择标签并添加{% endcomment %}
+                choice_tag(index) {
+                    if (this.chosen_tag_list.length >= 3) {
+                        toast_show('最多只能选3个标签!');
+                    } else {
+                        this.chosen_tag_list.push(this.tag_recommend_list[index]);
+                    }
+                    this.tag_recommend_list = []
+
+                },
+                {% comment %}失去焦点{% endcomment %}
+                _blur() {
+                    {% comment %}等待选择完成后再清空{% endcomment %}
+                    setTimeout(function () {
+                        article_info_vm.category_recommend_list = []
+                        article_info_vm.section_recommend_list = []
+                        article_info_vm.tag_recommend_list = []
+                    }, 500);
+
+                },
+
+                {% comment %}回车添加标签{% endcomment %}
+                add_tag() {
+                    if (this.tag.length === 0) {
+                        return
+                    }
+                    if (this.chosen_tag_list.length >= 3) {
+                        toast_show('最多只能选3个标签!')
+                    } else {
+                        this.chosen_tag_list.push(this.tag);
+                        this.tag = ''
+                    }
+
+                },
+                {% comment %}删除标签{% endcomment %}
+                delete_tag(index) {
+                    this.chosen_tag_list.splice(index, 1);
+                },
+                {% comment %}上传图片(封面){% endcomment %}
+                upload_file(e) {
+                    let max_size = 2 * 1024 * 1024;
+                    {% comment %}2M{% endcomment %}
+                    let file = e.target.files;
+                    if (file[0].size > max_size) {
+                        toast_show('最大仅支持2M的图片!');
+                        e.target.value = ''
+                        return
+                    }
+
+                    let form_data = new FormData();
+                    form_data.append("file", file[0], file[0].name);
+
+
+                    $.ajax({
+                        url: '../../file/upload',
+                        type: 'post',
+                        data: form_data,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg'])
+                                return
+                            }
+                            article_info_vm.avatar_icon = '<use xlink:href="#icon-tupian_huaban1"></use>'
+                            article_info_vm.avatar_url = data['data']['url']
+                            article_info_vm.delete_button_show = 1
+
+                        },
+                        error: function (data) {
+                        },
+                    })
+
+
+                },
+                {% comment %}删除封面{% endcomment %}
+                delete_avatar() {
+                    $('#avatar-input-box input').val('')
+                    article_info_vm.delete_button_show = 0
+                    article_info_vm.avatar_show = 0
+                    article_info_vm.avatar_icon = '<use xlink:href="#icon-70BasicIcons-all-35"></use>'
+                    article_info_vm.avatar_url = ''
+
+                },
+                show_avatar() {
+                    {% comment %}当删除按钮显示时，说明上传了封面{% endcomment %}
+                    if (article_info_vm.delete_button_show === 1) {
+                        {% comment %}根据图片的大小设置bottom的值{% endcomment %}
+                        let avatar_preview = $('#avatar-preview')
+                        avatar_preview.css('bottom', '-' + avatar_preview.css('height'))
+                        article_info_vm.avatar_show = 1
+                        $('#avatar-input-box img').fadeIn(1000);
+                    }
+
+                },
+                hide_avatar() {
+                    $('#avatar-input-box img').fadeOut(1000);
+                    {#article_info_vm.avatar_show = 0#}
+                },
+                submit() {
+
+                    {% comment %}内容检查{% endcomment %}
+                    if (this.title.length === 0 || this.title.length > 30) {
+                        toast_show('标题的长度范围是0~30!')
+                        return
+                    }
+
+                    if (this.category.length === 0 || this.category.length > 8) {
+                        toast_show('分类的长度范围是0~8!')
+                        return;
+                    }
+
+                    let content = vditor.getHTML();
+                    {#let content = vditor.getValue();#}
+                    if (content.length === 0) {
+                        toast_show('内容不能为空!')
+                        return;
+                    }
+                    console.log(content);
+
+                    {% comment %}提交{% endcomment %}
+                    $.ajax({
+                        url: '../../article/api/article/',
+                        type: 'post',
+                        data: JSON.stringify({
+                            'user': '{{ user_id }}',
+                            'blog_id': '{{ blog_id }}',
+                            'title': this.title,
+                            'category': this.category,
+                            'tag_list': this.chosen_tag_list,
+                            'avatar': this.avatar_url,
+                            'content': content
+                        }),
+                        contentType: 'application/json',
+                        processData: true,
+                        success: function (data) {
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg'])
+                            }
+                            vditor.clearCache();
+                            location.assign(`../../article/${data['data']['id']}`)
+                        },
+                        error: function (data) {
+                            toast_show(data['msg'])
+                        }
+                    })
+
+
+                }
+            }
+        })
+
+        if ({{ avatar_show }}) {
+            article_info_vm.delete_button_show = 1
+            article_info_vm.avatar_icon = '<use xlink:href="#icon-tupian_huaban1"></use>'
+        }
+
+    </script>
+
+
+    <script>
+        //挂载到全局
+        window.vditor = new Vditor("vditor", {
+
+            // 获取焦点方法
+            focus(md) {
+                document.onkeydown = function () {
+                    // 判断 Ctrl+S
+                    if (event.ctrlKey == true && event.keyCode == 83) {
+                        // 或者 return false;
+                        event.preventDefault();
+                    }
+                }
+            },
+            // 这个是自定义导航栏
+            toolbar: [
+                'emoji',
+                'headings',
+                'bold',
+                'italic',
+                'strike',
+                '|',
+                'line',
+                'quote',
+                {#'list',#}
+                {#'ordered-list',#}
+                'check',
+                {#'outdent',#}
+                {#'indent',#}
+                'code',
+                'inline-code',
+                'insert-after',
+                'insert-before',
+                'undo',
+                'redo',
+                'upload',
+                'link',
+                'table',
+                'edit-mode',
+                'both',
+                'preview',
+                'fullscreen',
+                'outline',
+                'code-theme',
+                'content-theme',
+                'export',
+                'devtools',
+                {#'info',#}
+                'help',
+                'br',
+                //新增自定义按钮
+                {
+                    hotkey: '⌘-⇧-S',
+                    name: 'sponsor',
+                    tipPosition: 's',
+                    tip: '点我有惊喜！',
+                    className: 'right',
+                    icon: '<svg t="1589994565028" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2808" width="32" height="32"><path d="M506.6 423.6m-29.8 0a29.8 29.8 0 1 0 59.6 0 29.8 29.8 0 1 0-59.6 0Z" fill="#0F0F0F" p-id="2809"></path><path d="M717.8 114.5c-83.5 0-158.4 65.4-211.2 122-52.7-56.6-127.7-122-211.2-122-159.5 0-273.9 129.3-273.9 288.9C21.5 562.9 429.3 913 506.6 913s485.1-350.1 485.1-509.7c0.1-159.5-114.4-288.8-273.9-288.8z" fill="#FAFCFB" p-id="2810"></path><path d="M506.6 926c-22 0-61-20.1-116-59.6-51.5-37-109.9-86.4-164.6-139-65.4-63-217.5-220.6-217.5-324 0-81.4 28.6-157.1 80.6-213.1 53.2-57.2 126.4-88.8 206.3-88.8 40 0 81.8 14.1 124.2 41.9 28.1 18.4 56.6 42.8 86.9 74.2 30.3-31.5 58.9-55.8 86.9-74.2 42.5-27.8 84.3-41.9 124.2-41.9 79.9 0 153.2 31.5 206.3 88.8 52 56 80.6 131.7 80.6 213.1 0 103.4-152.1 261-217.5 324-54.6 52.6-113.1 102-164.6 139-54.8 39.5-93.8 59.6-115.8 59.6zM295.4 127.5c-72.6 0-139.1 28.6-187.3 80.4-47.5 51.2-73.7 120.6-73.7 195.4 0 64.8 78.3 178.9 209.6 305.3 53.8 51.8 111.2 100.3 161.7 136.6 56.1 40.4 88.9 54.8 100.9 54.8s44.7-14.4 100.9-54.8c50.5-36.3 108-84.9 161.7-136.6 131.2-126.4 209.6-240.5 209.6-305.3 0-74.9-26.2-144.2-73.7-195.4-48.2-51.9-114.7-80.4-187.3-80.4-61.8 0-127.8 38.5-201.7 117.9-2.5 2.6-5.9 4.1-9.5 4.1s-7.1-1.5-9.5-4.1C423.2 166 357.2 127.5 295.4 127.5z" fill="#141414" p-id="2811"></path><path d="M353.9 415.6m-33.8 0a33.8 33.8 0 1 0 67.6 0 33.8 33.8 0 1 0-67.6 0Z" fill="#0F0F0F" p-id="2812"></path><path d="M659.3 415.6m-33.8 0a33.8 33.8 0 1 0 67.6 0 33.8 33.8 0 1 0-67.6 0Z" fill="#0F0F0F" p-id="2813"></path><path d="M411.6 538.5c0 52.3 42.8 95 95 95 52.3 0 95-42.8 95-95v-31.7h-190v31.7z" fill="#5B5143" p-id="2814"></path><path d="M506.6 646.5c-59.6 0-108-48.5-108-108v-31.7c0-7.2 5.8-13 13-13h190.1c7.2 0 13 5.8 13 13v31.7c0 59.5-48.5 108-108.1 108z m-82-126.7v18.7c0 45.2 36.8 82 82 82s82-36.8 82-82v-18.7h-164z" fill="#141414" p-id="2815"></path><path d="M450.4 578.9a54.7 27.5 0 1 0 109.4 0 54.7 27.5 0 1 0-109.4 0Z" fill="#EA64F9" p-id="2816"></path><path d="M256 502.7a32.1 27.5 0 1 0 64.2 0 32.1 27.5 0 1 0-64.2 0Z" fill="#EFAFF9" p-id="2817"></path><path d="M703.3 502.7a32.1 27.5 0 1 0 64.2 0 32.1 27.5 0 1 0-64.2 0Z" fill="#EFAFF9" p-id="2818"></path></svg>',
+                    click() {
+                        toast_show('hello！')
+                    }
+                }
+            ],
+            //编辑模式---wysiwyg:所见即所得 ir:及时渲染 sv:分屏预览
+            mode: 'ir',
+            preview: {
+                {#mode: "both",#}
+                markdown: {
+                    toc: true, //目录
+                },
+                //代码高亮
+                hljs: {
+                    lineNumber: true,
+                    // style: "vs", //主题样式
+                },
+                //数学公式的渲染
+                math: {
+                    engine: "KaTeX", // KaTeX MathJax
+                }
+            },
+            //图标配置
+            icon: 'ant', // ant material
+
+            //编辑器高度 不配置就是自适应 支持数字和百分比  "minHeight": 500
+            // height: window.innerHeight,
+            // height: screen.height,
+            minHeight: 650,
+            {#height: '100%',#}
+            //语言 中文：zh_CN 英文：en_US 韩文：ko_KR 日文；ja_JP
+            lang: 'zh_CN',
+
+            //实用小特性 按下tab新增四个空格 placeholder内容为空的提示 全屏层级
+            tab: '    ',
+            placeholder: '开始你的创作吧！🐛🐛🐛',
+            value: `{{  blog.content|safe }}`,
+            {#previewElement: `{{  blog.content|safe }}`,#}
+
+            fullscreen: {
+                index: 9999,
+            },
+
+            //文件上传
+            upload: {
+                accept: '', {% comment %}支持所有文件{% endcomment %}
+                max: 100 * 1024 * 1024,
+                url: '../../file/upload',
+                linkToImgUrl: '/api/upload/fetch',
+                filename(name) {
+                    return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
+                },
+                success(editor, msg) {
+                    let data = JSON.parse(msg)
+                    let url = data['data']['url'];
+                    let filename = data['data']['filename'];
+                    let content_type = data['data']['content_type'];
+                    let succFileText = '';
+                    let content_normal = '', content_wysiwyg = '';
+                    {% comment %}文件类型的区分{% endcomment %}
+                    if (content_type === 'image') {
+                        content_normal += `![${filename}](../../${url})`;
+                        content_wysiwyg += `<img alt='${filename}' src="../../${url}" class="mw-100">`;
+                    } else if (content_type === 'audio') {
+                        content_wysiwyg += `<audio controls src="../../${url}"></audio>`;
+                        content_normal = content_wysiwyg;
+                    } else if (content_type === 'video') {
+                        content_wysiwyg += `<video controls src="../../${url}"></video>`;
+                        content_normal = content_wysiwyg;
+                    } else {
+                        content_wysiwyg += `<a  href="../../${url}">${filename}</a>`;
+                        content_normal = content_wysiwyg;
+                    }
+                    if (vditor && vditor.vditor.currentMode === "wysiwyg") { {% comment %}所见即所得模式{% endcomment %}
+                        succFileText = content_wysiwyg;
+                    } else {
+                        succFileText = content_normal;
+                    }
+                    //将图片路径写入文本
+                    vditor.insertValue(succFileText)
+                    {#document.execCommand("insertHTML", true, succFileText);#}
+                },
+                error() {
+                    toast_show('上传失败!');
+                }
+
+            },
+            hint: {
+                //@，#话题等关键字扩展
+                extend: [
+                    {
+                        key: '@',
+                        hint: (key) => {
+                            let user_list = [];
+                            if ('vanessa'.indexOf(key.toLocaleLowerCase()) > -1) {
+                                let msg = $ajax('get', '../../user/api/user/',
+                                    {
+                                        'keyword': key,
+                                    },
+                                    null, null,
+                                    false)
+                                let data = JSON.parse(msg);
+                                if (data['code'] !== '200') {
+                                    toast_show(data['msg']);
+                                }
+                                let res_user_list = data['data']['user_list'];
+                                for (let i = 0; i < res_user_list.length; i++) {
+                                    let value = `@<a href="#${res_user_list[i]['id']}">${res_user_list[i]['username']}</a>`;
+                                    let html = `@<a href="#${res_user_list[i]['id']}"><img src="../..${res_user_list[i]['avatar']}" style="width: 32px;height: 32px;" class="rounded"/> ${res_user_list[i]['username']}</a>`;
+                                    user_list.push({
+                                        value: value, {% comment %}输入到文章的内容{% endcomment %}
+                                        html: html, {% comment %}列表显示的内容{% endcomment %}
+
+                                    })
+                                }
+                                return user_list
+
+                            }
+                        },
+                    },
+                ],
+
+                //自定义表情
+                emoji: {
+                    '嘿嘿': '😀',
+                    '哈哈': '😃',
+                    '大笑': '😄',
+                    '嘻嘻': '😁',
+                    '斜眼笑': '😆',
+                    '苦笑': '😅',
+                    '笑哭了': '😂',
+                    '笑得满地打滚': '🤣',
+                    '微笑': '☺',
+                    '羞涩微笑': '😊',
+                    '微笑天使': '😇',
+                    '呵呵': '🙂',
+                    '倒脸': '🙃',
+                    '眨眼': '😉',
+                    '松了口气': '😌',
+                    '花痴': '😍',
+                    '喜笑颜开': '🥰',
+                    '飞吻': '😘',
+                    '亲亲': '😗',
+                    '微笑亲亲': '😙',
+                    '羞涩亲亲': '😚',
+                    '好吃': '😋',
+                    '吐舌': '😛',
+                    '眯眼吐舌': '😝',
+                    '单眼吐舌': '😜',
+                    '滑稽': '🤪',
+                    '挑眉': '🤨',
+                    '带单片眼镜的脸': '🧐',
+                    '书呆子脸': '🤓',
+                    '墨镜笑脸': '😎',
+                    '好崇拜哦': '🤩',
+                    '聚会笑脸': '🥳',
+                    '得意': '😏',
+                    '不高兴': '😒',
+                    '失望': '😞',
+                    '沉思': '😔',
+                    '担心': '😟',
+                    '困扰': '😕',
+                    '微微不满': '🙁',
+                    '不满': '☹',
+                    '痛苦': '😣',
+                    '困惑': '😖',
+                    '累': '😫',
+                    '累死了': '😩',
+                    '恳求的脸': '🥺',
+                    '哭': '😢',
+                    '放声大哭': '😭',
+                    '傲慢': '😤',
+                    '生气': '😠',
+                    '怒火中烧': '😡',
+                    '嘴上有符号的脸': '🤬',
+                    '爆炸头': '🤯',
+                    '脸红': '😳',
+                    '脸发烧': '🥵',
+                    '冷脸': '🥶',
+                    '吓死了': '😱',
+                    '害怕': '😨',
+                    '冷汗': '😰',
+                    '失望但如释重负': '😥',
+                    '汗': '😓',
+                    '抱抱': '🤗',
+                    '想一想': '🤔',
+                    '不说': '🤭',
+                    '安静的脸': '🤫',
+                    '说谎': '🤥',
+                    '沉默': '😶',
+                    '冷漠': '😐',
+                    '无语': '😑',
+                    '龇牙咧嘴': '😬',
+                    '翻白眼': '🙄',
+                    '缄默': '😯',
+                    '啊': '😦',
+                    '极度痛苦': '😧',
+                    '吃惊': '😮',
+                    '震惊': '😲',
+                    '睡着了': '😴',
+                    '流口水': '🤤',
+                    '困': '😪',
+                    '晕头转向': '😵',
+                    '闭嘴': '🤐',
+                    '头昏眼花': '🥴',
+                    '恶心': '🤢',
+                    '呕吐': '🤮',
+                    '打喷嚏': '🤧',
+                    '感冒': '😷',
+                    '发烧': '🤒',
+                    '受伤': '🤕',
+                    '发财': '🤑',
+                    '牛仔帽脸': '🤠',
+                    '恶魔微笑': '😈',
+                    '生气的恶魔': '👿',
+                    '食人魔': '👹',
+                    '小妖精': '👺',
+                    '小丑脸': '🤡',
+                    '大便': '💩',
+                    '鬼': '👻',
+                    '头骨': '💀',
+                    '骷髅': '☠',
+                    '外星人': '👽',
+                    '外星怪物': '👾',
+                    '机器人': '🤖',
+                    '南瓜灯': '🎃',
+                    '大笑的猫': '😺',
+                    '微笑的猫': '😸',
+                    '笑出眼泪的猫': '😹',
+                    '花痴的猫': '😻',
+                    '奸笑的猫': '😼',
+                    '亲亲猫': '😽',
+                    '疲倦的猫': '🙀',
+                    '哭泣的猫': '😿',
+                    '生气的猫': '😾',
+                    '掌心向上托起': '🤲',
+                    '张开双手': '👐',
+                    '举双手': '🙌',
+                    '鼓掌': '👏',
+                    '握手': '🤝',
+                    '拇指向上': '👍',
+                    '拇指向下': '👎',
+                    '出拳': '👊',
+                    '举起拳头': '✊',
+                    '朝左的拳头': '🤛',
+                    '朝右的拳头': '🤜',
+                    '交叉的手指': '🤞',
+                    '胜利手势': '✌',
+                    '爱你的手势': '🤟',
+                    '摇滚': '🤘',
+                    'ok': '👌',
+                    '反手食指向左指': '👈',
+                    '反手食指向右指': '👉',
+                    '反手食指向上指': '👆',
+                    '反手食指向下指': '👇',
+                    '食指向上指': '☝',
+                    '举起手': '✋',
+                    '立起的手背': '🤚',
+                    '手掌': '🖐',
+                    '瓦肯举手礼': '🖖',
+                    '挥手': '👋',
+                    '给我打电话': '🤙',
+                    '肌肉': '💪',
+                    '竖中指': '🖕',
+                    '写字': '✍',
+                    '双手合十': '🙏',
+                    '脚': '🦶',
+                    '腿': '🦵',
+                    '唇膏': '💄',
+                    '唇印': '💋',
+                    '嘴': '👄',
+                    '牙齿': '🦷',
+                    '舌头': '👅',
+                    '耳朵': '👂',
+                    '鼻子': '👃',
+                    '脚印': '👣',
+                    '眼睛': '👁',
+                    '双眼': '👀',
+                    '脑': '🧠',
+                    '说话': '🗣',
+                    '人像': '👤',
+                    '双人像': '👥',
+                    '小宝贝': '👶',
+                    '女孩': '👧',
+                    '儿童': '🧒',
+                    '男孩': '👦',
+                    '女人': '👩',
+                    '成人': '🧑',
+                    '男人': '👨',
+                    '女人: 卷发': '👩\u200d🦱',
+                    '男人: 卷发': '👨\u200d🦱',
+                    '女人: 红发': '👩\u200d🦰',
+                    '男人: 红发': '👨\u200d🦰',
+                    '女人：金色的头发': '👱\u200d♀️',
+                    '金色头发的人': '👱',
+                    '女人: 白发': '👩\u200d🦳',
+                    '男人: 白发': '👨\u200d🦳',
+                    '女人: 秃顶': '👩\u200d🦲',
+                    '男人: 秃顶': '👨\u200d🦲',
+                    '有胡子的人': '🧔',
+                    '老奶奶': '👵',
+                    '老年人': '🧓',
+                    '老爷爷': '👴',
+                    '戴瓜皮帽的人': '👲',
+                    '戴头巾的人': '👳',
+                    '女人戴着头巾': '👳\u200d♀️',
+                    '带头饰的女人': '🧕',
+                    '警察': '👮',
+                    '女警官': '👮\u200d♀️',
+                    '建筑工人': '👷',
+                    '女建筑工人': '👷\u200d♀️',
+                    '卫兵': '💂',
+                    '女警卫': '💂\u200d♀️',
+                    '侦探': '🕵',
+                    '女侦探': '🕵️\u200d♀️',
+                    '女卫生工作者': '👩\u200d⚕️',
+                    '男子健康工作者': '👨\u200d⚕️',
+                    '农妇': '👩\u200d🌾',
+                    '农夫': '👨\u200d🌾',
+                    '女厨师': '👩\u200d🍳',
+                    '男厨师': '👨\u200d🍳',
+                    '女学生': '👩\u200d🎓',
+                    '男学生': '👨\u200d🎓',
+                    '女歌手': '👩\u200d🎤',
+                    '男歌手': '👨\u200d🎤',
+                    '女老师': '👩\u200d🏫',
+                    '男老师': '👨\u200d🏫',
+                    '女工人': '👩\u200d🏭',
+                    '男工人': '👨\u200d🏭',
+                    '女程序员': '👩\u200d💻',
+                    '男程序员': '👨\u200d💻',
+                    '女白领': '👩\u200d💼',
+                    '男白领': '👨\u200d💼',
+                    '女技工': '👩\u200d🔧',
+                    '男技工': '👨\u200d🔧',
+                    '女科学家': '👩\u200d🔬',
+                },
+
+
+                //设置常用表情
+                emojiTail: '',
+                //设置表情图片地址
+                {#emojiPath: "https://cdn.jsdelivr.net/npm/vditor@3.9.1/dist/images/emoji",#}
+
+            },
+            //字数统计
+            counter: {
+                enable: true,
+                //回调
+                after(count) {
+                    {#console.log('字数为' + count);#}
+                }
+            },
+            //重定义大小
+            resize: {
+                enable: false, //打开
+                position: 'bottom', //位置
+            },
+            //缓存
+            cache: {
+                enable: false,
+            },
+
+            //是否展示大纲,手机端自动隐藏就行了
+            outline: {
+                enable: true
+            },
+            // 工具栏配置是否隐藏和固定
+            toolbarConfig: {
+                // 是否固定工具栏
+                pin: true,
+            },
+
+        });
+
+
+    </script>
+
+{% endblock %}
+
