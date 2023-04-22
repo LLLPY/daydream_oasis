@@ -120,19 +120,14 @@ class MyPage:
             page = paginator.page('1')  # 发生错误跳转到第一页
 
         for blog in page.object_list:
-            exclude_list = ['content', 'category', 'tags',
-                            'read_time', 'update_time', 'quality_score']
             extra_map = {
                 'author': {'fields': ['username']},
                 'category': {'fields': []},
-                'tags': {'fields': []}
             }
-            blog = blog.to_dict(exclude_list=exclude_list, extra_map=extra_map)
-            blog_title = blog['title']
-            blog_title = '《' + \
-                         blog_title if not blog_title.startswith('《') else blog_title
-            blog['title'] = blog_title + \
-                            '》' if not blog_title.startswith('》') else blog_title
+            fields=['id', 'title', 'author', 'avatar', 'category', 'abstract','create_time','pv','comments','likes','collections']
+            blog = blog.to_dict(fields=fields, extra_map=extra_map)
+            blog_title = blog['title'].strip('《').strip('》')
+            blog_title = '《' + blog_title +'》'
 
             blog_list.append(blog)
 

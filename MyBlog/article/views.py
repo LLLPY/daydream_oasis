@@ -84,7 +84,7 @@ def search(request):
     if not keyword_list:
 
         # 首页
-        search_list = Blog.get_all().exclude('content')
+        search_list = Blog.objects.only('id', 'title', 'author', 'avatar', 'category', 'abstract','create_time')
         placeholder = '请输入关键词'
 
         # 分类搜索
@@ -96,14 +96,16 @@ def search(request):
         if tag:
             search_list = search_list.filter(tags__title__contains=tag)
             placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
-
+        
         # 个性推荐
         user = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
-        action_data = Action.summary()
-        search_list = Blog.recommend(user, search_list, action_data)
+        # action_data = Action.summary()
+        # search_list = Blog.recommend(user, search_list, action_data)
     else:
         search_list = Blog.search(keyword_list)
         placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
+
+    
 
     # 分页
     page_num = request.GET.get('page', '1')  # 获取页码，如果没有获取到则默认为1
