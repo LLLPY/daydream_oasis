@@ -65,7 +65,7 @@ class MyMiddleWare(MiddlewareMixin):
         }
         # 本地调试的请求记录不需要计入
         if request_log['ip'] not in ['127.0.0.1', 'localhost']:
-            # request_log = RequestRecord.create_request_record(**request_log)
+            request_log = RequestRecord.create_request_record(**request_log)
             pass
         request.request_log = request_log
 
