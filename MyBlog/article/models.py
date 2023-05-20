@@ -265,8 +265,11 @@ class Blog(models.Model, BaseModel):
         return tmp_blog
 
     @classmethod
-    @my_cache(60)
-    def recommend(cls, user, blog_list, action_data):
+    @my_cache(60*60)
+    def recommend(cls, user, action_data, blog_list=[]):
+        if not blog_list:
+            blog_list = cls.objects.all()
+
         # 根据用户操作的历史数据来生成推荐列表
 
         # 用户操作的历史数据
@@ -284,14 +287,12 @@ class Blog(models.Model, BaseModel):
         # 刷新每篇文章的推荐分数
         recommend_blog_list = []
         for blog in blog_list:
-            blog.recommendation_score = recommend_dict.get(blog.id, 0)
-
             # 文章的关于时间的推荐度
             days = (datetime.datetime.now() - blog.create_time).days
-            blog.recommendation_score += lose_func(days, 100 + blog.dpv)
+            recommendation_score = recommend_dict.get(blog.id, 0) + lose_func(days, 100 + blog.dpv)
 
+            blog.recommendation_score = recommendation_score
             recommend_blog_list.append(blog)
-
         # 根据推荐分进行排序
         recommend_blog_list.sort(key=lambda a: -a.recommendation_score)
 

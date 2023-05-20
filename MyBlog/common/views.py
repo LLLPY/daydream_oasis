@@ -72,7 +72,6 @@ def common_data(request):
 
     # 获取背景音乐
     music_list = BackgroundMusic.get_all()
-
     # 获取标签
     tag_times_dict = Tag.get_all()
     tag_list = add_size_and_color(tag_times_dict)

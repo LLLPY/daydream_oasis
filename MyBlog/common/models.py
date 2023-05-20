@@ -131,4 +131,4 @@ class BackgroundMusic(models.Model, BaseModel):
     @classmethod
     @my_cache(60)
     def get_all(cls, fields=fields):
-        return cls.objects.values(*fields)
+        return [music.to_dict(fields=fields) for music in cls.objects.all()]

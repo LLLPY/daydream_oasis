@@ -19,13 +19,11 @@ def require_login(require_self=False):
                 request = args[1]
             else:
                 request = args[0]
-
             if not request.user.is_authenticated:
                 return JsonResponse({
                     'code': '400',
                     'msg': '请先登录!'
                 })
-
             if require_self:
                 tmp_user_id = request.data.get('user') or request.POST.get('user') or request.GET.get('user')
                 if str(request.user.id) != tmp_user_id:
@@ -39,9 +37,7 @@ def require_login(require_self=False):
                 print(e)
                 return None
             return res
-
         return inner
-
     return outer
 
 

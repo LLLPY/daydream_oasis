@@ -3,14 +3,14 @@
 # @Date    ：2023/1/10 0:39
 from .base import *
 
-DEBUG = False  
+DEBUG = True
 
 # 数据库
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog_plus',
-        'HOST': '127.0.0.1',
+        'HOST': 'www.lll.plus',
         'PORT': '3306',
         'USER': "lvll",
         "PASSWORD": "LVLL0318",
@@ -20,7 +20,7 @@ DATABASES = {
         },
     }
 }
-
+#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',

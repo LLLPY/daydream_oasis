@@ -67,7 +67,6 @@ class TagViewSet(viewsets.ModelViewSet):
 
         })
 
-
 # 文章
 class ArticleViewSet(MyBaseViewSet):
     serializer_class = ArticleSerializers
