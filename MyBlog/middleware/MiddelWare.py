@@ -1,6 +1,6 @@
 import time
 from django.core.cache import cache
-from django.http import JsonResponse,HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
@@ -126,6 +126,14 @@ class MyMiddleWare(MiddlewareMixin):
             latitude = request.GET.get('latitude') or request.POST.get('latitude')
             user.update_location(longitude, latitude)
             request.user = user
+
+        # 个性推荐
+        user = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
+        if not cache.has_key(f'{user}_recommend_list'):
+            user_recommend_queue = cache.get('user_recommend_queue') or []
+            if user not in user_recommend_queue:
+                user_recommend_queue.insert(0, user)
+            cache.set('user_recommend_queue', user_recommend_queue)
 
         return JsonResponse(res) if res else None
 

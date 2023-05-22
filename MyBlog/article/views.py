@@ -106,11 +106,7 @@ def search(request):
         recommend_list = cache.get(f'{user}_recommend_list')
         if recommend_list:
             search_list = recommend_list
-        else:
-            user_recommend_queue = cache.get('user_recommend_queue') or []
-            if user not in user_recommend_queue:
-                user_recommend_queue.insert(0, user)
-            cache.set('user_recommend_queue', user_recommend_queue)
+
     else:
         search_list = Blog.search(keyword_list)
         placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'

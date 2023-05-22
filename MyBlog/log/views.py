@@ -6,6 +6,7 @@ from log.models import RequestRecord, Action
 from utils.tools import statisticData
 import json
 import re
+from django.core.cache import cache
 
 
 # 返回可视化的代码
@@ -57,8 +58,8 @@ scheduler = Scheduler()
 
 
 # 每一小时执行一次
-@scheduler.interval_schedule(seconds=3600)  # 3600
-def schedule_task():
+# @scheduler.interval_schedule(seconds=3600)  # 3600
+def update_top_k():
     # 刷新排行榜
     RequestRecord.stat_top()
 
@@ -68,50 +69,27 @@ def schedule_task():
     # 定时更新请求的位置
 
 
+def update_action_data():
+    action_data = Action.summary()
+    cache.set('action_data', action_data)
+
+
+# @scheduler.interval_schedule(seconds=5)
+def update_recommend_list():
+    action_data = cache.get('action_data') or {}
+
+    # 更新推荐列表
+    user_recommend_queue = cache.get('user_recommend_queue')
+    print(f'user_recommend_queue:{user_recommend_queue}')
+    while user_recommend_queue:
+        user = user_recommend_queue.pop()
+        recommend_list = Blog.recommend(user, action_data)
+        cache.set(f'{user}_recommend_list', recommend_list, 60)
+        cache.set('user_recommend_queue', user_recommend_queue)
+
+
+scheduler.add_interval_job(update_top_k, seconds=3600, max_instances=10)
+scheduler.add_interval_job(update_action_data, seconds=1800, max_instances=10)
+scheduler.add_interval_job(update_recommend_list, seconds=10, max_instances=10)
+
 scheduler.start()
-import time
-def clocked(func):
-    def clock(*args,**kwargs):
-        time1=time.time()
-        res=func(*args,**kwargs)
-        time2=time.time()
-        res['cost']=time2-time1
-        return JsonResponse(res)
-    return clock
-
-from article.models import Blog,Search
-@clocked
-def test(request):
-     # 关键词
-    keyword = request.GET.get('keyword', '')[:20]
-    category = request.GET.get('category', '')
-    tag = request.GET.get('tag', '')
-
-    # 获取关键词
-    keyword_list = Search.get_keyword_list(keyword)
-    if not keyword_list:
-
-        # 首页
-        search_list = Blog.objects.only('id', 'title', 'author', 'avatar', 'category', 'abstract','create_time')
-
-        # 分类搜索
-        if category:
-            search_list = search_list.filter(category__title=category)
-
-        # 标签搜索
-        if tag:
-            search_list = search_list.filter(tags__title__contains=tag)
-        
-        # 个性推荐
-        user = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
-        # action_data = Action.summary()
-        # search_list = Blog.recommend(user, search_list, action_data)
-    else:
-        search_list = Blog.search(keyword_list)
-
-
-    return {
-        'code': '200',
-        'cost':0,
-        'data':str([blog.to_dict(fields=['abstract']) for blog in search_list])
-    }

@@ -209,7 +209,7 @@ class Blog(models.Model, BaseModel):
     # 搜索
     @classmethod
     def search(cls, keyword_list: List[str]):
-        #使用原生sql语句查询时，%需要成对存在，否则会报错
+        # 使用原生sql语句查询时，%需要成对存在，否则会报错
         sql = f'''SELECT id, 标题, 封面, 摘要, pv, 创建时间, 是否置顶, 作者, 分类 FROM 博客 where 文章是否已删除="否" and 标题 like "%%{keyword_list[0]}%%" or 文章内容 like "%%{keyword_list[0]}%%"'''
         for keyword in keyword_list[1:]:
             sql += f' or 标题 like "%%{keyword}%%" or 文章内容 like "%%{keyword}%%"'
@@ -266,10 +266,11 @@ class Blog(models.Model, BaseModel):
         return tmp_blog
 
     @classmethod
-    @my_cache(60*60)
+    @my_cache(60 * 60)
     def recommend(cls, user, action_data, blog_list=[]):
         if not blog_list:
-            blog_list = cls.objects.all()
+            blog_list = cls.objects.filter(is_deleted=False).only('id', 'title', 'avatar', 'abstract', 'pv',
+                                                                  'create_time', 'is_top', 'author', 'category')
 
         # 根据用户操作的历史数据来生成推荐列表
 

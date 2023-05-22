@@ -5,10 +5,15 @@ from MyBlog.config.base import MEDIA_URL
 from common.my_cache import my_cache
 from PIL.Image import open as imgOpen, ANTIALIAS
 from os.path import isfile
+from log.logger import logger
 
 
 class BaseModel:
     fields = []
+
+    def __init__(self):
+        # 初始化日志器
+        self.logger = logger
 
     # 将对象转成字典
     def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
