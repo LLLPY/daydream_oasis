@@ -209,12 +209,13 @@ class Blog(models.Model, BaseModel):
     # 搜索
     @classmethod
     def search(cls, keyword_list: List[str]):
-        sql = f'SELECT * FROM 博客 where 文章是否已删除="否" and 标题 like "%{keyword_list[0]}%" or 文章内容 like "%{keyword_list[0]}%"'
+        #使用原生sql语句查询时，%需要成对存在，否则会报错
+        sql = f'''SELECT id, 标题, 封面, 摘要, pv, 创建时间, 是否置顶, 作者, 分类 FROM 博客 where 文章是否已删除="否" and 标题 like "%%{keyword_list[0]}%%" or 文章内容 like "%%{keyword_list[0]}%%"'''
         for keyword in keyword_list[1:]:
-            sql += f' or 标题 like "%{keyword}%" or 文章内容 like "%{keyword}%"'
+            sql += f' or 标题 like "%%{keyword}%%" or 文章内容 like "%%{keyword}%%"'
         # 按照浏览量排序
         sql += ' order by pv'
-        return Blog.objects.raw(sql)
+        return cls.objects.raw(sql)
 
     # 更新阅读时长
     def update_read_time(self) -> None:

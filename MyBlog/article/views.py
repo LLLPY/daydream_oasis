@@ -114,7 +114,6 @@ def search(request):
     else:
         search_list = Blog.search(keyword_list)
         placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
-
     # 分页
     page_num = request.GET.get('page', '1')  # 获取页码，如果没有获取到则默认为1
     # 分页
