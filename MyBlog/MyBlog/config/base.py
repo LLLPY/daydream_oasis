@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'link',  # 友链
     'log',  # 访问日志
     'file',  # 文件
-    'common',
+    'common',  # 公共部分
+    'task'  # 任务
 
 ]
 
