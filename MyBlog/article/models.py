@@ -8,6 +8,7 @@ from django.db.models import Q
 from lxml import etree
 from user.models import User
 from utils.collaborative_filltering import cf_user
+from django.core.cache import cache
 
 
 # 博客分类
@@ -268,9 +269,14 @@ class Blog(models.Model, BaseModel):
     @classmethod
     @my_cache(60 * 60)
     def recommend(cls, user, action_data, blog_list=[]):
+
+        #添加缓存，提高性能
         if not blog_list:
-            blog_list = cls.objects.filter(is_deleted=False).only('id', 'title', 'avatar', 'abstract', 'pv',
-                                                                  'create_time', 'is_top', 'author', 'category')
+            blog_list = cache.get('blog_list')
+            if not blog_list:
+                blog_list = cls.objects.filter(is_deleted=False).only('id', 'title', 'avatar', 'abstract', 'pv',
+                                                                      'create_time', 'is_top', 'author', 'category')
+                cache.set('blog_list', blog_list, 3600)
 
         # 根据用户操作的历史数据来生成推荐列表
 

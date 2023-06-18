@@ -57,24 +57,19 @@ def action_log(request):
 scheduler = Scheduler()
 
 
-# 每一小时执行一次
-# @scheduler.interval_schedule(seconds=3600)  # 3600
+# 更新排行榜
 def update_top_k():
     # 刷新排行榜
     RequestRecord.stat_top()
 
-    # 刷新后台的统计数据
-    # drawPictureAndWriteToFile()
 
-    # 定时更新请求的位置
-
-
+# 更新用户行为数据
 def update_action_data():
     action_data = Action.summary()
     cache.set('action_data', action_data)
 
 
-# @scheduler.interval_schedule(seconds=5)
+# 更新推荐列表
 def update_recommend_list():
     action_data = cache.get('action_data') or {}
 
@@ -84,12 +79,18 @@ def update_recommend_list():
     while user_recommend_queue:
         user = user_recommend_queue.pop()
         recommend_list = Blog.recommend(user, action_data)
-        cache.set(f'{user}_recommend_list', recommend_list, 60)
+        cache.set(f'{user}_recommend_list', recommend_list)
         cache.set('user_recommend_queue', user_recommend_queue)
 
 
+<<<<<<< HEAD
 scheduler.add_interval_job(update_top_k, seconds=3600, max_instances=10)
 #scheduler.add_interval_job(update_action_data, seconds=1800, max_instances=10)
 #scheduler.add_interval_job(update_recommend_list, seconds=60, max_instances=10)
+=======
+scheduler.add_interval_job(update_top_k, seconds=60 * 60 * 2, max_instances=10)
+scheduler.add_interval_job(update_action_data, seconds=60 * 60, max_instances=10)
+scheduler.add_interval_job(update_recommend_list, seconds=10, max_instances=10)
+>>>>>>> a51fe20f1787a856f7840530e66fc9c9c520ad3b
 
 scheduler.start()
