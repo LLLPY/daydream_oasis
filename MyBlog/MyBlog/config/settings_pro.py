@@ -3,7 +3,8 @@
 # @Date    ：2023/1/10 0:39
 from .base import *
 
-DEBUG = True
+DEBUG = False
+
 
 # 数据库
 DATABASES = {
