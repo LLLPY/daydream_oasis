@@ -83,14 +83,7 @@ def update_recommend_list():
         cache.set('user_recommend_queue', user_recommend_queue)
 
 
-<<<<<<< HEAD
 scheduler.add_interval_job(update_top_k, seconds=3600, max_instances=10)
 #scheduler.add_interval_job(update_action_data, seconds=1800, max_instances=10)
 #scheduler.add_interval_job(update_recommend_list, seconds=60, max_instances=10)
-=======
-scheduler.add_interval_job(update_top_k, seconds=60 * 60 * 2, max_instances=10)
-scheduler.add_interval_job(update_action_data, seconds=60 * 60, max_instances=10)
-scheduler.add_interval_job(update_recommend_list, seconds=10, max_instances=10)
->>>>>>> a51fe20f1787a856f7840530e66fc9c9c520ad3b
-
 scheduler.start()
