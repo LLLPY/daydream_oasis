@@ -258,7 +258,6 @@ class Blog(models.Model, BaseModel):
             etree.HTML(content).xpath('//text()'))[:150]
         # 更新阅读时长
         tmp_blog.update_read_time()
-        tmp_blog.save()
         for tag in tag_list:
             tag = Tag.get_or_create(tag, creator=author)
             tmp_blog.tags.add(tag)
@@ -270,7 +269,7 @@ class Blog(models.Model, BaseModel):
     @my_cache(60 * 60)
     def recommend(cls, user, action_data, blog_list=[]):
 
-        #添加缓存，提高性能
+        # 添加缓存，提高性能
         if not blog_list:
             blog_list = cache.get('blog_list')
             if not blog_list:

@@ -84,6 +84,6 @@ def update_recommend_list():
 
 
 scheduler.add_interval_job(update_top_k, seconds=3600, max_instances=10)
-#scheduler.add_interval_job(update_action_data, seconds=1800, max_instances=10)
-#scheduler.add_interval_job(update_recommend_list, seconds=60, max_instances=10)
+# scheduler.add_interval_job(update_action_data, seconds=1800, max_instances=10)
+# scheduler.add_interval_job(update_recommend_list, seconds=60, max_instances=10)
 scheduler.start()
