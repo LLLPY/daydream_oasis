@@ -8,6 +8,7 @@ async def async_job():
         await asyncio.sleep(1)
 
 
+
 # 创建异步调度器对象
 scheduler = AsyncIOScheduler()
 
