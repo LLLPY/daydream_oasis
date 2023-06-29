@@ -1,0 +1,59 @@
+[Unit]
+//表明该服务的描述，服务的依赖关系。比较典型的情况是单元A要求在单元B启动之后再启动。这种设置是通过
+//Unit下面的Requires，After，Before，Wants来调整的。常用的命令有：
+
+//Description：服务的描述信息
+Description=blog.service
+
+
+[Service]
+//服务的关键配置都在这里指定。
+
+//指定程序的启动方式，可选有：simple(默认),forking,oneshot,dbus,notify
+Type=forking
+
+//启动服务时要执行的命令
+ExecStart= uwsgi /home/admin/blog-plus/config/uwsgi.ini
+
+// 遇到意外重启的策略 always：表示服务会始终自动重启，无论是由于故障、终止还是正常退出
+Restart=always
+
+//服务停止时执行
+//ExecStop=kill -9 $(pidof blog)
+
+//服务停止后执行
+//ExecStopPost= 
+
+//重启服务要执行的命令
+//ExecReload= 
+
+// 指定进程pid存放的位置
+//PIDFile=/etc/pid/demo.pid
+
+// 工作目录
+// WorkingDirectory
+
+// 用户
+//User=lll
+
+//用户组
+//Group=
+
+// 是否分配独立的临时空间
+//PrivateTmp 
+
+// 环境变量设置
+// Environment=""
+
+// 服务启动允许的最大时长，超时时间（默认无单位:秒）
+//DefaultTimeoutStartSec=5
+
+//日志输出的文件位置
+//StandardOutput=file:/etc/log/demo.log
+
+//错误日志输出的文件位置
+//StandardError=file:/etc/log/error.log
+
+[Install]
+// 表明当系统以多用户方式（默认的运行级别）启动时，这个服务需要被自动运行。
+WantedBy=multi-user.target
