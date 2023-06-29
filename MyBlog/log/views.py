@@ -9,6 +9,12 @@ import re
 import time
 from django.core.cache import cache
 from log.logger import logger
+import asyncio
+
+# bug:RuntimeError: There is no current event loop in thread 'uWSGIWorker1Core3'.
+# 使用uwsgi启动时，这里没有主线程，需要自己去额外创建
+new_loop = asyncio.new_event_loop()
+asyncio.set_event_loop(new_loop)
 
 
 # 返回可视化的代码
