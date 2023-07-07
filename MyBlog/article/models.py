@@ -258,6 +258,7 @@ class Blog(models.Model, BaseModel):
             etree.HTML(content).xpath('//text()'))[:150]
         # 更新阅读时长
         tmp_blog.update_read_time()
+        tmp_blog.save()
         for tag in tag_list:
             tag = Tag.get_or_create(tag, creator=author)
             tmp_blog.tags.add(tag)
