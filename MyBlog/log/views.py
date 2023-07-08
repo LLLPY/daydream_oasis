@@ -101,3 +101,13 @@ scheduler.add_job(update_action_data, trigger='interval', seconds=1800, max_inst
 scheduler.add_job(update_recommend_list, trigger='interval', seconds=300, max_instances=10)
 
 scheduler.start()
+
+
+async def run_scheduler():
+    while True:
+        await asyncio.sleep(1)
+        scheduler.print_jobs()
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(run_scheduler())
