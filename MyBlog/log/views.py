@@ -1,5 +1,5 @@
 from os.path import join
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from django.http import JsonResponse
 from article.models import Blog
 from log.models import RequestRecord, Action
@@ -9,12 +9,6 @@ import re
 import time
 from django.core.cache import cache
 from log.logger import logger
-import asyncio
-
-# bug:RuntimeError: There is no current event loop in thread 'uWSGIWorker1Core3'.
-# 使用uwsgi启动时，这里没有主线程，需要自己去额外创建
-new_loop = asyncio.new_event_loop()
-asyncio.set_event_loop(new_loop)
 
 
 # 返回可视化的代码
@@ -62,13 +56,15 @@ def action_log(request):
 
 
 # 创建异步调度器对象
-scheduler = AsyncIOScheduler()
+scheduler = BackgroundScheduler()
 
 
 # 更新排行榜
 def update_top_k():
+    logger.info('开始更新排行榜...')
     # 刷新排行榜
     RequestRecord.stat_top()
+    logger.info('排行榜更新完成...')
 
 
 # 更新用户行为数据
