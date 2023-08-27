@@ -97,7 +97,7 @@ def update_recommend_list():
 
 
 scheduler.add_job(update_top_k, trigger='interval', seconds=3600, max_instances=10)
-scheduler.add_job(update_action_data, trigger='interval', seconds=1800, max_instances=10)
-scheduler.add_job(update_recommend_list, trigger='interval', seconds=300, max_instances=10)
+#scheduler.add_job(update_action_data, trigger='interval', seconds=1800, max_instances=10)
+#scheduler.add_job(update_recommend_list, trigger='interval', seconds=300, max_instances=10)
 
 scheduler.start()
