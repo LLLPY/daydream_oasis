@@ -12,18 +12,9 @@ from django.core.cache import cache
 
 
 # 博客分类
-class Category(models.Model, BaseModel):
+class Category(BaseModel):
     # 标题
-    title = models.CharField(max_length=8, blank=True, unique=True,
-                             db_column='标题', verbose_name='标题', help_text='标题')
-
-    # 创建时间
-    time = models.DateTimeField(
-        default=datetime.datetime.now, db_column='创建时间', verbose_name='创建时间', help_text='创建时间')
-
-    # 创建者
-    creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, db_column='创建者', verbose_name='创建者', help_text='创建者')
+    title = models.CharField(max_length=8, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
     fields = ['title', 'time', 'creator']
 
@@ -50,23 +41,12 @@ class Category(models.Model, BaseModel):
             category_obj.save()
         return category_obj
 
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list, extra_map)
-
 
 # 标签
-class Tag(models.Model, BaseModel):
+class Tag(BaseModel):
     # title
     title = models.CharField(max_length=5, blank=True, unique=True,
                              db_column='标题', verbose_name='标题', help_text='标题')
-
-    # 创建时间
-    time = models.DateTimeField(
-        default=datetime.datetime.now, db_column='创建时间', verbose_name='创建时间', help_text='创建时间')
-
-    # 创建者
-    creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, db_column='创建者', verbose_name='创建者', help_text='创建者')
 
     fields = ['title', 'time', 'creator']
 
@@ -82,91 +62,55 @@ class Tag(models.Model, BaseModel):
     def get_all(cls) -> Dict:
         return {tag.title: {'id': tag.id, 'times': tag.blogs.count()} for tag in cls.objects.all()}
 
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list, extra_map)
-
 
 # 博客
-class Blog(models.Model, BaseModel):
+class Blog(BaseModel):
     # 作者
-    author = models.ForeignKey(
-        User, on_delete=models.CASCADE, db_column='作者', verbose_name='作者', help_text='作者')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者', help_text='作者')
 
     # 标题
-    title = models.CharField(max_length=30, blank=True,
-                             db_column='标题', verbose_name='标题', help_text='标题')
+    title = models.CharField(max_length=30, blank=True, verbose_name='标题', help_text='标题')
 
     # 封面
     avatar = models.CharField(max_length=500, blank=True, default='image/default_blog_avatar.jpg',
-                              db_column='封面',
-                              verbose_name='封面',
-                              help_text='封面')
+                              verbose_name='封面', help_text='封面')
 
     # 专栏 TODO 下一个版本开发
     # section=models.ForeignKey()
 
     # 分类
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, db_column='分类', verbose_name='分类', help_text='分类')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类', help_text='分类')
 
     # 标签
-    tags = models.ManyToManyField(
-        Tag, db_column='标签', verbose_name='标签', help_text='标签', related_name='blogs')
+    tags = models.ManyToManyField(Tag, verbose_name='标签', help_text='标签', related_name='blogs')
 
     # 摘要
-    abstract = models.TextField(max_length=150, null=False, blank=False, db_column='摘要', verbose_name='摘要',
-                                help_text='摘要')
+    abstract = models.TextField(max_length=150, null=False, blank=False, verbose_name='摘要', help_text='摘要')
 
     # 文章正文
     # content = models.TextField(db_column='文章正文', verbose_name='文章正文')
-    content = RichTextUploadingField(
-        null=False, blank=False, db_column='文章内容', verbose_name='文章内容', help_text='文章内容')
+    content = RichTextUploadingField(null=False, blank=False, verbose_name='文章内容', help_text='文章内容')
 
     # daily page view
-    dpv = models.PositiveIntegerField(
-        default=0, db_column='dpv', verbose_name='dpv', help_text='dpv')
+    dpv = models.PositiveIntegerField(default=0, verbose_name='dpv', help_text='dpv')
 
     # daily  unique visitor
-    duv = models.PositiveIntegerField(
-        default=0, db_column='duv', verbose_name='duv', help_text='duv')
+    duv = models.PositiveIntegerField(default=0, verbose_name='duv', help_text='duv')
 
     # page view(浏览总量)
-    pv = models.PositiveIntegerField(
-        default=0, db_column='pv', verbose_name='pv', help_text='pv')
+    pv = models.PositiveIntegerField(default=0, verbose_name='pv', help_text='pv')
 
     # unique visitor(总访客量)
-    uv = models.PositiveIntegerField(
-        default=0, db_column='uv', verbose_name='uv', help_text='uv')
-
-    # 获赞量
-    # likes = models.PositiveIntegerField(default=0, db_column='获赞量', verbose_name='获赞量', help_text='获赞量')
-
-    # 收藏量
-    # collections = models.PositiveIntegerField(default=0, db_column='收藏量', verbose_name='收藏量', help_text='收藏量')
-
-    # 创建时间
-    create_time = models.DateTimeField(default=datetime.datetime.now, db_column='创建时间', verbose_name='创建时间',
-                                       help_text='创建时间')
-
-    # 文章最后修改的时间
-    update_time = models.DateTimeField(default=datetime.datetime.now, db_column='最后修改时间', verbose_name='最后修改时间',
-                                       help_text='最后修改时间')
-
-    # 文章是否已删除
-    is_deleted = models.BooleanField(
-        default=False, db_column='文章是否已删除', verbose_name='文章是否已删除', help_text='文章是否已删除')
+    uv = models.PositiveIntegerField(default=0, verbose_name='uv', help_text='uv')
 
     # 是否置顶
-    is_top = models.BooleanField(
-        default=False, db_column='是否置顶', verbose_name='是否置顶', help_text='是否置顶')
+    is_top = models.BooleanField(default=False, verbose_name='是否置顶', help_text='是否置顶')
 
     # 预计阅读时长
-    read_time = models.PositiveIntegerField(
-        default=0, db_column='预计阅读时长', verbose_name='预计阅读时长', help_text='预计阅读时长')
+    read_time = models.PositiveIntegerField(default=0, verbose_name='预计阅读时长', help_text='预计阅读时长')
 
     # 质量分数
-    quality_score = models.PositiveIntegerField(
-        default=10, db_column='质量分数', verbose_name='质量分数', help_text='质量分数')
+    quality_score = models.PositiveIntegerField(default=10, verbose_name='质量分数', help_text='质量分数')
 
     # 推荐分数 (临时变量，用于给用户推荐使用)
     recommendation_score = models.PositiveIntegerField(default=0, db_column='推荐分数', verbose_name='推荐分数',
@@ -188,9 +132,6 @@ class Blog(models.Model, BaseModel):
     def get_all(cls):
         return cls.objects.filter(is_deleted=False).all()
 
-    @classmethod
-    def get_by_id(cls, _id: str) -> 'Blog':
-        return cls.objects.filter(id=_id).first()
 
     @classmethod
     def get_count_by_category_id(cls, category_id: str) -> int:
@@ -318,24 +259,13 @@ class Blog_Tag_Release(models.Model):
 # 用户评论表
 class Comment(models.Model, BaseModel):
     # 评论人
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='评论人', verbose_name='评论人',
-                             help_text='评论人')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='评论人', help_text='评论人')
 
     # 评论的博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, db_column='被评论的博客', verbose_name='被评论的博客',
-                             help_text='被评论的博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被评论的博客', help_text='被评论的博客')
 
     # 评论内容
-    content = models.CharField(
-        max_length=500, db_column='评论内容', verbose_name='评论内容', help_text='评论内容')
-
-    # 评论时间
-    time = models.DateTimeField(
-        default=datetime.datetime.now, db_column='评论时间', verbose_name='评论时间', help_text='评论时间')
-
-    # 是否显示 如果用户删除评论后 该评论就不被显示
-    is_deleted = models.BooleanField(
-        default=False, db_column='是否已删除', verbose_name='是否已删除', help_text='是否已删除')
+    content = models.CharField(max_length=500, verbose_name='评论内容', help_text='评论内容')
 
     fields = ['id', 'user', 'blog', 'content', 'time']
 
@@ -348,10 +278,6 @@ class Comment(models.Model, BaseModel):
     @classmethod
     def get_count_by_blog(cls, blog: Blog) -> int:
         return cls.objects.filter(Q(blog=blog) & Q(is_deleted=False)).count()
-
-    @classmethod
-    def get_by_id(cls, _id: int) -> 'Comment':
-        return cls.objects.filter(id=_id).first()
 
     @classmethod
     @my_cache(60)
@@ -368,27 +294,18 @@ class Comment(models.Model, BaseModel):
             con_list.append(con)
         return con_list
 
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list, extra_map)
-
 
 # 收藏记录表
-class Collection(models.Model, BaseModel):
+class Collection(BaseModel):
     # 收藏人
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             db_column='收藏人', verbose_name='收藏人', help_text='收藏人')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='收藏人', help_text='收藏人')
 
     # 被收藏的博客
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, db_column='被收藏的博客', verbose_name='被收藏的博客',
                              help_text='被收藏的博客')
 
     # 是否取消收藏
-    is_canceled = models.BooleanField(
-        default=False, db_column='收藏是否已取消', verbose_name='收藏是否已取消', help_text='收藏是否已取消')
-
-    # 收藏时的日期
-    time = models.DateTimeField(
-        default=datetime.datetime.now, db_column='收藏日期', verbose_name='收藏日期', help_text='收藏日期')
+    is_canceled = models.BooleanField(default=False, verbose_name='收藏是否已取消', help_text='收藏是否已取消')
 
     fields = ['id', 'user', 'blog', 'is_canceled', 'time']
 
@@ -415,34 +332,20 @@ class Collection(models.Model, BaseModel):
             return 0, 0
 
     @classmethod
-    def get_by_id(cls, _id: str) -> 'Collection':
-        return cls.objects.filter(id=_id).first()
-
-    @classmethod
     def get_count_by_blog(cls, blog: Blog) -> int:
         return cls.objects.filter(Q(blog=blog) & Q(is_canceled=False)).count()
 
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list, extra_map)
-
 
 # 点赞记录表
-class Like(models.Model, BaseModel):
+class Like(BaseModel):
     # 点赞人
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             db_column='点赞人', verbose_name='点赞人', help_text='点赞人')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='点赞人', help_text='点赞人')
 
     # 被点赞的博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, db_column='被点赞的博客', verbose_name='被点赞的博客',
-                             help_text='被点赞的博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被点赞的博客', help_text='被点赞的博客')
 
     # 是否取消点赞
-    is_canceled = models.BooleanField(
-        default=False, db_column='点赞是否已取消', verbose_name='点赞是否已取消', help_text='点赞是否已取消')
-
-    # 点赞时间
-    time = models.DateTimeField(
-        default=datetime.datetime.now, db_column='点赞时间', verbose_name='点赞时间', help_text='点赞时间')
+    is_canceled = models.BooleanField(default=False, verbose_name='点赞是否已取消', help_text='点赞是否已取消')
 
     fields = ['id', 'user', 'blog', 'is_canceled', 'time']
 
@@ -464,33 +367,19 @@ class Like(models.Model, BaseModel):
                 return tmp_like.id, 1
         else:
             return 0, 0
-        # return tmp_like.id, True if tmp_like and not tmp_like.is_canceled else 0, False
-
-    @classmethod
-    def get_by_id(cls, _id: str) -> 'Like':
-        return cls.objects.filter(id=_id).first()
 
     @classmethod
     def get_count_by_blog(cls, blog: Blog) -> int:
         return cls.objects.filter(Q(blog=blog) & Q(is_canceled=False)).count()
 
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list)
-
 
 # 搜索记录表
-class Search(models.Model, BaseModel):
+class Search(BaseModel):
     # 关键字
-    keyword = models.CharField(
-        max_length=100, db_column='关键字', verbose_name='关键字', help_text='关键字')
+    keyword = models.CharField(max_length=100,verbose_name='关键字', help_text='关键字')
 
     # 搜索者
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             db_column='搜索者', verbose_name='搜索者', help_text='搜索者')
-
-    # 搜索的日期
-    time = models.DateTimeField(
-        default=datetime.datetime.now, db_column='时间', verbose_name='时间', help_text='时间')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name='搜索者', help_text='搜索者')
 
     fields = ['id', 'keyword', 'user', 'time']
 
@@ -506,19 +395,13 @@ class Search(models.Model, BaseModel):
         obj.save()
         return obj
 
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list)
-
-
 # 相关推荐
-class Recommend(models.Model, BaseModel):
+class Recommend(BaseModel):
     # 用户
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             db_column='用户', verbose_name='用户', help_text='用户')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name='用户', help_text='用户')
 
     # 推荐的博客列表
-    blog_list = models.ManyToManyField(
-        Blog, db_column='博客列表', verbose_name='博客列表', help_text='博客列表')
+    blog_list = models.ManyToManyField(Blog, db_column='博客列表', verbose_name='博客列表', help_text='博客列表')
 
     class Meta:
         db_table = '相关推荐'
@@ -535,6 +418,3 @@ class Recommend(models.Model, BaseModel):
             return []
         else:
             return tmp_recommend.blog_list.all()
-
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list)
