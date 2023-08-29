@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+
+import html2text
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -146,5 +148,6 @@ def update(request, blog_id):
 
         # 内容转成markdown显示
         # blog.content = html2text.HTML2Text().handle(blog.content)
+        # print(blog.content)
 
         return render(request, 'edit.html', context=locals())

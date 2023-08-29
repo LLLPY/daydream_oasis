@@ -252,13 +252,11 @@ class Blog(models.Model, BaseModel):
             tmp_blog.avatar = avatar
         tmp_blog.category = category
         tmp_blog.content = content
-
         # 摘要为内容的前150字
         tmp_blog.abstract = ''.join(
             etree.HTML(content).xpath('//text()'))[:150]
         # 更新阅读时长
         tmp_blog.update_read_time()
-        tmp_blog.save()
         for tag in tag_list:
             tag = Tag.get_or_create(tag, creator=author)
             tmp_blog.tags.add(tag)

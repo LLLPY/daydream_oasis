@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="{% static 'css/vditor@3.9.1.css' %}"/>
     <script src="{% static 'js/vditor@3.9.1.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/edit.css' %}">
-    {#    <script src="https://unpkg.com/vditor@3.9.1/dist/method.min.js"></script>#}
     <style>
         #vditor {
             z-index: 10000000000 !important;
@@ -119,239 +118,13 @@
 
 {% endblock %}
 {% block script %}
-
-
-    <script>
-        let article_info_vm = new Vue({
-            el: '#article-info',
-            delimiters: ["{[", "]}"],
-            data: {
-                title: '{{ blog.title|safe }}',
-                category: '{{ blog.category|safe }}',
-                tag: '',
-                section: '',
-                avatar_url: '{{ blog.avatar|safe }}',
-                avatar_icon: '<use xlink:href="#icon-70BasicIcons-all-35"></use>',
-                delete_button_show: 0, {% comment %}删除封面的按钮{% endcomment %}
-                avatar_show: 0,
-                category_recommend_list: [],
-                section_recommend_list: [],
-                tag_recommend_list: [],
-                chosen_tag_list: {{ tag_list|safe }},
-            },
-            computed: {},
-            methods: {
-                recommend(_type) {
-                    let keyword = '';
-                    if (_type === 'category') {
-                        keyword = this.category;
-                    } else if (_type === 'section') {
-                        keyword = this.section;
-                    } else {
-                        keyword = this.tag;
-                    }
-                    $ajax('get', `../../article/api/${_type}/`,
-                        {
-                            'keyword': keyword,
-                        },
-                        function (msg) {
-                            let data = JSON.parse(msg);
-                            if (data['code'] !== '200') {
-                                toast_show(data['msg']);
-                                return
-                            }
-                            if (_type === 'category') {
-                                article_info_vm.category_recommend_list = data['data']['category_list']
-                            } else if (_type === 'section') {
-                                article_info_vm.section_recommend_list = data['data']['section_list']
-                            } else {
-                                article_info_vm.tag_recommend_list = data['data']['tag_list']
-                            }
-
-                        },
-                        function (msg) {
-                            toast_show(JSON.parse(msg)['msg']);
-                        }
-                    )
-                },
-                {% comment %}选择专栏{% endcomment %}
-                choice_section(index) {
-                    this.section = this.section_recommend_list[index];
-                    this.section_recommend_list = []
-
-                },
-                {% comment %}选择分类{% endcomment %}
-                choice_category(index) {
-                    this.category = this.category_recommend_list[index];
-                    this.category_recommend_list = []
-
-                },
-                {% comment %}选择标签并添加{% endcomment %}
-                choice_tag(index) {
-                    if (this.chosen_tag_list.length >= 3) {
-                        toast_show('最多只能选3个标签!');
-                    } else {
-                        this.chosen_tag_list.push(this.tag_recommend_list[index]);
-                    }
-                    this.tag_recommend_list = []
-
-                },
-                {% comment %}失去焦点{% endcomment %}
-                _blur() {
-                    {% comment %}等待选择完成后再清空{% endcomment %}
-                    setTimeout(function () {
-                        article_info_vm.category_recommend_list = []
-                        article_info_vm.section_recommend_list = []
-                        article_info_vm.tag_recommend_list = []
-                    }, 500);
-
-                },
-
-                {% comment %}回车添加标签{% endcomment %}
-                add_tag() {
-                    if (this.tag.length === 0) {
-                        return
-                    }
-                    if (this.chosen_tag_list.length >= 3) {
-                        toast_show('最多只能选3个标签!')
-                    } else {
-                        this.chosen_tag_list.push(this.tag);
-                        this.tag = ''
-                    }
-
-                },
-                {% comment %}删除标签{% endcomment %}
-                delete_tag(index) {
-                    this.chosen_tag_list.splice(index, 1);
-                },
-                {% comment %}上传图片(封面){% endcomment %}
-                upload_file(e) {
-                    let max_size = 2 * 1024 * 1024;
-                    {% comment %}2M{% endcomment %}
-                    let file = e.target.files;
-                    if (file[0].size > max_size) {
-                        toast_show('最大仅支持2M的图片!');
-                        e.target.value = ''
-                        return
-                    }
-
-                    let form_data = new FormData();
-                    form_data.append("file", file[0], file[0].name);
-
-
-                    $.ajax({
-                        url: '../../file/upload',
-                        type: 'post',
-                        data: form_data,
-                        contentType: false,
-                        processData: false,
-                        success: function (data) {
-                            if (data['code'] !== '200') {
-                                toast_show(data['msg'])
-                                return
-                            }
-                            article_info_vm.avatar_icon = '<use xlink:href="#icon-tupian_huaban1"></use>'
-                            article_info_vm.avatar_url = data['data']['url']
-                            article_info_vm.delete_button_show = 1
-
-                        },
-                        error: function (data) {
-                        },
-                    })
-
-
-                },
-                {% comment %}删除封面{% endcomment %}
-                delete_avatar() {
-                    $('#avatar-input-box input').val('')
-                    article_info_vm.delete_button_show = 0
-                    article_info_vm.avatar_show = 0
-                    article_info_vm.avatar_icon = '<use xlink:href="#icon-70BasicIcons-all-35"></use>'
-                    article_info_vm.avatar_url = ''
-
-                },
-                show_avatar() {
-                    {% comment %}当删除按钮显示时，说明上传了封面{% endcomment %}
-                    if (article_info_vm.delete_button_show === 1) {
-                        {% comment %}根据图片的大小设置bottom的值{% endcomment %}
-                        let avatar_preview = $('#avatar-preview')
-                        avatar_preview.css('bottom', '-' + avatar_preview.css('height'))
-                        article_info_vm.avatar_show = 1
-                        $('#avatar-input-box img').fadeIn(1000);
-                    }
-
-                },
-                hide_avatar() {
-                    $('#avatar-input-box img').fadeOut(1000);
-                    {#article_info_vm.avatar_show = 0#}
-                },
-                submit() {
-
-                    {% comment %}内容检查{% endcomment %}
-                    if (this.title.length === 0 || this.title.length > 30) {
-                        toast_show('标题的长度范围是0~30!')
-                        return
-                    }
-
-                    if (this.category.length === 0 || this.category.length > 8) {
-                        toast_show('分类的长度范围是0~8!')
-                        return;
-                    }
-
-                    let content = vditor.getHTML();
-                    {#let content = vditor.getValue();#}
-                    if (content.length === 0) {
-                        toast_show('内容不能为空!')
-                        return;
-                    }
-                    console.log(content);
-
-                    {% comment %}提交{% endcomment %}
-                    $.ajax({
-                        url: '../../article/api/article/',
-                        type: 'post',
-                        data: JSON.stringify({
-                            'user': '{{ user_id }}',
-                            'blog_id': '{{ blog_id }}',
-                            'title': this.title,
-                            'category': this.category,
-                            'tag_list': this.chosen_tag_list,
-                            'avatar': this.avatar_url,
-                            'content': content
-                        }),
-                        contentType: 'application/json',
-                        processData: true,
-                        success: function (data) {
-                            if (data['code'] !== '200') {
-                                toast_show(data['msg'])
-                            }
-                            vditor.clearCache();
-                            location.assign(`../../article/${data['data']['id']}`)
-                        },
-                        error: function (data) {
-                            toast_show(data['msg'])
-                        }
-                    })
-
-
-                }
-            }
-        })
-
-        if ({{ avatar_show }}) {
-            article_info_vm.delete_button_show = 1
-            article_info_vm.avatar_icon = '<use xlink:href="#icon-tupian_huaban1"></use>'
-        }
-
-    </script>
-
-
     <script>
         //挂载到全局
         window.vditor = new Vditor("vditor", {
 
             // 获取焦点方法
             focus(md) {
+
                 document.onkeydown = function () {
                     // 判断 Ctrl+S
                     if (event.ctrlKey == true && event.keyCode == 83) {
@@ -440,8 +213,7 @@
             //实用小特性 按下tab新增四个空格 placeholder内容为空的提示 全屏层级
             tab: '    ',
             placeholder: '开始你的创作吧！🐛🐛🐛',
-            value: `{{  blog.content|safe }}`,
-            {#previewElement: `{{  blog.content|safe }}`,#}
+            value: ``,
 
             fullscreen: {
                 index: 9999,
@@ -779,8 +551,242 @@
 
         });
 
-
     </script>
+
+    <script>
+
+
+        let article_info_vm = new Vue({
+            el: '#article-info',
+            delimiters: ["{[", "]}"],
+            data: {
+                title: '{{ blog.title|safe }}',
+                category: '{{ blog.category|safe }}',
+                tag: '',
+                section: '',
+                avatar_url: '{{ blog.avatar|safe }}',
+                avatar_icon: '<use xlink:href="#icon-70BasicIcons-all-35"></use>',
+                delete_button_show: 0, {% comment %}删除封面的按钮{% endcomment %}
+                avatar_show: 0,
+                category_recommend_list: [],
+                section_recommend_list: [],
+                tag_recommend_list: [],
+                chosen_tag_list: {{ tag_list|safe }},
+            },
+            computed: {},
+            methods: {
+                recommend(_type) {
+                    let keyword = '';
+                    if (_type === 'category') {
+                        keyword = this.category;
+                    } else if (_type === 'section') {
+                        keyword = this.section;
+                    } else {
+                        keyword = this.tag;
+                    }
+                    $ajax('get', `../../article/api/${_type}/`,
+                        {
+                            'keyword': keyword,
+                        },
+                        function (msg) {
+                            let data = JSON.parse(msg);
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg']);
+                                return
+                            }
+                            if (_type === 'category') {
+                                article_info_vm.category_recommend_list = data['data']['category_list']
+                            } else if (_type === 'section') {
+                                article_info_vm.section_recommend_list = data['data']['section_list']
+                            } else {
+                                article_info_vm.tag_recommend_list = data['data']['tag_list']
+                            }
+
+                        },
+                        function (msg) {
+                            toast_show(JSON.parse(msg)['msg']);
+                        }
+                    )
+                },
+                {% comment %}选择专栏{% endcomment %}
+                choice_section(index) {
+                    this.section = this.section_recommend_list[index];
+                    this.section_recommend_list = []
+
+                },
+                {% comment %}选择分类{% endcomment %}
+                choice_category(index) {
+                    this.category = this.category_recommend_list[index];
+                    this.category_recommend_list = []
+
+                },
+                {% comment %}选择标签并添加{% endcomment %}
+                choice_tag(index) {
+                    if (this.chosen_tag_list.length >= 3) {
+                        toast_show('最多只能选3个标签!');
+                    } else {
+                        this.chosen_tag_list.push(this.tag_recommend_list[index]);
+                    }
+                    this.tag_recommend_list = []
+
+                },
+                {% comment %}失去焦点{% endcomment %}
+                _blur() {
+                    {% comment %}等待选择完成后再清空{% endcomment %}
+                    setTimeout(function () {
+                        article_info_vm.category_recommend_list = []
+                        article_info_vm.section_recommend_list = []
+                        article_info_vm.tag_recommend_list = []
+                    }, 500);
+
+                },
+
+                {% comment %}回车添加标签{% endcomment %}
+                add_tag() {
+                    if (this.tag.length === 0) {
+                        return
+                    }
+                    if (this.chosen_tag_list.length >= 3) {
+                        toast_show('最多只能选3个标签!')
+                    } else {
+                        this.chosen_tag_list.push(this.tag);
+                        this.tag = ''
+                    }
+
+                },
+                {% comment %}删除标签{% endcomment %}
+                delete_tag(index) {
+                    this.chosen_tag_list.splice(index, 1);
+                },
+                {% comment %}上传图片(封面){% endcomment %}
+                upload_file(e) {
+                    let max_size = 2 * 1024 * 1024;
+                    {% comment %}2M{% endcomment %}
+                    let file = e.target.files;
+                    if (file[0].size > max_size) {
+                        toast_show('最大仅支持2M的图片!');
+                        e.target.value = ''
+                        return
+                    }
+
+                    let form_data = new FormData();
+                    form_data.append("file", file[0], file[0].name);
+
+
+                    $.ajax({
+                        url: '../../file/upload',
+                        type: 'post',
+                        data: form_data,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg'])
+                                return
+                            }
+                            article_info_vm.avatar_icon = '<use xlink:href="#icon-tupian_huaban1"></use>'
+                            article_info_vm.avatar_url = data['data']['url']
+                            article_info_vm.delete_button_show = 1
+
+                        },
+                        error: function (data) {
+                        },
+                    })
+
+
+                },
+                {% comment %}删除封面{% endcomment %}
+                delete_avatar() {
+                    $('#avatar-input-box input').val('')
+                    article_info_vm.delete_button_show = 0
+                    article_info_vm.avatar_show = 0
+                    article_info_vm.avatar_icon = '<use xlink:href="#icon-70BasicIcons-all-35"></use>'
+                    article_info_vm.avatar_url = ''
+
+                },
+                show_avatar() {
+                    {% comment %}当删除按钮显示时，说明上传了封面{% endcomment %}
+                    if (article_info_vm.delete_button_show === 1) {
+                        {% comment %}根据图片的大小设置bottom的值{% endcomment %}
+                        let avatar_preview = $('#avatar-preview')
+                        avatar_preview.css('bottom', '-' + avatar_preview.css('height'))
+                        article_info_vm.avatar_show = 1
+                        $('#avatar-input-box img').fadeIn(1000);
+                    }
+
+                },
+                hide_avatar() {
+                    $('#avatar-input-box img').fadeOut(1000);
+                    {#article_info_vm.avatar_show = 0#}
+                },
+                submit() {
+
+                    {% comment %}内容检查{% endcomment %}
+                    if (this.title.length === 0 || this.title.length > 30) {
+                        toast_show('标题的长度范围是0~30!')
+                        return
+                    }
+
+                    if (this.category.length === 0 || this.category.length > 8) {
+                        toast_show('分类的长度范围是0~8!')
+                        return;
+                    }
+
+                    let content = vditor.getHTML();
+                    if (content.length === 0) {
+                        toast_show('内容不能为空!')
+                        return;
+                    }
+
+
+                    {% comment %}提交{% endcomment %}
+                    $.ajax({
+                        url: '../../article/api/article/',
+                        type: 'post',
+                        data: JSON.stringify({
+                            'user': '{{ user_id }}',
+                            'blog_id': '{{ blog_id }}',
+                            'title': this.title,
+                            'category': this.category,
+                            'tag_list': this.chosen_tag_list,
+                            'avatar': this.avatar_url,
+                            'content': content
+                        }),
+                        contentType: 'application/json',
+                        processData: true,
+                        success: function (data) {
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg'])
+                            }
+                            vditor.clearCache();
+                            location.assign(`../../article/${data['data']['id']}`)
+                        },
+                        error: function (data) {
+                            toast_show(data['msg'])
+                        }
+                    })
+
+
+                }
+            },
+            created() {
+                setTimeout(function () {
+                    vditor.setValue(vditor.html2md(`{{ blog.content | safe }}`));
+                }, 1000)
+
+            }
+        })
+
+        if ({{ avatar_show }}) {
+            article_info_vm.delete_button_show = 1
+            article_info_vm.avatar_icon = '<use xlink:href="#icon-tupian_huaban1"></use>'
+        }
+    </script>
+
+
+
+
+
 
 {% endblock %}
 
