@@ -1,7 +1,7 @@
 from os.path import join
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.http import JsonResponse
-from article.models import Blog
+from blog.models import Blog
 from log.models import RequestRecord, Action
 from utils.tools import statisticData
 import json

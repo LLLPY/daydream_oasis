@@ -7,7 +7,6 @@ from common.my_cache import my_cache
 from PIL.Image import open as imgOpen, ANTIALIAS
 from os.path import isfile
 from log.logger import logger
-from user.models import User
 
 
 class BaseModel(models.Model):
@@ -20,10 +19,6 @@ class BaseModel(models.Model):
     # 是否删除
     is_deleted = models.BooleanField(default=False, verbose_name='是否已删除', help_text='是否已删除')
 
-    # 用户
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='用户', help_text='用户')
-
-    fields = []
 
     logger = logger
 
@@ -35,11 +30,11 @@ class BaseModel(models.Model):
         self.save()
 
     @classmethod
-    def get_by_id(cls, _id: int) -> 'Comment':
+    def get_by_id(cls, _id: int):
         return cls.objects.filter(id=_id).first()
 
     # 将对象转成字典
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
+    def to_dict(self, fields: List[str], exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
         '''
         fields:需要转换的字段列表
         exclude_list:不需要转换的字段列表
@@ -157,3 +152,33 @@ class BackgroundMusic(models.Model, BaseModel):
     @my_cache(60)
     def get_all(cls, fields=fields):
         return [music.to_dict(fields=fields) for music in cls.objects.all()]
+
+
+# 友链
+class FriendLink(BaseModel):
+    title = models.CharField(max_length=100, verbose_name='网站名', help_text='网站名')
+
+    avatar = models.ImageField(blank=True, upload_to='image/%Y/%m/%d', verbose_name='avatar', help_text='avatar')
+
+    url = models.URLField(verbose_name='地址', help_text='地址')
+
+    desc = models.CharField(max_length=100, verbose_name='描述', default='', help_text='描述')
+
+    weight = models.PositiveIntegerField(default=1, verbose_name='权重', help_text='权重越高越靠前')
+
+    fields = ['id', 'title', 'avatar', 'url', 'desc', 'weight', 'time']
+
+    class Meta:
+        db_table = '友链'
+        verbose_name = verbose_name_plural = db_table
+        ordering = ['-weight']
+
+    # 返回所有的友链信息
+    @classmethod
+    def get_all(cls):
+        return cls.objects.all()
+
+    @classmethod
+    @my_cache(timeout=60)
+    def get_friend_link(cls, fields=fields):
+        return cls.objects.values(*fields)

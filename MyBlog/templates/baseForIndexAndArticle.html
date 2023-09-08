@@ -1,0 +1,394 @@
+{% extends 'common.html' %}
+{% load static %}
+{% load cache %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/baseForIndexAndArticle.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% comment %}导航栏{% endcomment %}
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light container-fluid p-2 shadow-sm">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="navbar-brand" href="/">0318-SPACE</a>
+                </li>
+                &nbsp;
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog:index' blog_id=796 %}">关于</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#message-box-textarea">留言板</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'blog:index' blog_id=741 %}">关于博主</a>
+                </li>
+                <li class="nav-item">
+                    {% if is_login %}
+                        {#                        <a class="nav-link" href="{% url 'user:personalCenter' user_id=user_id %}">个人中心</a>#}
+                    {% else %}
+                        <a class="nav-link" href="{% url 'user:login' %}">登录/注册</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" @click="write_blog"
+                       href="{% url 'blog:add' %}">写博客</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-expanded="false">
+                        歌单
+                    </a>
+                    <div class="dropdown-menu music-menu" aria-labelledby="navbarDropdown"
+                         style="max-height: 150px;overflow: auto;">
+
+                        {% for music in music_list %}
+                            <span class="dropdown-item" id="{{ music.path }}"
+                                  lang="{{ music.avatar }}">{{ music.singer }}-{{ music.title }}</span>
+                        {% endfor %}
+
+                        <div class="dropdown-divider"></div>
+                    </div>
+                </li>
+                <li class="nav-item d-none" id="music-box">
+                    <img id="current-music-img" class="rounded"
+                         src="{{ music_list.0.avatar }}" alt="{{ music_list.0.singer }}-{{ music_list.0.title }}">
+                    <audio controls class="nav-link" id="music-player" ontimeupdate="music_update();"
+                           src="#"></audio>
+
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link d-none my-hidden"
+                          id="current-music-title">{{ music_list.0.singer }}-{{ music_list.0.title }}</span>
+                </li>
+
+            </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <input v-model="keyword" @keyup.13="search" id="keyword_input" class="form-control mr-sm-2"
+                       type="search"
+                       placeholder="{{ placeholder }}"
+                       aria-label="Search">
+                <button @click="search" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </div>
+        </div>
+    </nav>
+    {% comment %}导航栏end{% endcomment %}
+    <div class="row container-fluid p-2" style="padding-top: 75px!important;">
+
+        {% comment %}左边(博客列表或内容){% endcomment %}
+        <div id="left-content" class="col-12">
+            {% block left-content %}{% endblock %}
+            {% block left-content-script %}{% endblock %}
+        </div>
+        {% comment %}左边(博客列表或内容)end{% endcomment %}
+
+        {% cache 60 'page-right-content' %}
+            {% comment %}右边{% endcomment %}
+            <div class="col-3 my-hidden" style="padding-left: 1.5%!important;">
+            {% comment %}热文排行榜{% endcomment %}
+            <div id="topList" class="text-center white-bg-shadow">
+                <div class="title-box">热文排行榜</div>
+                <div id="top-button-box" class="text-center row">
+                    <span class="col-4 bg-cyan" @click="change_top($event,'day')">日热榜</span>
+                    <span class="col-4" @click="change_top($event,'week')">周热榜</span>
+                    <span class="col-4" @click="change_top($event,'month')">月热榜</span>
+                </div>
+                <ul id="top-ul" class="container-fluid">
+                    <li v-for="(article,index) in top_list" class="row">
+                        <span class="col-3 text-center">{[ index+1 ]}</span>
+                        <span class="col-6 text-left"><a :href=" '../article/'+article.id" class="post-enter">{[ article.title]}</a></span>
+                        <span class="col-3 text-left">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-fenlei-remen"></use>
+                        </svg>
+                        {[ article.hot ]}
+                    </span>
+                    </li>
+                </ul>
+
+            </div>
+            {% comment %}热文排行榜end{% endcomment %}
+            <br>
+            <div id="tag-box" class="container-fluid box white-bg-shadow">
+                <div class="title-box">标签</div>
+                <div class="span-container">
+                    {% for tag in tag_list %}
+                        <a href="../?tag={{ tag.title }}" class="text-decoration-none rounded"
+                           style="font-size: {{ tag.font_size }}px;color: {{ tag.color }}">{{ tag.title }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
+            <div id="recommend-box" class="container-fluid box white-bg-shadow d-none">
+                <div class="title-box">推荐</div>
+                {% for recommend_blog in recommend_blog_list %}
+                    <div class="p-1">
+                        <a href="{% url 'blog:index' blog_id=recommend_blog.id %}"
+                        >《{{ recommend_blog.title }}》</a>
+                        <span class="text-black-50">{{ recommend_blog.create_time }}</span>
+
+                    </div>
+
+                {% endfor %}
+
+
+            </div>
+            <br>
+            <div id="category-box" class="container-fluid box white-bg-shadow">
+                <div class="title-box">分类</div>
+                <div class="span-container">
+                    {% for category in category_list %}
+                        <a class="text-decoration-none rounded"
+                           style="font-size: {{ category.font_size }}px;color: {{ category.color }}"
+                           href="../?category={{ category.title }}">{{ category.title }}</a>
+                    {% endfor %}
+                </div>
+
+
+            </div>
+            <br>
+        {% endcache %}
+
+        <div id="message-box" class="container-fluid box white-bg-shadow">
+            <div class="title-box">留言</div>
+            <div v-for="(message,index) in message_list" class="each-message-box p-2">
+
+                <div class="p-2">
+                    <img :src="'../'+message.user.avatar" :alt="message.user.username"
+                         class="rounded-circle img-rounded">
+                    <span>{[ message.user.username ]}</span><span
+                        class="text-muted text-secondary">({[ message.time ]})</span>
+                </div>
+
+                <p>{[ message.content ]}</p>
+            </div>
+            <br>
+            <hr>
+            <textarea id="message-box-textarea" placeholder="欢迎留言评论，最多100字哦~" class="container-fluid"
+                      maxlength="100"
+                      style="resize: none;height: 200px;" v-model="content"></textarea>
+            <button class="btn btn-primary btn-lg btn-block" @click="submit">提交留言</button>
+        </div>
+        </div>
+        {% comment %}右边end{% endcomment %}
+
+    </div>
+    <script>
+
+        $('#message-box img').addClass('img-thumbnail');
+
+        let nav = new Vue({
+            el: '#navbar',
+            delimiters: ["{[", "]}"],
+            data: {
+                keyword: '',
+                is_login:{{ is_login|safe }},
+
+            },
+            methods: {
+                search() {
+                    if (this.keyword.length < 1) {
+                        toast_show('请先输入一些什么吧~');
+                        return
+                    }
+                    location.assign('../?keyword=' + this.keyword);
+                },
+                write_blog(e) {
+                    if (!this.is_login) {
+                        toast_show('请先登录!')
+                        e.preventDefault();
+                    }
+                }
+            }
+        })
+
+
+    </script>
+
+    <script>
+        {% comment %}热门排行榜{% endcomment %}
+        new Vue({
+            el: '#topList',
+            delimiters: ["{[", "]}"],
+            data: {
+                top_list: {{ day_top_list|safe }},
+                day_top_list: {{ day_top_list|safe }},
+                week_top_list: {{ week_top_list|safe }},
+                month_top_list: {{ month_top_list|safe }},
+
+            },
+            methods: {
+                change_top(event, top = 'day') {
+                    $('#top-button-box span').removeClass('bg-cyan');
+                    event.target.className += ' bg-cyan';
+                    if (top === 'day') {
+                        this.top_list = this.day_top_list
+                    } else if (top === 'week') {
+                        this.top_list = this.week_top_list
+                    } else {
+                        this.top_list = this.month_top_list
+                    }
+                }
+            }
+
+        })
+        {% comment %}热门排行榜end{% endcomment %}
+
+        {% comment %}留言{% endcomment %}
+        let message_vm = new Vue({
+            el: '#message-box',
+            delimiters: ["{[", "]}"],
+            data: {
+                message_list:{{ message_list|safe }},
+                content: '',
+                is_login: {{ is_login|safe }}
+            },
+            methods: {
+                submit() {
+                    {% comment %}检查是否登录{% endcomment %}
+
+                    if (!this.is_login) {
+                        toast_show('请先登录!')
+                        $('#message-box textarea').blur();
+                        return
+                        {% comment %}失去焦点{% endcomment %}
+                    }
+
+                    {% comment %}检查内容长度{% endcomment %}
+                    if (this.content.length <= 1) {
+                        toast_show('至少写两个字吧！');
+                        return;
+
+                    }
+                    {% comment %}发送给后台{% endcomment %}
+                    $ajax('post', "../user/api/message/", {
+                            'content': this.content,
+                            'user': '{{ user_id }}'
+                        },
+                        function (msg) {
+                            let data = JSON.parse(msg);
+                            if (data['code'] !== '200') {
+                                toast_show(data['msg']);
+                                return
+                            }
+                            message_vm.message_list.push(data['data']);
+                            message_vm.content = '';
+                        },
+                        function (msg) {
+                            toast_show(JSON.parse(msg)['msg']);
+                        }
+                    )
+
+                }
+            }
+
+        })
+
+
+    </script>
+
+    <script>
+
+        {% comment %}功能函数{% endcomment %}
+        {% comment %}鼠标划过特效{% endcomment %}
+
+        function hover_li() {
+            let post_li_list = $('#blog-list>li');
+            for (let i = 0; i < post_li_list.length; i++) {
+                post_li_list[i].style.position = 'relative';
+            }
+            post_li_list.mouseenter(function () {
+                this.className = 'container-fluid shadow-lg p-3 mb-5 bg-white rounded';
+                perfectMove(this, {
+                    top: -10
+                })
+                this.style.top = '-10px';
+
+            });
+            post_li_list.mouseleave(function () {
+                this.className = 'container-fluid shadow-none p-3 mb-5  rounded';
+                perfectMove(this, {
+                    top: 10
+                })
+            });
+        }
+
+
+        {% comment %}功能函数end{% endcomment %}
+
+        {% comment %}音乐播放{% endcomment %}
+        let music_box = $('#music-box');
+        let music_player_jq = $('#music-player');
+        let music_player = music_player_jq[0];
+        let current_music_img = $('#current-music-img');
+        let current_music_title = $('#current-music-title');
+
+        function music_update() {
+            $.cookie('current_music_src', music_player_jq.attr('src'), {expires: 7, path: '/'});
+            $.cookie('current_music_pos', music_player.currentTime, {expires: 7, path: '/'});
+            $.cookie('current_music_avatar', current_music_img.attr('src'), {expires: 7, path: '/'});
+            $.cookie('current_music_title', current_music_img.attr('alt'), {expires: 7, path: '/'});
+            $.cookie('current_music_volume', music_player.volume, {expires: 7, path: '/'});
+        }
+
+        $(function () {
+
+            {% comment %}音乐断点重播：首先检查cookie中的记录{% endcomment %}
+            if ($.cookie('music_status') === '1') {
+                current_music_img.attr('src', $.cookie('current_music_avatar'));
+                current_music_title.text($.cookie('current_music_title'));
+                music_player_jq.attr('src', $.cookie('current_music_src'));
+                music_player.currentTime = $.cookie('current_music_pos');
+                music_player.volume = $.cookie('current_music_volume');
+                try {
+                    music_player.play();
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            music_player_jq.bind('ended', function () {
+                {% comment %}下一首随机播放{% endcomment %}
+                $('.music-menu .dropdown-item')[getRndInteger(0, $('.music-menu .dropdown-item').length - 1)].click();
+            });
+
+            {% comment %}播放时，旋转图片{% endcomment %}
+            music_player_jq.bind('play', function () {
+                current_music_img.addClass('spinner-border');
+                current_music_img.removeClass('rounded');
+                music_box.removeClass('d-none');
+                current_music_title.removeClass('d-none');
+                music_box.fadeIn(3000);
+                current_music_title.fadeIn(3000);
+                $.cookie('music_status', '1', {expires: 7, path: '/'});
+            });
+
+            {% comment %}歌曲暂停，图片停止旋转{% endcomment %}
+            music_player_jq.bind('pause', function () {
+                current_music_img.removeClass('spinner-border');
+                current_music_img.addClass('rounded');
+                $.cookie('music_status', '0', {expires: 7, path: '/'});
+                music_box.fadeOut(3000);
+                current_music_title.fadeOut(3000);
+            });
+
+            {% comment %}切换歌曲{% endcomment %}
+            $('.music-menu .dropdown-item').click(function () {
+                current_music_title.text(this.innerText);
+                music_player_jq.attr('src', this.id);
+                current_music_img.attr('src', this.lang);
+                current_music_img.attr('alt', this.innerText);
+                music_player.play();
+            });
+
+            {% comment %}鼠标划过特效{% endcomment %}
+            hover_li();
+        })
+    </script>
+    {% include 'footer.html' %}
+{% endblock %}
+
