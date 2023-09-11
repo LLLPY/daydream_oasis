@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',  # user
     'blog',  # 学习星球
-    'link',  # 友链
+    # 'link',  # 友链
     'log',  # 访问日志
     'file',  # 文件
     'common',  # 公共部分

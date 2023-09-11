@@ -129,7 +129,7 @@ class BaseModel(models.Model):
 
 
 # 背景音乐
-class BackgroundMusic(models.Model, BaseModel):
+class BackgroundMusic(BaseModel):
     # 歌名
     title = models.CharField(max_length=50, verbose_name='歌名', help_text='歌名')
 
@@ -150,7 +150,7 @@ class BackgroundMusic(models.Model, BaseModel):
 
     @classmethod
     @my_cache(60)
-    def get_all(cls, fields=fields):
+    def get_all(cls, fields):
         return [music.to_dict(fields=fields) for music in cls.objects.all()]
 
 
@@ -180,5 +180,5 @@ class FriendLink(BaseModel):
 
     @classmethod
     @my_cache(timeout=60)
-    def get_friend_link(cls, fields=fields):
+    def get_friend_link(cls, fields):
         return cls.objects.values(*fields)

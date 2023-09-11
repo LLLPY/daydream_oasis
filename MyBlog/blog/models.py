@@ -13,6 +13,10 @@ from django.core.cache import cache
 
 # 博客分类
 class Category(BaseModel):
+
+    # 创建者
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
+
     # 标题
     title = models.CharField(max_length=8, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
@@ -41,6 +45,10 @@ class Category(BaseModel):
 
 # 标签
 class Tag(BaseModel):
+
+    # 创建者
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
+
     # title
     title = models.CharField(max_length=5, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
@@ -60,7 +68,7 @@ class Tag(BaseModel):
 # 博客
 class Blog(BaseModel):
     # 作者
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者', help_text='作者')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者', help_text='作者')
 
     # 标题
     title = models.CharField(max_length=30, blank=True, verbose_name='标题', help_text='标题')
@@ -243,7 +251,7 @@ class Blog_Tag_Release(models.Model):
 
 
 # 用户评论表
-class Comment(models.Model, BaseModel):
+class Comment(BaseModel):
     # 评论人
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='评论人', help_text='评论人')
 
@@ -253,12 +261,12 @@ class Comment(models.Model, BaseModel):
     # 评论内容
     content = models.CharField(max_length=500, verbose_name='评论内容', help_text='评论内容')
 
-    fields = ['id', 'user', 'blog', 'content', 'time']
+    fields = ['id', 'user', 'blog', 'content', 'create_time']
 
     class Meta:
         db_table = '评论'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-time']
+        ordering = ['-create_time']
 
     # 根据博客id获取该博客下的评论量
     @classmethod
@@ -292,12 +300,12 @@ class Collection(BaseModel):
     # 是否取消收藏
     is_canceled = models.BooleanField(default=False, verbose_name='收藏是否已取消', help_text='收藏是否已取消')
 
-    fields = ['id', 'user', 'blog', 'is_canceled', 'time']
+    fields = ['id', 'user', 'blog', 'is_canceled', 'create_time']
 
     class Meta:
         db_table = '收藏'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-time']
+        ordering = ['-create_time']
 
     # 判断某一篇文章是否被某一个用户收藏了
     @classmethod
@@ -332,12 +340,12 @@ class Like(BaseModel):
     # 是否取消点赞
     is_canceled = models.BooleanField(default=False, verbose_name='点赞是否已取消', help_text='点赞是否已取消')
 
-    fields = ['id', 'user', 'blog', 'is_canceled', 'time']
+    fields = ['id', 'user', 'blog', 'is_canceled', 'create_time']
 
     class Meta:
         db_table = '点赞'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-time']
+        ordering = ['-create_time']
 
     # 判断某一篇文章是否被某一个用户点赞了
     @classmethod
@@ -366,12 +374,12 @@ class Search(BaseModel):
     # 搜索者
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='搜索者', help_text='搜索者')
 
-    fields = ['id', 'keyword', 'user', 'time']
+    fields = ['id', 'keyword', 'user', 'create_time']
 
     class Meta:
         db_table = '搜索记录'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-time']
+        ordering = ['-create_time']
 
     @classmethod
     def create(cls, keyword: str, user: User) -> 'Search':

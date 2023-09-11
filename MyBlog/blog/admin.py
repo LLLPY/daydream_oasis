@@ -9,9 +9,9 @@ from user.models import User
 # 分类
 @admin.register(Category, site=my_site)
 class CategoryAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'title', 'time', 'creator']
+    list_display = ['id', 'title', 'create_time', 'creator']
     search_fields = ['title', 'creator__username']  # 搜索的字段同list_display
-    list_filter = ['title', 'creator__username', 'time']  # 过滤字段为前3个字段
+    list_filter = ['title', 'creator__username', 'create_time']  # 过滤字段为前3个字段
 
     def used_count(self, obj):
         # 统计每个分类下的文章数量
@@ -24,9 +24,9 @@ class CategoryAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 标签
 @admin.register(Tag, site=my_site)
 class TagAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'title', 'time', 'creator']
+    list_display = ['id', 'title', 'create_time', 'creator']
     search_fields = ['title', 'creator__username']  # 搜索的字段同list_display
-    list_filter = ['title', 'creator__username', 'time']  # 过滤字段为前3个字段
+    list_filter = ['title', 'creator__username', 'create_time']  # 过滤字段为前3个字段
 
 
 # 文章
@@ -79,33 +79,33 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 评论
 @admin.register(Comment, site=my_site)
 class CommentAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'user', 'blog', 'content', 'time', 'is_deleted']
+    list_display = ['id', 'user', 'blog', 'content', 'create_time', 'is_deleted']
     search_fields = ['user__username', 'content']
-    list_filter = ['user__username', 'blog__title', 'time', 'is_deleted']
+    list_filter = ['user__username', 'blog__title', 'create_time', 'is_deleted']
 
 
 # 收藏
 @admin.register(Collection, site=my_site)
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'blog', 'is_canceled', 'time']
+    list_display = ['id', 'user', 'blog', 'is_canceled', 'create_time']
     search_fields = ['user', 'blog']
-    list_filter = ['user', 'blog', 'is_canceled', 'time']
+    list_filter = ['user', 'blog', 'is_canceled', 'create_time']
 
 
 # 点赞
 @admin.register(Like, site=my_site)
 class LikeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'blog', 'is_canceled', 'time']
+    list_display = ['id', 'user', 'blog', 'is_canceled', 'create_time']
     search_fields = ['user', 'blog']
-    list_filter = ['user', 'blog', 'is_canceled', 'time']
+    list_filter = ['user', 'blog', 'is_canceled', 'create_time']
 
 
 # 搜索记录
 @admin.register(Search, site=my_site)
 class SearchAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'keyword', 'user', 'time']
+    list_display = ['id', 'keyword', 'user', 'create_time']
     search_fields = ['keyword', 'user']
-    list_filter = 'keyword', 'user', 'time'
+    list_filter = 'keyword', 'user', 'create_time'
 
 
 # 相关推荐
