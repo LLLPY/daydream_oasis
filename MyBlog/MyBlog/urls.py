@@ -21,7 +21,7 @@ urlpatterns = [
             {'sitemaps': {'posts': BlogSitemap}}),  # sitemap 使用缓存
 
     re_path(r'^api/docs/', include_docs_urls(title='blog apis')),  # restful api接口文档
-    re_path(r'^article/', include(('article.urls', 'article'), namespace='article')),  # blog
+    re_path(r'^blog/', include(('blog.urls', 'blog'), namespace='blog')),  # blog
     re_path(r'^log/', include(('log.urls', 'log'), namespace='log')),  # 请求日志
     re_path(r'^user/', include(('user.urls', 'user'), namespace='user')),  # 用户相关
     re_path(r'^file/', include(('file.urls', 'file'), namespace='file')),  # 文件相关

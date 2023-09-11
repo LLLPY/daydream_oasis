@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("article", "0001_initial"),
+        ("blog", "0001_initial"),
     ]
 
     operations = [
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
             field=models.ManyToManyField(
                 db_column="博客列表",
                 help_text="博客列表",
-                to="article.blog",
+                to="blog.blog",
                 verbose_name="博客列表",
             ),
         ),
@@ -65,7 +65,7 @@ class Migration(migrations.Migration):
                 db_column="被点赞的博客",
                 help_text="被点赞的博客",
                 on_delete=django.db.models.deletion.CASCADE,
-                to="article.blog",
+                to="blog.blog",
                 verbose_name="被点赞的博客",
             ),
         ),
@@ -87,7 +87,7 @@ class Migration(migrations.Migration):
                 db_column="被评论的博客",
                 help_text="被评论的博客",
                 on_delete=django.db.models.deletion.CASCADE,
-                to="article.blog",
+                to="blog.blog",
                 verbose_name="被评论的博客",
             ),
         ),
@@ -109,7 +109,7 @@ class Migration(migrations.Migration):
                 db_column="被收藏的博客",
                 help_text="被收藏的博客",
                 on_delete=django.db.models.deletion.CASCADE,
-                to="article.blog",
+                to="blog.blog",
                 verbose_name="被收藏的博客",
             ),
         ),
@@ -153,7 +153,7 @@ class Migration(migrations.Migration):
                 db_column="分类",
                 help_text="分类",
                 on_delete=django.db.models.deletion.CASCADE,
-                to="article.category",
+                to="blog.category",
                 verbose_name="分类",
             ),
         ),
@@ -161,7 +161,7 @@ class Migration(migrations.Migration):
             model_name="blog",
             name="tags",
             field=models.ManyToManyField(
-                db_column="标签", help_text="标签", to="article.tag", verbose_name="标签"
+                db_column="标签", help_text="标签", to="blog.tag", verbose_name="标签"
             ),
         ),
     ]

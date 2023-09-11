@@ -13,14 +13,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
 
 <script>hljs.highlightAll();</script>
-    <link rel="stylesheet" href="{% static 'css/article.css' %}">
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
     <div id="content-article" class="container-fluid white-bg-shadow">
         {% comment %}显示当前位置{% endcomment %}
         <div id="nowLocation" class="p-2">
 
             当前位置: <strong><a href="../?category={{ blog.category.title }}" id="categoryLocation"
                              class="my-tag">{{ blog.category }}</a></strong> >>
-            <strong><a href="{% url 'article:index' blog_id=blog_id %}">{{ blog.title }}</a></strong>
+            <strong><a href="{% url 'blog:index' blog_id=blog_id %}">{{ blog.title }}</a></strong>
         </div>
         {% comment %}文章部分{% endcomment %}
         <div id="article">
@@ -44,7 +44,7 @@
                 {% endfor %}
 
                 <span v-if="is_author" class="col-md-1" id="edit-article"><a
-                        href="{% url 'article:update' blog_id=blog_id %} ">编辑文章</a></span>
+                        href="{% url 'blog:update' blog_id=blog_id %} ">编辑文章</a></span>
                 <span v-if="is_author" @click="_delete" class="delete col-md-1">删除文章</span>
                 <br>
                 <span class="col-md-12" style="font-size: 12px">预计阅读时长:{{ blog.read_time }}</span>
@@ -170,7 +170,7 @@
         });
 
 
-        $('#article img').addClass('shadow rounded img-thumbnail');
+        $('#blog img').addClass('shadow rounded img-thumbnail');
         $('.img-box img').addClass('shadow rounded img-thumbnail');
         {% comment %}博客相关的操作{% endcomment %}
         let blog_vm = new Vue({
@@ -194,7 +194,7 @@
                         return
                     }
                     this.is_collected = this.is_collected === 1 ? 0 : 1;
-                    $ajax('put', '../article/api/collection/' + this.collection_id + '/',
+                    $ajax('put', '../blog/api/collection/' + this.collection_id + '/',
                         {
                             'id': this.collection_id,
                             'is_canceled': this.is_collected === 1 ? 0 : 1,
@@ -220,7 +220,7 @@
                     }
                     {% comment %}如果是已点赞，就是取消点赞，否则就是点赞{% endcomment %}
                     let is_canceled = this.is_liked === 1 ? 1 : 0
-                    $ajax('put', '../article/api/like/' + this.like_id + '/', {
+                    $ajax('put', '../blog/api/like/' + this.like_id + '/', {
                             'id': this.like_id,
                             'is_canceled': is_canceled,
                             'user': '{{ user_id }}',
@@ -247,7 +247,7 @@
                         return
                     }
 
-                    $ajax('delete', '../article/api/article/' + '{{ blog_id }}/',
+                    $ajax('delete', '../blog/api/blog/' + '{{ blog_id }}/',
                         {
                             'id': '{{ blog_id }}',
                             'user': '{{ user_id }}',
@@ -294,7 +294,7 @@
                         return
                     }
 
-                    $ajax('post', '/article/api/comment/', {
+                    $ajax('post', '/blog/api/comment/', {
                             'blog': '{{ blog.id }}',
                             'user': '{{ user_id }}',
                             'content': this.content
@@ -316,7 +316,7 @@
                     }
 
                     let comment_id = this.comment_list[index]['id'];
-                    $ajax('delete', '../article/api/comment/' + comment_id + '/',
+                    $ajax('delete', '../blog/api/comment/' + comment_id + '/',
                         {
                             'user': '{{ user_id }}',
                         },

@@ -1,8 +1,8 @@
 from django.contrib import admin
 from MyBlog.admin_site import my_site
 from user.admin import MyBaseAdmin
-from article.adminforms import BlogAdminForm
-from article.models import Comment, Collection, Tag, Blog, Category, Search, Recommend, Like
+from blog.adminforms import BlogAdminForm
+from blog.models import Comment, Collection, Tag, Blog, Category, Search, Recommend, Like
 from user.models import User
 
 

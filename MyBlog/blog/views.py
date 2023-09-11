@@ -1,13 +1,11 @@
 from datetime import datetime, timedelta
-
-import html2text
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render
 from common.apis import require_login
 from common.views import MyPage
 from common.views import common_data
-from article.models import Comment, Collection, Blog, Search, Like
+from blog.models import Comment, Collection, Blog, Search, Like
 from log.models import Action
 
 

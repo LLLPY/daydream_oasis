@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("article", "0006_blog_recommendation_score"),
+        ("blog", "0006_blog_recommendation_score"),
     ]
 
     operations = [

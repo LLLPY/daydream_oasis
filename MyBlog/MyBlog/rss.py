@@ -1,7 +1,7 @@
 from django.contrib.syndication.views import Feed
 from django.urls import reverse
 from django.utils.feedgenerator import Rss201rev2Feed
-from article.models import Blog
+from blog.models import Blog
 
 
 class ExtendedRSSFeed(Rss201rev2Feed):

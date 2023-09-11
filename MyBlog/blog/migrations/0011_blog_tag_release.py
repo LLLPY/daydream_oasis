@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("article", "0010_alter_category_title"),
+        ("blog", "0010_alter_category_title"),
     ]
 
     operations = [
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                         db_column="博客",
                         help_text="博客",
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="article.blog",
+                        to="blog.blog",
                         verbose_name="博客",
                     ),
                 ),
@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
                         db_column="标签",
                         help_text="标签",
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="article.tag",
+                        to="blog.tag",
                         verbose_name="标签",
                     ),
                 ),

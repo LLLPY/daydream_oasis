@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("article", "0007_alter_category_time_alter_collection_time_and_more"),
+        ("blog", "0007_alter_category_time_alter_collection_time_and_more"),
     ]
 
     operations = [
@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 db_column="标签",
                 help_text="标签",
                 related_name="blogs",
-                to="article.tag",
+                to="blog.tag",
                 verbose_name="标签",
             ),
         ),

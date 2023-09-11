@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user',  # user
-    'article',  # 学习星球
+    'blog',  # 学习星球
     'link',  # 友链
     'log',  # 访问日志
     'file',  # 文件
@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'middleware.MiddelWare.MyMiddleWare',  # 自己定义的中间件
+    'common.middleware.MiddelWare.MyMiddleWare',  # 自己定义的中间件
     'debug_toolbar.middleware.DebugToolbarMiddleware',  # 性能测试
 
 ]

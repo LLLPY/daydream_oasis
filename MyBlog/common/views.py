@@ -4,7 +4,7 @@ from time import time
 from typing import List
 from django.core.cache import cache
 from django.core.paginator import Paginator
-from article.models import Blog, Tag, Recommend, Category
+from blog.models import Blog, Tag, Recommend, Category
 from link.models import FriendLink
 from log.models import RequestRecord
 from user.models import Message

@@ -9,7 +9,7 @@ from user.models import User
 from .serializers import CategorySerializers, TagSerializers, ArticleSerializers, CommentSerializers, \
     CollectionSerializers, LikeSerializers
 from .models import Category, Tag, Blog, Comment, Collection, Like
-from common.apis import MyBaseViewSet, require_login
+from common.apis import MyBaseViewSet
 
 
 # 分类
@@ -73,7 +73,6 @@ class ArticleViewSet(MyBaseViewSet):
     serializer_class = ArticleSerializers
     queryset = Blog.objects.all()
 
-    @require_login(require_self=True)
     def destroy(self, request, pk=None) -> JsonResponse:
         blog = Blog.get_by_id(pk)
         if not blog:
@@ -89,7 +88,6 @@ class ArticleViewSet(MyBaseViewSet):
             'msg': '删除成功!'
         })
 
-    @require_login(require_self=True)
     def create(self, request, *args, **kwargs) -> JsonResponse:
         user = request.user
         blog_id = request.data.get('blog_id', '-1') or '-1'
@@ -146,7 +144,6 @@ class CommentViewSet(MyBaseViewSet):
         return res
 
     # 将状态改为已删除即可
-    @require_login(require_self=True)
     def destroy(self, request, pk=None) -> JsonResponse:
         comment = Comment.get_by_id(pk)
 
@@ -164,7 +161,6 @@ class CommentViewSet(MyBaseViewSet):
                 'msg': '删除成功!'
             })
 
-    @require_login(require_self=True)
     def create(self, request, *args, **kwargs) -> Response:
 
         res = super().create(request, *args, **kwargs)
@@ -183,7 +179,6 @@ class CollectionViewSet(MyBaseViewSet):
     serializer_class = CollectionSerializers
     queryset = Collection.objects.all()
 
-    @require_login(require_self=True)
     def update(self, request, pk=None, *args, **kwargs) -> JsonResponse:
         collection = Collection.get_by_id(pk)
         if not collection:
@@ -219,7 +214,6 @@ class LikeViewSet(MyBaseViewSet):
     serializer_class = LikeSerializers
     queryset = Like.objects.all()
 
-    @require_login()
     def update(self, request, pk=None, *args, **kwargs) -> JsonResponse:
         like = Like.get_by_id(pk)
         if not like:

@@ -1,3 +1,4 @@
+import datetime
 from typing import List, Dict
 import jieba
 from django.db import models
@@ -8,15 +9,32 @@ from os.path import isfile
 from log.logger import logger
 
 
-class BaseModel:
-    fields = []
+class BaseModel(models.Model):
+    # 创建时间
+    create_time = models.DateTimeField(default=datetime.datetime.now, verbose_name='创建时间', help_text='创建时间')
 
-    def __init__(self):
-        # 初始化日志器
-        self.logger = logger
+    # 文章最后修改的时间
+    update_time = models.DateTimeField(default=datetime.datetime.now, verbose_name='最后修改时间', help_text='最后修改时间')
+
+    # 是否删除
+    is_deleted = models.BooleanField(default=False, verbose_name='是否已删除', help_text='是否已删除')
+
+
+    logger = logger
+
+    class Meta:
+        abstract = True
+
+    def delete(self):
+        self.is_deleted = True
+        self.save()
+
+    @classmethod
+    def get_by_id(cls, _id: int):
+        return cls.objects.filter(id=_id).first()
 
     # 将对象转成字典
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
+    def to_dict(self, fields: List[str], exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
         '''
         fields:需要转换的字段列表
         exclude_list:不需要转换的字段列表
@@ -113,16 +131,16 @@ class BaseModel:
 # 背景音乐
 class BackgroundMusic(models.Model, BaseModel):
     # 歌名
-    title = models.CharField(max_length=50, db_column='歌名', verbose_name='歌名', help_text='歌名')
+    title = models.CharField(max_length=50, verbose_name='歌名', help_text='歌名')
 
     # 歌手
-    singer = models.CharField(max_length=30, db_column='歌手', verbose_name='歌手', help_text='歌手')
+    singer = models.CharField(max_length=30, verbose_name='歌手', help_text='歌手')
 
     # 歌曲图片
-    avatar = models.ImageField(upload_to='image/%Y/%m/%d', db_column='图片', verbose_name='图片', help_text='图片')
+    avatar = models.ImageField(upload_to='image/%Y/%m/%d', verbose_name='图片', help_text='图片')
 
     # 歌曲地址
-    path = models.FileField(upload_to='audio/%Y/%m/%d', db_column='地址', verbose_name='地址', help_text='地址')
+    path = models.FileField(upload_to='audio/%Y/%m/%d', verbose_name='地址', help_text='地址')
 
     class Meta:
         db_table = '背景音乐'
@@ -130,10 +148,37 @@ class BackgroundMusic(models.Model, BaseModel):
 
     fields = ['id', 'title', 'singer', 'avatar', 'path']
 
-    def to_dict(self, fields=fields, exclude_list=[], extra_map={}) -> dict:
-        return super().to_dict(fields, exclude_list, extra_map)
-
     @classmethod
     @my_cache(60)
     def get_all(cls, fields=fields):
         return [music.to_dict(fields=fields) for music in cls.objects.all()]
+
+
+# 友链
+class FriendLink(BaseModel):
+    title = models.CharField(max_length=100, verbose_name='网站名', help_text='网站名')
+
+    avatar = models.ImageField(blank=True, upload_to='image/%Y/%m/%d', verbose_name='avatar', help_text='avatar')
+
+    url = models.URLField(verbose_name='地址', help_text='地址')
+
+    desc = models.CharField(max_length=100, verbose_name='描述', default='', help_text='描述')
+
+    weight = models.PositiveIntegerField(default=1, verbose_name='权重', help_text='权重越高越靠前')
+
+    fields = ['id', 'title', 'avatar', 'url', 'desc', 'weight', 'time']
+
+    class Meta:
+        db_table = '友链'
+        verbose_name = verbose_name_plural = db_table
+        ordering = ['-weight']
+
+    # 返回所有的友链信息
+    @classmethod
+    def get_all(cls):
+        return cls.objects.all()
+
+    @classmethod
+    @my_cache(timeout=60)
+    def get_friend_link(cls, fields=fields):
+        return cls.objects.values(*fields)
