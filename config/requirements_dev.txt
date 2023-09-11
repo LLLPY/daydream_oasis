@@ -16,4 +16,5 @@ jieba==0.42.1
 html2text==2020.1.16
 numpy==1.24.2
 scipy==1.11.2
+orjson==3.9.7
 -i  https://mirrors.aliyun.com/pypi/simple/
