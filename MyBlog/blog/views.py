@@ -1,14 +1,54 @@
 from datetime import datetime, timedelta
 from django.core.cache import cache
-from django.http import JsonResponse
 from django.shortcuts import render
+from blog.serializers import BlogSerializers, CategorySerializers
 from common.views import MyPage
 from common.views import common_data
-from blog.models import Comment, Collection, Blog, Search, Like
+from blog.models import Comment, Collection, Blog, Search, Like, Category
 from log.models import Action
+from rest_framework import viewsets
+
+
+class BlogViewSet(viewsets.ModelViewSet):
+    serializer_class = BlogSerializers
+    queryset = Blog.objects.all()
+
+    # 新增博客
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=self.request.data)
+        user = self.request.user
+
+
+    # 博客列表
+    def list(self, request, *args, **kwargs):
+        pass
+
+    # 博客详情
+    def retrieve(self, request, *args, **kwargs):
+        pass
+
+    # 更新博客
+    def update(self, request, *args, **kwargs):
+        ...
+
+    # 删除博客
+    def destroy(self, request, *args, **kwargs):
+        serizliser = self.get_serializer(data=self.request.data, include_fields=['id'])
+        # serizliser.
+        blog = Blog.objects.filter(id=id).first()
+        blog.delete()
+        return
 
 
 # 文章页面
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    serializer_class = CategorySerializers
+    queryset = Category.objects.all()
+
+
+
 # @cache_page(timeout=60)
 def index(request, blog_id):
     # index页中的数据
@@ -116,33 +156,3 @@ def search(request):
     page_dict = MyPage.to_dict(page)
 
     return page, page_dict, blog_list, placeholder
-
-
-# 写博客
-def add(request):
-    if request.method == 'GET':
-        tag_list = []
-        user_id = request.user.id
-        avatar_show = 0
-        return render(request, 'edit.html', context=locals())
-
-
-# 更新博客
-def update(request, blog_id):
-    if request.method == 'GET':
-        user_id = request.user.id
-        blog = Blog.get_by_id(blog_id)
-
-        if not blog:
-            return JsonResponse({
-                'code': '400',
-                'msg': '未找到相关文章!'
-            })
-        tag_list = [tag.title for tag in blog.tags.all()]
-        avatar_show = 1 if blog.avatar else 0
-
-        # 内容转成markdown显示
-        # blog.content = html2text.HTML2Text().handle(blog.content)
-        # print(blog.content)
-
-        return render(request, 'edit.html', context=locals())

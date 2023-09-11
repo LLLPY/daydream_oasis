@@ -1,47 +1,39 @@
 # -*- coding: UTF-8 -*-                            
 # @Author  ：LLL                         
 # @Date    ：2023/1/18 10:36  
+from common.drf.serializers import DynamicFieldsSerializer
 from rest_framework import serializers
-from .models import Category, Tag, Blog, Comment, Collection, Search, Recommend, Like
 
 
 # 博客分类
-class CategorySerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = '__all__'
+class CategorySerializers(DynamicFieldsSerializer):
+    title = serializers.CharField(required=True, help_text='分类名')
 
 
 # 标签
-class TagSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = '__all__'
+class TagSerializers(DynamicFieldsSerializer):
+    title = serializers.CharField(required=True, help_text='标签名')
 
 
 # 文章
-class ArticleSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Blog
-        fields = '__all__'
+class BlogSerializers(DynamicFieldsSerializer):
+    title = serializers.CharField(required=True, max_length=20, help_text='标题')
+    avatar = serializers.URLField(required=True, help_text='封面')
+    category = serializers.CharField(required=True, help_text='分类')
+    tag_list = serializers.ListField(required=True, help_text='标签列表')
+    content = serializers.CharField(required=True, min_length=5, help_text='内容')
 
 
 # 评论
-class CommentSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = '__all__'
+class CommentSerializers(DynamicFieldsSerializer):
+    ...
 
 
 # 收藏
-class CollectionSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Collection
-        fields = '__all__'
+class CollectionSerializers(DynamicFieldsSerializer):
+    ...
 
 
 # 点赞
-class LikeSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Like
-        fields = '__all__'
+class LikeSerializers(DynamicFieldsSerializer):
+    ...

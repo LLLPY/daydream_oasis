@@ -6,7 +6,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from log.models import Action
 from user.models import User
-from .serializers import CategorySerializers, TagSerializers, ArticleSerializers, CommentSerializers, \
+from .serializers import CategorySerializers, TagSerializers, CommentSerializers, \
     CollectionSerializers, LikeSerializers
 from .models import Category, Tag, Blog, Comment, Collection, Like
 from common.apis import MyBaseViewSet
@@ -67,62 +67,6 @@ class TagViewSet(viewsets.ModelViewSet):
 
         })
 
-
-# 文章
-class ArticleViewSet(MyBaseViewSet):
-    serializer_class = ArticleSerializers
-    queryset = Blog.objects.all()
-
-    def destroy(self, request, pk=None) -> JsonResponse:
-        blog = Blog.get_by_id(pk)
-        if not blog:
-            return JsonResponse({
-                'code': '400',
-                'msg': '删除失败,未找到相应博客!'
-            })
-
-        blog.is_deleted = True
-        blog.save()
-        return JsonResponse({
-            'code': '200',
-            'msg': '删除成功!'
-        })
-
-    def create(self, request, *args, **kwargs) -> JsonResponse:
-        user = request.user
-        blog_id = request.data.get('blog_id', '-1') or '-1'
-        title = request.data.get('title', '')
-        if not title:
-            return JsonResponse({
-                'code': '400',
-                'msg': '标题不能为空!'
-            })
-
-        category = request.data.get('category', '')
-        if not category:
-            return JsonResponse({
-                'code': '400',
-                'msg': '分类不能为空!'
-            })
-
-        category = Category.get_or_create(category, creator=user)
-        content = request.data.get('content', '')
-        if not content:
-            return JsonResponse({
-                'code': '400',
-                'msg': '内容不能为空!'
-            })
-
-        tag_list = request.data.get('tag_list', [])
-        avatar = request.data.get('avatar')
-        blog = Blog.create_or_update(blog_id, title, avatar, category, tag_list, content, user)
-        return JsonResponse({
-            'code': '200',
-            'msg': '响应成功!',
-            'data': {
-                'id': blog.id,
-            }
-        })
 
 
 # 评论
