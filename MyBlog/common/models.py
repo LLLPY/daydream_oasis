@@ -3,7 +3,7 @@ from typing import List, Dict
 import jieba
 from django.db import models
 from MyBlog.config.base import MEDIA_URL
-from common.my_cache import my_cache
+from utils.my_cache import my_cache
 from PIL.Image import open as imgOpen, ANTIALIAS
 from os.path import isfile
 from log.logger import logger

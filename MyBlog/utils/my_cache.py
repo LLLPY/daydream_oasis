@@ -5,7 +5,9 @@
 from collections import OrderedDict
 import time
 from functools import wraps
-from django.core.cache import cache
+from django_redis import get_redis_connection
+
+redis_conn = get_redis_connection('default')
 
 
 # lru_cache
@@ -109,15 +111,24 @@ def my_cache(timeout=60 * 60):
 
             # 先尝试从缓存中获取
             key = make_key(func.__name__, args, kwargs)
-            res = cache.get(key)
+            res = redis_conn.get(key)
             if res is not None:
                 return res
             # 否者执行函数获取返回值
             else:
                 res = func(*args, **kwargs)
-                cache.set(key, res, timeout)
+                redis_conn.set(key, res, timeout)
                 return res
 
         return inner
 
     return outer
+
+
+@lru_cache()
+def fun():
+    print('hello world')
+
+
+if __name__ == '__main__':
+    fun()

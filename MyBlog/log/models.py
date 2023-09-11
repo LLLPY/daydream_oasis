@@ -1,13 +1,13 @@
 import re
 from datetime import datetime, timedelta
-from typing import List, Dict
+from typing import List
 import requests
 from django.core.cache import cache
 from django.db import models
 from django.db.models import Q
 from common.models import BaseModel
 from blog.models import Blog
-from common.my_cache import my_cache
+from utils.my_cache import my_cache
 from user.models import User
 
 

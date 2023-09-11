@@ -2,7 +2,7 @@ import datetime
 from typing import Dict, List
 from ckeditor_uploader.fields import RichTextUploadingField
 from common.models import BaseModel
-from common.my_cache import my_cache
+from utils.my_cache import my_cache
 from django.db import models
 from django.db.models import Q
 from lxml import etree
