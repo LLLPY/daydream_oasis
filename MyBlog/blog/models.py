@@ -28,12 +28,6 @@ class Category(BaseModel):
         return self.title
 
     @classmethod
-    @my_cache(timeout=60 * 60)
-    def get_all(cls) -> Dict:
-        return {category.title: {'id': category.id, 'times': category.blog_set.count()} for category in
-                cls.objects.all()}
-
-    @classmethod
     def get_by_title(cls, title: str) -> 'Category':
         category_obj = Category.objects.filter(title=title).first()
         if not category_obj:  # 如果数据库中没有该类,则新建该类
@@ -59,11 +53,6 @@ class Tag(BaseModel):
     def __str__(self) -> str:
         return self.title
 
-    @classmethod
-    @my_cache(timeout=60 * 60)
-    def get_all(cls) -> Dict:
-        return {tag.title: {'id': tag.id, 'times': tag.blogs.count()} for tag in cls.objects.all()}
-
 
 # 博客
 class Blog(BaseModel):
@@ -74,8 +63,7 @@ class Blog(BaseModel):
     title = models.CharField(max_length=30, blank=True, verbose_name='标题', help_text='标题')
 
     # 封面
-    avatar = models.CharField(max_length=500, blank=True, default='image/default_blog_avatar.jpg',
-                              verbose_name='封面', help_text='封面')
+    avatar = models.URLField( default='image/default_blog_avatar.jpg',verbose_name='封面', help_text='封面')
 
     # 专栏 TODO 下一个版本开发
     # section=models.ForeignKey()
@@ -116,6 +104,9 @@ class Blog(BaseModel):
     # 推荐分数 (临时变量，用于给用户推荐使用)
     recommendation_score = models.PositiveIntegerField(default=0, verbose_name='推荐分数', help_text='推荐分数')
 
+    # 草稿
+    is_draft = models.BooleanField(default=True,verbose_name='是否是草稿',help_text='是否是草稿')
+
     def __str__(self) -> str:
         return self.title
 
@@ -123,10 +114,6 @@ class Blog(BaseModel):
         db_table = '博客'
         verbose_name = verbose_name_plural = db_table
         ordering = ['-is_top', '-create_time']
-
-    @classmethod
-    def get_all(cls):
-        return cls.objects.filter(is_deleted=False).all()
 
     @classmethod
     def get_count_by_category_id(cls, category_id: str) -> int:
@@ -261,12 +248,10 @@ class Comment(BaseModel):
     # 评论内容
     content = models.CharField(max_length=500, verbose_name='评论内容', help_text='评论内容')
 
-    fields = ['id', 'user', 'blog', 'content', 'create_time']
 
     class Meta:
         db_table = '评论'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-create_time']
 
     # 根据博客id获取该博客下的评论量
     @classmethod
@@ -305,7 +290,6 @@ class Collection(BaseModel):
     class Meta:
         db_table = '收藏'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-create_time']
 
     # 判断某一篇文章是否被某一个用户收藏了
     @classmethod
@@ -345,7 +329,6 @@ class Like(BaseModel):
     class Meta:
         db_table = '点赞'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-create_time']
 
     # 判断某一篇文章是否被某一个用户点赞了
     @classmethod
@@ -379,7 +362,6 @@ class Search(BaseModel):
     class Meta:
         db_table = '搜索记录'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-create_time']
 
     @classmethod
     def create(cls, keyword: str, user: User) -> 'Search':
@@ -391,6 +373,7 @@ class Search(BaseModel):
 
 # 相关推荐
 class Recommend(BaseModel):
+
     # 用户
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='用户', help_text='用户')
 

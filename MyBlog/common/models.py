@@ -9,7 +9,12 @@ from os.path import isfile
 from log.logger import logger
 
 
+class RealManager(models.Manager):
+    def get_queryset(self):
+        return super(RealManager, self).get_queryset().filter(is_delete=0)
+
 class BaseModel(models.Model):
+
     # 创建时间
     create_time = models.DateTimeField(default=datetime.datetime.now, verbose_name='创建时间', help_text='创建时间')
 
@@ -24,6 +29,10 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['-create_time']
+
+    objects = RealManager() # 逻辑删除后的
+    objects_all = models.Manager() # 所有的
 
     def delete(self):
         self.is_deleted = True
@@ -49,25 +58,22 @@ class BaseModel(models.Model):
                     }
             }
         '''
+        fields = fields or self._meta.get_fields()
         con = {}
         for k in fields:
             if k not in exclude_list and hasattr(self, k):
 
                 obj_v = getattr(self, k)
+
                 # 需要再次to_dict
                 if isinstance(obj_v, models.Model):
                     k_extra_map = extra_map.get(k, {})
-                    _fields = k_extra_map.get('fields', None)
+                    _fields = k_extra_map.get('fields', [])
                     _exclude_list = extra_map.get('exclude_list', exclude_list)
-
-                    if _fields:
-                        con[k] = obj_v.to_dict(fields=_fields, exclude_list=_exclude_list,
-                                               extra_map=extra_map)
-                    else:
-                        con[k] = obj_v.to_dict(exclude_list=_exclude_list, extra_map=extra_map)
+                    con[k] = obj_v.to_dict(fields=_fields, exclude_list=_exclude_list,extra_map=extra_map)
 
                 # 时间
-                elif k in ['create_time', 'update_time', 'time']:
+                elif k in ['create_time', 'update_time']:
                     con[k] = str(obj_v).split('.')[0]
 
                 # 阅读时长
@@ -78,16 +84,16 @@ class BaseModel(models.Model):
 
                 # 多对多关系的
                 elif k in ['tags', 'blog_list']:
-                    con[k] = [str(tag.to_dict(exclude_list=exclude_list, extra_map=extra_map)) for tag in
-                              obj_v.all()]
+                    con[k] = [str(tag.to_dict(exclude_list=exclude_list, extra_map=extra_map)) for tag in obj_v.all()]
+
                 # 文件
                 elif k in ['avatar', 'path']:
-
                     v = str(obj_v).strip('/')
                     if not v.startswith('http'):
                         if 'media' not in v:
                             v = f'..{MEDIA_URL}{v}'
                     con[k] = v
+
                 # 一般字段
                 else:
                     con[k] = obj_v
@@ -137,28 +143,22 @@ class BackgroundMusic(BaseModel):
     singer = models.CharField(max_length=30, verbose_name='歌手', help_text='歌手')
 
     # 歌曲图片
-    avatar = models.ImageField(upload_to='image/%Y/%m/%d', verbose_name='图片', help_text='图片')
+    avatar = models.URLField(verbose_name='图片', help_text='图片')
 
     # 歌曲地址
-    path = models.FileField(upload_to='audio/%Y/%m/%d', verbose_name='地址', help_text='地址')
+    path = models.FileField(verbose_name='地址', help_text='地址')
 
     class Meta:
         db_table = '背景音乐'
         verbose_name = verbose_name_plural = db_table
 
-    fields = ['id', 'title', 'singer', 'avatar', 'path']
-
-    @classmethod
-    @my_cache(60)
-    def get_all(cls, fields):
-        return [music.to_dict(fields=fields) for music in cls.objects.all()]
 
 
 # 友链
 class FriendLink(BaseModel):
     title = models.CharField(max_length=100, verbose_name='网站名', help_text='网站名')
 
-    avatar = models.ImageField(blank=True, upload_to='image/%Y/%m/%d', verbose_name='avatar', help_text='avatar')
+    avatar = models.URLField(verbose_name='avatar', help_text='avatar')
 
     url = models.URLField(verbose_name='地址', help_text='地址')
 
@@ -166,17 +166,10 @@ class FriendLink(BaseModel):
 
     weight = models.PositiveIntegerField(default=1, verbose_name='权重', help_text='权重越高越靠前')
 
-    fields = ['id', 'title', 'avatar', 'url', 'desc', 'weight', 'time']
-
     class Meta:
         db_table = '友链'
         verbose_name = verbose_name_plural = db_table
         ordering = ['-weight']
-
-    # 返回所有的友链信息
-    @classmethod
-    def get_all(cls):
-        return cls.objects.all()
 
     @classmethod
     @my_cache(timeout=60)

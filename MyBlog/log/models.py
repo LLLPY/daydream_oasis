@@ -6,13 +6,13 @@ from django.core.cache import cache
 from django.db import models
 from django.db.models import Q
 from common.models import BaseModel
-from article.models import Blog
+from blog.models import Blog
 from common.my_cache import my_cache
 from user.models import User
 
 
 # 请求记录表
-class RequestRecord(models.Model, BaseModel):
+class RequestRecord(BaseModel):
     PAGE = 0
     MEDIA = 1
     API = 2
@@ -26,34 +26,18 @@ class RequestRecord(models.Model, BaseModel):
 
     ]
 
-    path = models.TextField(max_length=1000, default='/',
-                            db_column='请求路径', verbose_name='请求路径', help_text='请求路径')
-    path_type = models.PositiveIntegerField(default=PAGE, choices=PATH_TYPE_CHOICES, db_column='请求路径类型',
-                                            verbose_name='请求路径类型', help_text='请求路径类型')
-    method = models.CharField(max_length=100, default='GET',
-                              db_column='请求方式', verbose_name='请求方式', help_text='请求方式')
-    ip = models.CharField(max_length=50, db_column='IP地址',
-                          verbose_name='IP地址', help_text='IP地址')
-    user_agent = models.CharField(
-        max_length=500, db_column='请求头', verbose_name='请求头', help_text='请求头')
-    http_refer = models.URLField(
-        db_column='跳转的网页', verbose_name='跳转的网页', help_text='跳转的网页')
-    os = models.CharField(default='', max_length=100,
-                          db_column='操作系统', verbose_name='操作系统', help_text='操作系统')
-    country = models.CharField(
-        max_length=50, default='', db_column='国家', verbose_name='国家', help_text='国家')
-    province = models.CharField(
-        max_length=50, default='', db_column='省份', verbose_name='省份', help_text='省份')
-    city = models.CharField(max_length=50, default='',
-                            db_column='城市', verbose_name='城市', help_text='城市')
-    computer_name = models.CharField(
-        max_length=50, default='', db_column='计算机名', verbose_name='计算机名', help_text='计算机名')
-    username = models.CharField(
-        max_length=50, default='', db_column='用户名', verbose_name='用户名', help_text='用户名')
-    time = models.DateTimeField(
-        default=datetime.now, db_column='时间', verbose_name='时间', help_text='时间')
-    fields = ['id', 'path', 'path_type', 'method', 'ip', 'user_agent', 'http_refer', 'os', 'country', 'province',
-              'city', 'computer_name', 'username', 'time']
+    path = models.TextField(max_length=1000, default='/', verbose_name='请求路径', help_text='请求路径')
+    path_type = models.PositiveIntegerField(default=PAGE, choices=PATH_TYPE_CHOICES, verbose_name='请求路径类型',help_text='请求路径类型')
+    method = models.CharField(max_length=100, default='GET', verbose_name='请求方式', help_text='请求方式')
+    ip = models.CharField(max_length=50, verbose_name='IP地址', help_text='IP地址')
+    user_agent = models.CharField(max_length=500, verbose_name='请求头', help_text='请求头')
+    http_refer = models.URLField(verbose_name='跳转的网页', help_text='跳转的网页')
+    os = models.CharField(default='', max_length=100, verbose_name='操作系统', help_text='操作系统')
+    country = models.CharField(max_length=50, default='', verbose_name='国家', help_text='国家')
+    province = models.CharField(max_length=50, default='', verbose_name='省份', help_text='省份')
+    city = models.CharField(max_length=50, default='', verbose_name='城市', help_text='城市')
+    computer_name = models.CharField(max_length=50, default='', verbose_name='计算机名', help_text='计算机名')
+    username = models.CharField(max_length=50, default='', verbose_name='用户名', help_text='用户名')
 
     class Meta:
         db_table = '请求日志'
@@ -82,11 +66,11 @@ class RequestRecord(models.Model, BaseModel):
                               username):
         request_record = cls()
         request_record.path = path
-        if path.startswith('/user/api') or path.startswith('/article/api'):
+        if path.startswith('/user/api') or path.startswith('/blog/api'):
             request_record.path_type = cls.API
         elif path.startswith('/media'):
             request_record.path_type = cls.MEDIA
-        elif path.startswith('/article') or path.startswith('/login') or path.startswith(
+        elif path.startswith('/blog') or path.startswith('/login') or path.startswith(
                 '/user/register') or path.startswith('/user/forgetPassword') or path == '/':
             request_record.path_type = cls.PAGE
         else:
@@ -131,7 +115,7 @@ class RequestRecord(models.Model, BaseModel):
         day_ago = _now - timedelta(days=1)
 
         request_list = cls.objects.filter(
-            Q(time__gte=month_ago) & Q(path__regex='^/article/\d+$'))
+            Q(time__gte=month_ago) & Q(path__regex='^/blog/\d+$'))
         blog_month_list = []
         for request_record in request_list:
             blog_id = re.search(r'\d+', request_record.path).group()
@@ -164,12 +148,9 @@ class RequestRecord(models.Model, BaseModel):
         cache.set('week_top_list', week_top_list, 2 * 60 * 60)
         cache.set('day_top_list', day_top_list, 2 * 60 * 60)
 
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list, extra_map)
-
 
 # 用户操作记录
-class Action(models.Model, BaseModel):
+class Action(BaseModel):
     DOCALL = 0
     CANCEL_DOCALL = 1
     COLLECT = 2
@@ -206,37 +187,23 @@ class Action(models.Model, BaseModel):
     }
 
     # 用户
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True,
-                             db_column='用户', verbose_name='用户', help_text='用户')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='用户', help_text='用户')
 
     # uuid
-    uuid = models.CharField(max_length=200, null=False, db_column='uuid', verbose_name='uuid',
-                            help_text='uuid,对于没有登录的用户的唯一标识')
+    uuid = models.CharField(max_length=200, null=False, verbose_name='uuid', help_text='uuid,对于没有登录的用户的唯一标识')
 
     # 博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE,
-                             db_column='博客', verbose_name='博客', help_text='博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='博客', help_text='博客')
 
     # action
-    action = models.PositiveIntegerField(
-        choices=ACTTION_CHOICES, db_column='行为', verbose_name='行为', help_text='行为')
+    action = models.PositiveIntegerField(choices=ACTTION_CHOICES, verbose_name='行为', help_text='行为')
 
     # 耗时
-    cost_time = models.FloatField(
-        default=0, db_column='耗时', verbose_name='耗时', help_text='耗时')
+    cost_time = models.FloatField(default=0, verbose_name='耗时', help_text='耗时')
 
     # 分值
-    score = models.IntegerField(
-        default=0, db_column='分值', verbose_name='分值', help_text='分值')
+    score = models.IntegerField(default=0, verbose_name='分值', help_text='分值')
 
-    # 时间
-    time = models.DateTimeField(
-        default=datetime.now, db_column='时间', verbose_name='时间', help_text='时间')
-
-    fields = ['id', 'user', 'uuid', 'blog', 'action', 'cost_time', 'score', 'time']
-
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list, extra_map)
 
     class Meta:
         db_table = '操作日志'
@@ -292,22 +259,16 @@ class Action(models.Model, BaseModel):
 
 
 # 错误
-class Error(models.Model, BaseModel):
+class Error(BaseModel):
     # 请求的ip
-    request_log = models.ForeignKey(RequestRecord, on_delete=models.CASCADE, db_column='请求对象', verbose_name='请求对象',
-                                    help_text='请求对象')
+    request_log = models.ForeignKey(RequestRecord, on_delete=models.CASCADE, verbose_name='请求对象',help_text='请求对象')
 
     # 错误原因
-    reason = models.CharField(
-        max_length=500, db_column='错误原因', verbose_name='错误原因', help_text='错误原因')
+    reason = models.CharField(max_length=500, verbose_name='错误原因', help_text='错误原因')
     # 时间
-    time = models.DateTimeField(
-        default=datetime.now, db_column='时间', verbose_name='时间', help_text='时间')
+    time = models.DateTimeField(default=datetime.now,verbose_name='时间', help_text='时间')
     fields = ['id', 'request_log', 'reason']
 
     class Meta:
         db_table = '错误日志'
         verbose_name = verbose_name_plural = db_table
-
-    def to_dict(self, fields: List[str] = fields, exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        return super().to_dict(fields, exclude_list, extra_map)

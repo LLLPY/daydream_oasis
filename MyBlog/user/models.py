@@ -16,10 +16,8 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
     # 手机号
     mobile = models.CharField(max_length=11, unique=True, verbose_name='手机', help_text='手机')
 
-    # 头像信息 头像的保存路径static/avatar/%Y%m%d
-    avatar = models.ImageField(upload_to='image/%Y/%m/%d',
-                               default='image/default_user_avatar.png', verbose_name='头像',
-                               help_text='头像')
+    # 头像信息 图片上传的逻辑走file应用，这里只用保存地址
+    avatar = models.URLField(default='image/default_user_avatar.png', verbose_name='头像',help_text='头像')
 
     # job
     job = models.CharField(max_length=20, default='打工的人儿~', verbose_name='职业', help_text='职业')
