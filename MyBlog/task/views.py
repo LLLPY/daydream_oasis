@@ -2,8 +2,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import time
 from django.core.cache import cache
 from log.logger import logger
-from log.models import Action
-from article.models import Blog
+from blog.models import Blog
+from log.models import RequestRecord, Action
 
 # 创建异步调度器对象
 scheduler = BackgroundScheduler()

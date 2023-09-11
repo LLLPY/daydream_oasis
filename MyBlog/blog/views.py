@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render
-from common.apis import require_login
 from common.views import MyPage
 from common.views import common_data
 from blog.models import Comment, Collection, Blog, Search, Like
@@ -120,7 +119,6 @@ def search(request):
 
 
 # 写博客
-@require_login()
 def add(request):
     if request.method == 'GET':
         tag_list = []
@@ -130,7 +128,6 @@ def add(request):
 
 
 # 更新博客
-@require_login()
 def update(request, blog_id):
     if request.method == 'GET':
         user_id = request.user.id
