@@ -16,6 +16,7 @@ class BlogViewSet(viewsets.ModelViewSet):
     # 新增博客
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
         user = self.request.user
 
 
