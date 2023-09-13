@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "pinia": "^2.1.6",
@@ -14,6 +17,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.1",
-    "vite": "^4.4.9"
+    "vite": "^4.4.9",
+    "vitepress": "^1.0.0-rc.13"
   }
 }
