@@ -1,6 +1,6 @@
 __pycache__
 *.idea
-.vscode/
+.vscode
 *.log
 *.pid
 *.pyc
@@ -9,4 +9,4 @@ static/admin
 static/ckeditor
 static/rest_framework
 *.db
-*/migrations/
+migrations
