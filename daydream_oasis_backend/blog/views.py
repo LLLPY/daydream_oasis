@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
 from django.core.cache import cache
 from django.shortcuts import render
-from blog.serializers import BlogSerializers, CategorySerializers
+from blog.serializers import BlogSerializers, CategorySerializers,TagSerializers
 from common.views import MyPage
 from common.views import common_data
-from blog.models import Comment, Collection, Blog, Search, Like, Category
+from blog.models import Comment, Collection, Blog, Search, Like, Category, Tag
 from log.models import Action
 from rest_framework import viewsets
+from rest_framework.decorators import action
 
 
 class BlogViewSet(viewsets.ModelViewSet):
@@ -18,7 +19,6 @@ class BlogViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         user = self.request.user
-
 
     # 博客列表
     def list(self, request, *args, **kwargs):
@@ -35,19 +35,81 @@ class BlogViewSet(viewsets.ModelViewSet):
     # 删除博客
     def destroy(self, request, *args, **kwargs):
         serizliser = self.get_serializer(data=self.request.data, include_fields=['id'])
-        # serizliser.
+        serizliser.is_valid(raise_exception=True)
         blog = Blog.objects.filter(id=id).first()
         blog.delete()
         return
 
+    @action(methods=['get'], detail=False)
+    def serach(self, request, *args, **kwargs):
+        # 关键词
+        keyword = request.GET.get('keyword', '')[:20]
+        category = request.GET.get('category', '')
+        tag = request.GET.get('tag', '')
 
-# 文章页面
+        # 保存搜索记录
+        if keyword:
+            Search.create(keyword, request.user)
+
+        # 获取关键词
+        keyword_list = Search.get_keyword_list(keyword)
+
+        if not keyword_list:
+
+            # 首页
+            search_list = Blog.objects.filter(is_deleted=False).only('id', 'title', 'author', 'avatar', 'category',
+                                                                     'abstract', 'create_time')
+            placeholder = '请输入关键词'
+
+            # 分类搜索
+            if category:
+                search_list = search_list.filter(category__title=category)
+                placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
+
+            # 标签搜索
+            if tag:
+                search_list = search_list.filter(tags__title__contains=tag)
+                placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
+
+            # 个性推荐
+            user = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
+
+            # 通过缓存获取推荐列表，如果没有就不进行推荐
+            recommend_list = cache.get(f'{user}_recommend_list')
+            if recommend_list:
+                search_list = recommend_list
+
+        else:
+            search_list = Blog.search(keyword_list)
+            placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
+        # 分页
+        page_num = request.GET.get('page', '1')  # 获取页码，如果没有获取到则默认为1
+        # 分页
+        page, blog_list = MyPage.get_blog_list(search_list, page=page_num, per_page=10)
+        page_dict = MyPage.to_dict(page)
+
+        return page, page_dict, blog_list, placeholder
+
+    @action(methods=['get'], detail=False)
+    def top_list(self, request, *args, **kwargs):
+        '''排行榜'''
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializers
     queryset = Category.objects.all()
 
+
+    def list(self, request, *args, **kwargs):
+        '分类列表'
+
+class TagViewSet:
+    serializer_class = TagSerializers
+    queryset = Tag.objects.all()
+
+class SectionViewSet:
+    serializer_class = TagSerializers
+    queryset = Tag.objects.all()
 
 
 # @cache_page(timeout=60)
@@ -106,54 +168,3 @@ def index(request, blog_id):
         Action.create(user, _uuid, blog, Action.CLICK, 0)
 
         return render(request, 'article.html', context=context)
-
-
-# 搜索功能
-def search(request):
-    # 关键词
-    keyword = request.GET.get('keyword', '')[:20]
-    category = request.GET.get('category', '')
-    tag = request.GET.get('tag', '')
-
-    # 保存搜索记录
-    if keyword:
-        Search.create(keyword, request.user)
-
-    # 获取关键词
-    keyword_list = Search.get_keyword_list(keyword)
-
-    if not keyword_list:
-
-        # 首页
-        search_list = Blog.objects.filter(is_deleted=False).only('id', 'title', 'author', 'avatar', 'category',
-                                                                 'abstract', 'create_time')
-        placeholder = '请输入关键词'
-
-        # 分类搜索
-        if category:
-            search_list = search_list.filter(category__title=category)
-            placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
-
-        # 标签搜索
-        if tag:
-            search_list = search_list.filter(tags__title__contains=tag)
-            placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
-
-        # 个性推荐
-        user = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
-
-        # 通过缓存获取推荐列表，如果没有就不进行推荐
-        recommend_list = cache.get(f'{user}_recommend_list')
-        if recommend_list:
-            search_list = recommend_list
-
-    else:
-        search_list = Blog.search(keyword_list)
-        placeholder = f'找到{len(search_list)}篇内容' if len(search_list) else '无相关内容'
-    # 分页
-    page_num = request.GET.get('page', '1')  # 获取页码，如果没有获取到则默认为1
-    # 分页
-    page, blog_list = MyPage.get_blog_list(search_list, page=page_num, per_page=10)
-    page_dict = MyPage.to_dict(page)
-
-    return page, page_dict, blog_list, placeholder

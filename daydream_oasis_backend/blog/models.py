@@ -19,18 +19,12 @@ class Category(BaseModel):
     # 标题
     title = models.CharField(max_length=8, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
+    # avatar
+    avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
+
     class Meta:
         db_table = '分类'  # 修改表名
         verbose_name_plural = verbose_name = db_table
-
-    @classmethod
-    def get_by_title(cls, title: str) -> 'Category':
-        category_obj = Category.objects.filter(title=title).first()
-        if not category_obj:  # 如果数据库中没有该类,则新建该类
-            category_obj = Category()
-            category_obj.title = title
-            category_obj.save()
-        return category_obj
 
 
 # 标签
@@ -46,8 +40,7 @@ class Tag(BaseModel):
         verbose_name_plural = verbose_name = db_table
 
 
-
-
+# 专栏
 class Section(BaseModel):
     '''专栏'''
 
@@ -56,6 +49,9 @@ class Section(BaseModel):
 
     # 创建者
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
+
+    # 封面
+    avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
 
 
 # 博客
@@ -96,6 +92,9 @@ class Blog(BaseModel):
     # unique visitor(总访客量)
     uv = models.PositiveIntegerField(default=0, verbose_name='uv', help_text='uv')
 
+    # 阅读次数
+    read_times = models.PositiveIntegerField(default=0, verbose_name='阅读次数', help_text='阅读次数')
+
     # 是否置顶
     is_top = models.BooleanField(default=False, verbose_name='是否置顶', help_text='是否置顶')
 
@@ -111,11 +110,13 @@ class Blog(BaseModel):
     # 草稿
     is_draft = models.BooleanField(default=True, verbose_name='是否是草稿', help_text='是否是草稿')
 
+    # 是否原创
+    is_original = models.BooleanField(default=True, verbose_name='是否原创', help_text='是否原创')
 
     class Meta:
         db_table = '博客'
         verbose_name = verbose_name_plural = db_table
-        ordering = ['-is_top', '-create_time']
+        ordering = ['-is_top', '-update_time']
 
     @classmethod
     def get_count_by_category_id(cls, category_id: str) -> int:
@@ -230,7 +231,7 @@ class Blog(BaseModel):
         return recommend_blog_list
 
 
-class Blog_Tag_Release(models.Model):
+class BlogTagRelease(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='博客', help_text='博客')
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='标签', help_text='标签')
 
@@ -249,6 +250,15 @@ class Comment(BaseModel):
 
     # 评论内容
     content = models.CharField(max_length=500, verbose_name='评论内容', help_text='评论内容')
+
+    # 父评论
+    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE, verbose_name='父评论', help_text='父评论')
+
+    # ip地址
+    ip = models.CharField(max_length=32, verbose_name='ip地址', help_text='ip地址')
+
+    # 设备 手机 电脑
+    client = models.CharField(max_length=20, verbose_name='设备', help_text='设备')
 
     class Meta:
         db_table = '评论'
@@ -285,8 +295,6 @@ class Collection(BaseModel):
 
     # 是否取消收藏
     is_canceled = models.BooleanField(default=False, verbose_name='收藏是否已取消', help_text='收藏是否已取消')
-
-    fields = ['id', 'user', 'blog', 'is_canceled', 'create_time']
 
     class Meta:
         db_table = '收藏'
@@ -325,8 +333,6 @@ class Like(BaseModel):
     # 是否取消点赞
     is_canceled = models.BooleanField(default=False, verbose_name='点赞是否已取消', help_text='点赞是否已取消')
 
-    fields = ['id', 'user', 'blog', 'is_canceled', 'create_time']
-
     class Meta:
         db_table = '点赞'
         verbose_name = verbose_name_plural = db_table
@@ -358,7 +364,8 @@ class Search(BaseModel):
     # 搜索者
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='搜索者', help_text='搜索者')
 
-    fields = ['id', 'keyword', 'user', 'create_time']
+    # 结果
+    result = models.CharField(max_length=100, verbose_name='搜索结果', help_text='搜索结果')
 
     class Meta:
         db_table = '搜索记录'
@@ -383,8 +390,6 @@ class Recommend(BaseModel):
     class Meta:
         db_table = '相关推荐'
         verbose_name = verbose_name_plural = db_table
-
-    fields = ['id', 'user', 'blog_list']
 
     @classmethod
     def get_by_user(cls, user: User):

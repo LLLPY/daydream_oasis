@@ -4,6 +4,8 @@
 
 import os
 from pathlib import Path
+from django_redis import get_redis_connection
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -168,3 +170,7 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.SessionAuthentication',
     # ]
 }
+
+
+# redis连接对象
+redis_conn = get_redis_connection('default')

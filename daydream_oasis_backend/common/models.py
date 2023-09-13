@@ -25,11 +25,17 @@ class BaseModel(models.Model):
     # 是否删除
     is_deleted = models.BooleanField(default=False, verbose_name='是否已删除', help_text='是否已删除')
 
+    # desc
+    desc = models.CharField(max_length=300, verbose_name='简介', help_text='简介')
+
+    # ip地址
+    ip = models.CharField(max_length=50, verbose_name='IP地址', help_text='IP地址')
+
     logger = logger
 
     class Meta:
         abstract = True
-        ordering = ['-create_time']
+        ordering = ['-update_time']
 
     objects = RealManager()  # 逻辑删除后的
     objects_all = models.Manager()  # 所有的
@@ -39,6 +45,13 @@ class BaseModel(models.Model):
 
     def delete(self):
         self.is_deleted = True
+        self.save()
+
+    def create(self, **kwargs):
+        '''通用保存接口'''
+        for k, v in kwargs.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
         self.save()
 
     @classmethod
@@ -149,7 +162,7 @@ class BackgroundMusic(BaseModel):
     avatar = models.URLField(verbose_name='图片', help_text='图片')
 
     # 歌曲地址
-    path = models.FileField(verbose_name='地址', help_text='地址')
+    url = models.FileField(verbose_name='地址', help_text='地址')
 
     class Meta:
         db_table = '背景音乐'
@@ -163,8 +176,6 @@ class FriendLink(BaseModel):
     avatar = models.URLField(verbose_name='avatar', help_text='avatar')
 
     url = models.URLField(verbose_name='地址', help_text='地址')
-
-    desc = models.CharField(max_length=100, verbose_name='描述', default='', help_text='描述')
 
     weight = models.PositiveIntegerField(default=1, verbose_name='权重', help_text='权重越高越靠前')
 

@@ -15,6 +15,11 @@ class TagSerializers(DynamicFieldsSerializer):
     title = serializers.CharField(required=True, help_text='标签名')
 
 
+# 专栏
+class SectionSerializers(DynamicFieldsSerializer):
+    title = serializers.CharField(required=True, help_text='专栏名')
+
+
 # 文章
 class BlogSerializers(DynamicFieldsSerializer):
     title = serializers.CharField(required=True, max_length=20, help_text='标题')

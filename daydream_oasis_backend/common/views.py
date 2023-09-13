@@ -144,34 +144,3 @@ class MyPage:
         }
 
         return page_dict
-
-
-# 基于django提供的缓存开发一个缓存装饰器
-def my_cache(timeout=60):
-    # 生成唯一标识
-    def make_key(*args, **kwargs):
-        key = ','.join(map(str, args))
-        if kwargs:
-            sorted_kwargs = sorted(kwargs)
-            for k in sorted_kwargs:
-                key += '{}={};'.format(k, kwargs[k])
-        # 在一次程序生命周期中，相同字符串，它们的hash值是一样的
-        return hash(key)
-
-    def outer(func):
-        def inner(*args, **kwargs):
-
-            # 先尝试从缓存中获取
-            key = make_key(func.__name__, args, kwargs)
-            res = cache.get(key)
-            if res:
-                return res
-            # 否者执行函数获取返回值
-            else:
-                res = func(*args, **kwargs)
-                cache.set(key, res, timeout)
-                return res
-
-        return inner
-
-    return outer
