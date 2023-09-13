@@ -13,7 +13,6 @@ from django.core.cache import cache
 
 # 博客分类
 class Category(BaseModel):
-
     # 创建者
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
 
@@ -23,9 +22,6 @@ class Category(BaseModel):
     class Meta:
         db_table = '分类'  # 修改表名
         verbose_name_plural = verbose_name = db_table
-
-    def __str__(self) -> str:
-        return self.title
 
     @classmethod
     def get_by_title(cls, title: str) -> 'Category':
@@ -39,7 +35,6 @@ class Category(BaseModel):
 
 # 标签
 class Tag(BaseModel):
-
     # 创建者
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
 
@@ -50,8 +45,17 @@ class Tag(BaseModel):
         db_table = '标签'
         verbose_name_plural = verbose_name = db_table
 
-    def __str__(self) -> str:
-        return self.title
+
+
+
+class Section(BaseModel):
+    '''专栏'''
+
+    # title
+    title = models.CharField(max_length=30, blank=True, verbose_name='标题', help_text='标题')
+
+    # 创建者
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
 
 
 # 博客
@@ -63,10 +67,10 @@ class Blog(BaseModel):
     title = models.CharField(max_length=30, blank=True, verbose_name='标题', help_text='标题')
 
     # 封面
-    avatar = models.URLField( default='image/default_blog_avatar.jpg',verbose_name='封面', help_text='封面')
+    avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
 
-    # 专栏 TODO 下一个版本开发
-    # section=models.ForeignKey()
+    # 专栏
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, verbose_name='专栏', help_text='专栏')
 
     # 分类
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类', help_text='分类')
@@ -105,10 +109,8 @@ class Blog(BaseModel):
     recommendation_score = models.PositiveIntegerField(default=0, verbose_name='推荐分数', help_text='推荐分数')
 
     # 草稿
-    is_draft = models.BooleanField(default=True,verbose_name='是否是草稿',help_text='是否是草稿')
+    is_draft = models.BooleanField(default=True, verbose_name='是否是草稿', help_text='是否是草稿')
 
-    def __str__(self) -> str:
-        return self.title
 
     class Meta:
         db_table = '博客'
@@ -248,7 +250,6 @@ class Comment(BaseModel):
     # 评论内容
     content = models.CharField(max_length=500, verbose_name='评论内容', help_text='评论内容')
 
-
     class Meta:
         db_table = '评论'
         verbose_name = verbose_name_plural = db_table
@@ -373,7 +374,6 @@ class Search(BaseModel):
 
 # 相关推荐
 class Recommend(BaseModel):
-
     # 用户
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='用户', help_text='用户')
 

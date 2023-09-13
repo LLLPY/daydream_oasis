@@ -13,17 +13,17 @@ class RealManager(models.Manager):
     def get_queryset(self):
         return super(RealManager, self).get_queryset().filter(is_delete=0)
 
-class BaseModel(models.Model):
 
+class BaseModel(models.Model):
     # 创建时间
     create_time = models.DateTimeField(default=datetime.datetime.now, verbose_name='创建时间', help_text='创建时间')
 
     # 文章最后修改的时间
-    update_time = models.DateTimeField(default=datetime.datetime.now, verbose_name='最后修改时间', help_text='最后修改时间')
+    update_time = models.DateTimeField(default=datetime.datetime.now, verbose_name='最后修改时间',
+                                       help_text='最后修改时间')
 
     # 是否删除
     is_deleted = models.BooleanField(default=False, verbose_name='是否已删除', help_text='是否已删除')
-
 
     logger = logger
 
@@ -31,8 +31,11 @@ class BaseModel(models.Model):
         abstract = True
         ordering = ['-create_time']
 
-    objects = RealManager() # 逻辑删除后的
-    objects_all = models.Manager() # 所有的
+    objects = RealManager()  # 逻辑删除后的
+    objects_all = models.Manager()  # 所有的
+
+    def __str__(self) -> str:
+        return getattr(self, 'title', self)
 
     def delete(self):
         self.is_deleted = True
@@ -70,7 +73,7 @@ class BaseModel(models.Model):
                     k_extra_map = extra_map.get(k, {})
                     _fields = k_extra_map.get('fields', [])
                     _exclude_list = extra_map.get('exclude_list', exclude_list)
-                    con[k] = obj_v.to_dict(fields=_fields, exclude_list=_exclude_list,extra_map=extra_map)
+                    con[k] = obj_v.to_dict(fields=_fields, exclude_list=_exclude_list, extra_map=extra_map)
 
                 # 时间
                 elif k in ['create_time', 'update_time']:
@@ -151,7 +154,6 @@ class BackgroundMusic(BaseModel):
     class Meta:
         db_table = '背景音乐'
         verbose_name = verbose_name_plural = db_table
-
 
 
 # 友链
