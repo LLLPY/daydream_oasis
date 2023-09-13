@@ -11,7 +11,7 @@ from log.logger import logger
 
 class RealManager(models.Manager):
     def get_queryset(self):
-        return super(RealManager, self).get_queryset().filter(is_delete=0)
+        return super(RealManager, self).get_queryset().filter(is_deleted=0)
 
 
 class BaseModel(models.Model):

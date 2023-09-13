@@ -9,7 +9,6 @@ from daydream_oasis_backend.config.base import MEDIA_ROOT
 from django.contrib.sitemaps import views as sitemap_views
 from daydream_oasis_backend.sitemap import BlogSitemap
 from rest_framework.documentation import include_docs_urls
-from user.views import index
 
 urlpatterns = [
 
@@ -25,7 +24,6 @@ urlpatterns = [
     re_path(r'^log/', include(('log.urls', 'log'), namespace='log')),  # 请求日志
     re_path(r'^user/', include(('user.urls', 'user'), namespace='user')),  # 用户相关
     re_path(r'^file/', include(('file.urls', 'file'), namespace='file')),  # 文件相关
-    re_path(r'^$', index, name='index'),  # 首页
 
 ]
 

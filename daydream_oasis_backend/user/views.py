@@ -8,10 +8,12 @@ from django.contrib.auth import login as default_login
 from django.contrib.auth import logout as default_logout
 from rest_framework import viewsets
 from common.exception import exception
-from daydream_oasis_backend.config.base import redis_conn
 from rest_framework.decorators import action
 from common.drf.response import SucResponse
+from django_redis import get_redis_connection
 
+# redis连接对象
+redis_conn = get_redis_connection('default')
 # 在登录中往往都需要使用post请求，在使用该请求是，需要进行csrf_token的验证，通过该验证有3中方法
 '''
 1.在settings的MIDDLEWARE中注释掉csrf验证的中间件
@@ -153,7 +155,7 @@ class UserViewSet(viewsets.ModelViewSet):
             raise exception.CustomValidationError('验证码发送失败!')
 
     # 退出登录
-    @action(methods=['post'])
+    @action(methods=['post'],detail=True)
     def logout(self, request, *args, **kwargs):
         default_logout(self.request)
         return SucResponse('退出登录成功!')

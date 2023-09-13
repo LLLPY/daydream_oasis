@@ -15,7 +15,7 @@ class MyBaseAdmin:
 # 背景音乐
 @admin.register(BackgroundMusic, site=my_site)
 class BackgroundMusicAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'title', 'avatar', 'path']
+    list_display = ['id', 'title', 'avatar', 'url']
     search_fields = ['title']
     list_filter = ['title']
 

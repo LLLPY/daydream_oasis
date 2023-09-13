@@ -69,13 +69,6 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
         self.latitude = latitude or self.latitude
         self.save()
 
-    # 保存
-    def save(self, *args, **kwargs):
-        avatar_path = self.avatar.path
-        self.resize(avatar_path, 50, 50)
-        res = super().save(*args, **kwargs)
-        return res
-
 
 # 聊天记录
 class ChatRecord(BaseModel):
