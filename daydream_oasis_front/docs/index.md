@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "白日梦想园"
-  text: "白日梦想猿的梦想圣地。"
+  text: "欢迎来到Daydream Oasis！"
   tagline: My great project tagline
   actions:
     - theme: brand
