@@ -5,21 +5,36 @@ layout: home
 hero:
   name: "白日梦想园"
   text: "欢迎来到Daydream Oasis！"
-  tagline: My great project tagline
+  tagline: 白日梦想猿最伟大的杰作之一！
+  image:
+    src:https://vitepress.dev/vitepress-logo-large.webp
+    alt:...
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: 开始使用
+      link: /blog/sider_a/markdown-examples
     - theme: alt
       text: API Examples
-      link: /api-examples
+      link: /blog/sider_b/demo
+  
+
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - icon: 🛠️
+    title: Simple and minimal, always
+    details: Lorem ipsum...
+    link: /guide/start
+    linkText: 了解更多
+  - icon: ⚡️
+    title: Another cool feature
+    details: Lorem ipsum...
+    link: www.lll.plus
+    linkText: 了解更多
+  - icon: 🌞
+    title: Another cool feature
+    details: Lorem ipsum...
+    link: www.lll.plus
+    linkText: 了解更多
+
 ---
 
