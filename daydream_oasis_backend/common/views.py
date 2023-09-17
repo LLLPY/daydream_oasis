@@ -1,13 +1,57 @@
 from rest_framework.decorators import action
+from daydream_oasis_backend.config.base import BASE_DIR
+import os
 
 
 class FrontConfigViewSet:
-    '''前端的配置接口'''
+    '''前端配置的接口'''
 
-    @action(methods=['get', ], detail=False)
-    def get_nav_config(self):
-        pass
+    # 博客的绝对路径
+    blog_dir = os.path.join(BASE_DIR, '..', 'daydream_oasis_front', 'docs', 'blog')
 
-    @action(methods=['get', ], detail=False)
-    def get_sidebar_config(self):
-        pass
+    @classmethod
+    def clear_preffix(cls, path):
+        '''清理掉路径的前缀'''
+        path = str(path)
+        path = path.replace(str(cls.blog_dir), '')
+        return path
+
+    @classmethod
+    def tree(cls, dir, start_depth=1, max_depth=5, include_files=['.md']):
+
+        res = {'text': cls.clear_preffix(dir), 'collapsible': True, 'collapsed': False, 'items': []}
+
+        # 根据文件的创建时间排序后再获取文件列表
+        for path in sorted(os.listdir(dir), key=lambda _path: os.stat(os.path.join(dir, _path)).st_ctime):
+
+            cur_path = os.path.join(dir, path)
+
+            # 判断当前路径是不是目录
+            is_dir = os.path.isdir(cur_path)
+            if is_dir:
+                start_depth += 1
+                if start_depth > max_depth: break
+
+                res[cls.clear_preffix(path)] = cls.tree(cur_path, start_depth, max_depth, include_files)
+            else:
+                for suffix in include_files:
+                    # 只添加指定类型的文件
+                    if cur_path.endswith(suffix):
+                        res['items'].append({'text': path, 'link': cls.clear_preffix(cur_path)})
+                        break
+        return res
+
+
+@action(methods=['get', ], detail=False)
+def get_nav_config(self):
+    pass
+
+
+@action(methods=['get', ], detail=False)
+def get_sidebar_config(self):
+    pass
+
+
+if __name__ == '__main__':
+    for path in os.listdir('.'):
+        print(dir(path))
