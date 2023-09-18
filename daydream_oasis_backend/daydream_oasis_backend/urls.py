@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import include, re_path
 from django.views.decorators.cache import cache_page
 from django.views.static import serve
 from daydream_oasis_backend.admin_site import my_site
@@ -9,8 +8,24 @@ from daydream_oasis_backend.config.base import MEDIA_ROOT
 from django.contrib.sitemaps import views as sitemap_views
 from daydream_oasis_backend.sitemap import BlogSitemap
 from rest_framework.documentation import include_docs_urls
+from django.urls import re_path, include
+from rest_framework.routers import DefaultRouter
+
+from blog.views import CategoryViewSet, BlogViewSet, TagViewSet, CommentViewSet, CollectionViewSet, LikeViewSet
+from frontconfig.views import FrontConfigViewSet
+
+# 路由注册
+router = DefaultRouter()
+router.register(r'category', CategoryViewSet, basename='category')
+router.register(r'blog', BlogViewSet, basename='blog')
+router.register(r'tag', TagViewSet, basename='tag')
+router.register(r'comment', CommentViewSet, basename='comment')
+router.register(r'collection', CollectionViewSet, basename='collection')
+router.register(r'like', LikeViewSet, basename='like')
+router.register(r'frontconfig', FrontConfigViewSet, basename='frontconfig')
 
 urlpatterns = [
+    re_path(r'^api/', include((router.urls, 'api'), namespace='api')),  # 接口地址
 
     re_path(r'^admin/', my_site.urls),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),  # 访问media文件
@@ -20,7 +35,6 @@ urlpatterns = [
             {'sitemaps': {'posts': BlogSitemap}}),  # sitemap 使用缓存
 
     re_path(r'^api/docs/', include_docs_urls(title='blog apis')),  # restful api接口文档
-    re_path(r'^blog/', include(('blog.urls', 'blog'), namespace='blog')),  # blog
     re_path(r'^log/', include(('log.urls', 'log'), namespace='log')),  # 请求日志
     re_path(r'^user/', include(('user.urls', 'user'), namespace='user')),  # 用户相关
     re_path(r'^file/', include(('file.urls', 'file'), namespace='file')),  # 文件相关
