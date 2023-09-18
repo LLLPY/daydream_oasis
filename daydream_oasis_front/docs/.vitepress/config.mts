@@ -1,5 +1,5 @@
 import {defineConfig} from 'vitepress'
-
+import {getSidebarData, getNavData} from './utils.mjs'
 // https://vitepress.dev/reference/site-config
 export default defineConfig(
     {
@@ -35,48 +35,50 @@ export default defineConfig(
                 },
             ],
             //侧边栏
-            sidebar: {
-                '/blog/sider_a/': [
-                    {
-                        text: 'section A',
-                        //是否支持折叠
-                        collapsible: true,
-                        //默认展开
-                        collapsed: false,
-                        items:
-                            [
-                                {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
-                                {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
-                                {text: '初识机器学习', link: '/blog/sider_a/初识机器学习'},
-                                {text: 'b', link: '/blog/sider_a/b'},
-                                {text: 'team_members', link: '/blog/sider_a/team_members'},
-                            ],
-                    },
-                    {
-                        text: 'section B',
-                        //是否支持折叠
-                        collapsible: true,
-                        //默认展开
-                        collapsed: false,
-                        items:
-                            [
-                                {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
-                                {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
-                                {text: 'a', link: '/blog/sider_a/a'},
-                                {text: 'b', link: '/blog/sider_a/b'},
-                            ],
-                    },
-                ]
-                ,
-                '/blog/sider_b/': [{
-                    text: 'sider B',
-                    items:
-                        [
-                            {text: 'a', link: '/blog/sider_b/a'},
-                            {text: 'demo', link: '/blog/sider_b/demo'},
-                        ]
-                }]
-            },
+            // sidebar: {
+            //     '/blog/sider_a/': [
+            //         {
+            //             text: 'section A',
+            //             //是否支持折叠
+            //             collapsible: true,
+            //             //默认展开
+            //             collapsed: false,
+            //             items:
+            //                 [
+            //                     {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
+            //                     {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
+            //                     {text: '初识机器学习', link: '/blog/sider_a/初识机器学习'},
+            //                     {text: 'b', link: '/blog/sider_a/b'},
+            //                     {text: 'team_members', link: '/blog/sider_a/team_members'},
+            //                 ],
+            //         },
+            //         {
+            //             text: 'section B',
+            //             //是否支持折叠
+            //             collapsible: true,
+            //             //默认展开
+            //             collapsed: false,
+            //             items:
+            //                 [
+            //                     {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
+            //                     {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
+            //                     {text: 'a', link: '/blog/sider_a/a'},
+            //                     {text: 'b', link: '/blog/sider_a/b'},
+            //                 ],
+            //         },
+            //     ]
+            //     ,
+            //     '/blog/sider_b/': [{
+            //         text: 'sider B',
+            //         items:
+            //             [
+            //                 {text: 'a', link: '/blog/sider_b/a'},
+            //                 {text: 'demo', link: '/blog/sider_b/demo'},
+            //             ]
+            //     }]
+            // },
+
+            sidebar: getSidebarData(),
 
             // 显示h2到h6的标题
             outline: 'deep',
@@ -194,3 +196,4 @@ export default defineConfig(
         // }
 
     })
+
