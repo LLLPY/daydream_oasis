@@ -2,13 +2,15 @@
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
+image:
+    src:https://vitepress.dev/vitepress-logo-large.webp
+    alt:...
+
 hero:
   name: "白日梦想园"
   text: "欢迎来到Daydream Oasis！"
   tagline: 白日梦想猿最伟大的杰作之一！
-  image:
-    src:https://vitepress.dev/vitepress-logo-large.webp
-    alt:...
+  
   actions:
     - theme: brand
       text: 开始使用
