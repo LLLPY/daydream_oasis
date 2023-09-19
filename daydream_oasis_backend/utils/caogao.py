@@ -1,26 +1,69 @@
-import os
-import pprint
+aa = '''{ "blog/sider_a": {
+      "text": "blog/sider_a",
+      "collapsible": true,
+      "collapsed": false,
+      "items": [
+        {
+          "text": "api-examples.md",
+          "link": "blog/sider_a/api-examples.md"
+        },
+        {
+          "text": "markdown-examples.md",
+          "link": "blog/sider_a/markdown-examples.md"
+        },
+        {
+          "text": "初识机器学习.md",
+          "link": "blog/sider_a/初识机器学习.md"
+        },
+        {
+          "text": "b.md",
+          "link": "blog/sider_a/b.md"
+        },
+        {
+          "text": "team_members.md",
+          "link": "blog/sider_a/team_members.md"
+        },
+        {
+          "text": "a.md",
+          "link": "blog/sider_a/a.md"
+        },
+        {
+          "text": "index.md",
+          "link": "blog/sider_a/index.md"
+        }
+      ],
+      "blog/sider_a/section_a": {
+        "text": "blog/sider_a/section_a",
+        "collapsible": true,
+        "collapsed": false,
+        "items": [
+          {
+            "text": "demo.md",
+            "link": "blog/sider_a/section_a/demo.md"
+          }
+        ]
+      }
+    },
+    "blog/sider_b": {
+      "text": "blog/sider_b",
+      "collapsible": true,
+      "collapsed": false,
+      "items": [
+        {
+          "text": "demo.md",
+          "link": "blog/sider_b/demo.md"
+        },
+        {
+          "text": "a.md",
+          "link": "blog/sider_b/a.md"
+        },
+        {
+          "text": "index.md",
+          "link": "blog/sider_b/index.md"
+        }
+      ]
+    }
+  }'''
 
-
-def tree(dir):
-    res = {'text': dir, 'collapsible': True, 'collapsed': False, 'items': []}
-
-    # 根据文件的创建时间排序后再获取文件列表
-    for path in sorted(os.listdir(dir), key=lambda _path: os.stat(os.path.join(dir, _path)).st_ctime):
-
-        cur_path = os.path.join(dir, path)
-
-        # 判断当前路径是不是目录
-        is_dir = os.path.isdir(cur_path)
-        if is_dir:
-            res[path] = tree(cur_path)
-        else:
-            res['items'].append({'text': path, 'link': cur_path})
-
-    return res
-
-
-# 使用示例
-directory = '.'
-tree_dict = tree(directory)
-pprint.pprint(tree_dict)
+import json
+print(json.loads(aa))

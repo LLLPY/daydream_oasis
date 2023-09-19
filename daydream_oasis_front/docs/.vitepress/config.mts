@@ -4,14 +4,20 @@ import {getSidebarData, getNavData} from './utils.mjs'
 export default defineConfig(
     {
 
-        lang: 'zh-CN', //zh-CN|en-US
+        lang: 'en-US', //zh-CN|en-US
         title: "白日梦想园",
         description: "Daydream Oasis是一个致力于启发和创造的博客系统，为您提供了一个欣赏、分享和沉浸在各种幻想和梦想中的机会。Daydream Oasis将成为您的梦想之家。",
         base: '/',
         // 忽略死链
         ignoreDeadLinks: true,
         lastUpdated: true,
-        head: [],
+        head: [[
+            'link',
+            {
+                rel: 'icon',
+                href: '/favicon.ico'
+            }
+        ]],
         themeConfig: {
             i18nRouting: true,
             // site title
@@ -25,6 +31,7 @@ export default defineConfig(
                 {text: '标签', link: 'http://www.lll.plus'},
                 {text: '分类', link: 'http://www.lll.plus'},
                 {text: '关于', link: 'http://www.lll.plus'},
+                {text: '登录/注册', link: 'http://www.lll.plus'},
                 {
                     text: '归档',
                     items: [
@@ -34,51 +41,64 @@ export default defineConfig(
                     ]
                 },
             ],
-            //侧边栏
-            // sidebar: {
-            //     '/blog/sider_a/': [
-            //         {
-            //             text: 'section A',
-            //             //是否支持折叠
-            //             collapsible: true,
-            //             //默认展开
-            //             collapsed: false,
-            //             items:
-            //                 [
-            //                     {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
-            //                     {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
-            //                     {text: '初识机器学习', link: '/blog/sider_a/初识机器学习'},
-            //                     {text: 'b', link: '/blog/sider_a/b'},
-            //                     {text: 'team_members', link: '/blog/sider_a/team_members'},
-            //                 ],
-            //         },
-            //         {
-            //             text: 'section B',
-            //             //是否支持折叠
-            //             collapsible: true,
-            //             //默认展开
-            //             collapsed: false,
-            //             items:
-            //                 [
-            //                     {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
-            //                     {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
-            //                     {text: 'a', link: '/blog/sider_a/a'},
-            //                     {text: 'b', link: '/blog/sider_a/b'},
-            //                 ],
-            //         },
-            //     ]
-            //     ,
-            //     '/blog/sider_b/': [{
-            //         text: 'sider B',
-            //         items:
-            //             [
-            //                 {text: 'a', link: '/blog/sider_b/a'},
-            //                 {text: 'demo', link: '/blog/sider_b/demo'},
-            //             ]
-            //     }]
-            // },
+            // 侧边栏
+            sidebar: {
+                '/blog/sider_a/': [
+                    {
+                        text: 'section A',
+                        //是否支持折叠
+                        collapsible: true,
+                        //默认展开
+                        collapsed: false,
+                        items:
+                            [
+                                {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
+                                {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
+                                {text: '初识机器学习', link: '/blog/sider_a/初识机器学习'},
+                                {text: 'b', link: '/blog/sider_a/b'},
+                                {text: 'team_members', link: '/blog/sider_a/team_members'},
+                                {
+                                    '/blog/sider_a/section_a/': [
+                                        {
+                                            text: 'section A',
+                                            //是否支持折叠
+                                            collapsible: true,
+                                            //默认展开
+                                            collapsed: false,
+                                            items:[ {text: 'demo', link: '/blog/sider_a/section_a/demo'},]
 
-            sidebar: getSidebarData(),
+                                        }
+                                    ]
+                                }
+                            ],
+                    },
+                    {
+                        text: 'section B',
+                        //是否支持折叠
+                        collapsible: true,
+                        //默认展开
+                        collapsed: false,
+                        items:
+                            [
+                                {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
+                                {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
+                                {text: 'a', link: '/blog/sider_a/a'},
+                                {text: 'b', link: '/blog/sider_a/b'},
+                            ],
+                    },
+                ]
+                ,
+                '/blog/sider_b/': [{
+                    text: 'sider B',
+                    items:
+                        [
+                            {text: 'a', link: '/blog/sider_b/a'},
+                            {text: 'demo', link: '/blog/sider_b/demo'},
+                        ]
+                }]
+            },
+
+            // sidebar: getSidebarData(),
 
             // 显示h2到h6的标题
             outline: 'deep',
@@ -89,14 +109,14 @@ export default defineConfig(
                 {icon: 'github', link: 'https://github.com/vuejs/vitepress'},
                 {icon: 'linkedin', link: 'https://www.lll.plus'},
                 // You can also add custom icons by passing SVG as string:
-                {
-                    icon: {
-                        svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Dribbble</title><path d="M12...6.38z"/></svg>'
-                    },
-                    link: '.6666..',
-                    // You can include a custom label for accessibility too (optional but recommended):
-                    ariaLabel: 'cool link'
-                }
+                // {
+                //     icon: {
+                //         svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Dribbble</title><path d="M12...6.38z"/></svg>'
+                //     },
+                //     link: '.6666..',
+                //     You can include a custom label for accessibility too (optional but recommended):
+                // ariaLabel: 'cool link'
+                // }
             ],
             //   网站logo
             logo: 'http://www.lll.plus/static/image/favorite.ico',
@@ -126,8 +146,8 @@ export default defineConfig(
 
             // 广告
             // carbonAds: {
-            // code: 'your-carbon-code',
-            // placement: 'your-carbon-placement11111',
+            //     code: 'your-carbon-code',
+            //     placement: 'your-carbon-placement11111',
             // },
 
             //"回到顶部"的按钮，只会在移动端显示
@@ -137,51 +157,14 @@ export default defineConfig(
 
             externalLinkIcon: true,
 
-            // algolia:
+            // 搜索
             search: {
                 provider: 'local',
-                options: {
-
-                    locales: {
-                        zh: {
-                            translations: {
-                                button: {
-                                    buttonText: '搜索文档',
-                                    buttonAriaLabel: '搜索文档'
-                                },
-                                modal: {
-                                    noResultsText: '无法找到相关结果',
-                                    resetButtonTitle: '清除查询条件',
-                                    footer: {
-                                        selectText: '选择',
-                                        navigateText: '切换'
-                                    }
-                                }
-                            }
-                        },
-                        en: {
-                            translations: {
-                                button: {
-                                    buttonText: '搜索文档',
-                                    buttonAriaLabel: '搜索文档',
-
-                                },
-                                modal: {
-                                    noResultsText: '无法找到相关结果',
-                                    resetButtonTitle: '清除查询条件',
-                                    footer: {
-                                        selectText: '选择',
-                                        navigateText: '切换'
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                options: {}
             },
         },
         markdown: {
-            theme: 'light-plus',
+            theme: 'github-dark-dimmed',
             lineNumbers: true,
         },
         // 标题的后缀

@@ -58,6 +58,11 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
         return SucResponse(data=res)
 
 
+    # @classmethod
+    # def get_markdown(cls):
+
+
+
 if __name__ == '__main__':
     for path in os.listdir('.'):
         print(dir(path))
