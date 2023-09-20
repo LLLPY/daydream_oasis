@@ -1,15 +1,14 @@
-from datetime import datetime, timedelta
-from django.core.cache import cache
 from blog.serializers import BlogSerializers, CategorySerializers, TagSerializers, CommentSerializers, \
     CollectionSerializers, LikeSerializers
-from blog.models import Comment, Collection, Blog, Search, Like, Category, Tag
+from blog.models import Comment, Collection, Blog, Like, Category, Tag
 from log.models import Action
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from user.models import User
+from common.drf.response import SucResponse
+from common.drf.mixin import InstanceMixin
 
-
-class BlogViewSet(viewsets.ModelViewSet):
+class BlogViewSet(viewsets.ModelViewSet,InstanceMixin):
     serializer_class = BlogSerializers
     queryset = Blog.objects.all()
 
@@ -63,7 +62,7 @@ class SectionViewSet(viewsets.ModelViewSet):
 
 
 # 评论
-class CommentViewSet(viewsets.ModelViewSet):
+class CommentViewSet(viewsets.ModelViewSet,InstanceMixin):
     serializer_class = CommentSerializers
     queryset = Comment.objects.all()
 
@@ -82,21 +81,15 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     # 将状态改为已删除即可
     def destroy(self, request, pk=None):
-        comment = Comment.get_by_id(pk)
 
-        if comment:
-            comment.is_deleted = True
-            comment.save()
+        comment = self.get_object(raise_on_not_found=True)
 
-            # 用户行为记录
-            user = request.user if request.user.is_authenticated else None
-            _uuid = request.COOKIES.get('uuid', '-')
-            Action.create(user, _uuid, comment.blog, Action.CANCEL_COMMENT, 0)
+        # 用户行为记录
+        user = request.user if request.user.is_authenticated else None
+        _uuid = request.COOKIES.get('uuid', '-')
+        Action.create(user, _uuid, comment.blog, Action.CANCEL_COMMENT, 0)
 
-            return JsonResponse({
-                'code': '200',
-                'msg': '删除成功!'
-            })
+        return SucResponse()
 
     def create(self, request, *args, **kwargs):
 
@@ -137,13 +130,7 @@ class CollectionViewSet(viewsets.ModelViewSet):
         action = Action.COLLECT if not collection.is_canceled else Action.CANCEL_COLLECT
         Action.create(user, _uuid, collection.blog, action, 0)
 
-        return JsonResponse({
-            'code': '200',
-            'msg': '更新成功!',
-            'data': {
-                'id': collection.id
-            }
-        })
+        return SucResponse()
 
 
 # 点赞
@@ -172,10 +159,4 @@ class LikeViewSet(viewsets.ModelViewSet):
         action = Action.DOCALL if not like.is_canceled else Action.CANCEL_DOCALL
         Action.create(user, _uuid, like.blog, action, 0)
 
-        return JsonResponse({
-            'code': '200',
-            'msg': '更新成功!',
-            'data': {
-                'id': like.id
-            }
-        })
+        return SucResponse()

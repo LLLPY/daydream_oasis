@@ -15,8 +15,6 @@ import orjson
 
 
 # 时间戳转换成日期
-
-
 def timestamp_to_date(timestamp):
     # 转换为其他日期格式,如:"%Y-%m-%d %H:%M:%S"
     timeArray = localtime(timestamp)  # 30/12/2020 21:05:19
@@ -151,44 +149,44 @@ def draw(xList, dataDic, timeList, filename='demo.html', series_name='年访问�
     def get_year_overlap_chart(year: int) -> Bar:
         bar = (
             Bar(init_opts=opts.InitOpts(theme=ThemeType.DARK))
-                .add_xaxis(xaxis_data=xList)
-                .add_yaxis(
+            .add_xaxis(xaxis_data=xList)
+            .add_yaxis(
                 titleList[0],  # 首页
                 total_data[keyList[0]][year],
                 label_opts=opts.LabelOpts(is_show=False),
             )
-                .add_yaxis(
+            .add_yaxis(
                 titleList[1],  # 学习星球
                 total_data[keyList[1]][year],
                 label_opts=opts.LabelOpts(is_show=False),
             )
-                .add_yaxis(
+            .add_yaxis(
                 titleList[2],  # 快乐星球
                 total_data[keyList[2]][year],
                 label_opts=opts.LabelOpts(is_show=False),
             )
-                .add_yaxis(
+            .add_yaxis(
                 titleList[3],  # 搜索功能
                 total_data[keyList[3]][year],
                 label_opts=opts.LabelOpts(is_show=False),
             )
-                .add_yaxis(
+            .add_yaxis(
                 titleList[4],  # 个人中心
                 total_data[keyList[4]][year],
                 label_opts=opts.LabelOpts(is_show=False),
             )
-                .add_yaxis(
+            .add_yaxis(
                 titleList[5],  # 博客编辑
                 total_data[keyList[5]][year],
                 label_opts=opts.LabelOpts(is_show=False),
             )
 
-                .add_yaxis(
+            .add_yaxis(
                 titleList[6],  # 登录页面
                 total_data[keyList[6]][year],
                 label_opts=opts.LabelOpts(is_show=False),
             )
-                .add_yaxis(
+            .add_yaxis(
                 titleList[7],  # 注册页面
                 total_data[keyList[7]][year],
                 label_opts=opts.LabelOpts(is_show=False),
@@ -198,7 +196,7 @@ def draw(xList, dataDic, timeList, filename='demo.html', series_name='年访问�
                 label_opts=opts.LabelOpts(is_show=False),
             )
 
-                .set_global_opts(
+            .set_global_opts(
                 title_opts=opts.TitleOpts(
                     title="{}各页面访问量统计".format(year), subtitle="数据来自后台统计"
                 ),
@@ -210,7 +208,7 @@ def draw(xList, dataDic, timeList, filename='demo.html', series_name='年访问�
         )
         pie = (
             Pie(init_opts=opts.InitOpts(theme=ThemeType.DARK))
-                .add(
+            .add(
                 series_name=series_name,
                 data_pair=[
                     [titleList[0], total_data[keyList[0]]["{}sum".format(year)]],
@@ -227,7 +225,7 @@ def draw(xList, dataDic, timeList, filename='demo.html', series_name='年访问�
                 center=["75%", "35%"],
                 radius="28%",
             )
-                .set_series_opts(tooltip_opts=opts.TooltipOpts(is_show=True, trigger="item"))
+            .set_series_opts(tooltip_opts=opts.TooltipOpts(is_show=True, trigger="item"))
         )
         return bar.overlap(pie)
 
@@ -411,6 +409,7 @@ def get_ip_info(ip: str):
     #     pass
     return (country, region, city, latitude, longitude, timezone, isp)
 
+
 # def get_address(ip):
 #     api_url = f'https://freeapi.ipip.net/{ip}'
 #     try:
@@ -426,17 +425,23 @@ def get_ip_info(ip: str):
 #         return ['', '', '']
 # 信息摘要
 def md5(content: Union[str, bytes, dict]):
-
     # 字符串
     if isinstance(content, str):
         content = content.encode('utf8')
 
     # 字典
     elif isinstance(content, dict):
-        content = orjson.dumps(sorted(content.items()))
+        content = orjson.dumps(content, option=orjson.OPT_SORT_KEYS)
 
     md = hashlib.sha256(content)
     return md.hexdigest()
+
+
+def action_log():
+    '''用户行为记录装饰器'''
+
+    def inner():
+        ...
 
 
 if __name__ == '__main__':
