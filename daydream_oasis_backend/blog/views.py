@@ -7,8 +7,11 @@ from rest_framework.decorators import action
 from user.models import User
 from common.drf.response import SucResponse
 from common.drf.mixin import InstanceMixin
+from utils import tools
 
-class BlogViewSet(viewsets.ModelViewSet,InstanceMixin):
+
+@tools.action_log()
+class BlogViewSet(viewsets.ModelViewSet, InstanceMixin):
     serializer_class = BlogSerializers
     queryset = Blog.objects.all()
 
@@ -18,13 +21,47 @@ class BlogViewSet(viewsets.ModelViewSet,InstanceMixin):
         serializer.is_valid(raise_exception=True)
         user = self.request.user
 
+        title = serializer.data.get('title')
+        category = serializer.data.get('category')
+        tag_list = serializer.data.get('tag_list')
+        content = serializer.data.get('content')
+        section = serializer.data.get('section')
+
+        blog = Blog()
+        blog.title = title
+        blog.author = user
+        blog.category = category
+        blog.tags = tag_list
+        blog.content = content
+        blog.section = section
+        blog.save()
+
+        return SucResponse('新增博客成功!')
+
     # 博客列表
     def list(self, request, *args, **kwargs):
-        pass
+        queryset = self.get_queryset()
+        detail = self.request.query_params.get('detail', 'false')
+        detail = True if detail.lower() == 'true' else False
+
+        if detail:
+            serializer = self.get_serializer(queryset, many=True)
+        else:
+            serializer = self.get_serializer(queryset, many=True,
+                                             include_fields=['id', 'title', 'author', 'category', 'tags', 'summary',
+                                                             'section'])
+
+        data = serializer.data
+        return SucResponse(data=data)
 
     # 博客详情
     def retrieve(self, request, *args, **kwargs):
-        pass
+
+        blog = self.get_object()
+
+        serializer = self.get_serializer(blog)
+
+        return SucResponse(data=serializer.data)
 
     # 更新博客
     def update(self, request, *args, **kwargs):
@@ -32,11 +69,8 @@ class BlogViewSet(viewsets.ModelViewSet,InstanceMixin):
 
     # 删除博客
     def destroy(self, request, *args, **kwargs):
-        serizliser = self.get_serializer(data=self.request.data, include_fields=['id'])
-        serizliser.is_valid(raise_exception=True)
-        blog = Blog.objects.filter(id=id).first()
-        blog.delete()
-        return
+        super().destroy(request, *args, **kwargs)
+        return SucResponse('删除成功!')
 
     @action(methods=['get'], detail=False)
     def top_list(self, request, *args, **kwargs):
@@ -62,7 +96,8 @@ class SectionViewSet(viewsets.ModelViewSet):
 
 
 # 评论
-class CommentViewSet(viewsets.ModelViewSet,InstanceMixin):
+@tools.action_log()
+class CommentViewSet(viewsets.ModelViewSet, InstanceMixin):
     serializer_class = CommentSerializers
     queryset = Comment.objects.all()
 
@@ -81,82 +116,27 @@ class CommentViewSet(viewsets.ModelViewSet,InstanceMixin):
 
     # 将状态改为已删除即可
     def destroy(self, request, pk=None):
-
-        comment = self.get_object(raise_on_not_found=True)
-
-        # 用户行为记录
-        user = request.user if request.user.is_authenticated else None
-        _uuid = request.COOKIES.get('uuid', '-')
-        Action.create(user, _uuid, comment.blog, Action.CANCEL_COMMENT, 0)
-
-        return SucResponse()
+        super().destroy(request, pk=pk)
+        return SucResponse('删除成功!')
 
     def create(self, request, *args, **kwargs):
-
-        res = super().create(request, *args, **kwargs)
-
-        # 用户行为记录
-        user = request.user if request.user.is_authenticated else None
-        _uuid = request.COOKIES.get('uuid', '-')
-        blog = Blog.get_by_id(request.data.get('blog'))
-        Action.create(user, _uuid, blog, Action.COMMENT, 0)
-
-        return res
+        super().create(request, *args, **kwargs)
+        return SucResponse()
 
 
 # 收藏
+@tools.action_log()
 class CollectionViewSet(viewsets.ModelViewSet):
     serializer_class = CollectionSerializers
     queryset = Collection.objects.all()
 
-    def update(self, request, pk=None, *args, **kwargs):
-        collection = Collection.get_by_id(pk)
-        if not collection:
-            collection = Collection()
-            user_id = request.data.get('user')
-            blog_id = request.data.get('blog')
-            blog = Blog.get_by_id(blog_id)
-            user = User.get_by_id(user_id)
-            collection.user = user
-            collection.blog = blog
-            collection.is_canceled = False
 
-        collection.is_canceled = int(request.data.get('is_canceled'))
-        collection.save()
-
-        # 用户行为记录
-        user = request.user if request.user.is_authenticated else None
-        _uuid = request.COOKIES.get('uuid', '-')
-        action = Action.COLLECT if not collection.is_canceled else Action.CANCEL_COLLECT
-        Action.create(user, _uuid, collection.blog, action, 0)
-
-        return SucResponse()
 
 
 # 点赞
+@tools.action_log()
 class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializers
     queryset = Like.objects.all()
 
-    def update(self, request, pk=None, *args, **kwargs):
-        like = Like.get_by_id(pk)
-        if not like:
-            like = Like()
-            user_id = request.data.get('user')
-            blog_id = request.data.get('blog')
-            user = User.get_by_id(user_id)
-            blog = Blog.get_by_id(blog_id)
-            like.user = user
-            like.blog = blog
-            like.is_canceled = False
 
-        like.is_canceled = int(request.data.get('is_canceled'))
-        like.save()
-
-        # 用户行为记录
-        user = request.user if request.user.is_authenticated else None
-        _uuid = request.COOKIES.get('uuid', '-')
-        action = Action.DOCALL if not like.is_canceled else Action.CANCEL_DOCALL
-        Action.create(user, _uuid, like.blog, action, 0)
-
-        return SucResponse()

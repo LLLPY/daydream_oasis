@@ -4,12 +4,14 @@ import os
 from rest_framework import viewsets, mixins
 from .serializers import FrontConfigSerializers
 from common.drf.response import SucResponse
+from utils import tools
 
-
+# @tools.action_log()
 class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
     '''前端配置的接口'''
 
-    queryset = None
+
+    # queryset = None
     serializer_class = FrontConfigSerializers
 
     # 博客的绝对路径
@@ -51,7 +53,7 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
 
     @action(methods=['get', ], detail=False)
     def get_sidebar_config(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=self.request.data)
+        serializer = self.get_serializer(data=self.request.query_params)
         serializer.is_valid(raise_exception=True)
         res = self.tree(self.blog_dir)
         del res['text'], res['collapsible'], res['collapsed'], res['items']

@@ -12,6 +12,7 @@ from os.path import join
 import hashlib
 from typing import Union
 import orjson
+from log.models import Action
 
 
 # 时间戳转换成日期
@@ -440,12 +441,67 @@ def md5(content: Union[str, bytes, dict]):
 def action_log():
     '''用户行为记录装饰器'''
 
-    def inner():
+    def inner(cls):
+        class DecoratedClass(cls):
+            action_mapping = {
+                'BlogViewSet': {
+                    'retrieve': Action.CLICK,
+                    'reward': Action.REWARD,
+                    'share': Action
+                },
+                'CollectionViewSet': {
+                    'create': Action.COLLECT,
+                    'destroy': Action.CANCEL_COLLECT
+                },
+                'LikeViewSet': {
+                    'create': Action.DOCALL,
+                    'destroy': Action.CANCEL_DOCALL,
+                },
+                'CommentViewSet': {
+                    'create': Action.COMMENT,
+                    'destroy': Action.CANCEL_COMMENT,
+                }
+            }
+            action_log_list = set([k for value in action_mapping.values() for k in value])
+
+            def __getattribute__(self, action):
+                attr = super().__getattribute__(action)
+                action_class = cls.__name__
+                if callable(attr) and action_class in self.action_mapping and action in self.action_log_list:
+                    # 记录
+                    def wrapped(request, *args, **kwargs):
+                        res = attr(self, request, *args, **kwargs)
+                        request_data = self.request.data or self.request.query_params
+                        user = request.user if request.user.is_authenticated else None
+                        uuid = request.COOKIES.get('uuid')
+                        blog_id = request_data.get('blog_id')
+
+                        Action.create(user, uuid, blog_id, self.action_log_list[action_class][action], 0)
+
+                        return res
+
+                    return wrapped
+
+                return attr
+
+        return DecoratedClass
+
+    return inner
+
+
+@action_log()
+class A:
+    aa = 111
+
+    def fun(self):
+        ...
+
+    @classmethod
+    def happy(self):
         ...
 
 
 if __name__ == '__main__':
-    con = {'a': 1}
-
-    res = md5(con)
-    print(res)
+    a = A()
+    a.happy()
+    a.aa

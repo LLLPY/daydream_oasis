@@ -26,7 +26,8 @@ class RequestRecord(BaseModel):
     ]
 
     path = models.TextField(max_length=1000, default='/', verbose_name='请求路径', help_text='请求路径')
-    path_type = models.PositiveIntegerField(default=PAGE, choices=PATH_TYPE_CHOICES, verbose_name='请求路径类型',help_text='请求路径类型')
+    path_type = models.PositiveIntegerField(default=PAGE, choices=PATH_TYPE_CHOICES, verbose_name='请求路径类型',
+                                            help_text='请求路径类型')
     method = models.CharField(max_length=100, default='GET', verbose_name='请求方式', help_text='请求方式')
     user_agent = models.CharField(max_length=500, verbose_name='请求头', help_text='请求头')
     http_refer = models.URLField(verbose_name='跳转的网页', help_text='跳转的网页')
@@ -143,6 +144,7 @@ class Action(BaseModel):
     CLICK = 6
     READ = 7
     REWARD = 8
+    SHARE = 9
 
     ACTTION_CHOICES = [
         (DOCALL, '点赞'),
@@ -154,6 +156,7 @@ class Action(BaseModel):
         (CLICK, '点击'),
         (READ, '阅读'),
         (REWARD, '打赏'),
+        (SHARE, '分享'),
     ]
 
     # 行为-分值表
@@ -173,7 +176,8 @@ class Action(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='用户', help_text='用户')
 
     # uuid
-    uuid = models.CharField(max_length=200, null=False, verbose_name='uuid', help_text='uuid,对于没有登录的用户的唯一标识')
+    uuid = models.CharField(max_length=200, null=False, verbose_name='uuid',
+                            help_text='uuid,对于没有登录的用户的唯一标识')
 
     # 博客
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='博客', help_text='博客')
@@ -187,22 +191,21 @@ class Action(BaseModel):
     # 分值
     score = models.IntegerField(default=0, verbose_name='分值', help_text='分值')
 
-
     class Meta:
         db_table = '操作日志'
         verbose_name = verbose_name_plural = db_table
 
     @classmethod
-    def create(cls, user, uuid, blog, action, cost_time):
+    def create(cls, user, uuid, blog_id, action, cost_time):
         _self = cls()
         _self.user = user
         _self.uuid = uuid
-        _self.blog = blog
+        _self.blog = Blog.get_by_id(blog_id)
         _self.action = action
 
         if action == cls.READ:
             # 按阅读时间比例给分
-            rate = cost_time / blog.read_time
+            rate = cost_time / _self.blog.read_time
             score = min(float('%.2f' % (rate * cls.ACTION_SCORE_MAPPING[action])), cls.ACTION_SCORE_MAPPING[cls.READ])
         else:
 
@@ -244,12 +247,13 @@ class Action(BaseModel):
 # 错误
 class Error(BaseModel):
     # 请求的ip
-    request_log = models.ForeignKey(RequestRecord, on_delete=models.CASCADE, verbose_name='请求对象',help_text='请求对象')
+    request_log = models.ForeignKey(RequestRecord, on_delete=models.CASCADE, verbose_name='请求对象',
+                                    help_text='请求对象')
 
     # 错误原因
     reason = models.CharField(max_length=500, verbose_name='错误原因', help_text='错误原因')
     # 时间
-    time = models.DateTimeField(default=datetime.now,verbose_name='时间', help_text='时间')
+    time = models.DateTimeField(default=datetime.now, verbose_name='时间', help_text='时间')
 
     class Meta:
         db_table = '错误日志'

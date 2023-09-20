@@ -60,19 +60,19 @@ export default defineConfig(
                                 {text: '初识机器学习', link: '/blog/sider_a/初识机器学习'},
                                 {text: 'b', link: '/blog/sider_a/b'},
                                 {text: 'team_members', link: '/blog/sider_a/team_members'},
-                                {
-                                    '/blog/sider_a/section_a/': [
-                                        {
-                                            text: 'section A',
-                                            //是否支持折叠
-                                            collapsible: true,
-                                            //默认展开
-                                            collapsed: false,
-                                            items:[ {text: 'demo', link: '/blog/sider_a/section_a/demo'},]
-            
-                                        }
-                                    ]
-                                }
+                                // {
+                                //     '/blog/sider_a/section_a/': [
+                                //         {
+                                //             text: 'section A',
+                                //             //是否支持折叠
+                                //             collapsible: true,
+                                //             //默认展开
+                                //             collapsed: false,
+                                //             items:[ {text: 'demo', link: '/blog/sider_a/section_a/demo'},]
+                                //
+                                //         }
+                                //     ]
+                                // }
                             ],
                     },
                     {

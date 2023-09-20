@@ -13,6 +13,9 @@ from rest_framework.routers import DefaultRouter
 
 from blog.views import CategoryViewSet, BlogViewSet, TagViewSet, CommentViewSet, CollectionViewSet, LikeViewSet
 from frontconfig.views import FrontConfigViewSet
+from file.views import FileViewSet
+# from log.views import
+from user.views import UserViewSet
 
 # 路由注册
 router = DefaultRouter()
@@ -22,6 +25,9 @@ router.register(r'tag', TagViewSet, basename='tag')
 router.register(r'comment', CommentViewSet, basename='comment')
 router.register(r'collection', CollectionViewSet, basename='collection')
 router.register(r'like', LikeViewSet, basename='like')
+# router.register(r'log', LikeViewSet, basename='log')
+router.register(r'user', UserViewSet, basename='user')
+router.register(r'file', FileViewSet, basename='file')
 router.register(r'frontconfig', FrontConfigViewSet, basename='frontconfig')
 
 urlpatterns = [
@@ -33,19 +39,8 @@ urlpatterns = [
     re_path(r'^rss|feed$', cache_page(60 * 60, key_prefix='rss_cache')(LatestBlogFeed()), name='rss'),  # rss
     re_path(r'^sitemap$', cache_page(60 * 60, key_prefix='sitemap_cache')(sitemap_views.sitemap),
             {'sitemaps': {'posts': BlogSitemap}}),  # sitemap 使用缓存
-
     re_path(r'^api/docs/', include_docs_urls(title='blog apis')),  # restful api接口文档
-    re_path(r'^log/', include(('log.urls', 'log'), namespace='log')),  # 请求日志
-    re_path(r'^user/', include(('user.urls', 'user'), namespace='user')),  # 用户相关
-    re_path(r'^file/', include(('file.urls', 'file'), namespace='file')),  # 文件相关
 
 ]
 
-if settings.DEBUG:
-    import debug_toolbar
-    from daydream_oasis_backend.config import settings_dev
-
-    urlpatterns = [
-                      re_path(r'^__debug__/', include(debug_toolbar.urls)),
-                  ] + urlpatterns
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG: urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

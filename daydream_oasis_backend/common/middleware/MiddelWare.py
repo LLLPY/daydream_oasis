@@ -1,7 +1,7 @@
 import time
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponseBadRequest
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
 from log.models import Error, RequestRecord
@@ -29,14 +29,6 @@ class MyMiddleWare(MiddlewareMixin):
 
         if path.find('sendCode') != -1:
             return HttpResponseBadRequest('!')
-
-        # 兼容旧版路径
-        if path.find('learningPlanet') != -1:
-            blog_id = re.search(r'learningPlanet/(\d+)', path)
-            if blog_id: blog_id = blog_id.group().replace('learningPlanet/', '')
-            return redirect(reverse(f'blog:index', kwargs={'blog_id': blog_id}))
-
-        request.path = request.path.replace('learningPlanet', 'blog')
 
         ip = request.META.get('REMOTE_ADDR', '')  # 客户端的ip地址
         request.start_time = start_time
