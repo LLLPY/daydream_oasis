@@ -47,13 +47,6 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
     def get_by_mobile(cls, mobile):
         return cls.objects.filter(mobile=mobile).first()
 
-    def update(self, mobile, username, password):
-        self.mobile = mobile
-        self.username = username
-        self.password = make_password(password)
-        self.save()
-        return self
-
     # 创建一个新的用户,初始用户名和手机号相同
     @classmethod
     def create_user(cls, mobile: str, password: str) -> 'User':
@@ -68,6 +61,11 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
         self.longitude = longitude or self.longitude
         self.latitude = latitude or self.latitude
         self.save()
+
+    def update_password(self,password):
+        self.password = make_password(password)
+        self.save()
+        return self
 
 
 # 聊天记录

@@ -2,13 +2,15 @@ from rest_framework import serializers
 from common.drf.serializers import DynamicFieldsSerializer
 import re
 from common.exception import exception
+
+
 # 用户
 class UserSerializers(DynamicFieldsSerializer):
     mobile = serializers.CharField(max_length=11, min_length=11, required=True, help_text='手机号码')
     code = serializers.CharField(required=True, help_text='验证码')
+    action = serializers.CharField(help_text='操作')
 
-
-    def validate_mobile(self,value):
+    def validate_mobile(self, value):
         ...
         if not self.is_valid_mobile(value):
             raise exception.CustomValidationError('手机号码格式不正确!')

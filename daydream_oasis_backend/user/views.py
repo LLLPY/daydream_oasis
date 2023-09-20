@@ -11,9 +11,11 @@ from common.exception import exception
 from rest_framework.decorators import action
 from common.drf.response import SucResponse
 from django_redis import get_redis_connection
+from django.contrib.auth.hashers import make_password
 
 # redis连接对象
 redis_conn = get_redis_connection('default')
+
 # 在登录中往往都需要使用post请求，在使用该请求是，需要进行csrf_token的验证，通过该验证有3中方法
 '''
 1.在settings的MIDDLEWARE中注释掉csrf验证的中间件
@@ -80,7 +82,7 @@ class UserViewSet(viewsets.ModelViewSet):
             raise exception.CustomValidationError('手机号不存在!')
 
         tmp_user = User.get_by_mobile(mobile)
-        tmp_user.update(tmp_user.mobile, tmp_user.username, password)  # 更新user
+        tmp_user.update_password(password)
         return SucResponse('密码修改成功!')
 
     # 登录
@@ -112,16 +114,23 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         mobile = serializer.data.get('mobile')
         action = serializer.data.get('action')
-        code = serializer.data.get('code')
+        verify_code = serializer.data.get('code')  # 验证码
 
-        local_code = redis_conn.get(f'send_code:{mobile}')
-        if code != local_code:
-            raise exception.CustomValidationError('图片验证码不正确!')
+        local_verify_code = redis_conn.get(f'verify_code:{mobile}')
+        if verify_code != local_verify_code:
+            raise exception.CustomValidationError('验证码不正确!')
 
         # 判断验证码是否已发送 5分钟内只能发一次
         key = f'{action}:code:{mobile}'
-        if redis_conn.get(key):
+
+        # 随机验证码
+        local_code = ''.join(map(str, choices(range(9), k=4)))
+        success = redis_conn.setnx(key, local_code)
+        if not success:
             raise exception.CustomValidationError(f'验证码已发送,距离下次可发送时间为:{redis_conn.ttl(key)}s')
+
+        # 设置过期时间
+        redis_conn.expire(key, 60 * 5)
 
         if action == 'register':
             if User.get_by_mobile(mobile):
@@ -133,29 +142,25 @@ class UserViewSet(viewsets.ModelViewSet):
         if use_count >= 3:
             raise exception.CustomValidationError('一天最多可发送3次短信!')
 
-        # 随机验证码
-        local_code = ''.join(map(str, choices(range(9), k=4)))
-
         # 发送短信
         send_success = send_message(phoneNumber=mobile, code=local_code)
         if send_success:
-            # 保存当前手机号码的验证码 时效5分钟
-            redis_conn.set(key, local_code)
-            redis_conn.expire(key, 60 * 5)
 
             # 计算当前距离明天的时间 每天只能发送3次短信
             now = datetime.now()
-            expired = (timedelta(hours=24, minutes=0, seconds=0) - timedelta(hours=now.hour, minutes=now.minute,
-                                                                             seconds=now.second)).seconds
+            expired = (timedelta(hours=24, minutes=0, seconds=0) - timedelta(hours=now.hour, minutes=now.minute, seconds=now.second)).seconds
             redis_conn.set(used_key, use_count + 1)
             redis_conn.expire(used_key, expired)
 
             return SucResponse('验证码已发送至您的手机,请注意查收!')
         else:
+
+            # 发送失败就删除验证码的缓存
+            redis_conn.delete(key)
             raise exception.CustomValidationError('验证码发送失败!')
 
     # 退出登录
-    @action(methods=['post'],detail=True)
+    @action(methods=['post'], detail=True)
     def logout(self, request, *args, **kwargs):
         default_logout(self.request)
         return SucResponse('退出登录成功!')
