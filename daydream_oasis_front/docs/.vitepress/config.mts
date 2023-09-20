@@ -3,6 +3,9 @@ import {getSidebarData, getNavData} from './utils.mjs'
 // https://vitepress.dev/reference/site-config
 export default defineConfig(
     {
+        vite:{
+
+        },
 
         lang: 'en-US', //zh-CN|en-US
         title: "白日梦想园",
@@ -31,7 +34,7 @@ export default defineConfig(
                 {text: '标签', link: 'http://www.lll.plus'},
                 {text: '分类', link: 'http://www.lll.plus'},
                 {text: '关于', link: 'http://www.lll.plus'},
-                {text: '登录/注册', link: 'http://www.lll.plus'},
+                {text: '登录/注册', link: '/login/'},
                 {
                     text: '归档',
                     items: [
@@ -42,61 +45,61 @@ export default defineConfig(
                 },
             ],
             // 侧边栏
-            // sidebar: {
-            //     '/blog/sider_a/': [
-            //         {
-            //             text: 'section A',
-            //             //是否支持折叠
-            //             collapsible: true,
-            //             //默认展开
-            //             collapsed: false,
-            //             items:
-            //                 [
-            //                     {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
-            //                     {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
-            //                     {text: '初识机器学习', link: '/blog/sider_a/初识机器学习'},
-            //                     {text: 'b', link: '/blog/sider_a/b'},
-            //                     {text: 'team_members', link: '/blog/sider_a/team_members'},
-            //                     {
-            //                         '/blog/sider_a/section_a/': [
-            //                             {
-            //                                 text: 'section A',
-            //                                 //是否支持折叠
-            //                                 collapsible: true,
-            //                                 //默认展开
-            //                                 collapsed: false,
-            //                                 items:[ {text: 'demo', link: '/blog/sider_a/section_a/demo'},]
-            //
-            //                             }
-            //                         ]
-            //                     }
-            //                 ],
-            //         },
-            //         {
-            //             text: 'section B',
-            //             //是否支持折叠
-            //             collapsible: true,
-            //             //默认展开
-            //             collapsed: false,
-            //             items:
-            //                 [
-            //                     {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
-            //                     {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
-            //                     {text: 'a', link: '/blog/sider_a/a'},
-            //                     {text: 'b', link: '/blog/sider_a/b'},
-            //                 ],
-            //         },
-            //     ]
-            //     ,
-            //     '/blog/sider_b/': [{
-            //         text: 'sider B',
-            //         items:
-            //             [
-            //                 {text: 'a', link: '/blog/sider_b/a'},
-            //                 {text: 'demo', link: '/blog/sider_b/demo'},
-            //             ]
-            //     }]
-            // },
+            sidebar: {
+                '/blog/sider_a/': [
+                    {
+                        text: 'section A',
+                        //是否支持折叠
+                        collapsible: true,
+                        //默认展开
+                        collapsed: false,
+                        items:
+                            [
+                                {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
+                                {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
+                                {text: '初识机器学习', link: '/blog/sider_a/初识机器学习'},
+                                {text: 'b', link: '/blog/sider_a/b'},
+                                {text: 'team_members', link: '/blog/sider_a/team_members'},
+                                {
+                                    '/blog/sider_a/section_a/': [
+                                        {
+                                            text: 'section A',
+                                            //是否支持折叠
+                                            collapsible: true,
+                                            //默认展开
+                                            collapsed: false,
+                                            items:[ {text: 'demo', link: '/blog/sider_a/section_a/demo'},]
+            
+                                        }
+                                    ]
+                                }
+                            ],
+                    },
+                    {
+                        text: 'section B',
+                        //是否支持折叠
+                        collapsible: true,
+                        //默认展开
+                        collapsed: false,
+                        items:
+                            [
+                                {text: 'Markdown Examples', link: '/blog/sider_a/markdown-examples'},
+                                {text: 'Runtime API Examples', link: '/blog/sider_a/api-examples'},
+                                {text: 'a', link: '/blog/sider_a/a'},
+                                {text: 'b', link: '/blog/sider_a/b'},
+                            ],
+                    },
+                ]
+                ,
+                '/blog/sider_b/': [{
+                    text: 'sider B',
+                    items:
+                        [
+                            {text: 'a', link: '/blog/sider_b/a'},
+                            {text: 'demo', link: '/blog/sider_b/demo'},
+                        ]
+                }]
+            },
 
             // sidebar: getSidebarData(),
 

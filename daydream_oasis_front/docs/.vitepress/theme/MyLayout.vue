@@ -4,7 +4,9 @@
 import {useData} from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import {nextTick, provide} from 'vue'
-// import L2Dwidget from '../../../src/components/L2Dwidget.vue'
+
+
+
 import {L2Dwidget} from 'live2d-widget'
 
 // import AsideOutlineAfter from "./AsideOutlineAfter.vue";
