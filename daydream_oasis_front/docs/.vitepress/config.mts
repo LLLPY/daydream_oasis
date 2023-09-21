@@ -18,29 +18,29 @@ export default getSidebarData().then(sidebar => {
                 'link',
                 {
                     rel: 'icon',
-                    href: '/favicon.ico'
+                    // href: '/favicon.ico'
                 }
             ]],
             themeConfig: {
                 i18nRouting: true,
                 // site title
-                siteTitle: '白日梦想园',
+                siteTitle: '🌈白日梦想园',
                 // https://vitepress.dev/reference/default-theme-config
                 nav: [
-                    {text: 'Home', link: '/'},
-                    {text: '前端', link: '/blog/front/', activeMatch: '/front/'},
-                    {text: '后端', link: '/blog/backend/', activeMatch: '/backend/'},
-                    {text: 'AI', link: '/blog/ai/'},
-                    {text: '标签', link: '/tag'},
-                    {text: '分类', link: '/category'},
-                    {text: '关于', link: '/about'},
-                    {text: '登录/注册', link: '/login'},
+                    {text: 'Home🏡', link: '/'},
+                    {text: '前端💻', link: '/blog/front/', activeMatch: '/front/'},
+                    {text: '后端🛸', link: '/blog/backend/', activeMatch: '/backend/'},
+                    {text: 'AI🤖', link: '/blog/ai/'},
+                    {text: '标签🍒', link: '/tag'},
+                    {text: '分类🍰', link: '/category'},
+                    {text: '关于🦴', link: '/about'},
+                    {text: '登录/注册🚪', link: '/login'},
                     {
-                        text: '归档',
+                        text: '归档🗂️',
                         items: [
-                            {text: '归档1', link: '/'},
-                            {text: '归档2', link: '/'},
-                            {text: '归档3', link: '/'},
+                            {text: '归档1', link: '/file'},
+                            {text: '归档2', link: '/file'},
+                            {text: '归档3', link: '/file'},
                         ]
                     },
                 ],
@@ -65,7 +65,7 @@ export default getSidebarData().then(sidebar => {
                     // }
                 ],
                 //   网站logo
-                logo: 'http://www.lll.plus/static/image/favorite.ico',
+                // logo: 'http://www.lll.plus/static/image/favorite.ico',
 
 
                 //底部

@@ -4,11 +4,11 @@ layout: home
 
 
 hero:
-  name: "白日梦想园"
+  name: "🏝️白日梦想园🏡"
   text: "欢迎来到Daydream Oasis！"
-  tagline: 白日梦想猿的梦想圣地！
+  tagline: 白日梦想猿🦍的梦想圣地！
   image:
-    src: /logo.ico
+    src: /logo.svg
     alt: VitePress  
   actions:
     - theme: brand
