@@ -4,7 +4,7 @@ import {getSidebarData, getNavData} from './utils.mjs'
 
 
 export default getSidebarData().then(sidebar => {
-    console.log(sidebar)
+
     return defineConfig(
         {
             lang: 'en-US', //zh-CN|en-US
@@ -45,8 +45,7 @@ export default getSidebarData().then(sidebar => {
                     },
                 ],
                 // 侧边栏
-                sidebar: sidebar,
-
+                sidebar:sidebar,
                 // 显示h2到h6的标题
                 outline: 'deep',
                 outlineTitle: '文章目录',

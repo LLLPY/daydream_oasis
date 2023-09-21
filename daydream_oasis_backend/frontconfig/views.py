@@ -28,7 +28,7 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
         return f'/{path}/'
 
     @classmethod
-    def tree(cls, dir, start_depth=1, max_depth=5, include_files=['.md', ]):
+    def tree(cls, dir, start_depth=1, max_depth=5, include_files=['.md', ], exclude_files=['index.md']):
 
         res = {'text': cls.clear_preffix(dir).split('/')[-1], 'collapsible': True, 'collapsed': False, 'items': []}
 
@@ -43,13 +43,14 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
                 start_depth += 1
                 if start_depth > max_depth: break
 
-                res[cls.format_dir_path(cls.clear_preffix(cur_path))] = cls.tree(cur_path, start_depth, max_depth,include_files)
+                res['items'].append(cls.tree(cur_path, start_depth, max_depth, include_files, exclude_files))
             else:
                 for suffix in include_files:
                     # 只添加指定类型的文件
-                    if cur_path.endswith(suffix):
-                        res['items'].append({'text': path, 'link': cls.clear_preffix(cur_path)})
+                    if cur_path.endswith(suffix) and path.strip('/') not in exclude_files:
+                        res['items'].append({'text': path.replace('.md', ''), 'link': cls.clear_preffix(cur_path)})
                         break
+        print(res)
         return res
 
     @action(methods=['get', ], detail=False)
@@ -60,8 +61,8 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
     def get_sidebar_config(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.query_params)
         serializer.is_valid(raise_exception=True)
-        res = self.tree(self.blog_dir)
-        del res['text'], res['collapsible'], res['collapsed'], res['items']
+        res = self.tree(self.blog_dir)['items']
+        # del res['text'], res['collapsible'], res['collapsed'], res['items']
         return SucResponse(data=res)
 
     # @classmethod
