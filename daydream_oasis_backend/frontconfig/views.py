@@ -6,10 +6,10 @@ from .serializers import FrontConfigSerializers
 from common.drf.response import SucResponse
 from utils import tools
 
+
 # @tools.action_log()
 class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
     '''前端配置的接口'''
-
 
     # queryset = None
     serializer_class = FrontConfigSerializers
@@ -20,12 +20,17 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
     @classmethod
     def clear_preffix(cls, path):
         '''清理掉路径的前缀'''
-        return str(path).replace(str(cls.blog_dir.replace('blog','')), '').replace('\\', '/')
+        return str(path).replace(str(cls.blog_dir).replace('blog', ''), '').replace('\\', '/')
+
+    @classmethod
+    def format_dir_path(cls, path):
+        path = path.strip('/')
+        return f'/{path}/'
 
     @classmethod
     def tree(cls, dir, start_depth=1, max_depth=5, include_files=['.md', ]):
 
-        res = {'text': cls.clear_preffix(dir), 'collapsible': True, 'collapsed': False, 'items': []}
+        res = {'text': cls.clear_preffix(dir).split('/')[-1], 'collapsible': True, 'collapsed': False, 'items': []}
 
         # 根据文件的创建时间排序后再获取文件列表
         for path in sorted(os.listdir(dir), key=lambda _path: os.stat(os.path.join(dir, _path)).st_ctime):
@@ -38,7 +43,7 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
                 start_depth += 1
                 if start_depth > max_depth: break
 
-                res[cls.clear_preffix(cur_path)] = cls.tree(cur_path, start_depth, max_depth, include_files)
+                res[cls.format_dir_path(cls.clear_preffix(cur_path))] = cls.tree(cur_path, start_depth, max_depth,include_files)
             else:
                 for suffix in include_files:
                     # 只添加指定类型的文件
@@ -59,10 +64,8 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
         del res['text'], res['collapsible'], res['collapsed'], res['items']
         return SucResponse(data=res)
 
-
     # @classmethod
     # def get_markdown(cls):
-
 
 
 if __name__ == '__main__':

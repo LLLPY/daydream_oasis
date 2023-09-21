@@ -7,7 +7,7 @@ import {nextTick, provide} from 'vue'
 
 
 
-import {L2Dwidget} from 'live2d-widget'
+// import {L2Dwidget} from 'live2d-widget'
 
 // import AsideOutlineAfter from "./AsideOutlineAfter.vue";
 

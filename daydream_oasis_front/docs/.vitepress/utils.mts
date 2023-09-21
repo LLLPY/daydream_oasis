@@ -10,7 +10,7 @@ export async function getSidebarData() {
 
     //配置文件
     let data = res.data['data']
-    console.log(data)
+    // console.log(data)
 
     return data
 }
