@@ -45,24 +45,22 @@ export default getSidebarData().then(sidebar => {
                     },
                 ],
                 // 侧边栏
-                sidebar:sidebar,
+                sidebar: sidebar,
                 // 显示h2到h6的标题
                 outline: 'deep',
                 outlineTitle: '文章目录',
 
                 // 社交连接
                 socialLinks: [
-                    {icon: 'github', link: 'https://github.com/vuejs/vitepress'},
-                    {icon: 'linkedin', link: 'https://www.lll.plus'},
-                    // You can also add custom icons by passing SVG as string:
-                    // {
-                    //     icon: {
-                    //         svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Dribbble</title><path d="M12...6.38z"/></svg>'
-                    //     },
-                    //     link: '.6666..',
-                    //     You can include a custom label for accessibility too (optional but recommended):
-                    // ariaLabel: 'cool link'
-                    // }
+                    {
+                        icon: {
+                            svg: '<svg role="img" viewBox="0 0 24 24" xmlns="https://e-assets.gitee.com/gitee-community-web/_next/static/media/logo-white.a5b0e29c.svg"></svg>'
+                        },
+                        link: 'https://gitee.com/max-LLL',
+
+                    },
+                    {icon: 'github', link: 'https://github.com/LLLPY'},
+
                 ],
                 //   网站logo
                 // logo: 'http://www.lll.plus/static/image/favorite.ico',
