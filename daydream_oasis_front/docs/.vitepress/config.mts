@@ -28,9 +28,9 @@ export default getSidebarData().then(sidebar => {
                 // https://vitepress.dev/reference/default-theme-config
                 nav: [
                     {text: 'Home🏡', link: '/'},
-                    {text: '前端💻', link: '/blog/front/', activeMatch: '/front/'},
-                    {text: '后端🛸', link: '/blog/backend/', activeMatch: '/backend/'},
-                    {text: 'AI🤖', link: '/blog/ai/'},
+                    {text: '前端💻', link: '/blog/前端/', activeMatch: '/前端/'},
+                    {text: '后端🛸', link: '/blog/后端/', activeMatch: '/后端/'},
+                    {text: 'AI🤖', link: '/blog/AI/'},
                     {text: '标签🍒', link: '/tag'},
                     {text: '分类🍰', link: '/category'},
                     {text: '关于🦴', link: '/about'},
@@ -77,7 +77,7 @@ export default getSidebarData().then(sidebar => {
                 // editLink
                 editLink: {
                     pattern: 'https://github.com/vuejs/vitepress/edit/main/docs/:path',
-                    text: 'Edit this page on GitHub'
+                    text: '编辑此文'
                 },
 
 
