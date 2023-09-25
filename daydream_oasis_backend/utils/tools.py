@@ -462,12 +462,11 @@ def action_log():
                     'destroy': Action.CANCEL_COMMENT,
                 }
             }
-            action_log_list = set([k for value in action_mapping.values() for k in value])
 
             def __getattribute__(self, action):
                 attr = super().__getattribute__(action)
                 action_class = cls.__name__
-                if callable(attr) and action_class in self.action_mapping and action in self.action_log_list:
+                if callable(attr) and action_class in self.action_mapping and action in self.action_mapping[action_class]:
                     # 记录
                     def wrapped(request, *args, **kwargs):
                         res = attr(self, request, *args, **kwargs)
@@ -476,7 +475,7 @@ def action_log():
                         uuid = request.COOKIES.get('uuid')
                         blog_id = request_data.get('blog_id')
 
-                        Action.create(user, uuid, blog_id, self.action_log_list[action_class][action], 0)
+                        Action.create(user, uuid, blog_id, self.action_mapping[action_class][action], 0)
 
                         return res
 
