@@ -1,12 +1,10 @@
 import re
 from datetime import datetime, timedelta
 from typing import List
-from django.core.cache import cache
 from django.db import models
 from django.db.models import Q
 from common.models import BaseModel
 from blog.models import Blog
-from utils.my_cache import my_cache
 from user.models import User
 
 
@@ -51,7 +49,6 @@ class RequestRecord(BaseModel):
 
     # 获取某天或某月或某年的访问量
     @classmethod
-    @my_cache(timeout=60 * 60)
     def get_pv(cls, year=None, moth=None, day=None):
         request_li = cls.objects.filter(path_type=cls.PAGE)
         if year: request_li = request_li.filter(time__year=year)
@@ -128,9 +125,9 @@ class RequestRecord(BaseModel):
         day_top_list = get_top(blog_day_list)
 
         # 写入缓存
-        cache.set('month_top_list', month_top_list, 2 * 60 * 60)
-        cache.set('week_top_list', week_top_list, 2 * 60 * 60)
-        cache.set('day_top_list', day_top_list, 2 * 60 * 60)
+        # cache.set('month_top_list', month_top_list, 2 * 60 * 60)
+        # cache.set('week_top_list', week_top_list, 2 * 60 * 60)
+        # cache.set('day_top_list', day_top_list, 2 * 60 * 60)
 
 
 # 用户操作记录
@@ -216,7 +213,6 @@ class Action(BaseModel):
         return _self
 
     @classmethod
-    @my_cache(60 * 60)
     def summary(cls):
         # 统计所有用户的行为累计对文章的打分
         data = {}

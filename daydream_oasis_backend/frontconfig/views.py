@@ -5,9 +5,8 @@ from rest_framework import viewsets, mixins
 from .serializers import FrontConfigSerializers
 from common.drf.response import SucResponse
 from utils import tools
-import orjson
 import re
-
+from utils.cache import cache
 
 # @tools.action_log()
 class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
@@ -65,7 +64,9 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
                 cls.sorted_list(item.get('items'))
         return data
 
+
     @action(methods=['get', ], detail=False)
+    @cache(30)
     def get_sidebar_config(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.query_params)
         serializer.is_valid(raise_exception=True)
@@ -73,8 +74,6 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
         res = self.sorted_list(res)
         return SucResponse(data=res)
 
-    # @classmethod
-    # def get_markdown(cls):
 
 
 if __name__ == '__main__':

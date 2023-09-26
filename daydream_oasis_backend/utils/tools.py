@@ -1,67 +1,14 @@
-import base64
-import os
-from re import search, findall
+from re import search
 from datetime import datetime
-from time import time, localtime, strftime, strptime, mktime
 import calendar
 import pyecharts.options as opts
 from pyecharts.charts import Timeline, Bar, Pie
 from pyecharts.globals import ThemeType
-import heapq
 from os.path import join
 import hashlib
 from typing import Union
 import orjson
 from log.models import Action
-
-
-# 时间戳转换成日期
-def timestamp_to_date(timestamp):
-    # 转换为其他日期格式,如:"%Y-%m-%d %H:%M:%S"
-    timeArray = localtime(timestamp)  # 30/12/2020 21:05:19
-    otherStyleTime = strftime("%Y-%m-%d %H:%M:%S", timeArray)
-    return otherStyleTime
-
-
-# 把时间转换成秒数
-def str_to_timestamp(str_time=None, format='%Y-%m-%d %H:%M:%S'):
-    if str_time:
-        time_tuple = strptime(str_time, format)  # 把格式化好的时间转换成元祖
-        result = mktime(time_tuple)  # 把时间元祖转换成时间戳
-        return int(result)
-    return int(time())
-
-
-# base64数据转换成图片 返回图片保存的路径
-def base64ToPicture(dataList, title, path='static/image/imgInBlog'):
-    # 去掉文件名中的特殊符号
-    for i in '/ \:*"<>|?.':
-        title = title.replace(i, '')
-    title = title + str(time())
-
-    date = timestamp_to_date(time()).split(' ')[0].replace('-', '')
-    fileNameList = []
-    for data in dataList:
-        imgdata = base64.b64decode(data)
-        fileName = title + str(dataList.index(data)) + '.png'
-        path = f'{path}/{date}/'
-        if not os.path.exists(path):
-            os.mkdir(path)
-        f = open(path + fileName, 'wb')
-        f.write(imgdata)
-        f.close()
-        fileNameList.append(f'{path}' + fileName)
-    return fileNameList
-
-
-# 返回替换后的content
-def returnNewContent(content, title):
-    imgDataList = findall(r'<img src="data:image/png;base64,(.*?)alt="">', content)  # 取消贪婪模式
-    imgPathList = base64ToPicture(imgDataList, title)  # 把博客中的base64转成图片保存到本地
-    for i in imgPathList:  # 把博客内容中的图片数据改成对应的图片路径
-        content = content.replace(rf'<img src="data:image/png;base64,{imgDataList[imgPathList.index(i)]}alt="">',
-                                  f'<img src="http://www.lll.plus/{i}">', 1)  # 每次只替换一次
-    return content
 
 
 # 返回某一年某一个月的所有日期
@@ -466,7 +413,8 @@ def action_log():
             def __getattribute__(self, action):
                 attr = super().__getattribute__(action)
                 action_class = cls.__name__
-                if callable(attr) and action_class in self.action_mapping and action in self.action_mapping[action_class]:
+                if callable(attr) and action_class in self.action_mapping and action in self.action_mapping[
+                    action_class]:
                     # 记录
                     def wrapped(request, *args, **kwargs):
                         res = attr(self, request, *args, **kwargs)
@@ -488,19 +436,5 @@ def action_log():
     return inner
 
 
-@action_log()
-class A:
-    aa = 111
-
-    def fun(self):
-        ...
-
-    @classmethod
-    def happy(self):
-        ...
-
-
 if __name__ == '__main__':
-    a = A()
-    a.happy()
-    a.aa
+    ...

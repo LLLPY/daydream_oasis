@@ -3,7 +3,6 @@ from typing import List, Dict
 import jieba
 from django.db import models
 from daydream_oasis_backend.config.base import MEDIA_URL
-from utils.my_cache import my_cache
 from PIL.Image import open as imgOpen, ANTIALIAS
 from os.path import isfile
 from log.logger import logger
@@ -127,7 +126,6 @@ class BaseModel(models.Model):
 
     # 提取内容中的关键词
     @classmethod
-    @my_cache(timeout=60 * 60)
     def get_keyword_list(cls, s: str):
 
         with open('tmp/stopwords.txt', 'r', encoding='utf8') as f:
@@ -185,6 +183,5 @@ class FriendLink(BaseModel):
         ordering = ['-weight']
 
     @classmethod
-    @my_cache(timeout=60)
     def get_friend_link(cls, fields):
         return cls.objects.values(*fields)

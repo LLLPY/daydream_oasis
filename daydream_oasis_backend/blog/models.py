@@ -2,13 +2,11 @@ import datetime
 from typing import Dict, List
 from ckeditor_uploader.fields import RichTextUploadingField
 from common.models import BaseModel
-from utils.my_cache import my_cache
 from django.db import models
 from django.db.models import Q
 from lxml import etree
 from user.models import User
 from utils.collaborative_filltering import cf_user
-from django.core.cache import cache
 
 
 # 博客分类
@@ -191,16 +189,11 @@ class Blog(BaseModel):
         return tmp_blog
 
     @classmethod
-    @my_cache(60 * 60)
     def recommend(cls, user, action_data, blog_list=[]):
 
         # 添加缓存，提高性能
-        if not blog_list:
-            blog_list = cache.get('blog_list')
-            if not blog_list:
-                blog_list = cls.objects.filter(is_deleted=False).only('id', 'title', 'avatar', 'abstract', 'pv',
+        blog_list = cls.objects.filter(is_deleted=False).only('id', 'title', 'avatar', 'abstract', 'pv',
                                                                       'create_time', 'is_top', 'author', 'category')
-                cache.set('blog_list', blog_list, 3600)
 
         # 根据用户操作的历史数据来生成推荐列表
 
@@ -270,7 +263,6 @@ class Comment(BaseModel):
         return cls.objects.filter(Q(blog=blog) & Q(is_deleted=False)).count()
 
     @classmethod
-    @my_cache(60)
     def get_all_by_blog(cls, blog_id: str) -> List[Dict]:
         comment_list = Comment.objects.filter(
             Q(blog_id=blog_id) & Q(is_deleted=False))
