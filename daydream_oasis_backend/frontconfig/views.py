@@ -6,6 +6,7 @@ from .serializers import FrontConfigSerializers
 from common.drf.response import SucResponse
 from utils import tools
 import orjson
+import re
 
 
 # @tools.action_log()
@@ -55,11 +56,21 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
     def get_nav_config(self, request, *args, **kwargs):
         ...
 
+    @classmethod
+    def sorted_list(cls, data):
+        '''对文件名进行排序'''
+        data.sort(key=lambda item: chr(int(re.match(r'\d+', item['text']).group())) if re.match(r'\d+', item['text']) else item['text'])
+        for item in data:
+            if item.get('items'):
+                cls.sorted_list(item.get('items'))
+        return data
+
     @action(methods=['get', ], detail=False)
     def get_sidebar_config(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.query_params)
         serializer.is_valid(raise_exception=True)
         res = self.tree(self.blog_dir)['items']
+        res = self.sorted_list(res)
         return SucResponse(data=res)
 
     # @classmethod
