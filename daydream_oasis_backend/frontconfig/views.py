@@ -64,7 +64,6 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
                 cls.sorted_list(item.get('items'))
         return data
 
-
     @action(methods=['get', ], detail=False)
     def get_sidebar_config(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.query_params)
