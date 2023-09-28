@@ -1,6 +1,6 @@
 from django.contrib import admin
 from daydream_oasis_backend.admin_site import my_site
-from user.admin import MyBaseAdmin
+from common.admin import MyBaseAdmin
 from blog.adminforms import BlogAdminForm
 from blog.models import Comment, Collection, Tag, Blog, Category, Search, Recommend, Like
 from user.models import User

@@ -1,12 +1,20 @@
 import {defineConfig} from 'vitepress'
 import {getSidebarData, getNavData} from './utils.mjs'
-// https://vitepress.dev/reference/site-config
-
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import vue from '@vitejs/plugin-vue'
 
 export default getSidebarData().then(sidebar => {
 
     return defineConfig(
         {
+            // plugins: [
+            //     vue(),
+            //     Components({
+            //         resolvers: [ElementPlusResolver()],
+            //     }),
+            // ],
+
             lang: 'en-US', //zh-CN|en-US
             title: "白日梦想园",
             description: "Daydream Oasis是一个致力于启发和创造的博客系统，为您提供了一个欣赏、分享和沉浸在各种幻想和梦想中的机会。Daydream Oasis将成为您的梦想之家。",
@@ -14,13 +22,11 @@ export default getSidebarData().then(sidebar => {
             // 忽略死链
             ignoreDeadLinks: true,
             lastUpdated: true,
-            head: [[
-                'link',
-                {
-                    rel: 'icon',
-                    // href: '/favicon.ico'
-                }
-            ]],
+            head: [
+                // ['link', {rel: 'icon', href: 'favicon.ico'}],
+                // ['link', {rel: 'stylesheet', href: 'element-plus/es/components/message/style/css'}],
+                // ['script', { src: 'https://unpkg.com/element-ui/lib/index.js'}],
+            ],
             themeConfig: {
                 i18nRouting: true,
                 // site title

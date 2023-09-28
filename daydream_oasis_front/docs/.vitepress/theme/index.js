@@ -6,6 +6,7 @@ import TopList from "../../../src/components/TopList.vue";
 import Logo from "../../../src/components/Logo.vue";
 import ActionBox from "../../../src/components/ActionBox.vue";
 import BlogInfo from "../../../src/components/BlogInfo.vue";
+import MessageBox from "../../../src/components/MessageBox.vue";
 
 // 扩展默认的主题
 export default {
@@ -18,5 +19,6 @@ export default {
         app.component('Logo', Logo);
         app.component('ActionBox', ActionBox);
         app.component('BlogInfo', BlogInfo);
+        // app.component('MessageBox', MessageBox);
     }
 }

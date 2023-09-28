@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import Q
 from lxml import etree
 from user.models import User
-from utils.collaborative_filltering import cf_user
+# from utils.collaborative_filltering import cf_user
 
 
 # 博客分类

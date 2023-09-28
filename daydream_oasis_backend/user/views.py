@@ -3,7 +3,7 @@ from random import choices
 from django.contrib.auth.hashers import check_password
 from user.models import User, ChatRecord
 from user.serializers import UserSerializers
-from utils.message_service import send_message
+# from utils.message_service import send_message
 from django.contrib.auth import login as default_login
 from django.contrib.auth import logout as default_logout
 from rest_framework import viewsets

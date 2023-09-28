@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'common',  # 公共部分
     'task',  # 任务
     'frontconfig',  # 前端配置
+    'corsheaders',  # CORS跨域问题
 
 ]
 
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'common.middleware.MiddelWare.MyMiddleWare',  # 自己定义的中间件
     'debug_toolbar.middleware.DebugToolbarMiddleware',  # 性能测试
+    'corsheaders.middleware.CorsMiddleware'
 
 ]
 
@@ -169,3 +171,8 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.SessionAuthentication',
     # ]
 }
+
+
+# 允许所有来源访问
+CORS_ORIGIN_ALLOW_ALL = True
+

@@ -1,41 +1,62 @@
 {
-  "hash": "82ff07a2",
-  "browserHash": "32ef6578",
+  "hash": "564af5c2",
+  "browserHash": "5d424b8f",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "5dd7f7d3",
+      "fileHash": "234e49fa",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/lib/esm/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "830a12f1",
+      "fileHash": "c6bc19e4",
       "needsInterop": false
     },
     "vitepress > @vueuse/integrations/useFocusTrap": {
       "src": "../../../../node_modules/@vueuse/integrations/useFocusTrap.mjs",
       "file": "vitepress___@vueuse_integrations_useFocusTrap.js",
-      "fileHash": "26539659",
+      "fileHash": "e96da0b8",
       "needsInterop": false
     },
     "vitepress > mark.js/src/vanilla.js": {
       "src": "../../../../node_modules/mark.js/src/vanilla.js",
       "file": "vitepress___mark__js_src_vanilla__js.js",
-      "fileHash": "785b62d0",
+      "fileHash": "104cfcb3",
       "needsInterop": false
     },
     "vitepress > minisearch": {
       "src": "../../../../node_modules/minisearch/dist/es/index.js",
       "file": "vitepress___minisearch.js",
-      "fileHash": "49d9a438",
+      "fileHash": "bc41ade7",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "04372f61",
+      "needsInterop": false
+    },
+    "element-plus": {
+      "src": "../../../../node_modules/element-plus/es/index.mjs",
+      "file": "element-plus.js",
+      "fileHash": "08651a9c",
+      "needsInterop": false
+    },
+    "element-plus/es/components/message/style/css": {
+      "src": "../../../../node_modules/element-plus/es/components/message/style/css.mjs",
+      "file": "element-plus_es_components_message_style_css.js",
+      "fileHash": "a4a96521",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-V634PGSD": {
-      "file": "chunk-V634PGSD.js"
+    "chunk-FWL6CYUC": {
+      "file": "chunk-FWL6CYUC.js"
+    },
+    "chunk-UXIASGQL": {
+      "file": "chunk-UXIASGQL.js"
     }
   }
 }

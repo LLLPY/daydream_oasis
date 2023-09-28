@@ -1,17 +1,16 @@
 from blog.serializers import BlogSerializers, CategorySerializers, TagSerializers, CommentSerializers, \
     CollectionSerializers, LikeSerializers
 from blog.models import Comment, Collection, Blog, Like, Category, Tag
-from log.models import Action
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from user.models import User
 from common.drf.response import SucResponse
 from common.drf.mixin import InstanceMixin
+from common.views import BaseViewSet
 from utils import tools
 
 
 @tools.action_log()
-class BlogViewSet(viewsets.ModelViewSet, InstanceMixin):
+class BlogViewSet(BaseViewSet):
     serializer_class = BlogSerializers
     queryset = Blog.objects.all()
 
@@ -77,7 +76,7 @@ class BlogViewSet(viewsets.ModelViewSet, InstanceMixin):
         '''排行榜'''
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(BaseViewSet):
     serializer_class = CategorySerializers
     queryset = Category.objects.all()
 
@@ -85,7 +84,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         '分类列表'
 
 
-class TagViewSet(viewsets.ModelViewSet):
+class TagViewSet(BaseViewSet):
     serializer_class = TagSerializers
     queryset = Tag.objects.all()
 
