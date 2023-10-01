@@ -7,6 +7,7 @@ from common.drf.response import SucResponse
 from common.drf.mixin import InstanceMixin
 from common.views import BaseViewSet
 from utils import tools
+from common.exception import exception
 
 
 @tools.action_log()
@@ -75,6 +76,27 @@ class BlogViewSet(BaseViewSet):
     def top_list(self, request, *args, **kwargs):
         '''排行榜'''
 
+    @action(methods=['get', 'post'], detail=True)
+    def like(self, request, *args, **kwargs):
+        '''点赞'''
+
+        blog = self.get_object()
+
+        key = f'like:{self.request.user.id}:{blog.id}'
+        success = self.redis_conn.setnx(key, 'liked')
+        if not success:
+            return exception.CustomValidationError('3秒内不能重复点赞哟!')
+
+        # 3秒内只能点一次赞
+        self.redis_conn.expire(key, 3)
+
+        like_obj = Like()
+        like_obj.user = self.request.user
+        like_obj.blog = blog
+        like_obj.save()
+
+        return SucResponse('点赞成功!')
+
 
 class CategoryViewSet(BaseViewSet):
     serializer_class = CategorySerializers
@@ -130,12 +152,8 @@ class CollectionViewSet(viewsets.ModelViewSet):
     queryset = Collection.objects.all()
 
 
-
-
 # 点赞
 @tools.action_log()
 class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializers
     queryset = Like.objects.all()
-
-

@@ -6,15 +6,12 @@ from user.serializers import UserSerializers
 # from utils.message_service import send_message
 from django.contrib.auth import login as default_login
 from django.contrib.auth import logout as default_logout
-from rest_framework import viewsets
 from common.exception import exception
 from rest_framework.decorators import action
 from common.drf.response import SucResponse
-from django_redis import get_redis_connection
 from django.contrib.auth.hashers import make_password
+from common.views import BaseViewSet
 
-# redis连接对象
-redis_conn = get_redis_connection('default')
 
 # 在登录中往往都需要使用post请求，在使用该请求是，需要进行csrf_token的验证，通过该验证有3中方法
 '''
@@ -24,7 +21,7 @@ redis_conn = get_redis_connection('default')
 '''
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(BaseViewSet):
     serializer_class = UserSerializers
     queryset = User.objects.all()
 
@@ -37,7 +34,7 @@ class UserViewSet(viewsets.ModelViewSet):
         code = serializer.data.get('code')
 
         # 比较验证码是否正确
-        local_code = redis_conn.get(f'register:code:{mobile}')
+        local_code = self.redis_conn.get(f'register:code:{mobile}')
         if not local_code:
             raise exception.CustomValidationError('验证码已过期,请重新发送!')
 
@@ -70,7 +67,7 @@ class UserViewSet(viewsets.ModelViewSet):
         password = serializer.data.get('password')
 
         # 比较验证码是否正确
-        local_code = redis_conn.get(f'modify_password:code:{mobile}')
+        local_code = self.redis_conn.get(f'modify_password:code:{mobile}')
         if not local_code:
             raise exception.CustomValidationError('验证码已过期,请重新发送!')
 
@@ -116,7 +113,7 @@ class UserViewSet(viewsets.ModelViewSet):
         action = serializer.data.get('action')
         verify_code = serializer.data.get('code')  # 验证码
 
-        local_verify_code = redis_conn.get(f'verify_code:{mobile}')
+        local_verify_code = self.redis_conn.get(f'verify_code:{mobile}')
         if verify_code != local_verify_code:
             raise exception.CustomValidationError('验证码不正确!')
 
@@ -125,12 +122,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
         # 随机验证码
         local_code = ''.join(map(str, choices(range(9), k=4)))
-        success = redis_conn.setnx(key, local_code)
+        success = self.redis_conn.setnx(key, local_code)
         if not success:
-            raise exception.CustomValidationError(f'验证码已发送,距离下次可发送时间为:{redis_conn.ttl(key)}s')
+            raise exception.CustomValidationError(f'验证码已发送,距离下次可发送时间为:{self.redis_conn.ttl(key)}s')
 
         # 设置过期时间
-        redis_conn.expire(key, 60 * 5)
+        self.redis_conn.expire(key, 60 * 5)
 
         if action == 'register':
             if User.get_by_mobile(mobile):
@@ -138,25 +135,25 @@ class UserViewSet(viewsets.ModelViewSet):
 
         # 获取今天发送短信的次数
         used_key = f'used:{mobile}'
-        use_count = redis_conn.get(used_key, 0)
+        use_count = self.redis_conn.get(used_key, 0)
         if use_count >= 3:
             raise exception.CustomValidationError('一天最多可发送3次短信!')
 
         # 发送短信
-        send_success = send_message(phoneNumber=mobile, code=local_code)
+        send_success = self.send_message(phoneNumber=mobile, code=local_code)
         if send_success:
 
             # 计算当前距离明天的时间 每天只能发送3次短信
             now = datetime.now()
             expired = (timedelta(hours=24, minutes=0, seconds=0) - timedelta(hours=now.hour, minutes=now.minute, seconds=now.second)).seconds
-            redis_conn.set(used_key, use_count + 1)
-            redis_conn.expire(used_key, expired)
+            self.redis_conn.set(used_key, use_count + 1)
+            self.redis_conn.expire(used_key, expired)
 
             return SucResponse('验证码已发送至您的手机,请注意查收!')
         else:
 
             # 发送失败就删除验证码的缓存
-            redis_conn.delete(key)
+            self.redis_conn.delete(key)
             raise exception.CustomValidationError('验证码发送失败!')
 
     # 退出登录

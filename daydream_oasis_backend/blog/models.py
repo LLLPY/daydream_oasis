@@ -322,9 +322,6 @@ class Like(BaseModel):
     # 被点赞的博客
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被点赞的博客', help_text='被点赞的博客')
 
-    # 是否取消点赞
-    is_canceled = models.BooleanField(default=False, verbose_name='点赞是否已取消', help_text='点赞是否已取消')
-
     class Meta:
         db_table = '点赞'
         verbose_name = verbose_name_plural = db_table

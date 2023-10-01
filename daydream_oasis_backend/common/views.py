@@ -1,10 +1,13 @@
 from rest_framework import viewsets
 from common.drf.mixin import InstanceMixin
 from common.drf.response import SucResponse
+from django_redis import get_redis_connection
 
 
 class BaseViewSet(viewsets.ModelViewSet, InstanceMixin):
 
+    # redis连接对象
+    redis_conn = get_redis_connection('default')
     def list(self, request, *args, **kwargs):
         res = super().list(request, *args, **kwargs)
         print(res.headers)
