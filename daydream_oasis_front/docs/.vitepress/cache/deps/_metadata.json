@@ -1,53 +1,59 @@
 {
-  "hash": "564af5c2",
-  "browserHash": "5d424b8f",
+  "hash": "b5953599",
+  "browserHash": "3a9a5abc",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "234e49fa",
+      "fileHash": "14150bd3",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/lib/esm/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "c6bc19e4",
+      "fileHash": "98f54cad",
       "needsInterop": false
     },
     "vitepress > @vueuse/integrations/useFocusTrap": {
       "src": "../../../../node_modules/@vueuse/integrations/useFocusTrap.mjs",
       "file": "vitepress___@vueuse_integrations_useFocusTrap.js",
-      "fileHash": "e96da0b8",
+      "fileHash": "7cd52a08",
       "needsInterop": false
     },
     "vitepress > mark.js/src/vanilla.js": {
       "src": "../../../../node_modules/mark.js/src/vanilla.js",
       "file": "vitepress___mark__js_src_vanilla__js.js",
-      "fileHash": "104cfcb3",
+      "fileHash": "eaff28db",
       "needsInterop": false
     },
     "vitepress > minisearch": {
       "src": "../../../../node_modules/minisearch/dist/es/index.js",
       "file": "vitepress___minisearch.js",
-      "fileHash": "bc41ade7",
+      "fileHash": "b3571db3",
+      "needsInterop": false
+    },
+    "@documate/vue": {
+      "src": "../../../../node_modules/@documate/vue/dist/documate.js",
+      "file": "@documate_vue.js",
+      "fileHash": "168c29dd",
       "needsInterop": false
     },
     "axios": {
       "src": "../../../../node_modules/axios/index.js",
       "file": "axios.js",
-      "fileHash": "04372f61",
-      "needsInterop": false
-    },
-    "element-plus": {
-      "src": "../../../../node_modules/element-plus/es/index.mjs",
-      "file": "element-plus.js",
-      "fileHash": "08651a9c",
+      "fileHash": "9cffac50",
       "needsInterop": false
     },
     "element-plus/es/components/message/style/css": {
       "src": "../../../../node_modules/element-plus/es/components/message/style/css.mjs",
       "file": "element-plus_es_components_message_style_css.js",
-      "fileHash": "a4a96521",
+      "fileHash": "d648139a",
+      "needsInterop": false
+    },
+    "element-plus": {
+      "src": "../../../../node_modules/element-plus/es/index.mjs",
+      "file": "element-plus.js",
+      "fileHash": "e19d5072",
       "needsInterop": false
     }
   },

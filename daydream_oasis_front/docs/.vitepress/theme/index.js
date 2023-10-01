@@ -7,11 +7,19 @@ import Logo from "../../../src/components/Logo.vue";
 import ActionBox from "../../../src/components/ActionBox.vue";
 import BlogInfo from "../../../src/components/BlogInfo.vue";
 import MessageBox from "../../../src/components/MessageBox.vue";
+import {h} from 'vue'
+import Documate from '@documate/vue'
+import '@documate/vue/dist/style.css'
 
 // 扩展默认的主题
 export default {
     ...DefaultTheme,
-    Layout:MyLayout,
+    // Layout:MyLayout,
+    Layout: h(MyLayout, null, {
+        'nav-bar-content-before': () => h(Documate, {
+            endpoint: 'https://rm6pzfp19v.us.aircode.run/ask',
+        }),
+    }),
     enhanceApp({app}) {
         app.component('Login', Login);
         app.component('TagList', TagList);
@@ -19,6 +27,6 @@ export default {
         app.component('Logo', Logo);
         app.component('ActionBox', ActionBox);
         app.component('BlogInfo', BlogInfo);
-        // app.component('MessageBox', MessageBox);
+        app.component('MessageBox', MessageBox);
     }
 }

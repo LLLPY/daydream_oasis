@@ -23,9 +23,10 @@ export default getSidebarData().then(sidebar => {
             ignoreDeadLinks: true,
             lastUpdated: true,
             head: [
-                // ['link', {rel: 'icon', href: 'favicon.ico'}],
+                // ['link', {rel: 'icon', href: 'favicon.ico'}],fv bnb nm
                 // ['link', {rel: 'stylesheet', href: 'element-plus/es/components/message/style/css'}],
-                // ['script', { src: 'https://unpkg.com/element-ui/lib/index.js'}],
+                ['link', {rel: 'stylesheet', href: 'http://localhost:8000/static/font/iconfont.css'}],
+                ['script', { src: 'http://localhost:8000/static/font/iconfont.js'}],
             ],
             themeConfig: {
                 i18nRouting: true,
@@ -54,7 +55,7 @@ export default getSidebarData().then(sidebar => {
                 sidebar: sidebar,
                 // 显示h2到h6的标题
                 outline: 'deep',
-                outlineTitle: '文章目录',
+                outlineTitle: '目录',
 
                 // 社交连接
                 socialLinks: [

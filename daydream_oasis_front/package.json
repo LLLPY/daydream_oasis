@@ -8,9 +8,11 @@
     "preview": "vite preview",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "documate:upload": "documate upload"
   },
   "dependencies": {
+    "@documate/vue": "^0.3.1",
     "axios": "^1.5.0",
     "element-plus": "^2.3.14",
     "live2d-widget": "^3.0.5",
@@ -22,6 +24,7 @@
     "vue-router": "^4.2.4"
   },
   "devDependencies": {
+    "@documate/documate": "^0.2.1",
     "@vitejs/plugin-vue": "^4.3.1",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.2",
