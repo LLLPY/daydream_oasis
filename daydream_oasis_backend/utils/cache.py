@@ -5,8 +5,11 @@
 from functools import wraps
 from django_redis import get_redis_connection
 from utils import tools
+import pickle
 
 redis_conn = get_redis_connection('default')
+
+
 def my_cache(timeout=60 * 60):
     # 生成唯一标识
     def make_key(*args, **kwargs):
@@ -26,11 +29,12 @@ def my_cache(timeout=60 * 60):
 
             res = redis_conn.get(key)
             if res is not None:
-                return res
+                return pickle.loads(res)
             # 否者执行函数获取返回值
             else:
                 res = func(*args, **kwargs)
-                redis_conn.set(key, res)
+
+                redis_conn.set(key, pickle.dumps(res))
                 redis_conn.expire(key, timeout)
                 return res
 

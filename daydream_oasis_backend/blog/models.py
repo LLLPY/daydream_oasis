@@ -71,7 +71,7 @@ class Blog(BaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类', help_text='分类')
 
     # 标签
-    tag_list = models.ManyToManyField(Tag,null=True ,verbose_name='标签', help_text='标签', related_name='blogs')
+    tag_list = models.ManyToManyField(Tag, null=True, verbose_name='标签', help_text='标签', related_name='blogs')
 
     # 摘要
     abstract = models.TextField(max_length=150, null=False, blank=False, verbose_name='摘要', help_text='摘要')
@@ -279,14 +279,14 @@ class Comment(BaseModel):
 
 class LikeMixin:
 
-    @my_cache()
     @classmethod
+    @my_cache(30)
     def get_count(cls, blog: Blog):
         '''获取指定博客的点赞数量'''
         return cls.objects.filter(blog=blog).count()
 
-    @my_cache()
     @classmethod
+    @my_cache(30)
     def status(cls, blog: Blog, user: User):
         '''判断当前用户是否点赞'''
         return cls.objects.filter(blog=blog, user=user).exists()

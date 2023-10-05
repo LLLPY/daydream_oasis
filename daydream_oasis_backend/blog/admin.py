@@ -35,11 +35,11 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
     form = BlogAdminForm
     list_display = ['id','title', 'author', 'category', 'dpv', 'duv', 'pv', 'uv', 'likes',
                     'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top', 'abstract']
-    search_fields = ['id','title', 'author__username', 'category__title', 'abstract']
+    search_fields = ['title', 'author__username', 'category__title', 'abstract']
     list_filter = ['author__username', 'category__title', 'update_time', 'has_deleted']
     fieldsets = [
         ('基本信息', {
-            'fields': ['title', 'avatar', 'author', 'category', 'tags'],
+            'fields': ['title', 'avatar', 'author', 'category', 'tag_list'],
         }),
         ('数据', {
             'fields': ['create_time', 'update_time', 'dpv', 'duv', 'pv', 'uv'],
@@ -61,12 +61,12 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
         return queryset
 
     def likes(self, obj):
-        return Like.get_count_by_blog(obj)
+        return Like.get_count(obj)
 
     likes.short_description = '点赞量'
 
     def collections(self, obj):
-        return Collection.get_count_by_blog(obj)
+        return Collection.get_count(obj)
 
     collections.short_description = '收藏量'
 
