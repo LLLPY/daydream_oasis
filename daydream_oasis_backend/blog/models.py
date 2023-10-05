@@ -71,7 +71,7 @@ class Blog(BaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类', help_text='分类')
 
     # 标签
-    tags = models.ManyToManyField(Tag, verbose_name='标签', help_text='标签', related_name='blogs')
+    tag_list = models.ManyToManyField(Tag,null=True ,verbose_name='标签', help_text='标签', related_name='blogs')
 
     # 摘要
     abstract = models.TextField(max_length=150, null=False, blank=False, verbose_name='摘要', help_text='摘要')
