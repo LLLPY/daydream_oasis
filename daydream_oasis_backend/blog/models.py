@@ -192,7 +192,7 @@ class Blog(BaseModel):
     def recommend(cls, user, action_data, blog_list=[]):
 
         # 添加缓存，提高性能
-        blog_list = cls.objects.filter(is_deleted=False).only('id', 'title', 'avatar', 'abstract', 'pv',
+        blog_list = cls.objects.filter(has_deleted=False).only('id', 'title', 'avatar', 'abstract', 'pv',
                                                                       'create_time', 'is_top', 'author', 'category')
 
         # 根据用户操作的历史数据来生成推荐列表
@@ -260,12 +260,11 @@ class Comment(BaseModel):
     # 根据博客id获取该博客下的评论量
     @classmethod
     def get_count_by_blog(cls, blog: Blog) -> int:
-        return cls.objects.filter(Q(blog=blog) & Q(is_deleted=False)).count()
+        return cls.objects.filter(blog=blog,has_deleted=False).count()
 
     @classmethod
     def get_all_by_blog(cls, blog_id: str) -> List[Dict]:
-        comment_list = Comment.objects.filter(
-            Q(blog_id=blog_id) & Q(is_deleted=False))
+        comment_list = Comment.objects.filter(blog_id=blog_id,has_deleted=False)
         con_list = []
         for comment in comment_list:
             extra_map = {

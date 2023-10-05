@@ -34,9 +34,9 @@ class TagAdmin(admin.ModelAdmin, MyBaseAdmin):
 class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
     form = BlogAdminForm
     list_display = ['id','title', 'author', 'category', 'dpv', 'duv', 'pv', 'uv', 'likes',
-                    'collections', 'comments', 'create_time', 'update_time', 'is_deleted', 'is_top', 'abstract']
+                    'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top', 'abstract']
     search_fields = ['id','title', 'author__username', 'category__title', 'abstract']
-    list_filter = ['author__username', 'category__title', 'update_time', 'is_deleted']
+    list_filter = ['author__username', 'category__title', 'update_time', 'has_deleted']
     fieldsets = [
         ('基本信息', {
             'fields': ['title', 'avatar', 'author', 'category', 'tags'],
@@ -45,7 +45,7 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
             'fields': ['create_time', 'update_time', 'dpv', 'duv', 'pv', 'uv'],
         }),
         ('状态', {
-            'fields': ['is_deleted', 'is_top'],
+            'fields': ['has_deleted', 'is_top'],
         }),
         ('内容', {
             'fields': ['abstract', 'content'],
@@ -79,9 +79,9 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 评论
 @admin.register(Comment, site=my_site)
 class CommentAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'user', 'blog', 'content', 'create_time', 'is_deleted']
+    list_display = ['id', 'user', 'blog', 'content', 'create_time', 'has_deleted']
     search_fields = ['user__username', 'content']
-    list_filter = ['user__username', 'blog__title', 'create_time', 'is_deleted']
+    list_filter = ['user__username', 'blog__title', 'create_time', 'has_deleted']
 
 
 # 收藏
@@ -95,9 +95,9 @@ class CollectionAdmin(admin.ModelAdmin):
 # 点赞
 @admin.register(Like, site=my_site)
 class LikeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'blog', 'is_canceled', 'create_time']
+    list_display = ['id', 'user', 'blog', 'create_time']
     search_fields = ['user', 'blog']
-    list_filter = ['user', 'blog', 'is_canceled', 'create_time']
+    list_filter = ['user', 'blog', 'create_time']
 
 
 # 搜索记录

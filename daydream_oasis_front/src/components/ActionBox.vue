@@ -1,16 +1,16 @@
 <template>
   <div id="action-box">
 <span class="iconfont">
-  <svg class="icon" aria-hidden="true"><use xlink:href="#icon-fenxiang"></use></svg>
+  <svg class="icon" aria-hidden="true" :class="{active:false}"><use xlink:href="#icon-fenxiang"></use></svg>
   <span class="counter">10000</span>
 </span>
     <span class="iconfont">
-  <svg class="icon" aria-hidden="true"><use xlink:href="#icon-shoucang-shoucang"></use></svg>
+  <svg class="icon" aria-hidden="true" :class="{active:has_collected}"><use xlink:href="#icon-shoucang-shoucang"></use></svg>
   <span class="counter">100k</span>
 
 </span>
     <span class="iconfont">
-  <svg class="icon" aria-hidden="true"><use xlink:href="#icon-dianzan_kuai"></use></svg>
+  <svg class="icon" aria-hidden="true" :class="{active:has_liked}"><use xlink:href="#icon-dianzan_kuai"></use></svg>
   <span class="counter">9.8k</span>
 </span>
   </div>
@@ -18,6 +18,29 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+export default {
+  data() {
+    return {
+      blog_id: null,
+      has_liked: false,
+      has_collected: false
+    }
+  },
+  methods: {
+    get_blog_id() {
+      // 获取blog的id
+      this.blog_id = document.getElementsByClassName('info-box')[0].id
+    },
+
+  },
+  mounted() {
+    this.get_blog_id()
+  }
+}
+
+
 </script>
 
 <style scoped>
@@ -25,7 +48,7 @@
   margin-top: 10px;
   overflow: hidden;
   padding: 0.2em;
-  border:1px solid red;
+  border: 1px solid red;
 }
 
 
@@ -54,7 +77,8 @@ span:hover {
   margin: auto;
 }
 
-#action-box span .icon:hover {
+#action-box span .icon:hover,
+#action-box span .active {
   fill: skyblue;
 }
 

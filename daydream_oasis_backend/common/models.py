@@ -10,7 +10,7 @@ from log.logger import logger
 
 class RealManager(models.Manager):
     def get_queryset(self):
-        return super(RealManager, self).get_queryset().filter(is_deleted=0)
+        return super(RealManager, self).get_queryset().filter(has_deleted=0)
 
 
 class BaseModel(models.Model):
@@ -22,7 +22,7 @@ class BaseModel(models.Model):
                                        help_text='最后修改时间')
 
     # 是否删除
-    is_deleted = models.BooleanField(default=False, verbose_name='是否已删除', help_text='是否已删除')
+    has_deleted = models.BooleanField(default=False, verbose_name='是否已删除', help_text='是否已删除')
 
     # desc
     desc = models.CharField(max_length=300, verbose_name='简介', help_text='简介')
@@ -43,7 +43,7 @@ class BaseModel(models.Model):
         return getattr(self, 'title', self)
 
     def delete(self):
-        self.is_deleted = True
+        self.has_deleted = True
         self.save()
 
     def create(self, **kwargs):
