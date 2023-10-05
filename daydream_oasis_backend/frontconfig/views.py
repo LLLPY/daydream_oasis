@@ -4,9 +4,8 @@ import os
 from rest_framework import viewsets, mixins
 from .serializers import FrontConfigSerializers
 from common.drf.response import SucResponse
-from utils import tools
 import re
-from utils.cache import cache
+from utils.cache import my_cache
 
 # @tools.action_log()
 class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):

@@ -1,16 +1,16 @@
 from blog.serializers import BlogSerializers, CategorySerializers, TagSerializers, CommentSerializers, \
     CollectionSerializers, LikeSerializers
-from blog.models import Comment, Collection, Blog, Like, Category, Tag
+from blog.models import Comment, Collection, Blog, Like, Category, Tag, Share
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from common.drf.response import SucResponse
 from common.drf.mixin import InstanceMixin
 from common.views import BaseViewSet
-from utils import tools
 from common.exception import exception
+from log.views import action_log
 
 
-@tools.action_log()
+@action_log()
 class BlogViewSet(BaseViewSet):
     serializer_class = BlogSerializers
     queryset = Blog.objects.all()
@@ -76,6 +76,33 @@ class BlogViewSet(BaseViewSet):
     def top_list(self, request, *args, **kwargs):
         '''排行榜'''
 
+    @action(methods=['get'], detail=True)
+    def action_info(self, request, *args, **kwargs):
+        '''点赞，收藏，分享等行为信息'''
+        blog = self.get_object()
+        user = self.request.user
+
+        # 获取点赞次数和当前的点赞状态
+        liked_count = Like.get_count(blog=blog)
+        liked_status = Like.status(blog=blog, user=user)
+
+        # 获取收藏次数和当前的收藏状态
+        collected_count = Collection.get_count(blog=blog)
+        collected_status = Collection.status(blog=blog, user=user)
+
+        # 获取分享次数
+        shared_count = Share.get_count(blog=blog)
+
+        data = {
+            'liked_count': liked_count,
+            'liked_status': liked_status,
+            'collected_count': collected_count,
+            'collected_status': collected_status,
+            'shared_count': shared_count
+        }
+
+        return SucResponse(data=data)
+
     @action(methods=['get', 'post'], detail=True)
     def like(self, request, *args, **kwargs):
         '''点赞'''
@@ -117,7 +144,7 @@ class SectionViewSet(viewsets.ModelViewSet):
 
 
 # 评论
-@tools.action_log()
+@action_log()
 class CommentViewSet(viewsets.ModelViewSet, InstanceMixin):
     serializer_class = CommentSerializers
     queryset = Comment.objects.all()
@@ -146,14 +173,14 @@ class CommentViewSet(viewsets.ModelViewSet, InstanceMixin):
 
 
 # 收藏
-@tools.action_log()
+@action_log()
 class CollectionViewSet(viewsets.ModelViewSet):
     serializer_class = CollectionSerializers
     queryset = Collection.objects.all()
 
 
 # 点赞
-@tools.action_log()
+@action_log()
 class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializers
     queryset = Like.objects.all()

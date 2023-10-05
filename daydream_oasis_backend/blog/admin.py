@@ -87,9 +87,9 @@ class CommentAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 收藏
 @admin.register(Collection, site=my_site)
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'blog', 'is_canceled', 'create_time']
+    list_display = ['id', 'user', 'blog', 'has_deleted', 'create_time']
     search_fields = ['user', 'blog']
-    list_filter = ['user', 'blog', 'is_canceled', 'create_time']
+    list_filter = ['user', 'blog', 'has_deleted', 'create_time']
 
 
 # 点赞

@@ -33,7 +33,11 @@ export default {
       // 获取blog的id
       this.blog_id = document.getElementsByClassName('info-box')[0].id
     },
+    get_action_info() {
+      axios.get().then(response => {
 
+      })
+    }
   },
   mounted() {
     this.get_blog_id()

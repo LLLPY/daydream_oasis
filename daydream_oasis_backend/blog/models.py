@@ -3,11 +3,12 @@ from typing import Dict, List
 from ckeditor_uploader.fields import RichTextUploadingField
 from common.models import BaseModel
 from django.db import models
-from django.db.models import Q
 from lxml import etree
 from user.models import User
-# from utils.collaborative_filltering import cf_user
+from utils.cache import my_cache
 
+
+# from utils.collaborative_filltering import cf_user
 
 # 博客分类
 class Category(BaseModel):
@@ -64,7 +65,7 @@ class Blog(BaseModel):
     avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
 
     # 专栏
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, verbose_name='专栏', help_text='专栏')
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True, verbose_name='专栏', help_text='专栏')
 
     # 分类
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类', help_text='分类')
@@ -193,7 +194,7 @@ class Blog(BaseModel):
 
         # 添加缓存，提高性能
         blog_list = cls.objects.filter(has_deleted=False).only('id', 'title', 'avatar', 'abstract', 'pv',
-                                                                      'create_time', 'is_top', 'author', 'category')
+                                                               'create_time', 'is_top', 'author', 'category')
 
         # 根据用户操作的历史数据来生成推荐列表
 
@@ -260,11 +261,11 @@ class Comment(BaseModel):
     # 根据博客id获取该博客下的评论量
     @classmethod
     def get_count_by_blog(cls, blog: Blog) -> int:
-        return cls.objects.filter(blog=blog,has_deleted=False).count()
+        return cls.objects.filter(blog=blog, has_deleted=False).count()
 
     @classmethod
     def get_all_by_blog(cls, blog_id: str) -> List[Dict]:
-        comment_list = Comment.objects.filter(blog_id=blog_id,has_deleted=False)
+        comment_list = Comment.objects.filter(blog_id=blog_id, has_deleted=False)
         con_list = []
         for comment in comment_list:
             extra_map = {
@@ -276,45 +277,23 @@ class Comment(BaseModel):
         return con_list
 
 
-# 收藏记录表
-class Collection(BaseModel):
-    # 收藏人
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='收藏人', help_text='收藏人')
+class LikeMixin:
 
-    # 被收藏的博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被收藏的博客', help_text='被收藏的博客')
-
-    # 是否取消收藏
-    is_canceled = models.BooleanField(default=False, verbose_name='收藏是否已取消', help_text='收藏是否已取消')
-
-    class Meta:
-        db_table = '收藏'
-        verbose_name = verbose_name_plural = db_table
-
-    # 判断某一篇文章是否被某一个用户收藏了
+    @my_cache()
     @classmethod
-    def is_collected(cls, user: 'User', blog: 'Blog') -> [int, int]:
+    def get_count(cls, blog: Blog):
+        '''获取指定博客的点赞数量'''
+        return cls.objects.filter(blog=blog).count()
 
-        if not user.is_authenticated:
-            return 0, 0
-
-        tmp_collection = cls.objects.filter(
-            Q(user=user) & Q(blog=blog)).first()
-        if tmp_collection:
-            if tmp_collection.is_canceled:
-                return tmp_collection.id, 0
-            else:
-                return tmp_collection.id, 1
-        else:
-            return 0, 0
-
+    @my_cache()
     @classmethod
-    def get_count_by_blog(cls, blog: Blog) -> int:
-        return cls.objects.filter(Q(blog=blog) & Q(is_canceled=False)).count()
+    def status(cls, blog: Blog, user: User):
+        '''判断当前用户是否点赞'''
+        return cls.objects.filter(blog=blog, user=user).exists()
 
 
 # 点赞记录表
-class Like(BaseModel):
+class Like(BaseModel, LikeMixin):
     # 点赞人
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='点赞人', help_text='点赞人')
 
@@ -325,23 +304,31 @@ class Like(BaseModel):
         db_table = '点赞'
         verbose_name = verbose_name_plural = db_table
 
-    # 判断某一篇文章是否被某一个用户点赞了
-    @classmethod
-    def is_liked(cls, user: 'User', blog: 'Blog') -> [int, int]:
-        if not user.is_authenticated:
-            return 0, 0
-        tmp_like = cls.objects.filter(Q(user=user) & Q(blog=blog)).first()
-        if tmp_like:
-            if tmp_like.is_canceled:
-                return tmp_like.id, 0
-            else:
-                return tmp_like.id, 1
-        else:
-            return 0, 0
 
-    @classmethod
-    def get_count_by_blog(cls, blog: Blog) -> int:
-        return cls.objects.filter(Q(blog=blog) & Q(is_canceled=False)).count()
+# 收藏记录表
+class Collection(BaseModel, LikeMixin):
+    # 收藏人
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='收藏人', help_text='收藏人')
+
+    # 被收藏的博客
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被收藏的博客', help_text='被收藏的博客')
+
+    class Meta:
+        db_table = '收藏'
+        verbose_name = verbose_name_plural = db_table
+
+
+# 分享记录表
+class Share(BaseModel, LikeMixin):
+    # 分享人
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='分享人', help_text='分享人')
+
+    # 被分享的博客
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被分享的博客', help_text='被分享的博客')
+
+    class Meta:
+        db_table = '分享'
+        verbose_name = verbose_name_plural = db_table
 
 
 # 搜索记录表

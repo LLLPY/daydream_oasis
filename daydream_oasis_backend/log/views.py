@@ -1,11 +1,8 @@
 from os.path import join
 from django.http import JsonResponse
-from blog.models import Blog
 from log.models import RequestRecord, Action
 from utils.tools import statisticData
-import json
 import re
-
 
 
 # 返回可视化的代码
@@ -34,21 +31,52 @@ def drawPictureAndWriteToFile():
             f.write(script)
 
 
-# 用户行为记录
-def action_log(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        action = data.get('action')
-        cost_time = data.get('cost_time')
-        blog = Blog.get_by_id(data.get('blog_id'))
-        # 用户行为记录
-        user = request.user if request.user.is_authenticated else None
-        _uuid = request.COOKIES.get('uuid', '-')
-        Action.create(user, _uuid, blog, action, cost_time)
+def action_log():
+    '''用户行为记录装饰器'''
 
-        return JsonResponse({
-            'code': '200',
-            'msg': '响应成功!'
-        })
+    def inner(cls):
+        class DecoratedClass(cls):
+            action_mapping = {
+                'BlogViewSet': {
+                    'retrieve': Action.CLICK,
+                    'reward': Action.REWARD,
+                    'share': Action
+                },
+                'CollectionViewSet': {
+                    'create': Action.COLLECT,
+                    'destroy': Action.CANCEL_COLLECT
+                },
+                'LikeViewSet': {
+                    'create': Action.DOCALL,
+                    'destroy': Action.CANCEL_DOCALL,
+                },
+                'CommentViewSet': {
+                    'create': Action.COMMENT,
+                    'destroy': Action.CANCEL_COMMENT,
+                }
+            }
 
+            def __getattribute__(self, action):
+                attr = super().__getattribute__(action)
+                action_class = cls.__name__
+                if callable(attr) and action_class in self.action_mapping and action in self.action_mapping[
+                    action_class]:
+                    # 记录
+                    def wrapped(request, *args, **kwargs):
+                        res = attr(self, request, *args, **kwargs)
+                        request_data = self.request.data or self.request.query_params
+                        user = request.user if request.user.is_authenticated else None
+                        uuid = request.COOKIES.get('uuid')
+                        blog_id = request_data.get('blog_id')
 
+                        Action.create(user, uuid, blog_id, self.action_mapping[action_class][action], 0)
+
+                        return res
+
+                    return wrapped
+
+                return attr
+
+        return DecoratedClass
+
+    return inner

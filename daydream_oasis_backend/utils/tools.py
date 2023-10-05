@@ -8,7 +8,6 @@ from os.path import join
 import hashlib
 from typing import Union
 import orjson
-from log.models import Action
 
 
 # 返回某一年某一个月的所有日期
@@ -384,56 +383,6 @@ def md5(content: Union[str, bytes, dict]):
     md = hashlib.sha256(content)
     return md.hexdigest()
 
-
-def action_log():
-    '''用户行为记录装饰器'''
-
-    def inner(cls):
-        class DecoratedClass(cls):
-            action_mapping = {
-                'BlogViewSet': {
-                    'retrieve': Action.CLICK,
-                    'reward': Action.REWARD,
-                    'share': Action
-                },
-                'CollectionViewSet': {
-                    'create': Action.COLLECT,
-                    'destroy': Action.CANCEL_COLLECT
-                },
-                'LikeViewSet': {
-                    'create': Action.DOCALL,
-                    'destroy': Action.CANCEL_DOCALL,
-                },
-                'CommentViewSet': {
-                    'create': Action.COMMENT,
-                    'destroy': Action.CANCEL_COMMENT,
-                }
-            }
-
-            def __getattribute__(self, action):
-                attr = super().__getattribute__(action)
-                action_class = cls.__name__
-                if callable(attr) and action_class in self.action_mapping and action in self.action_mapping[
-                    action_class]:
-                    # 记录
-                    def wrapped(request, *args, **kwargs):
-                        res = attr(self, request, *args, **kwargs)
-                        request_data = self.request.data or self.request.query_params
-                        user = request.user if request.user.is_authenticated else None
-                        uuid = request.COOKIES.get('uuid')
-                        blog_id = request_data.get('blog_id')
-
-                        Action.create(user, uuid, blog_id, self.action_mapping[action_class][action], 0)
-
-                        return res
-
-                    return wrapped
-
-                return attr
-
-        return DecoratedClass
-
-    return inner
 
 
 if __name__ == '__main__':

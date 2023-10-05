@@ -10,5 +10,4 @@ class BaseViewSet(viewsets.ModelViewSet, InstanceMixin):
     redis_conn = get_redis_connection('default')
     def list(self, request, *args, **kwargs):
         res = super().list(request, *args, **kwargs)
-        print(res.headers)
         return SucResponse(data=res.data, status=res.status_code, headers=res.headers, content_type=res.content_type,**kwargs)
