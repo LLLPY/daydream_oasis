@@ -62,7 +62,7 @@ def action_log():
                 if callable(attr) and action_class in self.action_mapping and action in self.action_mapping[
                     action_class]:
                     # 记录
-                    def wrapped(request, *args, **kwargs):
+                    def wrapped(self, request, *args, **kwargs):
                         res = attr(self, request, *args, **kwargs)
                         request_data = self.request.data or self.request.query_params
                         user = request.user if request.user.is_authenticated else None

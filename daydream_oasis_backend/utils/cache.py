@@ -33,7 +33,6 @@ def my_cache(timeout=60 * 60):
             # 否者执行函数获取返回值
             else:
                 res = func(*args, **kwargs)
-
                 redis_conn.set(key, pickle.dumps(res))
                 redis_conn.expire(key, timeout)
                 return res

@@ -56,6 +56,7 @@ def custom_exception_handler(exc, context):
 
     # 自定义的异常
     if isinstance(exc, exceptions.CustomValidationError):
+        print(111111111111111111111111111)
         return exc.response
     elif isinstance(exc, rest_exceptions.AuthenticationFailed):
         _, data = exceptions.error_message(

@@ -4,6 +4,7 @@
 
 import os
 from pathlib import Path
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -170,9 +171,9 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.BasicAuthentication',
     #     'rest_framework.authentication.SessionAuthentication',
     # ]
+    # 自定义异常捕获
+    'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
 }
-
 
 # 允许所有来源访问
 CORS_ORIGIN_ALLOW_ALL = True
-

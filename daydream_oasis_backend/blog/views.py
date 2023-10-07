@@ -84,43 +84,42 @@ class BlogViewSet(BaseViewSet):
 
         # 获取点赞次数和当前的点赞状态
         liked_count = Like.get_count(blog=blog)
-        liked_status = Like.status(blog=blog, user=user)
+        has_liked = Like.status(blog=blog, user=user)
 
         # 获取收藏次数和当前的收藏状态
         collected_count = Collection.get_count(blog=blog)
-        collected_status = Collection.status(blog=blog, user=user)
+        has_collected = Collection.status(blog=blog, user=user)
 
         # 获取分享次数
         shared_count = Share.get_count(blog=blog)
 
         data = {
             'liked_count': liked_count,
-            'liked_status': liked_status,
+            'has_liked': has_liked,
             'collected_count': collected_count,
-            'collected_status': collected_status,
+            'has_collected': has_collected,
             'shared_count': shared_count
         }
 
         return SucResponse(data=data)
 
-    @action(methods=['get', 'post'], detail=True)
+    @action(methods=['post'], detail=True)
     def like(self, request, *args, **kwargs):
         '''点赞'''
 
         blog = self.get_object()
+        user = self.request.user
+        if not user.is_authenticated:
+            raise exception.CustomValidationError('请先登录!')
 
-        key = f'like:{self.request.user.id}:{blog.id}'
+        key = f'like:{user.id}:{blog.id}'
         success = self.redis_conn.setnx(key, 'liked')
         if not success:
             return exception.CustomValidationError('3秒内不能重复点赞哟!')
 
         # 3秒内只能点一次赞
         self.redis_conn.expire(key, 3)
-
-        like_obj = Like()
-        like_obj.user = self.request.user
-        like_obj.blog = blog
-        like_obj.save()
+        Like.create(user=self.request.user, blog=blog)
 
         return SucResponse('点赞成功!')
 

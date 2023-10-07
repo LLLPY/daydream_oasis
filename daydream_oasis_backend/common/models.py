@@ -25,10 +25,10 @@ class BaseModel(models.Model):
     has_deleted = models.BooleanField(default=False, verbose_name='是否已删除', help_text='是否已删除')
 
     # desc
-    desc = models.CharField(max_length=300, verbose_name='简介', help_text='简介')
+    desc = models.CharField(max_length=300, blank=True, verbose_name='简介', help_text='简介')
 
     # ip地址
-    ip = models.CharField(max_length=50, verbose_name='IP地址', help_text='IP地址')
+    ip = models.CharField(max_length=50, blank=True, verbose_name='IP地址', help_text='IP地址')
 
     logger = logger
 
@@ -40,17 +40,18 @@ class BaseModel(models.Model):
     objects_all = models.Manager()  # 所有的
 
     def __str__(self) -> str:
-        return getattr(self, 'title', self)
+        return getattr(self, 'title', super().__str__())
 
     def delete(self):
         self.has_deleted = True
         self.save()
 
-    def create(self, **kwargs):
+    @classmethod
+    def create(cls, **kwargs):
+        self = cls()
         '''通用保存接口'''
         for k, v in kwargs.items():
-            if hasattr(self, k):
-                setattr(self, k, v)
+            if hasattr(self, k): setattr(self, k, v)
         self.save()
 
     @classmethod

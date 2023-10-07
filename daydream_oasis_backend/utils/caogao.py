@@ -43,8 +43,10 @@ def tree(old_dir, new_dir, file_types):
         is_dir = os.path.isdir(cur_path)
         exclude_dir = {'__pycache__', '.idea', '.git', 'images', 'dist', '.vs', 'build', '.vscode', 'cache',
                        'node_modules', '项目', 'venv', 'image', 'test', 'AAA', 'fonts', '.ipynb_checkpoints', 'imgs',
-                       'project-demo', 'scrapy学习', 'tools', '爬取的数据', '全网霉霉图片', '网页模板', 'css', 'js', 'imgs', 'web开发总结',
-                       '后端学习', 'SQLite3数据库', 'video', 'image', 'HAPPY', '程序设计比赛', '数学模型', 'GitHub的学习', 'TS',
+                       'project-demo', 'scrapy学习', 'tools', '爬取的数据', '全网霉霉图片', '网页模板', 'css', 'js',
+                       'imgs', 'web开发总结',
+                       '后端学习', 'SQLite3数据库', 'video', 'image', 'HAPPY', '程序设计比赛', '数学模型',
+                       'GitHub的学习', 'TS',
                        }
         new_path = os.path.join(new_dir, path)
         new_path = clear_path(new_path)

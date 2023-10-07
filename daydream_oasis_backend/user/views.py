@@ -3,13 +3,12 @@ from random import choices
 from django.contrib.auth.hashers import check_password
 from user.models import User, ChatRecord
 from user.serializers import UserSerializers
-# from utils.message_service import send_message
+from utils.message_service import send_message
 from django.contrib.auth import login as default_login
 from django.contrib.auth import logout as default_logout
 from common.exception import exception
 from rest_framework.decorators import action
 from common.drf.response import SucResponse
-from django.contrib.auth.hashers import make_password
 from common.views import BaseViewSet
 
 
@@ -140,7 +139,7 @@ class UserViewSet(BaseViewSet):
             raise exception.CustomValidationError('一天最多可发送3次短信!')
 
         # 发送短信
-        send_success = self.send_message(phoneNumber=mobile, code=local_code)
+        send_success = send_message(phoneNumber=mobile, code=local_code)
         if send_success:
 
             # 计算当前距离明天的时间 每天只能发送3次短信

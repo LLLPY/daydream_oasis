@@ -4,7 +4,7 @@ from common.exception import exception
 
 
 class InstanceMixin(object):
-    def get_object(self, raise_on_not_found=False):
+    def get_object(self, raise_on_not_found=True):
         """
         Returns the object the view is displaying.
 

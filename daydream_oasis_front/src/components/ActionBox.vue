@@ -2,16 +2,17 @@
   <div id="action-box">
 <span class="iconfont">
   <svg class="icon" aria-hidden="true" :class="{active:false}"><use xlink:href="#icon-fenxiang"></use></svg>
-  <span class="counter">10000</span>
+  <span class="counter">{{ shared_count }}</span>
 </span>
     <span class="iconfont">
   <svg class="icon" aria-hidden="true" :class="{active:has_collected}"><use xlink:href="#icon-shoucang-shoucang"></use></svg>
-  <span class="counter">100k</span>
+  <span class="counter">{{ collected_count }}</span>
 
 </span>
     <span class="iconfont">
-  <svg class="icon" aria-hidden="true" :class="{active:has_liked}"><use xlink:href="#icon-dianzan_kuai"></use></svg>
-  <span class="counter">9.8k</span>
+  <svg class="icon" aria-hidden="true" :class="{active:has_liked}"><use xlink:href="#icon-dianzan_kuai"
+                                                                        @click="like"></use></svg>
+  <span class="counter">{{ liked_count }}</span>
 </span>
   </div>
 
@@ -25,7 +26,10 @@ export default {
     return {
       blog_id: null,
       has_liked: false,
-      has_collected: false
+      liked_count: 0,
+      has_collected: false,
+      collected_count: 0,
+      shared_count: 0
     }
   },
   methods: {
@@ -34,14 +38,35 @@ export default {
       this.blog_id = document.getElementsByClassName('info-box')[0].id
     },
     get_action_info() {
-      axios.get().then(response => {
 
+      axios.get('http://127.0.0.1:8000/api/blog/' + this.blog_id + '/action_info/').then(response => {
+        const data = response.data.data
+        this.has_liked = data.has_liked
+        this.liked_count = data.liked_count
+        this.has_collected = data.has_collected
+        this.collected_count = data.collected_count
+        this.shared_count = data.shared_count
+
+      })
+    },
+    like() {
+      //   点赞
+      axios.post('http://127.0.0.1:8000/api/blog/' + this.blog_id + '/like/').then(response => {
+        console.log(11111)
+      }).catch(reason => {
+        console.log(reason)
       })
     }
   },
   mounted() {
     this.get_blog_id()
+    this.get_action_info()
+
+  },
+  created() {
+
   }
+
 }
 
 

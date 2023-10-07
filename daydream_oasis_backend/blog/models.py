@@ -6,9 +6,7 @@ from django.db import models
 from lxml import etree
 from user.models import User
 from utils.cache import my_cache
-
-
-# from utils.collaborative_filltering import cf_user
+from utils.collaborative_filltering import cf_user
 
 # 博客分类
 class Category(BaseModel):
@@ -248,9 +246,6 @@ class Comment(BaseModel):
     # 父评论
     parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE, verbose_name='父评论', help_text='父评论')
 
-    # ip地址
-    ip = models.CharField(max_length=32, verbose_name='ip地址', help_text='ip地址')
-
     # 设备 手机 电脑
     client = models.CharField(max_length=20, verbose_name='设备', help_text='设备')
 
@@ -289,6 +284,7 @@ class LikeMixin:
     @my_cache(30)
     def status(cls, blog: Blog, user: User):
         '''判断当前用户是否点赞'''
+        if not user.is_authenticated: return False
         return cls.objects.filter(blog=blog, user=user).exists()
 
 
