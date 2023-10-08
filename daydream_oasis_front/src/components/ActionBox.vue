@@ -35,7 +35,8 @@ export default {
   methods: {
     get_blog_id() {
       // 获取blog的id
-      this.blog_id = document.getElementsByClassName('info-box')[0].id
+      // this.blog_id = document.getElementsByClassName('info-box')[0].id
+      this.blog_id = 1
     },
     get_action_info() {
 
@@ -52,7 +53,6 @@ export default {
     like() {
       //   点赞
       axios.post('http://127.0.0.1:8000/api/blog/' + this.blog_id + '/like/').then(response => {
-        console.log(11111)
       }).catch(reason => {
         console.log(reason)
       })
@@ -86,6 +86,7 @@ export default {
   float: right;
   margin-right: 2em;
   border-radius: 3px;
+  text-align: center;
 }
 
 #action-box .iconfont:first-child {
@@ -103,7 +104,6 @@ span:hover {
   fill: gray;
   overflow: hidden;
   transition: fill 0.5s linear;
-  margin: auto;
 }
 
 #action-box span .icon:hover,

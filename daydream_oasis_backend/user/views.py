@@ -11,7 +11,6 @@ from rest_framework.decorators import action
 from common.drf.response import SucResponse
 from common.views import BaseViewSet
 
-
 # 在登录中往往都需要使用post请求，在使用该请求是，需要进行csrf_token的验证，通过该验证有3中方法
 '''
 1.在settings的MIDDLEWARE中注释掉csrf验证的中间件
@@ -84,10 +83,13 @@ class UserViewSet(BaseViewSet):
     # 登录
     @action(methods=['post'], detail=False)
     def login(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=self.request.data, include_fields=['username', 'password', 'code'])
+        serializer.is_valid(raise_exception=True)
 
-        username = request.POST.get('username')  # 用户名
-        mobile = request.POST.get('mobile')  # 手机号
-        password = request.POST.get('password')
+        username = serializer.data.get('username')  # 用户名
+        # mobile = serializer.data.get('mobile')  # 手机号
+        password = serializer.data.get('password')
+        print(username, password)
         tmp_user = User.get_by_username(username)
 
         # 检查用户是否存在
@@ -101,7 +103,10 @@ class UserViewSet(BaseViewSet):
         # django自带的登录
         default_login(request, tmp_user)
 
-        return SucResponse('登录成功!')
+        res = SucResponse('登录成功!')
+        res.set_cookie('user','root')
+        print(res.cookies)
+        return res
 
     # 发送验证码
     @action(methods=['post'], detail=False)
@@ -144,7 +149,8 @@ class UserViewSet(BaseViewSet):
 
             # 计算当前距离明天的时间 每天只能发送3次短信
             now = datetime.now()
-            expired = (timedelta(hours=24, minutes=0, seconds=0) - timedelta(hours=now.hour, minutes=now.minute, seconds=now.second)).seconds
+            expired = (timedelta(hours=24, minutes=0, seconds=0) - timedelta(hours=now.hour, minutes=now.minute,
+                                                                             seconds=now.second)).seconds
             self.redis_conn.set(used_key, use_count + 1)
             self.redis_conn.expire(used_key, expired)
 

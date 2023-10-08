@@ -15,26 +15,25 @@ hero:
       text: 开始探索
       link: /blog/前端/markdown-examples
     - theme: alt
-      text: API Examples
-      link: /blog/后端/demo
+      text: source code
+      link: https://gitee.com/max-LLL/daydream_oasis/tree/dev/
   
-
-
 features:
   - icon: 🛠️
     title: Simple and minimal, always
     details: Lorem ipsum...
-    link: /blog/front/markdown-examples
+    link: /blog/前端/markdown-examples
     linkText: 了解更多
   - icon: ⚡️
     title: Another cool feature
     details: Lorem ipsum...
-    link: /blog/front/markdown-examples
+    link: /blog/前端/markdown-examples
     linkText: 了解更多
   - icon: 🌞
     title: Another cool feature
     details: Lorem ipsum...
-    link: /blog/front/markdown-examples
+    link: /blog/前端/markdown-examples
     linkText: 了解更多
 
 ---
+

@@ -6,8 +6,10 @@ import datetime
 def clear_path(path):
     return re.sub(r'\d+_|\d+\.|\(|\)|（|）|%|-|lll', '', path)
 
+_id = 1
 
 def to_md(content, type_, title, category, create_time, update_time):
+    global _id
     author = '白日梦想猿'
     tag_list = [category]
     create_time = datetime.datetime.fromtimestamp(create_time).strftime('%Y.%m.%d %H:%M:%S')
@@ -18,13 +20,14 @@ def to_md(content, type_, title, category, create_time, update_time):
     seconds = int(read_time) % 60
     pre_cost_time = f'{minute}分{seconds}秒'
     content = f'''
-<BlogInfo title="{title}" author="{author}" pv=0 read_times=0 pre_cost_time={pre_cost_time} category="{category}" tag_list="{tag_list}" create_time="{create_time}" update_time="{update_time}" />
+<BlogInfo id="{_id}" title="{title}" author="{author}" pv=0 read_times=0 pre_cost_time={pre_cost_time} category="{category}" tag_list="{tag_list}" create_time="{create_time}" update_time="{update_time}" />
 
 ```{type_}
 {content}
 ```
 '''
     print(content)
+    _id += 1
     return content
 
 
@@ -41,13 +44,13 @@ def tree(old_dir, new_dir, file_types):
 
         # 判断当前路径是不是目录r
         is_dir = os.path.isdir(cur_path)
-        exclude_dir = {'__pycache__', '.idea', '.git', 'images', 'dist', '.vs', 'build', '.vscode', 'cache',
-                       'node_modules', '项目', 'venv', 'image', 'test', 'AAA', 'fonts', '.ipynb_checkpoints', 'imgs',
-                       'project-demo', 'scrapy学习', 'tools', '爬取的数据', '全网霉霉图片', '网页模板', 'css', 'js',
-                       'imgs', 'web开发总结',
-                       '后端学习', 'SQLite3数据库', 'video', 'image', 'HAPPY', '程序设计比赛', '数学模型',
-                       'GitHub的学习', 'TS',
-                       }
+        exclude_dir = {
+            '__pycache__', '.idea', '.git', 'images', 'dist', '.vs', 'build', '.vscode', 'cache',
+            'node_modules', '项目', 'venv', 'image', 'test', 'AAA', 'fonts', '.ipynb_checkpoints', 'imgs',
+            'project-demo', 'scrapy学习', 'tools', '爬取的数据', '全网霉霉图片', '网页模板', 'css', 'js',
+            'imgs', 'web开发总结', '后端学习', 'SQLite3数据库', 'video', 'image', 'HAPPY', '程序设计比赛', '数学模型',
+            'GitHub的学习', 'TS',
+        }
         new_path = os.path.join(new_dir, path)
         new_path = clear_path(new_path)
         if is_dir and path not in exclude_dir:
@@ -76,7 +79,6 @@ def tree(old_dir, new_dir, file_types):
                                     type_ = 'html'
                                 elif path.endswith('.vue'):
                                     type_ = 'vue'
-
                                 ff.write(to_md(f.read(), type_, file_name, cagegory, create_time, update_time))
                             number += 1
                         except Exception as e:
@@ -86,7 +88,7 @@ def tree(old_dir, new_dir, file_types):
 if __name__ == '__main__':
     old_dir = r'C:\Users\LLL03\Desktop\python\1.python基础(演练)'
     # new_dir = r'C:\Users\LLL03\Desktop\demo'
-    new_dir = r'C:\Users\LLL03\Desktop\daydream_oasis\daydream_oasis_front\docs\blog\python'
+    new_dir = r'C:\Users\LLL03\Desktop\daydream_oasis\daydream_oasis_front\docs\blog\blog'
     if not os.path.isdir(new_dir):
         os.mkdir(new_dir)
 

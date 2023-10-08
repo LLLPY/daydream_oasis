@@ -17,3 +17,21 @@ export default defineConfig({
 })
 
 
+// 解决跨域
+const proxyMiddleware = require('http-proxy-middleware');
+
+module.exports = {
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
+        }
+      }
+    }
+  }
+};
+
+

@@ -16,15 +16,10 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
     mobile = models.CharField(max_length=11, unique=True, verbose_name='手机', help_text='手机')
 
     # 头像信息 图片上传的逻辑走file应用，这里只用保存地址
-    avatar = models.URLField(default='image/default_user_avatar.png', verbose_name='头像',help_text='头像')
+    avatar = models.URLField(default='image/default_user_avatar.png', verbose_name='头像', help_text='头像')
 
     # job
     job = models.CharField(max_length=20, default='打工的人儿~', verbose_name='职业', help_text='职业')
-
-
-    # 位置
-    longitude = models.FloatField(default=0, verbose_name='经度', help_text='经度')
-    latitude = models.FloatField(default=0, verbose_name='纬度', help_text='纬度')
 
     class Meta:
         db_table = '用户'  # 修改表名
@@ -37,10 +32,6 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
     @classmethod
     def get_by_username(cls, username: str):
         return cls.objects.filter(Q(username=username) | Q(mobile=username)).first()
-
-    @classmethod
-    def get_by_username_and_mobile(cls, username, mobile):
-        return cls.objects.filter(Q(username=username) | Q(mobile=mobile)).first()
 
     @classmethod
     def get_by_mobile(cls, mobile):
@@ -56,12 +47,7 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
         tmp_user.save()
         return tmp_user
 
-    def update_location(self, longitude, latitude):
-        self.longitude = longitude or self.longitude
-        self.latitude = latitude or self.latitude
-        self.save()
-
-    def update_password(self,password):
+    def update_password(self, password):
         self.password = make_password(password)
         self.save()
         return self

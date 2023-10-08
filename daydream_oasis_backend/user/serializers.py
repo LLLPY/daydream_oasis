@@ -6,9 +6,12 @@ from common.exception import exception
 
 # 用户
 class UserSerializers(DynamicFieldsSerializer):
-    mobile = serializers.CharField(max_length=11, min_length=11, required=True, help_text='手机号码')
+    username = serializers.CharField(allow_blank=True, allow_null=True, help_text='用户名')
+    mobile = serializers.CharField(allow_blank=True, max_length=11, min_length=11, allow_null=True,
+                                   help_text='手机号码')
     code = serializers.CharField(required=True, help_text='验证码')
-    action = serializers.CharField(help_text='操作')
+    password = serializers.CharField(required=True, help_text='密码')
+    action = serializers.CharField(allow_null=True, help_text='操作')
 
     def validate_mobile(self, value):
         ...

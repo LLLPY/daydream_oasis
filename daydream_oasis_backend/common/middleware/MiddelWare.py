@@ -22,6 +22,7 @@ import re
 class MyMiddleWare(MiddlewareMixin):
 
     def process_request(self, request):
+        print(11111,request.user)
         # return HttpResponse('后台维护，暂停访问...')
 
         start_time = time.time()
@@ -111,9 +112,6 @@ class MyMiddleWare(MiddlewareMixin):
         # 如果用户登录了就进行用户位置的更新
         if request.user.is_authenticated:
             user = request.user
-            longitude = request.GET.get('longitude') or request.POST.get('longitude')
-            latitude = request.GET.get('latitude') or request.POST.get('latitude')
-            user.update_location(longitude, latitude)
             request.user = user
 
         # 个性推荐

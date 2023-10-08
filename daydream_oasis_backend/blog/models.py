@@ -1,5 +1,4 @@
 import datetime
-from typing import Dict, List
 from ckeditor_uploader.fields import RichTextUploadingField
 from common.models import BaseModel
 from django.db import models
@@ -7,6 +6,8 @@ from lxml import etree
 from user.models import User
 from utils.cache import my_cache
 from utils.collaborative_filltering import cf_user
+import re
+
 
 # 博客分类
 class Category(BaseModel):
@@ -119,47 +120,24 @@ class Blog(BaseModel):
     def get_count_by_category_id(cls, category_id: str) -> int:
         return cls.objects.filter(category_id=category_id).count()
 
-    def to_dict(self, fields: List[str], exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        con = super().to_dict(fields, exclude_list, extra_map)
-        diff_set = set(fields) - set(exclude_list)
-        if 'likes' in diff_set:
-            con['likes'] = Like.get_count_by_blog(self)
-        if 'collections' in diff_set:
-            con['collections'] = Like.get_count_by_blog(self)
-        if 'comments' in diff_set:
-            con['comments'] = Comment.get_count_by_blog(self)
-        return con
-
-    # 搜索
-    @classmethod
-    def search(cls, keyword_list: List[str]):
-        # 使用原生sql语句查询时，%需要成对存在，否则会报错
-        sql = f'''SELECT id, 标题, 封面, 摘要, pv, 创建时间, 是否置顶, 作者, 分类 FROM 博客 where 文章是否已删除="否" and 标题 like "%%{keyword_list[0]}%%" or 文章内容 like "%%{keyword_list[0]}%%"'''
-        for keyword in keyword_list[1:]:
-            sql += f' or 标题 like "%%{keyword}%%" or 文章内容 like "%%{keyword}%%"'
-        # 按照浏览量排序
-        sql += ' order by pv'
-        return cls.objects.raw(sql)
-
     # 更新阅读时长
     def update_read_time(self) -> None:
         '''
         阅读时长计算公式:cost_time=总字数÷平均阅读速度+图片数*5
         '''
-        content = etree.HTML(self.content).xpath('//text()')
-        content = ''.join(
-            [con.replace('\xa0', '').replace('\n', '').replace('\r', '').replace(' ', '') for con in content])
-        text_len = len(str(content))
+        text_list = re.findall(r'[\u4e00-\u9fa5|a-z|A-Z]+', self.content)
+        text_len = len(''.join(text_list))
         img_count = len(etree.HTML(self.content).xpath('//img'))
         avg_speed = 400  # 除以3的原因：内容中除了中文以外可能还有英文
         read_time = 60 * (text_len / avg_speed) / 3 + img_count * 5
         self.read_time = read_time
 
     # 转换阅读时间的显示方式
-    def transform_read_time(self) -> None:
+    def transform_read_time(self):
         minute = int(self.read_time) // 60
         seconds = int(self.read_time) % 60
         self.read_time = f'{minute}分{seconds}秒'
+        return self.read_time
 
     @classmethod
     def create_or_update(cls, _id: str, title: str, avatar: str, category: Category, tag_list: [], content: str,
@@ -256,20 +234,7 @@ class Comment(BaseModel):
     # 根据博客id获取该博客下的评论量
     @classmethod
     def get_count_by_blog(cls, blog: Blog) -> int:
-        return cls.objects.filter(blog=blog, has_deleted=False).count()
-
-    @classmethod
-    def get_all_by_blog(cls, blog_id: str) -> List[Dict]:
-        comment_list = Comment.objects.filter(blog_id=blog_id, has_deleted=False)
-        con_list = []
-        for comment in comment_list:
-            extra_map = {
-                'user': {'fields': ['id', 'username', 'avatar']},
-                'blog': {'fields': ['id']},
-            }
-            con = comment.to_dict(extra_map=extra_map)
-            con_list.append(con)
-        return con_list
+        return cls.objects.filter(blog=blog).count()
 
 
 class LikeMixin:

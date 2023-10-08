@@ -46,16 +46,22 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # 跨域请求
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'common.middleware.MiddelWare.MyMiddleWare',  # 自己定义的中间件
-    'debug_toolbar.middleware.DebugToolbarMiddleware',  # 性能测试
-    'corsheaders.middleware.CorsMiddleware'
-
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True    # 允许任意站点跨域请求
+CORS_ALLOW_CREDENTIALS = True   # 允许发送身份验证
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
 
 ROOT_URLCONF = 'daydream_oasis_backend.urls'
 
@@ -172,8 +178,5 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.SessionAuthentication',
     # ]
     # 自定义异常捕获
-    'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
+    # 'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
 }
-
-# 允许所有来源访问
-CORS_ORIGIN_ALLOW_ALL = True
