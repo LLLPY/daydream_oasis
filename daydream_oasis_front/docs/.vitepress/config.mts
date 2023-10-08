@@ -1,8 +1,5 @@
 import {defineConfig} from 'vitepress'
 import {getSidebarData, getNavData} from './utils.mjs'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import vue from '@vitejs/plugin-vue'
 
 export default getSidebarData().then(sidebar => {
 
@@ -16,10 +13,9 @@ export default getSidebarData().then(sidebar => {
             ignoreDeadLinks: true,
             lastUpdated: true,
             head: [
-                // ['link', {rel: 'icon', href: 'favicon.ico'}],fv bnb nm
-                // ['link', {rel: 'stylesheet', href: 'element-plus/es/components/message/style/css'}],
+                ['link', {rel: 'icon', href: 'http://www.lll.plus/static/image/favorite.ico'}],
                 ['link', {rel: 'stylesheet', href: 'http://localhost:8000/static/font/iconfont.css'}],
-                ['script', { src: 'http://localhost:8000/static/font/iconfont.js'}],
+                ['script', {src: 'http://localhost:8000/static/font/iconfont.js'}],
             ],
             themeConfig: {
                 i18nRouting: true,
@@ -53,18 +49,14 @@ export default getSidebarData().then(sidebar => {
                 // 社交连接
                 socialLinks: [
                     {
-                        icon: {
-                            svg: '<svg role="img" viewBox="0 0 24 24" xmlns="https://e-assets.gitee.com/gitee-community-web/_next/static/media/logo-white.a5b0e29c.svg"></svg>'
-                        },
+                        icon: {svg: '<svg role="img" viewBox="0 0 24 24" xmlns="https://e-assets.gitee.com/gitee-community-web/_next/static/media/logo-white.a5b0e29c.svg"></svg>'},
                         link: 'https://gitee.com/max-LLL',
-
                     },
                     {icon: 'github', link: 'https://github.com/LLLPY'},
 
                 ],
                 //   网站logo
                 // logo: 'http://www.lll.plus/static/image/favorite.ico',
-
 
                 //底部
                 footer: {
@@ -78,14 +70,9 @@ export default getSidebarData().then(sidebar => {
                     text: '编辑此文'
                 },
 
-
                 // lastUpdated
                 lastUpdated: {
                     text: 'updated at',
-                    formatOptions: {
-                        // dateStyle: 'full',
-                        // timeStyle: 'media'
-                    }
                 },
 
                 // 广告
@@ -99,7 +86,7 @@ export default getSidebarData().then(sidebar => {
                 //切换语言的按钮
                 langMenuLabel: '语言切换',
 
-                externalLinkIcon: true,
+                // externalLinkIcon: true,
 
                 // 搜索
                 search: {
@@ -111,17 +98,6 @@ export default getSidebarData().then(sidebar => {
                 theme: 'github-dark-dimmed',
                 lineNumbers: true,
             },
-            // 标题的后缀
-            // titleTemplate:'',
-            //     toc:{
-            //
-            //     },
-            // config:(md)=>{
-            //     md.use(require())
-            // }
-
-            // }
-
         })
 
 })
