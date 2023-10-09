@@ -49,7 +49,7 @@ class BlogViewSet(BaseViewSet):
         else:
             serializer = self.get_serializer(queryset, many=True,
                                              include_fields=['id', 'title', 'author', 'category', 'abstract',
-                                                             'section','tag_list'])
+                                                             'section', 'tag_list'])
 
         data = serializer.data
         return SucResponse(data=data)
@@ -122,6 +122,11 @@ class BlogViewSet(BaseViewSet):
         Like.create(user=self.request.user, blog=blog)
 
         return SucResponse('点赞成功!')
+
+    @action(methods=['get'], detail=False)
+    def demo(self, request, *args, **kwargs):
+        # TODO 将数据库中博客转成md文件并进行存储
+        ...
 
 
 class CategoryViewSet(BaseViewSet):

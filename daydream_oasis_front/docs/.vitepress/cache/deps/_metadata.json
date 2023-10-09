@@ -1,65 +1,59 @@
 {
-  "hash": "0a1dc14f",
-  "browserHash": "752d5d68",
+  "hash": "3c39e39a",
+  "browserHash": "319af2ef",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "e48d1ec1",
+      "fileHash": "b745cf39",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/lib/esm/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "4041d03b",
+      "fileHash": "6665b9f4",
       "needsInterop": false
     },
     "vitepress > @vueuse/integrations/useFocusTrap": {
       "src": "../../../../node_modules/@vueuse/integrations/useFocusTrap.mjs",
       "file": "vitepress___@vueuse_integrations_useFocusTrap.js",
-      "fileHash": "6dbf3591",
+      "fileHash": "1a988bfc",
       "needsInterop": false
     },
     "vitepress > mark.js/src/vanilla.js": {
       "src": "../../../../node_modules/mark.js/src/vanilla.js",
       "file": "vitepress___mark__js_src_vanilla__js.js",
-      "fileHash": "290e3f80",
+      "fileHash": "46f93d9b",
       "needsInterop": false
     },
     "vitepress > minisearch": {
       "src": "../../../../node_modules/minisearch/dist/es/index.js",
       "file": "vitepress___minisearch.js",
-      "fileHash": "54635b21",
+      "fileHash": "2284e263",
       "needsInterop": false
     },
     "@documate/vue": {
       "src": "../../../../node_modules/@documate/vue/dist/documate.js",
       "file": "@documate_vue.js",
-      "fileHash": "6ad559a1",
+      "fileHash": "354aab85",
       "needsInterop": false
     },
     "axios": {
       "src": "../../../../node_modules/axios/index.js",
       "file": "axios.js",
-      "fileHash": "9e47890a",
+      "fileHash": "48bf7a19",
       "needsInterop": false
-    },
-    "live2d-widget": {
-      "src": "../../../../node_modules/live2d-widget/lib/L2Dwidget.common.js",
-      "file": "live2d-widget.js",
-      "fileHash": "819de577",
-      "needsInterop": true
     },
     "element-plus/es/components/message/style/css": {
       "src": "../../../../node_modules/element-plus/es/components/message/style/css.mjs",
       "file": "element-plus_es_components_message_style_css.js",
-      "fileHash": "ef1cf1ee",
+      "fileHash": "21e2b725",
       "needsInterop": false
     },
     "element-plus": {
       "src": "../../../../node_modules/element-plus/es/index.mjs",
       "file": "element-plus.js",
-      "fileHash": "3e09376c",
+      "fileHash": "9cb66d89",
       "needsInterop": false
     }
   },
