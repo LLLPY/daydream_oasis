@@ -22,11 +22,21 @@ class SectionSerializers(DynamicFieldsSerializer):
 
 # 文章
 class BlogSerializers(DynamicFieldsSerializer):
+    id = serializers.IntegerField(help_text='id')
     title = serializers.CharField(required=True, max_length=20, help_text='标题')
+    # author = serializers.SerializerMethodField()
+    author = serializers.CharField()
     avatar = serializers.URLField(required=True, help_text='封面')
     category = serializers.CharField(required=True, help_text='分类')
     tag_list = serializers.ListField(required=True, help_text='标签列表')
     content = serializers.CharField(required=True, min_length=5, help_text='内容')
+    abstract = serializers.CharField()
+
+    def get_author(self, obj):
+        return {
+            'id': obj.author.id,
+            'username': obj.author.username
+        }
 
 
 # 评论

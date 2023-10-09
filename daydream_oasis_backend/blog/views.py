@@ -48,8 +48,8 @@ class BlogViewSet(BaseViewSet):
             serializer = self.get_serializer(queryset, many=True)
         else:
             serializer = self.get_serializer(queryset, many=True,
-                                             include_fields=['id', 'title', 'author', 'category', 'tags', 'summary',
-                                                             'section'])
+                                             include_fields=['id', 'title', 'author', 'category', 'abstract',
+                                                             'section','tag_list'])
 
         data = serializer.data
         return SucResponse(data=data)
