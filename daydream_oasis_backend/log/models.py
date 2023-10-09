@@ -22,7 +22,7 @@ class RequestRecord(BaseModel):
         (OTHER, '其他'),
 
     ]
-
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, verbose_name='博客', help_text='博客')
     path = models.TextField(max_length=1000, default='/', verbose_name='请求路径', help_text='请求路径')
     path_type = models.PositiveIntegerField(default=PAGE, choices=PATH_TYPE_CHOICES, verbose_name='请求路径类型',
                                             help_text='请求路径类型')
