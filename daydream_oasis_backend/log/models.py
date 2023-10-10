@@ -6,6 +6,7 @@ from django.db.models import Q
 from common.models import BaseModel
 from blog.models import Blog
 from user.models import User
+from django.db.models import Count
 
 
 # 请求记录表
@@ -86,48 +87,24 @@ class RequestRecord(BaseModel):
 
     # 统计热门排行榜
     @classmethod
-    def stat_top(cls):
-        # 热门推荐 日热门/周热门/月热门 前5条数据
-        _now = datetime.now()
+    def stat_top(cls, days_ago=None, k=None):
+        '''
+        time_ago:多少天以内的数据
+        k:前k条数据
+        '''
+        # 所有的博客请求记录
+        blog_requests = cls.objects.filter(blog_id__isnull=False)
 
-        # 一个月以内的记录
-        month_ago = _now - timedelta(days=30)
-        week_ago = _now - timedelta(days=7)
-        day_ago = _now - timedelta(days=1)
+        # 确定到某个时间范围内
+        if days_ago:
+            now = datetime.now()
+            blog_requests = blog_requests.filter(create_time__gte=now - timedelta(days=days_ago))
 
-        request_list = cls.objects.filter(
-            Q(time__gte=month_ago) & Q(path__regex='^/blog/\d+$'))
-        blog_month_list = []
-        for request_record in request_list:
-            blog_id = re.search(r'\d+', request_record.path).group()
-            blog_month_list.append(
-                (blog_id, request_record.time)
-            )
+        res = blog_requests.values('id', 'blog__id', 'blog__title').annotate(visit_count=Count('blog__id')).order_by(
+            '-visit_count')
 
-        # 周热榜 直接利用月热榜的结果 搜索时间
-        blog_week_list = [
-            blog for blog in blog_month_list if blog[1] >= week_ago]
-
-        # 日热榜
-        blog_day_list = [blog for blog in blog_week_list if blog[1] >= day_ago]
-
-        # 统计排序
-        def get_top(blog_list: List, k=8):
-            blog_con = {}
-            for blog in blog_list:
-                blog_id = blog[0]
-                blog_con[blog_id] = blog_con.get(blog_id, 0) + 1
-            top_list = sorted(blog_con.items(), key=lambda a: -a[1])
-            return top_list[:k]
-
-        month_top_list = get_top(blog_month_list)
-        week_top_list = get_top(blog_week_list)
-        day_top_list = get_top(blog_day_list)
-
+        return res
         # 写入缓存
-        # cache.set('month_top_list', month_top_list, 2 * 60 * 60)
-        # cache.set('week_top_list', week_top_list, 2 * 60 * 60)
-        # cache.set('day_top_list', day_top_list, 2 * 60 * 60)
 
 
 # 用户操作记录

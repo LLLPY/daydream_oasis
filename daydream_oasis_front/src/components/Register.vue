@@ -48,5 +48,5 @@ export default {
 </script>
 
 <template>
-  <BaseLoginAndRegister title="Login" sub_title1="注册" sub_link1="/register.html" sub_title2="忘记密码?" sub_link2="/forget_password.html"></BaseLoginAndRegister>
+  <BaseLoginAndRegister title="Register" sub_title1="登录" sub_link1="/login.html" sub_title2="忘记密码?" sub_link2="/forget_password.html"></BaseLoginAndRegister>
 </template>

@@ -1,6 +1,8 @@
 import {default as DefaultTheme} from "vitepress/theme";
 import MyLayout from "./MyLayout.vue";
 import Login from "../../../src/components/Login.vue";
+import Register from "../../../src/components/Register.vue";
+import ForgetPassword from "../../../src/components/ForgetPassword.vue";
 import TagList from "../../../src/components/TagList.vue";
 import TopList from "../../../src/components/TopList.vue";
 import Logo from "../../../src/components/Logo.vue";
@@ -22,6 +24,8 @@ export default {
     }),
     enhanceApp({app}) {
         app.component('Login', Login);
+        app.component('Register', Register);
+        app.component('ForgetPassword', ForgetPassword);
         app.component('TagList', TagList);
         app.component('TopList', TopList);
         app.component('Logo', Logo);

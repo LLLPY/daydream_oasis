@@ -201,6 +201,8 @@ class Blog(BaseModel):
         return recommend_blog_list
 
 
+
+
 class BlogTagRelease(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='博客', help_text='博客')
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='标签', help_text='标签')

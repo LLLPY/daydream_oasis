@@ -6,6 +6,7 @@ from daydream_oasis_backend.config.base import MEDIA_URL
 from PIL.Image import open as imgOpen, ANTIALIAS
 from os.path import isfile
 from log.logger import logger
+from django_redis import get_redis_connection
 
 
 class RealManager(models.Manager):
@@ -31,6 +32,9 @@ class BaseModel(models.Model):
     ip = models.CharField(max_length=50, blank=True, verbose_name='IP地址', help_text='IP地址')
 
     logger = logger
+
+    # redis连接对象
+    redis_conn = get_redis_connection('default')
 
     class Meta:
         abstract = True
