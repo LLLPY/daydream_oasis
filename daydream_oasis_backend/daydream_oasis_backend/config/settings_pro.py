@@ -4,8 +4,6 @@
 from .base import *
 
 DEBUG = False
-
-
 # 数据库
 DATABASES = {
     'default': {

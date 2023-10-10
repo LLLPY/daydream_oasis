@@ -102,10 +102,12 @@ export default {
   display: inline-block;
   border-radius: 5px;
   padding: 0.2em;
+  transition: background-color .3s linear;
 }
 
 .card__content .tag:hover {
   cursor: pointer;
+  background-color: skyblue!important;
 }
 
 </style>

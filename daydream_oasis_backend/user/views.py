@@ -4,12 +4,12 @@ from django.contrib.auth.hashers import check_password
 from user.models import User, ChatRecord
 from user.serializers import UserSerializers
 from utils.message_service import send_message
-from django.contrib.auth import login as default_login
 from django.contrib.auth import logout as default_logout
 from common.exception import exception
 from rest_framework.decorators import action
 from common.drf.response import SucResponse
 from common.views import BaseViewSet
+from utils import tools
 
 # 在登录中往往都需要使用post请求，在使用该请求是，需要进行csrf_token的验证，通过该验证有3中方法
 '''
@@ -89,7 +89,6 @@ class UserViewSet(BaseViewSet):
         username = serializer.data.get('username')  # 用户名
         # mobile = serializer.data.get('mobile')  # 手机号
         password = serializer.data.get('password')
-        print(username, password)
         tmp_user = User.get_by_username(username)
 
         # 检查用户是否存在
@@ -100,12 +99,10 @@ class UserViewSet(BaseViewSet):
         if not check_password(password, tmp_user.password):  # 参数顺序:明文 密文
             raise exception.CustomValidationError('密码错误!')
 
-        # django自带的登录
-        default_login(request, tmp_user)
-
         res = SucResponse('登录成功!')
-        res.set_cookie('user','root')
-        print(res.cookies)
+        res.set_signed_cookie('user_id', tmp_user.id, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7)
+        print(1111, res.cookies)
+        res.set_cookie('user_id1',tmp_user.id)
         return res
 
     # 发送验证码
