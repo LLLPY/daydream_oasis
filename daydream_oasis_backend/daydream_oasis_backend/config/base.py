@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user',  # user
     'blog',  # 学习星球
-    # 'link',  # 友链
     'log',  # 访问日志
     'file',  # 文件
     'common',  # 公共部分
@@ -46,22 +45,24 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # 跨域请求
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'common.middleware.MiddelWare.MyMiddleWare',  # 自己定义的中间件
+    'corsheaders.middleware.CorsMiddleware',  # 跨域请求
+
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True    # 允许任意站点跨域请求
-CORS_ALLOW_CREDENTIALS = True   # 允许发送身份验证
+# CORS_ORIGIN_ALLOW_ALL = True  # 允许任意站点跨域请求
+# CORS_ALLOW_CREDENTIALS = True  # 允许发送身份验证
 SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+]
 
 ROOT_URLCONF = 'daydream_oasis_backend.urls'
 
@@ -86,8 +87,6 @@ WSGI_APPLICATION = 'daydream_oasis_backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-MY_HOST = '127.0.0.1'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -124,7 +123,7 @@ USE_TZ = False
 CACHES = {
     'default': {  # 默认
         "BACKEND": 'django_redis.cache.RedisCache',
-        'LOCATION': f'redis://{MY_HOST}:6379/0',
+        'LOCATION': f'redis://127.0.0.1:6379/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -178,5 +177,5 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.SessionAuthentication',
     # ]
     # 自定义异常捕获
-    # 'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
+    # 'EXCEPTION_HANDLER': f'{BASE_DIR.replace(os.sep, ".")}.common.exception.handler.custom_exception_handler'
 }

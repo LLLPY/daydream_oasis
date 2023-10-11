@@ -34,3 +34,4 @@ export default {
         // app.component('Live2dWidget', Live2dWidget);
     }
 }
+

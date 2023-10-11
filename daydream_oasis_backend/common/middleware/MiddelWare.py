@@ -22,8 +22,8 @@ class MyMiddleWare(RateLimitMixin, MiddlewareMixin):
 
     def process_request(self, request):
         super().process_request(request)
-        print(11111, request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis')))
-        print(2222, request.COOKIES)
+        print('前端拿的cookie:', request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis')))
+        print('前端拿的cookie2:', request.COOKIES)
         # return HttpResponse('后台维护，暂停访问...')
 
         start_time = time.time()
@@ -80,6 +80,8 @@ class MyMiddleWare(RateLimitMixin, MiddlewareMixin):
         headers = response.headers or {}
         headers['Access-Control-Expose-Headers'] = 'set-cookie'
         headers['Access-Control-Allow-Credentials'] = 'true'
+        headers['Access-Control-Allow-Headers'] = 'Content-Type, AccessToken, X-CSRF-Token, Authorization, Token, x-token, x-user-id'
+        headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
         response.headers = headers
         return response
 

@@ -3,7 +3,6 @@ pymysql==1.0.2
 django-simpleui==2022.12.18
 django-ckeditor==6.5.1
 djangorestframework==3.14.0
-django-debug-toolbar==3.8.1
 django_redis==5.2.0
 aliyun-python-sdk-core-v3==2.13.33
 pyecharts==2.0.0
