@@ -164,15 +164,11 @@ SIMPLEUI_LOGO = f'../../static/image/favorite.png'
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
-
+from common.exception.handler import custom_exception_handler
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework.authentication.BasicAuthentication',
-    #     'rest_framework.authentication.SessionAuthentication',
-    # ]
     # 自定义异常捕获
-    # 'EXCEPTION_HANDLER': f'{BASE_DIR.replace(os.sep, ".")}.common.exception.handler.custom_exception_handler'
+    'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
 }
 
 # 解决警告

@@ -3,9 +3,6 @@
 # @Date    ：2023/9/8 23:02  
 import logging
 import re
-
-from django.conf import settings
-
 import common.exception.exception as exceptions
 import common.exception.service_code as service_code
 import orjson
@@ -14,12 +11,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import ProgrammingError
 from rest_framework import exceptions as rest_exceptions
 from rest_framework import status
-from rest_framework.exceptions import ErrorDetail, MethodNotAllowed
+from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.renderers import JSONRenderer
 from rest_framework.views import exception_handler
 
-# logger = logging.getLogger(__name__)
-logger = settings.LOGGER
+logger = logging.getLogger(__name__)
 
 
 def custom_exception_handler(exc, context):
@@ -33,30 +29,12 @@ def custom_exception_handler(exc, context):
         error to be raised.
     """
 
-    def _get_msg(obj, key=None):
-        msg_list = []
-        if isinstance(obj, dict):
-            for k, v in obj.items():
-                msg_list.append(_get_msg(v, k))
-        elif isinstance(obj, list):
-            for i in obj:
-                msg_list.append(_get_msg(i))
-        elif isinstance(obj, ErrorDetail):
-            if obj.code == "invalid":
-                msg_list.append(obj.__str__())
-            else:
-                msg_list.append(exceptions.err_msg.get(obj.code, ""))
-        if key:
-            return "%s.%s" % (key, ''.join(msg_list))
-        else:
-            return "、".join(msg_list)
-
     # 这里统一打印异常的详细信息
+    print(111111111111111111111111111)
     logger.error(exc, exc_info=True)
 
     # 自定义的异常
     if isinstance(exc, exceptions.CustomValidationError):
-        print(111111111111111111111111111)
         return exc.response
     elif isinstance(exc, rest_exceptions.AuthenticationFailed):
         _, data = exceptions.error_message(
@@ -64,14 +42,6 @@ def custom_exception_handler(exc, context):
             msg=str(exc.detail),
         )
         return ErrResponse(**data, status=status.HTTP_401_UNAUTHORIZED)
-
-    elif isinstance(exc, rest_exceptions.ValidationError):
-        msg_list = _get_msg(exc.detail)
-        _, data = exceptions.error_message(
-            error_code=service_code.VERIFICATION_ERROR,
-            msg=msg_list,
-        )
-        return ErrResponse(**data)
     elif isinstance(exc, NameError):
         _, data = exceptions.error_message(
             error_code=service_code.VERIFICATION_ERROR,
@@ -125,6 +95,6 @@ def custom_exception_handler(exc, context):
             er.message = msg
 
             return er
-        msg = getattr(exc, "message","服务异常，请联系管理员") or str(exc)
+        msg = getattr(exc, "message", "服务异常，请联系管理员") or str(exc)
         _, data = exceptions.error_message(error_code=service_code.SERVICE_ERROR, msg=msg)
         return ErrResponse(**data)

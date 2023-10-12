@@ -35,8 +35,6 @@ export default {
             'username': this.username,
             'password': this.password,
             'code': this.code,
-          }, {
-            withCredentials: true
           }).then(response => {
         const cookie = response;
         console.log(response)
