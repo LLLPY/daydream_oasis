@@ -66,13 +66,9 @@ class ChatRecord(BaseModel):
     # 发送的内容
     content = models.CharField(max_length=1000, verbose_name='内容', help_text='内容')
 
-    # 时间
-    time = models.DateTimeField(default=datetime.datetime.now, verbose_name='时间', help_text='时间')
-
     # 是否已读
     is_read = models.BooleanField(default=False, verbose_name='是否已读', help_text='是否已读')
 
-    fields = ['id', 'sender', 'receiver', 'content', 'create_time', 'is_read']
 
     class Meta:
         db_table = '信息'

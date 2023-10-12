@@ -4,7 +4,7 @@ from django.views.decorators.cache import cache_page
 from django.views.static import serve
 from daydream_oasis_backend.admin_site import my_site
 from daydream_oasis_backend.rss import LatestBlogFeed
-from daydream_oasis_backend.config.base import MEDIA_ROOT
+from daydream_oasis_backend.settings.base import MEDIA_ROOT
 from django.contrib.sitemaps import views as sitemap_views
 from daydream_oasis_backend.sitemap import BlogSitemap
 from rest_framework.documentation import include_docs_urls

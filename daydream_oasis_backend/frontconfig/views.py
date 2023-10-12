@@ -1,5 +1,5 @@
 from rest_framework.decorators import action
-from daydream_oasis_backend.config.base import BASE_DIR
+from daydream_oasis_backend.settings.base import BASE_DIR
 import os
 from rest_framework import viewsets, mixins
 from .serializers import FrontConfigSerializers

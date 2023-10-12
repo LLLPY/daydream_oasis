@@ -2,7 +2,7 @@ import datetime
 from typing import List, Dict
 import jieba
 from django.db import models
-from daydream_oasis_backend.config.base import MEDIA_URL
+from daydream_oasis_backend.settings.base import MEDIA_URL
 from PIL.Image import open as imgOpen, ANTIALIAS
 from os.path import isfile
 from log.logger import logger

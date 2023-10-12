@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios_ins from '../../src/assets/axios'
 
 export async function getSidebarData() {
-    const res = await axios.get('http://127.0.0.1:8000/api/frontconfig/get_sidebar_config/?format=json')
+    const res = await axios_ins.get('/api/frontconfig/get_sidebar_config/?format=json')
     let code = res.data['code']
     if (code !== '0') {
         return {}

@@ -1,5 +1,5 @@
 """
-ASGI config for daydream_oasis_backend project.
+ASGI settings for daydream_oasis_backend project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

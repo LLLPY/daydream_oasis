@@ -4,13 +4,8 @@ defineProps(['title', 'sub_title1', 'sub_link1', 'sub_title2', 'sub_link2'])
 <script>
 
 import {Warning} from '../assets/MessageBox.js'
-import axios from 'axios'
+import axios_ins from '../assets/axios'
 
-const ins = axios.create({
-  withCredentials: true,
-  baseURL: 'http://127.0.0.1:8000'
-
-})
 
 export default {
 
@@ -35,7 +30,7 @@ export default {
         Warning('密码不能为空!')
         return;
       }
-      ins.post('/api/user/login/',
+      axios_ins.post('/api/user/login/',
           {
             'username': this.username,
             'password': this.password,

@@ -23,9 +23,9 @@ class UserAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 聊天记录
 @admin.register(ChatRecord, site=my_site)
 class ChatRecordAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'sender', 'receiver', 'content', 'time', 'is_read']
+    list_display = ['id', 'sender', 'receiver', 'content', 'create_time', 'is_read']
     search_fields = ['sender', 'content']
-    list_filter = ['sender', 'receiver', 'is_read', 'time']
+    list_filter = ['sender', 'receiver', 'is_read', 'create_time']
 
 
 # 操作日志

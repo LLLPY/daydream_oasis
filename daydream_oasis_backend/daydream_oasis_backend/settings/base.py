@@ -46,7 +46,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -54,14 +54,9 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # 跨域请求
 
 ]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173'
 
-# CORS_ORIGIN_ALLOW_ALL = True  # 允许任意站点跨域请求
-# CORS_ALLOW_CREDENTIALS = True  # 允许发送身份验证
-SESSION_COOKIE_SAMESITE = 'None'
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173',
 ]
 
 ROOT_URLCONF = 'daydream_oasis_backend.urls'
@@ -179,3 +174,6 @@ REST_FRAMEWORK = {
     # 自定义异常捕获
     # 'EXCEPTION_HANDLER': f'{BASE_DIR.replace(os.sep, ".")}.common.exception.handler.custom_exception_handler'
 }
+
+# 解决警告
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

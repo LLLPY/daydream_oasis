@@ -21056,10 +21056,10 @@ function useFocusController(target2, { afterFocus, afterBlur } = {}) {
   };
 }
 
-// node_modules/element-plus/es/components/config-provider/src/constants.mjs
+// node_modules/element-plus/es/components/settings-provider/src/constants.mjs
 var configProviderContextKey = Symbol();
 
-// node_modules/element-plus/es/components/config-provider/src/hooks/use-global-config.mjs
+// node_modules/element-plus/es/components/settings-provider/src/hooks/use-global-settings.mjs
 var globalConfig = ref();
 function useGlobalConfig(key, defaultValue = void 0) {
   const config = getCurrentInstance() ? inject(configProviderContextKey, globalConfig) : globalConfig;
@@ -21135,7 +21135,7 @@ var mergeConfig = (a2, b2) => {
   return obj;
 };
 
-// node_modules/element-plus/es/components/config-provider/src/config-provider-props.mjs
+// node_modules/element-plus/es/components/settings-provider/src/settings-provider-props.mjs
 var configProviderProps = buildProps({
   a11y: {
     type: Boolean,
@@ -21165,7 +21165,7 @@ var configProviderProps = buildProps({
   }
 });
 
-// node_modules/element-plus/es/components/config-provider/src/config-provider.mjs
+// node_modules/element-plus/es/components/settings-provider/src/settings-provider.mjs
 var messageConfig = {};
 var ConfigProvider = defineComponent({
   name: "ElConfigProvider",
@@ -21179,7 +21179,7 @@ var ConfigProvider = defineComponent({
   }
 });
 
-// node_modules/element-plus/es/components/config-provider/index.mjs
+// node_modules/element-plus/es/components/settings-provider/index.mjs
 var ElConfigProvider = withInstall(ConfigProvider);
 
 // node_modules/element-plus/es/version.mjs
@@ -32584,7 +32584,7 @@ var Store = class {
   }
 };
 
-// node_modules/element-plus/es/components/cascader-panel/src/config.mjs
+// node_modules/element-plus/es/components/cascader-panel/src/settings.mjs
 var CommonProps = buildProps({
   modelValue: {
     type: definePropType([Number, String, Array])
@@ -56037,7 +56037,7 @@ function _sfc_render322(_ctx, _cache, $props, $setup, $data, $options) {
 }
 var Table = _export_sfc(_sfc_main121, [["render", _sfc_render322], ["__file", "/home/runner/work/element-plus/element-plus/packages/components/table/src/table.vue"]]);
 
-// node_modules/element-plus/es/components/table/src/config.mjs
+// node_modules/element-plus/es/components/table/src/settings.mjs
 var defaultClassNames = {
   selection: "table-column--selection",
   expand: "table__expand-column"
