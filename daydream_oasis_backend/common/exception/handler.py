@@ -12,7 +12,6 @@ from django.db.utils import ProgrammingError
 from rest_framework import exceptions as rest_exceptions
 from rest_framework import status
 from rest_framework.exceptions import MethodNotAllowed
-from rest_framework.renderers import JSONRenderer
 from rest_framework.views import exception_handler
 
 logger = logging.getLogger(__name__)
@@ -30,7 +29,6 @@ def custom_exception_handler(exc, context):
     """
 
     # 这里统一打印异常的详细信息
-    print(111111111111111111111111111)
     logger.error(exc, exc_info=True)
 
     # 自定义的异常
@@ -69,32 +67,5 @@ def custom_exception_handler(exc, context):
         _, data = exceptions.error_message(error_code=service_code.OBJ_NOT_EXIST, msg="未找到数据")
         return ErrResponse(**data)
     else:
-        response = exception_handler(exc, context)  # 调用默认的异常处理方法，获取默认的响应对象
-
-        er = ErrResponse('服务异常，请联系管理员')
-        er.accepted_renderer = JSONRenderer()
-        er.accepted_media_type = "application/json"
-        er.renderer_context = {}
-        er.render()
-
-        if not response:
-            return er
-
-        status_code = getattr(response, 'status_code', 500)
-        if status.is_server_error(status_code):
-            logger.error(response.text)
-            return er
-
-        elif status.is_client_error(status_code):
-            try:
-                response_str = response.content.decode()
-                msg = orjson.loads(response_str)
-            except Exception as e:
-                logger.error(str(e))
-                msg = '请求异常，请联系管理员'
-            er.message = msg
-
-            return er
-        msg = getattr(exc, "message", "服务异常，请联系管理员") or str(exc)
-        _, data = exceptions.error_message(error_code=service_code.SERVICE_ERROR, msg=msg)
-        return ErrResponse(**data)
+        res = exception_handler(exc, context)
+        return ErrResponse('服务异常，请联系管理员')

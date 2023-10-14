@@ -1,3 +1,4 @@
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
 
@@ -13,6 +14,10 @@ class SucResponse(Response):
         dic.update(kwargs)
         super().__init__(data=dic, status=status, template_name=None,
                          headers=headers, exception=False, content_type=content_type)
+        self.accepted_renderer = JSONRenderer()
+        self.accepted_media_type = "application/json"
+        self.renderer_context = {}
+        self.render()
 
 
 class ErrResponse(Response):
@@ -27,3 +32,7 @@ class ErrResponse(Response):
         dic.update(kwargs)
         super().__init__(data=dic, status=status, template_name=None,
                          headers=headers, exception=False, content_type=content_type)
+        self.accepted_renderer = JSONRenderer()
+        self.accepted_media_type = "application/json"
+        self.renderer_context = {}
+        self.render()

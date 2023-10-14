@@ -54,8 +54,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # 跨域请求
+    'common.middleware.exception_process.ExceptionMiddleware'  # 异常处理
 
-    # 'common.middleware.exception_process.ExceptionMiddleware' #异常处理
 ]
 
 # 解决跨域
@@ -200,7 +200,6 @@ SIMPLEUI_LOGO = f'../../static/image/favorite.png'
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
-from common.exception.handler import custom_exception_handler
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',

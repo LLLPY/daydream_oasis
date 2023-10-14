@@ -103,14 +103,15 @@ class BlogViewSet(BaseViewSet):
 
         return SucResponse(data=data)
 
-    @action(methods=['post'], detail=True)
+    @action(methods=['post', 'get'], detail=True)
     def like(self, request, *args, **kwargs):
         '''点赞'''
 
-        blog = self.get_object()
         user = self.request.user
         if not user.is_authenticated:
             raise exception.CustomValidationError('请先登录!')
+
+        blog = self.get_object()
 
         key = f'like:{user.id}:{blog.id}'
         success = self.redis_conn.setnx(key, 'liked')
