@@ -100,7 +100,8 @@ class UserViewSet(BaseViewSet):
             raise exception.CustomValidationError('密码错误!')
 
         res = SucResponse('登录成功!')
-        res.set_signed_cookie('user_id', tmp_user.id, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7)
+        res.set_signed_cookie('user_id', tmp_user.id, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7,
+                              samesite='None', secure='true')
         # raise exception.CustomValidationError('')
         return res
 

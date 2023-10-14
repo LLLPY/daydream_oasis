@@ -2,7 +2,8 @@ import time
 from django.core.cache import cache
 from django.http import HttpResponseBadRequest
 from django.utils.deprecation import MiddlewareMixin
-from log.models import Error, RequestRecord
+
+from user.models import User
 from utils import tools
 
 '''
@@ -18,8 +19,10 @@ from utils import tools
 class RequestMiddleWare(MiddlewareMixin):
 
     def process_request(self, request):
-        print('前端拿的cookie:', request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis')))
-        print('前端拿的cookie2:', request.COOKIES)
+        user_id = request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis'))
+        if user_id:
+            request.user = User.get_by_id(user_id)
+            print(request.user.is_authenticated)
         # return HttpResponse('后台维护，暂停访问...')
 
         start_time = time.time()

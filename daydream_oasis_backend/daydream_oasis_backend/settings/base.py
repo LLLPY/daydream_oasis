@@ -43,17 +43,18 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
+    'common.middleware.rate_limit.RateLimitMixin',  # 限流
+    'common.middleware.response_process.ResponseMiddleware',  # 响应中间件
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # 跨域请求
-    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
-    'common.middleware.rate_limit.RateLimitMixin',  # 限流
-    'common.middleware.response_process.ResponseMiddleware',  # 响应中间件
+
     # 'common.middleware.exception_process.ExceptionMiddleware' #异常处理
 ]
 
@@ -65,8 +66,10 @@ CORS_ORIGIN_WHITELIST = (
 )
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173'
-
 ]
+
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
+
 CORS_ALLOW_HEADERS = (
     'XMLHttpRequest',
     'X_FILENAME',
