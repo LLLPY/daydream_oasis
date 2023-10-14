@@ -37,8 +37,7 @@ export default {
             'code': this.code,
           }).then(response => {
         const cookie = response;
-        console.log(response)
-        console.log(document.cookie)
+        console.log(response.headers['set-cookie'])
       }).catch(reason => {
       })
     }

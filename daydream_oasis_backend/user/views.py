@@ -101,8 +101,7 @@ class UserViewSet(BaseViewSet):
 
         res = SucResponse('登录成功!')
         res.set_signed_cookie('user_id', tmp_user.id, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7)
-        raise exception.CustomValidationError('')
-        print('后端设置的cookie:',res.headers)
+        # raise exception.CustomValidationError('')
         return res
 
     # 发送验证码

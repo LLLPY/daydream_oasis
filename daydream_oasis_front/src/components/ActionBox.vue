@@ -52,7 +52,7 @@ export default {
     },
     like() {
       //   点赞
-      axios.post('http://127.0.0.1:8000/api/blog/' + this.blog_id + '/like/').then(response => {
+      axios.post('http://127.0.0.1:8000/api/blog/' + this.blog_id + '/like').then(response => {
       }).catch(reason => {
         console.log(reason)
       })

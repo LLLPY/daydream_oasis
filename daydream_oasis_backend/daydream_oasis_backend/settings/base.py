@@ -46,18 +46,51 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'common.middleware.MiddelWare.MyMiddleWare',  # 自己定义的中间件
     'corsheaders.middleware.CorsMiddleware',  # 跨域请求
-
+    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
+    'common.middleware.rate_limit.RateLimitMixin',  # 限流
+    'common.middleware.response_process.ResponseMiddleware',  # 响应中间件
+    # 'common.middleware.exception_process.ExceptionMiddleware' #异常处理
 ]
+
+# 解决跨域
+CORS_ALLOW_CREDENTIALS = True  # 允许携带Cookie
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    '*'
+)
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173'
 
 ]
+CORS_ALLOW_HEADERS = (
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
+    '*'
+)
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
 
 ROOT_URLCONF = 'daydream_oasis_backend.urls'
 
@@ -165,6 +198,7 @@ SIMPLEUI_LOGO = f'../../static/image/favorite.png'
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
 from common.exception.handler import custom_exception_handler
+
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     # 自定义异常捕获

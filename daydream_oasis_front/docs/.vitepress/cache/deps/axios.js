@@ -1755,7 +1755,7 @@ var Axios = class {
   /**
    * Dispatch a request
    *
-   * @param {String|Object} configOrUrl The settings specific for this request (merged with this.defaults)
+   * @param {String|Object} configOrUrl The config specific for this request (merged with this.defaults)
    * @param {?Object} config
    *
    * @returns {Promise} The Promise to be fulfilled

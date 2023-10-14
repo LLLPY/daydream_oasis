@@ -5,9 +5,10 @@ from django.core.cache import cache
 import time
 from log.logger import logger
 from common.drf.response import SucResponse
+from django.utils.deprecation import MiddlewareMixin
 
 
-class RateLimitMixin:
+class RateLimitMixin(MiddlewareMixin):
     '''流量限制'''
 
     def process_request(self, request):
