@@ -75,14 +75,15 @@ def copy_dir(old_dir, new_dir, include_file, exclude_file, exclude_dir):
                     }
                     type_ = type_mapping.get(path.split('.')[-1])
                     with open(cur_path, 'r', encoding='utf8') as f:
+                        print(cur_path)
                         try:
                             with open(new_file_path, 'w', encoding='utf8') as ff:
                                 res = to_md(f.read(), type_, file_name, category, create_time, update_time)
                                 ff.write(res['content'])
                             number += 1
                         except Exception as e:
-                            print(e)
-
+                            print(file_name, e)
+                            raise e
 
 if __name__ == '__main__':
     old_dir = r'C:\Users\LLL03\Desktop\python\1.python基础(演练)'
@@ -100,3 +101,4 @@ if __name__ == '__main__':
     include_file = ['.py', '.html', '.vue']
     exclude_file = ['caogao', 'demo', 'test', '__init__']
     copy_dir(old_dir, new_dir, include_file, exclude_file, exclude_dir)
+    print(_id)

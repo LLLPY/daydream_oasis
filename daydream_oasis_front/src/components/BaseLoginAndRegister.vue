@@ -5,6 +5,7 @@
 
     import {Warning} from '../assets/MessageBox.js'
     import axios_ins from '../assets/axios'
+    import {Info} from "../assets/MessageBox";
 
 
     export default {
@@ -36,8 +37,8 @@
                         'password': this.password,
                         'code': this.code,
                     }).then(response => {
-                    console.log(response.headers['set-cookie'])
-                    console.log(document.cookie)
+                    const data = response.data
+                    Info(data.message)
                 }).catch(reason => {
                 })
             }

@@ -25,6 +25,7 @@ class RequestMiddleWare(MiddlewareMixin):
         # 更新request上的user
         user_id = request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis'))
         request.user = User.get_by_id(user_id) or AnonymousUser()
+        print(f'cookie中获取的user_id:{user_id},user:{request.user} {request.user.is_authenticated}')
         # return HttpResponse('后台维护，暂停访问...')
 
         start_time = time.time()

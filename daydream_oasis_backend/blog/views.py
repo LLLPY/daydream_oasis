@@ -103,11 +103,12 @@ class BlogViewSet(BaseViewSet):
 
         return SucResponse(data=data)
 
-    @action(methods=['post', 'get'], detail=True)
+    @action(methods=['post'], detail=True)
     def like(self, request, *args, **kwargs):
         '''点赞'''
 
         user = self.request.user
+        print(1111, request.user, request.user.is_authenticated)
         if not user.is_authenticated:
             raise exception.CustomValidationError('请先登录!')
 
