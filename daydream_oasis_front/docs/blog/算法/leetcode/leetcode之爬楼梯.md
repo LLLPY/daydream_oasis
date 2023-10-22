@@ -1,0 +1,107 @@
+
+<BlogInfo id="1310" title="leetcode之爬楼梯" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=44 category="leetcode100题" tag_list="['leetcode', '阶层']" create_time="2022.02.05 19:55:18.933161" update_time="2022.07.11 10:37:15" />
+
+## **题目描述**
+
+
+
+假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+
+
+示例 1：
+
+输入：n = 2  
+输出：2  
+解释：有两种方法可以爬到楼顶。  
+1\. 1 阶 + 1 阶  
+2\. 2 阶  
+示例 2：
+
+输入：n = 3  
+输出：3  
+解释：有三种方法可以爬到楼顶。  
+1\. 1 阶 + 1 阶 + 1 阶  
+2\. 1 阶 + 2 阶  
+3\. 2 阶 + 1 阶  
+
+
+提示：
+
+1 <= n <= 45
+
+
+
+## **解题思路：**
+
+根据题意可知：可将题目转化为n=1*x+2*y，求满足条件的x和y，并在满足条件的x和y下将x个1和y个2进行排列组合，求所有的排列组合的和（不准重复），大概就是这个意思。
+
+1.求满足条件的x和y，这个应该没有什么其他的办法，我直接用的双层循环
+
+2.求排列组合，运用排列组合的公式，虽然我忘记了，但是百度到了嘿嘿
+
+![](../media/image/2022/02/05/image-20220205195339-1.png)
+
+## **源码：**
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        res = 0
+        for x in range(n + 1):
+            for y in range(n // 2 + 1):
+                if n == x + 2 * y:
+                    # print(f'{n}=1*{x}+2*{y}')
+                    if x == 0 or y == 0:
+                        res += 1
+                    else:
+                        n_, m = x + y, min(x, y)
+                        #C(n,m)=n!/(m!*(n-m)!)  排列组合
+                        res += self.class_(n_) / (self.class_(m) * self.class_(n_ - m))
+        return int(res)
+
+    # m的阶层
+    def class_(self, m):
+        res = 1
+        while m > 1:
+            res *= m
+            m -= 1
+        return res
+
+
+if __name__ == '__main__':
+    print(Solution().climbStairs(5))
+ 
+```
+
+
+## **通过截图：**
+
+![](../media/image/2022/02/05/image-20220205195446-2.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

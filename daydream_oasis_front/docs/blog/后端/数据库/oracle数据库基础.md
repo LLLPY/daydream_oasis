@@ -1,0 +1,229 @@
+
+<BlogInfo id="1326" title="oracle数据库基础" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=174 category="oracle" tag_list="['oracle基础', '复习']" create_time="2021.11.24 17:33:37.122965" update_time="2021.11.24 17:33:37" />
+
+数据库基础  
+数据库—DB  
+数据库管理系统—DBMS  
+数据库系统—数据，数据库，数据库管理系统与操作数据库的应用程序，加上支撑它们的硬件平台，软件平台和与数据库有关的人员一起构成了一个完整的数据库系统。  
+一.数据类型  
+1.1层次模型  
+层次模型将数据组织成一对多的结构，可采用关键字来访问其中每个层次的每个部分。它的优点：存取方便且速度快；结构清晰，容易理解；数据修改和数据扩展容易实现；检索关键属性十分方便。它的缺点：结构不够灵活；同一属性数据要存储多次，数据冗余大；不适合与拓扑空间数据的组织。  
+  
+1.2网状模型  
+网状模型具有多对多类型数据的组织方式。它的优点：能明确而方便地表示数据间的复杂关系；数据冗余小。它的缺点：网状结构的复杂性增加了用户查询和定位的困难；需要存储数据间的联系的指针，使得数据量增大；数据的修改不方便。  
+  
+1.3关系模型  
+关系模型以记录组或二维数据表的形式组织数据，以便于利用各种实体与属性之间的关系进行存储和变换，不分层也无指针，是建立空间数据和属性数据之间关系的一种非常有效的数据组织方式。它的优点：结构特别灵活，概念单一，能满足所有布尔逻辑运算和数学运算规则形成呢个的查询要求；能搜索，组合和比较不同类型的数据；增加和删除数据的操作非常方便；具有更高的数据独立性，更好的安全保密性。它的缺点：当数据库大时，查找满足特定关系的数据会很费时，且无法表达空间关系。  
+  
+二.数据库的创建和操作  
+tips  
+  
+在输入“出生时间”列数据时，oracle 11g数据库默认的日期格式为“DD-MM月-YY”，例如：日期“1997-02-10”应该输入“10-2月-97”，为能使用日常习惯的输入方式，这里先要修改一下数据库默认的日期格式，在命令行中执行以下语句即可：  
+  
+```oracle
+alter session set nls_date_format=“YYY-MM-DD”;  
+```
+  
+注：该语句只能在当前会话中起作用，在下一次进入sql时需要重新执行该语句。  
+2.1创建表  
+在以自己的模式创建表时，必须拥有createtable系统权限；在其他用户模式中创建表时，必须拥有create any table系统权限。建表语法如下：  
+  
+```oracle
+create table[<用户方案名>.]<表名>(  
+  
+​ <列名1> <数据类型> [default<默认值>] [<列约束>],  
+  
+​ <列名2> <数据类型> [default<默认值>] [<列约束>]  
+  
+​ ...  
+  
+​ <表约束>[,...n]  
+  
+)  
+  
+[as<子查询>]  
+```
+
+<用户方案名>：用户方案是指该表所属的用户，如果省略则默认为当前登录的用户。  
+  
+default：关键字default指定某个列的默认值。默认值的数据类型必须与该列的数据类型相匹配，列的擦汗高长度必须足以容纳这个表达式的值。  
+  
+<列约束>：定义一个完整性约束作为列定义的一部分，该子句的语法如下：  
+  
+```oracle
+[not] null  
+[unique]  
+[primary key]  
+[references[<用户方案名>.]<表名>(<列名>)]  
+[check(<条件表达式>)]  
+as<子查询>：表示将由子查询返回的行插入到所创建的表中。  
+```
+
+tips  
+如果表的主键由两个或多个列构成，则必须使用primary key关键字定义为表的完整性约束，语法格式如下：  
+
+```oracle
+create table <表名>  
+  
+(  
+  
+<列名1> <数据类型> [default<默认值>] [<列约束>]  
+  
+primary key(<列名1>,<列名2>...)  
+  
+)  
+```  
+
+2.2查看表结构  
+```oracle
+desc[ribe] 表名;  
+
+```
+  
+2.3修改表  
+```oracle
+alter table[<用户方案名>.]<表名>  
+  
+[add (<新列名><数据类型>[default<默认值>] [<列约束>])] /*增加新列*/  
+[modify(<列名><数据类型>[default<默认值>] [<列约束>])] /*修改已有属性*/  
+[<drop子句>] /*删除列或约束条件*/  
+  
+/*drop子句：该子句用于从表中删除指定的字段或约束，语法格式如下：*/  
+  
+drop{  
+column<列名> /*删除指定的列*/  
+|primary [key] /*删除表的主键*/  
+|unique(<列名>，..n) /*删除指定列上的unique约束*/  
+constraint<约束名> /*删除完整性约束*/  
+|[cascade] /*删除其他所有的完整性约束，这些约束依赖于被删除的完整性约束*/  
+  
+}
+```  
+
+2.3.1举例  
+1.在student表中新增两列，奖学金等级和等级说明。  
+  
+```oracle
+alter table student add(  
+奖学金等级 number(1),  
+等级说明 varchar2(40) default'奖金1000元'  
+);  
+```
+2.在student表中修改”等级说明“列的默认值  
+  
+```oracle
+alter table student modify(  
+等级说明 varchar2(40) default'奖金800元'  
+); 
+``` 
+3.在student表中删除”奖学金等级“和”等级说明“列  
+  
+```oracle
+alter table student drop column 奖学金等级;  
+alter table student drop column 等级说明; 
+``` 
+4.为student表添加主键  
+```oracle
+alter table student add(constrant "pk_num" primary key(学号));  
+
+```
+  
+2.4删除表  
+语法格式为：  
+```oracle
+drop table [<用户方案名>.]<表名>;  
+```
+  
+2.4.1举例  
+删除student表  
+```oracle
+drop table student;  
+```  
+
+2.5插入记录  
+2.5.1insert语句  
+插入记录一般使用insert语句，语法格式为：  
+  
+```oracle
+insert into <表名>[<列名1>,<列名2>,...]  
+values(<列值1>,<列值2>,...)  
+```
+2.5.1.1举例  
+1.向student中插入一行数据  
+```oracle
+insert into student(学号,姓名,出生日期)
+values(1234,'张三',t0_date('20211111','YYYYMMDD'));  
+commit;  
+```
+tips  
+利用insert语句还可以把一个表中的部分数据插入另一个表中，但结果集中每行数据的字段数，字段的数据类型都要与被操作的表完全一致，语法格式如下：  
+  
+  
+```oracle
+inset into <表名> <数据集>;  
+```  
+2.假设表student2结构同student完全一致，将student2中的数据插入到student中  
+  
+```oracle
+insert into student  
+select * from student2;
+```  
+2.5.2merge语句  
+在oracle 11g数据库中由merge语句，用于根据与源表连接的结果，对目标表执行插入，更新或删除操作。其语法格式如下：  
+  
+```oracle
+merge into <目标表名>  
+using<源表名>on(<条件表达式>)  
+when matched then {update set...|delete...}  
+when not matched then insert(...) values(...)  
+using子句：指定用于更新的源数据表  
+on子句：指定在源表与目标表进行连接时所遵循的条件  
+when matched子句：on子句后的条件满足时要执行的内容  
+when not matched子句：与when matched子句恰好相反
+```  
+
+2.5.2.1举例  
+将表student2中的数据更新到student中，如果student表中有相同学号的数据，则更新，如果没有，则插入  
+```oracle
+merge into student  
+using student2 on(student.学号=student2.学号)  
+when matched then  
+update set student.姓名=student2.姓名,student.出生日期=student2.出生日期  
+when not matched then  
+insert values(stdent2.学号,student2.姓名,student2.出生日期);  
+```
+
+2.6删除记录  
+2.6.1delete语句  
+语法格式为：  
+```oracle
+delete from <表名> [where<条件表达式>]  
+```
+  
+2.6.1.1举例  
+删除学号为1001的学生  
+```oracle
+delete from student where 学号=1001;  
+```
+  
+2.6.2truncate table语句  
+如果确实要删除一个大表里的全部记录，可以使用truncate table语句，它能释放占用的数据块表空间，且此操作不可退回，其语法格式如下：  
+```oracle
+truncate table <表名>;  
+```
+  
+2.7修改记录  
+update语句可以用来修改表中的数据行，其语法格式为：  
+```oracle
+update<表名>  
+set <列名>={新值|表达式}  
+[where <条件表达式>]  
+```  
+
+2.7.1举例  
+将学号为10001的姓名改为“张三”  
+  
+```oracle
+update student set 姓名='张三' where 学号=10001;  
+```
+

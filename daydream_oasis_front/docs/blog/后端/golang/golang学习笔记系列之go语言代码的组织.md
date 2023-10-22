@@ -1,0 +1,25 @@
+
+<BlogInfo id="1236" title="golang学习笔记系列之go语言代码的组织" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=21 category="golang" tag_list="['golang']" create_time="2022.09.10 17:33:14.948806" update_time="2022.09.13 19:59:17" />
+
+![](https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp8.itc.cn%2Fq_70%2Fimages03%2F20210221%2Fd778753d6a0d4ab9b685aaf362810c0d.gif&refer=http%3A%2F%2Fp8.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665661975&t=37860c72d333426b69c936abcb7d5473)
+
+## 代码的组织
+
+go应用使用 **包** 和 **模块** 来组织代码，包对应到文件系统就是文件夹，模块就是go的源文件。一个包中可以有很多模块，或者多个子包。
+
+  * 包<\----->文件夹
+  * 模块<\----->go文件
+
+### 项目管理工具
+
+早期的go项目使用gopath来管理项目，不方便而且容易出错，从golang1.11开始使用gomod管理项目，除此之外，还有第三方项目管理工具，例如govendor。
+
+#### go mod包管理步骤
+
+  1. 创建项目     =======>       mkdir go_pro
+  2. 初始化项目 =======>       进入到项目的根目录，go mod init go_pro
+  3. 创建包         =======>       在项目中创建新的包
+  4. 创建模块     =======>       在项目中直接创建模块或者在新创的包中创建模块
+  5. 相互调用     =======>       项目中各模块之间可以相互调用
+
+

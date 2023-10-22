@@ -1,0 +1,302 @@
+
+<BlogInfo id="1215" title="golang学习笔记系列之一些标准库的学习(log，bytes，errors等)" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=215 category="golang" tag_list="[]" create_time="2022.11.06 16:45:45.426156" update_time="2022.11.06 16:48:45" />
+
+![](https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp8.itc.cn%2Fq_70%2Fimages03%2F20210221%2Fd778753d6a0d4ab9b685aaf362810c0d.gif&refer=http%3A%2F%2Fp8.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665661975&t=37860c72d333426b69c936abcb7d5473)
+
+### log
+
+golang内置了log包，实现了简单的日志服务。通过调用log包的函数，可以实现简单的日志打印功能。
+
+log包中有3个系列的日志打印函数，分别是print系列，panic系列和fatal系列。
+
+函数系列 | 作用  
+---|---  
+print | 单纯打印日志  
+panic | 打印日志，抛出panic异常  
+fatal | 打印日志，强制结束程序（os.Exit(1)）,defer函数不会执行  
+
+```golang
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+)
+
+func main() {
+
+	//配置日志的输出前缀
+	log.SetPrefix("Log:")
+
+	//配置日志
+	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile)
+
+	//设置日志输出到文件
+	f, _ := os.OpenFile("a.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, os.ModePerm)
+	defer f.Close()
+	log.SetOutput(f)
+
+	//简单打印日志
+	log.Print("hello golang...")
+	defer fmt.Print("程序结束...")
+	//panic日志
+	// log.Panic("bye...") //defer会被执行
+
+	//fatal日志
+	// log.Fatal("致命错误...") //defer不会被执行
+
+	//自定义logger
+	my_logger := log.New(os.Stdout, "My Log:", log.Ldate|log.Ltime|log.Lmicroseconds|log.Llongfile)
+	my_logger.Print("这个是自己定义的logger，一次性配置所有，会方便许多!")
+
+}
+```
+
+**运行结果**
+```shell script
+My Log:2022/11/05 17:27:35.150644 /home/lll/Desktop/go/lll08_标准库/os/lll07_日志相关的操作.go:33: 这个是自己定义的logger，一次性配置所有，会方便许多!
+```
+
+### builtin
+
+这个包提供了一些类型声明，变量和常量声明，还有一些便利的函数，这个包不需要导入，这些变量和函数就可以直接使用。
+
+#### panic
+
+抛出一个panic异常。
+
+```golang
+package main
+
+import "fmt"
+
+func main() {
+
+	//panic 抛出异常
+	panic("抛出异常!!!")
+	
+}
+```
+#### new和make
+new和make的区别：
+  1. make只能用来分配及初始化类型为slice，map和chan的数据；new可以分配任意类型的数据
+  2. new分配返回的是指针，即类型为*T；make返回的是数据的值，即T
+  3. make分配后会对数据进行初始化，而new不会
+
+```golang
+package main
+
+import "fmt"
+
+func main() {
+
+
+	s := new(string)
+	fmt.Printf("s: %T
+", s) //*string
+	fmt.Printf("s: %v
+", *s)
+
+	i2 := new([]int)
+	fmt.Printf("i2: %T
+", i2) //*[]int
+	fmt.Printf("i2: %v
+", *i2)
+
+	i3 := make([]int, 10, 100) //初始化容量为100，长度为10
+	fmt.Printf("i3: %T
+", i3)
+	fmt.Printf("i3: %v
+", i3)
+
+}
+```
+**运行结果**
+
+```shell script
+s: *string
+s: 
+i2: *[]int
+i2: []
+i3: []int
+i3: [0 0 0 0 0 0 0 0 0 0]
+```
+> 内建函数make(T,args)与new(T)的用途不一样。它只用来创建slice，map和chan，并且返回一个初始化后的类型为T的数据。之所以不同，是因为这三个类型的背后引用了使用前必须初始化的数据结构。例如：slice是一个三元描述符，包含一个指向数据的指针，长度，以及容量，在这些项被初始化之前，slice都是nil。对于slice，map和chan，make初始化这些内部数据结构，并准备好可用的值。
+
+### bytes
+
+bytes提供了对字节切片进行读写操作的一系列函数，字节切片处理函数比较多分为基本处理函数，比较函数，后缀检查函数，索引函数，分割函数，大小写处理函数和子切片处理函数。
+
+```golang
+package main
+
+import (
+	"bytes"
+	"fmt"
+)
+
+func main() {
+
+	s1 := "hello world!"
+	b1 := []byte("你好，世界！")
+	fmt.Printf("s1: %v
+", s1)
+	fmt.Printf("b1: %v
+", b1)
+
+	//bytes和string的相互转换
+	//1.bytes转string
+	fmt.Printf("string(b1): %v
+", string(b1))
+	//2.string转bytes
+	fmt.Printf("[]byte(s1): %v
+", []byte(s1))
+
+	//contains：检查bytes中是否包含子bytes
+	fmt.Printf("bytes.Contains(b1, []byte("世界")): %v
+", bytes.Contains(b1, []byte("世界")))
+
+	//count：统计某个bytes出现的次数
+	fmt.Printf("bytes.Count([]byte(s1), []byte("l")): %v
+", bytes.Count([]byte(s1), []byte("l")))
+
+	//compare:比较两个bytes The result will be 0 if a == b, -1 if a < b, and +1 if a > b.
+	fmt.Printf("bytes.Compare(b1, []byte("hello")): %v
+", bytes.Compare(b1, []byte("hello")))
+
+	//分割bytes
+	before, after, _ := bytes.Cut(b1, []byte("，"))
+	fmt.Printf("before: %v
+", string(before))
+	fmt.Printf("after: %v
+", string(after))
+
+	//连接bytes
+	b := bytes.Join([][]byte{b1, []byte(s1)}, []byte("==="))
+	fmt.Printf("b: %v
+", string(b))
+
+	//runes 转成utf8编码 这样能够正确计算中文长度
+	r := bytes.Runes(b1)
+	fmt.Printf("bytes.Runes(b1): %v
+", r)
+	fmt.Printf("len(r): %v
+", len(r))
+
+}
+```
+**运行结果**
+
+```shell script
+s1: hello world!
+
+b1: [228 189 160 229 165 189 239 188 140 228 184 150 231 149 140 239 188 129]
+
+string(b1): 你好，世界！
+
+[]byte(s1): [104 101 108 108 111 32 119 111 114 108 100 33]
+
+bytes.Contains(b1, []byte("世界")): true
+
+bytes.Count([]byte(s1), []byte("l")): 3
+
+bytes.Compare(b1, []byte("hello")): 1
+
+before: 你好
+
+after: 世界！
+
+b: 你好，世界！===hello world!
+
+bytes.Runes(b1): [20320 22909 65292 19990 30028 65281]
+
+len(r): 6
+```
+
+
+### errors
+
+errors包实现了操作错误的函数。go语言使用error类型来返回函数执行过程中遇到的错误，如果返回的error值为nil，则表示未遇到错误，否则error会返回一个字符串，用于说明遇到了什么错误。
+
+error的结构
+
+```golang
+type error interface {
+    Error() string
+}
+```
+
+**你可以使用任何类型去实现它（只要添加一个Error()方法即可）**，也就是说，error可以是任何类型，这意味着，函数返回的error值实际可以包含任意信息，不一定是字符串。
+error不一定表示一个错误，它可以表示任何信息，比如io包中就用error类型的io.EOF表示数据读取结束，而不是遇到了什么错误。
+errors包实现了一个最简单的error类型，只包含了一个字符串，它可以记录大多数情况下遇到的错误信息。errors包的用法很简单，只有一个New函数，用于生成一个简单的error对象：
+
+
+```golang
+func New(text string) error
+package main
+
+import (
+	"errors"
+	"fmt"
+	"time"
+)
+
+//自定义errors
+type MyError struct {
+	When time.Time
+	What string
+}
+
+/*
+type error interface {
+	Error() string
+}
+
+
+error是一个接口，只要实现了Error方法，就可以是一个error
+
+*/
+
+func (e MyError) Error() string {
+	return fmt.Sprintf("%v : %v", e.When, e.What)
+}
+
+//检测字符串是否为空
+func check_str(s string) (err error) {
+
+	if s == "" {
+		err = errors.New("字符串不能为空...")
+	} else {
+		err = MyError{
+			When: time.Date(2022, 11, 11, 11, 11, 11, 11, time.UTC),
+			What: fmt.Sprintf("%v 不是一个空字符串...", s),
+		}
+	}
+	return
+
+}
+func main() {
+
+	s := ""
+	err := check_str(s)
+	fmt.Printf("err: %v
+", err)
+	s2 := "hello python"
+	err2 := check_str(s2)
+	fmt.Printf("err2: %v
+", err2)
+
+}
+```
+
+
+**运行结果**
+
+```shell script
+err: 字符串不能为空...
+err2: 2022-11-11 11:11:11.000000011 +0000 UTC : hello python 不是一个空字符串...
+```
+
+
+

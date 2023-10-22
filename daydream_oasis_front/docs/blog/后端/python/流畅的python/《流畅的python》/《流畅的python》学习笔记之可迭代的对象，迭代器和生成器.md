@@ -1,0 +1,173 @@
+
+<BlogInfo id="1293" title="《流畅的python》学习笔记之可迭代的对象，迭代器和生成器" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=148 category="《流畅的python》" tag_list="['可迭代对象', '生成器', '迭代器']" create_time="2022.04.18 09:26:41.331954" update_time="2022.04.19 16:35:35" />
+
+###  前言
+
+可迭代对象，迭代器，生成器，不知道大家第一眼看到这几个名词的时候，有没有一种很熟悉的感觉，然后在脑子里飞速找寻这几个词之间的差异，但是找了半天，似乎没有找到，并且让原本清晰的概念变得模糊了。
+
+![](https://img-blog.csdnimg.cn/ebf3d26736ac4ac7aac77767ebc2483a.gif)​
+
+反正我一开始有这种感觉，不过现在看完这一章的内容，好像还是有点晕哈哈哈，不过还是乘热打铁，再复习巩固一边，应该会清晰一点！
+
+首先我们来看一下各自的定义，这里我会参考书上的内容然后结合自己的理解来定义这三者。
+
+### 可迭代对象
+
+首先我们可以问这样一个问题：什么是可迭代对象？这个可能比较抽象不好理解。我们换一个角度来问： **具备什么行为的对象是可迭代对象？**
+这样也许你就清晰多了（这也得益于python自身的优点：在python中，我们说一个对象属于什么对象，我们不会去看它的定义，而是看它具有什么样的行为）。
+
+在来看几个栗子：
+
+```python
+a = [1, 2, 3]  # 列表
+b = 'hello'  # 字符串
+class Fruit:  # 类
+    fruits = ['apple', 'peach', 'banana']
+
+    def __getitem__(self, item):
+        return self.fruits[item]
+
+
+if __name__ == '__main__':
+    for i in a: print(i, end=' ')
+    print()
+    for i in b: print(i, end=' ')
+    print()
+    for i in Fruit(): print(i, end=' ')
+```
+
+
+![](../media/image/2022/04/18/image-20220418092637-1.png)
+
+列表是可以遍历的，所以它可以迭代，是可迭代对象；
+
+字符串是可以遍历的，所以它可以迭代，是可迭代对象；
+
+Fruit的对象为什么也可以遍历？[《流畅的python》学习笔记之偏心的python？](https://blog.csdn.net/max_LLL/article/details/123917017?spm=1001.2014.3001.5501
+"《流畅的python》学习笔记之偏心的python？")这一篇文章中你也许可以找到答案！
+
+所以我们归纳总结一下：可以通过使用类似for循环遍历对象中的值的对象是可迭代的对象。而这些对象有具有哪些特有的方法或属性呢？
+
+一般来说，具备以下特性或方法的对象都是可迭代对象：
+
+  * 实现了__iter__方法的对象
+  * 实现了__getitem__方法的对象
+  * 序列（比如list，str，arrary，dict，set等等）都是可迭代对象
+
+**满足上述三个条件中的任何一个的对象都是可迭代对象！**
+
+### 迭代器
+
+从接口上的定义来看：迭代器是这样的对象：实现了无参数的__next__方法，返回序列中的下一个元素；如果没有元素了，那么抛出StopIteration异常。
+
+迭代器的定义相对简单，一句话概括： **只要实现了__next__的对象都是迭代器！（当然__next__的行为是获取下一个元素！）**
+
+这里给出一个栗子：
+
+
+```python
+import re
+import reprlib
+from typing import Iterator
+
+class Sentence:
+    RE_WORD = re.compile('w+')
+
+    def __init__(self, text):
+        self.text = text
+        self.words = self.RE_WORD.findall(self.text)
+
+    def __getitem__(self, item):
+        return self.words[item]
+
+    def __len__(self):
+        return len(self.words)
+
+    # reprlib.repr用于生成大型数据结构的简略字符串表示形式
+    def __repr__(self):
+        return f'Sentence({reprlib.repr(self.text)})'
+
+    def __iter__(self):
+        return SentenceIterator(self.words) #转成迭代器
+
+
+class SentenceIterator:
+
+    def __init__(self, words):
+        self.words = words
+        self.index = 0
+
+    def __next__(self):
+
+        try:
+            word = self.words[self.index]
+        except IndexError:
+            raise StopIteration()
+
+        self.index += 1
+        return word
+
+    def __iter__(self):
+        return self
+
+
+if __name__ == '__main__':
+    text = 'we price the things when we have lost them.'
+    sentence = Sentence(text)
+    sentence_iter = sentence.__iter__()  # 调用__iter__方法转成迭代器
+
+    print(isinstance(sentence_iter, SentenceIterator)) #结果为True
+    while True:
+        try:
+            print(next(sentence_iter),end=' ') #通过next取值
+        except:
+            pass
+```
+
+
+![](https://img-blog.csdnimg.cn/3fe37dea7493404793bf346a748d97a3.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbGl0dGxl5LquXw==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+ 可以看到SentenceIterator的对象是一个典型的迭代器，因为它实现了__next__方法！
+
+
+### 生成器
+
+获取生成器的方法有两种：
+
+  1. 通过含有yield关键字的函数生成
+  2. 通过生成器表达式生成
+
+举个栗子：
+
+
+```python
+#生成器函数
+def func():
+    for i in range(10):
+        yield i
+
+
+if __name__ == '__main__':
+    a = (i for i in range(10)) #生成器表达式
+    print(type(a),next(a))
+
+    b=func()
+    print(type(b),next(b))
+```
+
+
+![](https://img-blog.csdnimg.cn/b51b2c9ce06049cbb16f72293dc93a39.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbGl0dGxl5LquXw==,size_16,color_FFFFFF,t_70,g_se,x_16)
+
+可以看到通过函数func和生成器表达式两种方法得到的对象都属于generator类，都是生成器对象，并且可以通过next()方法获取下一个元素！因此还有另外一个结论：
+**所有的生成器都是迭代器！**
+
+# 总结
+
+在这三个对象中，可迭代对象可能是最好理解的，迭代器和生成器两者可能老是感觉差不多，从接口的定义上可以看出：迭代器和生成器都实现了__next__方法，因此可以说生成器也是迭代器，只不过在定义上，生成器的定义方法只有那两种，也是比较特殊的定义方式，这也许是生成器有别于迭代器的地方（至少从行为和表现上看是这样的）。
+
+不过，在本章末尾的杂谈中作者有提到过：
+**事实上，python程序员不会严格区分二者，即便在官方文档中也把生成器称作迭代器，迭代器和生成器在一定程度上是同义词。**
+
+所以，如果看到这里还是有点晕的同学，索性就不要再纠结了，就把生成器和迭代器当做是一对孪生兄弟吧！谁让他俩的行为那么相似呢？
+
+欢迎小伙伴在评论区留言讨论你们对这三者的见解~

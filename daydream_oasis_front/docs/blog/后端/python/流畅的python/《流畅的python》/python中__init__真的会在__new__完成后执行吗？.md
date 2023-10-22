@@ -1,0 +1,42 @@
+
+<BlogInfo id="1251" title="python中__init__真的会在__new__完成后执行吗？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=30 category="《流畅的python》" tag_list="['笔记']" create_time="2022.07.15 14:48:46.107470" update_time="2022.09.03 10:16:24" />
+
+### 前言
+
+>         在看书的过程中又发现了这个知识点盲区。有些东西不自己亲手去尝试，真的不会知道：居然是这样子的？
+
+### 常规思路
+
+>
+> 大家可能都知道，在python中创建一个对象的流程是：首先调用__new__方法创建一个实例，然后再调用__init__方法初始化这个实例对象。这个是常规的思路，也没有什么问题。
+
+### 蹊跷的事情发生了！
+
+>         直接说结果吧：如果__new__方法返回的对象不是当前的类的实例，它就不会调用__init__方法。
+>
+>         直接看下面的栗子吧(talk is cheap，show me your  code.)：
+>
+
+```python
+# __new__方法执行完成后不一定会调用__init__方法
+# 只有当__new__方法返回的对象是当前类的实例时才会调用__init__方法
+class A:
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls, *args, **kwargs)
+        # return 'hello world！'
+
+    def __init__(self):
+        print('调用了__init__方法！')
+a = A()
+```
+
+>
+> ![](https://img-blog.csdnimg.cn/219a8f245c4544e58fae72ef2da89d3c.png)
+>
+>  
+
+### 总结
+
+>         __init__方法只有在__new__方法返回的实例是当前类(祖先类)的实例的情况下才会被自动调用。
+
+
