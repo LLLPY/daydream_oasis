@@ -49,7 +49,11 @@ export default getSidebarData().then(sidebar => {
                 // 社交连接
                 socialLinks: [
                     {
-                        icon: {svg: '<svg role="img" viewBox="0 0 24 24" xmlns="https://e-assets.gitee.com/gitee-community-web/_next/static/media/logo-white.a5b0e29c.svg"></svg>'},
+                        icon:
+                        {
+                        svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 261.76 226.69"><path d="M161.096.001l-30.225 52.351L100.647.001H-.005l130.877 226.688L261.749.001z" fill="#41b883"/><path d="M161.096.001l-30.225 52.351L100.647.001H52.346l78.526 136.01L209.398.001z" fill="#34495e"/></svg>
+'
+                        },
                         link: 'https://gitee.com/max-LLL',
                     },
                     {icon: 'github', link: 'https://github.com/LLLPY'},
