@@ -21,7 +21,7 @@ from utils import tools
 class RequestMiddleWare(MiddlewareMixin):
 
     def process_request(self, request):
-
+        setattr(request, '_dont_enforce_csrf_checks', True)
         # 更新request上的user
         user_id = request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis'))
         request.user = User.get_by_id(user_id) or AnonymousUser()
