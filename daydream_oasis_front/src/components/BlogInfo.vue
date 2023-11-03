@@ -1,5 +1,7 @@
+<style src="../assets/font/iconfont.css"></style>
 <script setup>
 defineProps(['id', 'title', 'author', 'pv', 'read_times', 'pre_cost_time', 'category', 'tag_list', 'create_time', 'update_time'])
+import '../assets/font/iconfont'
 </script>
 <template>
   <div class="info-box" :id="id">
