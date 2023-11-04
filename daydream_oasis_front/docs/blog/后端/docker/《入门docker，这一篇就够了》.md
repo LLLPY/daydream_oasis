@@ -1,5 +1,5 @@
 
-<BlogInfo id="1244" title="《入门docker，这一篇就够了》" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=843 category="docker" tag_list="['容器', 'docker']" create_time="2022.08.11 11:52:31.299830" update_time="2022.08.11 11:52:31" />
+<BlogInfo id="384" title="《入门docker，这一篇就够了》" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="843" category="docker" tag_list="['容器', '              docker']" create_time="2022.08.11 11:52:31.299830" update_time="2022.08.11 11:52:31" />
 
 # docker的概述
 

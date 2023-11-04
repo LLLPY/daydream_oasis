@@ -1,5 +1,5 @@
 
-<BlogInfo id="1248" title="LeetCode之等式方程的可满足性" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=128 category="leetcode100题" tag_list="['leetcode', '并查集']" create_time="2022.07.21 16:52:09.842470" update_time="2022.07.21 16:52:09" />
+<BlogInfo id="1345" title="LeetCode之等式方程的可满足性" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="128" category="leetcode100题" tag_list="['leetcode', '              并查集']" create_time="2022.07.21 16:52:09.842470" update_time="2022.07.21 16:52:09" />
 
 #  题目
 

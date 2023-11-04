@@ -1,5 +1,5 @@
 
-<BlogInfo id="1399" title="Python实现飞机大战小游戏" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=178 category="pygame" tag_list="['pygame', '飞机大战']" create_time="2021.06.26 21:40:46.863614" update_time="2021.06.26 21:40:46" />
+<BlogInfo id="449" title="Python实现飞机大战小游戏" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="178" category="pygame" tag_list="['pygame', '              飞机大战']" create_time="2021.06.26 21:40:46.863614" update_time="2021.06.26 21:40:46" />
 
 
 ```python

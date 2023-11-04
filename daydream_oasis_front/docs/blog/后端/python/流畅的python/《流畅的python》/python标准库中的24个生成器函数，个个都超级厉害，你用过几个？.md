@@ -1,5 +1,5 @@
 
-<BlogInfo id="1292" title="python标准库中的24个生成器函数，个个都超级厉害，你用过几个？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=209 category="《流畅的python》" tag_list="['生成器函数']" create_time="2022.04.18 09:44:17.133579" update_time="2022.04.18 09:44:17" />
+<BlogInfo id="769" title="python标准库中的24个生成器函数，个个都超级厉害，你用过几个？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="209" category="《流畅的python》" tag_list="['生成器函数']" create_time="2022.04.18 09:44:17.133579" update_time="2022.04.18 09:44:17" />
 
 # 前言
 

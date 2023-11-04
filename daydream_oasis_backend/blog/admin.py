@@ -9,7 +9,7 @@ from user.models import User
 # 分类
 @admin.register(Category, site=my_site)
 class CategoryAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'title', 'create_time', 'creator']
+    list_display = ['id', 'title', 'parent', 'depth', 'create_time', 'creator']
     search_fields = ['title', 'creator__username']  # 搜索的字段同list_display
     list_filter = ['title', 'creator__username', 'create_time']  # 过滤字段为前3个字段
 
@@ -33,7 +33,7 @@ class TagAdmin(admin.ModelAdmin, MyBaseAdmin):
 @admin.register(Blog, site=my_site)
 class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
     form = BlogAdminForm
-    list_display = ['id','title', 'author', 'category', 'dpv', 'duv', 'pv', 'uv', 'likes',
+    list_display = ['id', 'title', 'author', 'category', 'dpv', 'duv', 'pv', 'uv', 'likes',
                     'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top', 'abstract']
     search_fields = ['title', 'author__username', 'category__title', 'abstract']
     list_filter = ['author__username', 'category__title', 'update_time', 'has_deleted']

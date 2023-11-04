@@ -1,5 +1,5 @@
 
-<BlogInfo id="1272" title="python求解迷宫问题，配js实现的走迷宫动画，动起来才有意思~" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=171 category="算法" tag_list="['算法', '栈', '迷宫求解']" create_time="2022.05.12 17:10:59.820927" update_time="2022.05.12 20:23:54" />
+<BlogInfo id="1350" title="python求解迷宫问题，配js实现的走迷宫动画，动起来才有意思~" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="171" category="算法" tag_list="['算法', '              栈', '              迷宫求解']" create_time="2022.05.12 17:10:59.820927" update_time="2022.05.12 20:23:54" />
 
 # 前言
 

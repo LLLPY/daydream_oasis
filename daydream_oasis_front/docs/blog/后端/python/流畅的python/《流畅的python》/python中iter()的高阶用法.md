@@ -1,5 +1,5 @@
 
-<BlogInfo id="1289" title="python中iter()的高阶用法" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=35 category="《流畅的python》" tag_list="['iter()']" create_time="2022.04.18 10:33:19.910392" update_time="2022.04.18 10:33:19" />
+<BlogInfo id="765" title="python中iter()的高阶用法" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="35" category="《流畅的python》" tag_list="['iter()']" create_time="2022.04.18 10:33:19.910392" update_time="2022.04.18 10:33:19" />
 
 #  前言
 

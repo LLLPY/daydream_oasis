@@ -1,5 +1,5 @@
 
-<BlogInfo id="1315" title="Django web开发技术清单" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=415 category="Django" tag_list="['清单', 'Django', 'python基础']" create_time="2022.01.28 17:59:57.543854" update_time="2022.07.11 10:56:58" />
+<BlogInfo id="376" title="Django web开发技术清单" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="415" category="Django" tag_list="['清单', '              Django', '              python基础']" create_time="2022.01.28 17:59:57.543854" update_time="2022.07.11 10:56:58" />
 
 前几天在学完《Django企业开发实战》一书后，发现在书的最后一章有一个技术栈清单，上面罗列了完成该书项目所需要的所有技术栈，从基础一直到高阶，通过提问的方式罗列出来，我感觉这种方式挺好的，带着问题去总结，总是会使人印象深刻的，所以今天打算来总结一下第一小块的内容---python基础。
 

@@ -1,5 +1,5 @@
 
-<BlogInfo id="1364" title="从numpy中学习深度拷贝和浅拷贝" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=102 category="杂谈" tag_list="['浅拷贝', '深拷贝', 'numpy']" create_time="2021.08.19 18:48:35.508160" update_time="2021.08.19 19:56:19" />
+<BlogInfo id="1065" title="从numpy中学习深度拷贝和浅拷贝" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="102" category="杂谈" tag_list="['浅拷贝', '              深拷贝', '              numpy']" create_time="2021.08.19 18:48:35.508160" update_time="2021.08.19 19:56:19" />
 
 前言:
 今天在复习numpy的时候,在看那个array和asarray,深拷贝和浅拷贝的时候,总是感觉听得迷迷糊糊的,于是还是自己进行了测试,虽然这个知识点很小,但是用处还是挺多的,就总感觉自己知道这一块的内容,但是如果真在的让我理清这之间的关系,我感觉我可能还是一头雾水,只知其一,不知其二的那种感觉,不过在亲自动手后总算是云雾顿开了!!!

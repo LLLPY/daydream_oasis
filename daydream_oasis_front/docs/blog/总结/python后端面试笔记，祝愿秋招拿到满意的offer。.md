@@ -1,5 +1,5 @@
 
-<BlogInfo id="1240" title="python后端面试笔记，祝愿秋招拿到满意的offer。" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=1225 category="总结" tag_list="['笔记']" create_time="2022.08.20 17:47:45.905166" update_time="2022.08.20 17:55:06" />
+<BlogInfo id="1048" title="python后端面试笔记，祝愿秋招拿到满意的offer。" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="1225" category="总结" tag_list="['笔记']" create_time="2022.08.20 17:47:45.905166" update_time="2022.08.20 17:55:06" />
 
 > 前言：秋招就要开始啦！！！能不能找到一个满意的职位就看它啦！  
 >

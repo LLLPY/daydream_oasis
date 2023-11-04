@@ -1,5 +1,5 @@
 
-<BlogInfo id="1306" title="《流畅的python》学习笔记之__repr__和__str__之间的区别" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=140 category="《流畅的python》" tag_list="['基础', '笔记', '巩固']" create_time="2022.02.12 21:05:18.237775" update_time="2022.07.11 10:41:19" />
+<BlogInfo id="771" title="《流畅的python》学习笔记之__repr__和__str__之间的区别" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="140" category="《流畅的python》" tag_list="['基础', '              笔记', '              巩固']" create_time="2022.02.12 21:05:18.237775" update_time="2022.07.11 10:41:19" />
 
 ##  前言
 

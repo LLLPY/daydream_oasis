@@ -1,5 +1,5 @@
 
-<BlogInfo id="1400" title="几种排序算法(c#实现)" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=499 category="排序算法" tag_list="['算法', 'c#', '排序']" create_time="2021.06.26 21:37:01.618765" update_time="2021.06.26 21:37:15" />
+<BlogInfo id="1360" title="几种排序算法(c#实现)" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="499" category="排序算法" tag_list="['算法', '              c#', '              排序']" create_time="2021.06.26 21:37:01.618765" update_time="2021.06.26 21:37:15" />
 
 ```c#
 using System;

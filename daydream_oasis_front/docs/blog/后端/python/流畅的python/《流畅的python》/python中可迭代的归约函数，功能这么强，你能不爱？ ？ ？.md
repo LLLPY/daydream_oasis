@@ -1,5 +1,5 @@
 
-<BlogInfo id="1290" title="python中可迭代的归约函数，功能这么强，你能不爱？ ？ ？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=49 category="《流畅的python》" tag_list="['归约函数']" create_time="2022.04.18 10:14:45.177403" update_time="2022.04.18 10:14:45" />
+<BlogInfo id="767" title="python中可迭代的归约函数，功能这么强，你能不爱？ ？ ？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="49" category="《流畅的python》" tag_list="['归约函数']" create_time="2022.04.18 10:14:45.177403" update_time="2022.04.18 10:14:45" />
 
  相信学习python的小伙伴都用过这些函数，但是它们的功能真的太强了，还是忍不住把它们总结记录一下！！！
 

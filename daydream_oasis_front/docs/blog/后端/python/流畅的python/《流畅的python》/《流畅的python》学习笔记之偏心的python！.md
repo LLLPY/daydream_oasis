@@ -1,5 +1,5 @@
 
-<BlogInfo id="1298" title="《流畅的python》学习笔记之偏心的python！" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=70 category="《流畅的python》" tag_list="[]" create_time="2022.04.02 12:27:49.239660" update_time="2022.07.11 10:42:08" />
+<BlogInfo id="773" title="《流畅的python》学习笔记之偏心的python！" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="70" category="《流畅的python》" tag_list="['']" create_time="2022.04.02 12:27:49.239660" update_time="2022.07.11 10:42:08" />
 
 
 

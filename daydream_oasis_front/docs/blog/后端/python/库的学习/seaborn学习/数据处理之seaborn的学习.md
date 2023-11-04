@@ -1,5 +1,5 @@
 
-<BlogInfo id="1361" title="数据处理之seaborn的学习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=556 category="seaborn" tag_list="['seaborn', '数据处理', '绘图']" create_time="2021.08.28 18:04:49.383012" update_time="2021.08.28 18:08:06" />
+<BlogInfo id="683" title="数据处理之seaborn的学习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="556" category="seaborn" tag_list="['seaborn', '              数据处理', '              绘图']" create_time="2021.08.28 18:04:49.383012" update_time="2021.08.28 18:08:06" />
 
 ### 1.什么是seaborn?
 ```python

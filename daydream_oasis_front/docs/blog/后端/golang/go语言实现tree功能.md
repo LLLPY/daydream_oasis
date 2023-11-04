@@ -1,5 +1,5 @@
 
-<BlogInfo id="1217" title="go语言实现tree功能" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=26 category="golang" tag_list="[]" create_time="2022.10.12 16:39:25.491062" update_time="2023.04.06 22:32:06.634953" />
+<BlogInfo id="406" title="go语言实现tree功能" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="26" category="golang" tag_list="['']" create_time="2022.10.12 16:39:25.491062" update_time="2023.04.06 22:32:06.634953" />
 
 最近在学go语言，刚好学到了文件操作这一块，上班摸鱼间隙实现了一个类似于tree的功能。
 

@@ -1,5 +1,5 @@
 
-<BlogInfo id="1201" title="python中的协程" author="ChatGPT" pv=0 read_times=0 pre_cost_time=141 category="并发编程" tag_list="[]" create_time="2023.04.13 23:11:56.470974" update_time="2023.04.13 23:11:56.470983" />
+<BlogInfo id="528" title="python中的协程" author="ChatGPT" pv=0 read_times=0 pre_cost_time="141" category="并发编程" tag_list="['']" create_time="2023.04.13 23:11:56.470974" update_time="2023.04.13 23:11:56.470983" />
 
 > 前言：当今计算机领域中，处理并发编程一直是一个重要的问题。针对不同的应用场景和需求，开发者们一直在不断探索和寻找更加高效和灵活的并发编程方式。在
 > Python

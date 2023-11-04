@@ -1,5 +1,5 @@
 
-<BlogInfo id="1252" title="python中的property，以及属性和特性之间的优先权" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=354 category="《流畅的python》" tag_list="['特性', '属性']" create_time="2022.07.14 17:49:21.173992" update_time="2022.07.14 17:49:21" />
+<BlogInfo id="768" title="python中的property，以及属性和特性之间的优先权" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="354" category="《流畅的python》" tag_list="['特性', '              属性']" create_time="2022.07.14 17:49:21.173992" update_time="2022.07.14 17:49:21" />
 
 
 

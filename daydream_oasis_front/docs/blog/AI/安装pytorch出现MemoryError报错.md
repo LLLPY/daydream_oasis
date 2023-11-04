@@ -1,5 +1,5 @@
 
-<BlogInfo id="1383" title="安装pytorch出现MemoryError报错" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=8 category="人工智能" tag_list="['人工智能', 'bug', 'pytorch']" create_time="2021.07.14 16:20:23.033110" update_time="2021.07.14 16:26:23" />
+<BlogInfo id="20" title="安装pytorch出现MemoryError报错" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="8" category="人工智能" tag_list="['人工智能', '              bug', '              pytorch']" create_time="2021.07.14 16:20:23.033110" update_time="2021.07.14 16:26:23" />
 
 ## pytorch中安装出现MemoryError的解决方案
 

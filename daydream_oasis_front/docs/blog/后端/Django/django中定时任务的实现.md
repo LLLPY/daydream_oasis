@@ -1,5 +1,5 @@
 
-<BlogInfo id="1333" title="django中定时任务的实现" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=58 category="Web开发编程" tag_list="['Django', '定时任务']" create_time="2021.10.28 20:50:00" update_time="2021.10.28 20:50:00" />
+<BlogInfo id="379" title="django中定时任务的实现" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="58" category="Web开发编程" tag_list="['Django', '              定时任务']" create_time="2021.10.28 20:50:00" update_time="2021.10.28 20:50:00" />
 
 最近在浏览自己的网站时,发现自己有些地方的功能还是有些问题,体验起来极差,主要是后台数据的统计(一个页面需要等待几十秒后才能加载完成!!!),因为数据量有点大,统计起来非常的耗时,所以想到了能不能预先将数据处理好,然后在前端请求数据的时候,直接将预处理好的数据发过去就行了,然后几经百度后发现,原来django本身就支持这种功能,真不愧是企业级的web框架!!!考虑的周全~
 

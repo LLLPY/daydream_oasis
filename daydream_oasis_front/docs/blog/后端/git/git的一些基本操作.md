@@ -1,5 +1,5 @@
 
-<BlogInfo id="1228" title="git的一些基本操作" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=27 category="git" tag_list="['git', '版本控制']" create_time="2022.09.22 16:08:22.615161" update_time="2023.03.25 20:17:27.589470" />
+<BlogInfo id="387" title="git的一些基本操作" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="27" category="git" tag_list="['git', '              版本控制']" create_time="2022.09.22 16:08:22.615161" update_time="2023.03.25 20:17:27.589470" />
 
 ![下载.d9b9a679cb0611edaaebdcf505c52fb0.png](../../../media/image/2023/03/25/下载.d9b9a679cb0611edaaebdcf505c52fb0.png)
 

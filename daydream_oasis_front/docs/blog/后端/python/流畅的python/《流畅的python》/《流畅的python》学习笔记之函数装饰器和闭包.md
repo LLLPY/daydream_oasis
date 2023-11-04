@@ -1,5 +1,5 @@
 
-<BlogInfo id="1301" title="《流畅的python》学习笔记之函数装饰器和闭包" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=214 category="《流畅的python》" tag_list="['基础', '闭包', '装饰器']" create_time="2022.03.22 18:56:39.238598" update_time="2022.07.11 10:42:46" />
+<BlogInfo id="774" title="《流畅的python》学习笔记之函数装饰器和闭包" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="214" category="《流畅的python》" tag_list="['基础', '              闭包', '              装饰器']" create_time="2022.03.22 18:56:39.238598" update_time="2022.07.11 10:42:46" />
 
 ###  定义
 

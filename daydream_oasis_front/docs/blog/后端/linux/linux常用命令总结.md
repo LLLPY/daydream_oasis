@@ -1,5 +1,5 @@
 
-<BlogInfo id="1238" title="linux常用命令总结" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=214 category="linux" tag_list="['Linux', '命令']" create_time="2022.08.28 16:09:51.732363" update_time="2022.08.28 16:10:14" />
+<BlogInfo id="413" title="linux常用命令总结" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="214" category="linux" tag_list="['Linux', '              命令']" create_time="2022.08.28 16:09:51.732363" update_time="2022.08.28 16:10:14" />
 
 # linux常用命令总结
 

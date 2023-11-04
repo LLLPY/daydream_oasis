@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" id="tag-box">
         <div class="tools">
             <div class="circle">
                 <span class="red box"></span>
@@ -9,6 +9,9 @@
             </div>
             <div class="circle">
                 <span class="green box"></span>
+            </div>
+            <div class="more">
+                <span class=""><a href="/tag.html">更多</a></span>
             </div>
         </div>
         <div class="card__content">
@@ -47,6 +50,7 @@
             fetchTags() {
                 axios_ins.get('/api/tag/?format=json').then(response => {
                     this.tag_list = response.data.data
+
                 }).catch(error => {
                     console.log('error')
                 })
@@ -71,12 +75,12 @@
     }
 
     .tools {
-        display: flex;
         align-items: center;
         padding: 9px;
     }
 
     .circle {
+        display: inline-block;
         padding: 0 4px;
     }
 
@@ -115,6 +119,21 @@
         cursor: pointer;
         background-color: skyblue !important;
     }
+
+    .card .tools .more {
+        float: right;
+        font-size: 0.6em;
+    }
+
+    .card .tools .more:hover {
+        color: gray;
+    }
+
+    .VPDocAside #tag-box {
+        max-height: 321px;
+        overflow: hidden;
+    }
+
 
 </style>
 

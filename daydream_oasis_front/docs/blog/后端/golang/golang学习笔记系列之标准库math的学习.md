@@ -1,5 +1,5 @@
 
-<BlogInfo id="1211" title="golang学习笔记系列之标准库math的学习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=103 category="golang" tag_list="[]" create_time="2022.12.25 17:59:52.866779" update_time="2022.12.25 17:59:52" />
+<BlogInfo id="402" title="golang学习笔记系列之标准库math的学习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="103" category="golang" tag_list="['']" create_time="2022.12.25 17:59:52.866779" update_time="2022.12.25 17:59:52" />
 
 ![](https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp8.itc.cn%2Fq_70%2Fimages03%2F20210221%2Fd778753d6a0d4ab9b685aaf362810c0d.gif&refer=http%3A%2F%2Fp8.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665661975&t=37860c72d333426b69c936abcb7d5473)
 

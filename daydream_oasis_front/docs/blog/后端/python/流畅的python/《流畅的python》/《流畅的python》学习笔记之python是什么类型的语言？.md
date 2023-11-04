@@ -1,5 +1,5 @@
 
-<BlogInfo id="1297" title="《流畅的python》学习笔记之python是什么类型的语言？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=40 category="《流畅的python》" tag_list="['动态', '强类型', '解析性']" create_time="2022.04.03 16:32:08.172840" update_time="2022.10.15 20:58:33" />
+<BlogInfo id="770" title="《流畅的python》学习笔记之python是什么类型的语言？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="40" category="《流畅的python》" tag_list="['动态', '              强类型', '              解析性']" create_time="2022.04.03 16:32:08.172840" update_time="2022.10.15 20:58:33" />
 
 #  讨论类型时，最好考虑两条不同的坐标线！
 

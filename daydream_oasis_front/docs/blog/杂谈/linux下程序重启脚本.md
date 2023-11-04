@@ -1,5 +1,5 @@
 
-<BlogInfo id="1357" title="linux下程序重启脚本" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=103 category="杂谈" tag_list="['可控自启', 'Linux', '脚本']" create_time="2021.09.04 20:24:53.472234" update_time="2021.09.04 20:24:53" />
+<BlogInfo id="1060" title="linux下程序重启脚本" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="103" category="杂谈" tag_list="['可控自启', '              Linux', '              脚本']" create_time="2021.09.04 20:24:53.472234" update_time="2021.09.04 20:24:53" />
 
 前言:最近一直在做一个项目,具体要求我就不一一概述了,但其中有一个功能是这样的:当程序的大部分采集功能丧失时,需要对程序进行重启恢复,但是由于程序启动了tcp服务端,在程序内部重启时,如果不将旧的程序kill掉,后来启动的程序由于端口一直被旧的程序占用着,所以tcp服务一直启动失败(这里程序的tcp服务使用的是固定的端口),即一直处于阻塞状态.
 

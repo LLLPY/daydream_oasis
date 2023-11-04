@@ -1,5 +1,5 @@
 
-<BlogInfo id="1223" title="python并发编程之协程" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=195 category="并发编程" tag_list="[]" create_time="2022.09.30 17:45:49.055381" update_time="2022.09.30 17:45:49" />
+<BlogInfo id="529" title="python并发编程之协程" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="195" category="并发编程" tag_list="['']" create_time="2022.09.30 17:45:49.055381" update_time="2022.09.30 17:45:49" />
 
 > 摸鱼之余，跟着官方文档把协程这块过了一下。
 

@@ -20,9 +20,19 @@ class Category(BaseModel):
     # avatar
     avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
 
+    # 父类
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+
+    # 深度
+    depth = models.SmallIntegerField(default=1, max_length=4, help_text='深度', verbose_name='深度')
+
     class Meta:
         db_table = '分类'  # 修改表名
         verbose_name_plural = verbose_name = db_table
+
+    @classmethod
+    def get_by_name(cls, name):
+        return cls.objects.filter(title=name).first()
 
 
 # 标签
@@ -199,8 +209,6 @@ class Blog(BaseModel):
         recommend_blog_list.sort(key=lambda a: -a.recommendation_score)
 
         return recommend_blog_list
-
-
 
 
 class BlogTagRelease(models.Model):

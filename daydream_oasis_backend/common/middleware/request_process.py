@@ -24,8 +24,11 @@ class RequestMiddleWare(MiddlewareMixin):
         setattr(request, '_dont_enforce_csrf_checks', True)
         # 更新request上的user
         user_id = request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis'))
-        # admin后台可以登录后获取user，或者通过自定义传user_id获取，或者为匿名用户
-        request.user = request.user or User.get_by_id(user_id) or AnonymousUser()
+
+        # 如果没有user或者是匿名用户，尝试去获取用户
+        if not request.user or isinstance(request.user, AnonymousUser):
+            request.user = User.get_by_id(user_id) or AnonymousUser()
+
         print(f'cookie中获取的user_id:{user_id},user:{request.user} {request.user.is_authenticated}')
         # return HttpResponse('后台维护，暂停访问...')
 

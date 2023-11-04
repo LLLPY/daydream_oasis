@@ -1,5 +1,5 @@
 
-<BlogInfo id="1321" title="django关于数据库保存emoij符合的配置" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=40 category="Django" tag_list="['字符集', 'Django', 'mysql']" create_time="2022.01.20 15:14:28.927453" update_time="2022.07.11 10:57:23" />
+<BlogInfo id="380" title="django关于数据库保存emoij符合的配置" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="40" category="Django" tag_list="['字符集', '              Django', '              mysql']" create_time="2022.01.20 15:14:28.927453" update_time="2022.07.11 10:57:23" />
 
 不知道你们有没有踩过这个坑，反正我是亲身经历。我在自己的博客网站上编辑博客时，为了增加文章的生动性，时不时添加两个emoij符号也是理所当然的，可是，就当我在写完一篇博客后，满怀期待的点击发布的时候，一片黄底黑字映入了我的眼帘，对web开发有过了解的兄弟，这个场景对你们来说应该时似曾相识吧！???
 

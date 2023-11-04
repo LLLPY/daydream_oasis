@@ -1,5 +1,5 @@
 
-<BlogInfo id="1286" title="上下文管理器和with块" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=90 category="《流畅的python》" tag_list="['with', '上下文管理器']" create_time="2022.04.23 17:07:46.540609" update_time="2022.04.23 17:08:22" />
+<BlogInfo id="779" title="上下文管理器和with块" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="90" category="《流畅的python》" tag_list="['with', '              上下文管理器']" create_time="2022.04.23 17:07:46.540609" update_time="2022.04.23 17:08:22" />
 
 ### 前言
 

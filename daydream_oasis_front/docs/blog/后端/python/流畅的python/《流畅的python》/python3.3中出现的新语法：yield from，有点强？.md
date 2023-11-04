@@ -1,5 +1,5 @@
 
-<BlogInfo id="1291" title="python3.3中出现的新语法：yield from，有点强？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=40 category="《流畅的python》" tag_list="['yield from']" create_time="2022.04.18 10:07:11.395021" update_time="2022.04.18 10:07:11" />
+<BlogInfo id="764" title="python3.3中出现的新语法：yield from，有点强？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="40" category="《流畅的python》" tag_list="['yield from']" create_time="2022.04.18 10:07:11.395021" update_time="2022.04.18 10:07:11" />
 
 #  前言
 

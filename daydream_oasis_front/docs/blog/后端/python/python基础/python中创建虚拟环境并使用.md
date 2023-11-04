@@ -1,5 +1,5 @@
 
-<BlogInfo id="1230" title="python中创建虚拟环境并使用" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=40 category="python基础" tag_list="['python', '虚拟环境']" create_time="2022.09.16 22:45:34.734873" update_time="2022.09.16 22:46:39" />
+<BlogInfo id="469" title="python中创建虚拟环境并使用" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="40" category="python基础" tag_list="['python', '              虚拟环境']" create_time="2022.09.16 22:45:34.734873" update_time="2022.09.16 22:46:39" />
 
 相信很多小伙伴都知道虚拟环境的重要性，比如日常开发中，有很多不同的项目，特别是有的是老项目，有的是新项目，它们内部的包虽然是同名的，但是它们却是不同的版本，一些接口或者方法都有所变化，这时候就不能使用同一个环境来开发它们；亦或是连python的版本都有很大的变化，比如一个项目是用python2.x开发，另一个却是phython3.x，这个时候就更不可能在同一环境下开发了，所以最好的办法就是将它们相互隔离，每个项目都有它自己的虚拟环境，这样也方便在各自的虚拟环境下进行后续的开发和维护。
 
