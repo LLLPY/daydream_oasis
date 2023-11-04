@@ -63,7 +63,7 @@ class ActionViewSet(BaseViewSet):
 
     @action(methods=['post'], detail=True)
     def upload_action(self, request, *args, **kwargs):
-        action_obj: Action = self.get_object(raise_on_not_found=True)
+        action_obj: Action = self.get_object()
         serialzer = self.get_serializer(data=self.request.data, include_fields=['action', 'cost_time'])
         serialzer.is_valid(raise_exception=True)
         action = serialzer.data.get('action')

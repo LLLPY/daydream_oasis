@@ -51,14 +51,6 @@ class BaseModel(models.Model):
         self.save()
 
     @classmethod
-    def create(cls, **kwargs):
-        self = cls()
-        '''通用保存接口'''
-        for k, v in kwargs.items():
-            if hasattr(self, k): setattr(self, k, v)
-        self.save()
-
-    @classmethod
     def get_by_id(cls, _id: int):
         return cls.objects.filter(id=_id).first()
 

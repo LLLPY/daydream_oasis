@@ -24,7 +24,7 @@ class Category(BaseModel):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
 
     # 深度
-    depth = models.SmallIntegerField(default=1, max_length=4, help_text='深度', verbose_name='深度')
+    depth = models.SmallIntegerField(default=1, help_text='深度', verbose_name='深度')
 
     class Meta:
         db_table = '分类'  # 修改表名

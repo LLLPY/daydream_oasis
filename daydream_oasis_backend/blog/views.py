@@ -1,3 +1,5 @@
+from rest_framework.viewsets import GenericViewSet
+
 from blog.serializers import BlogSerializers, CategorySerializers, TagSerializers, CommentSerializers, \
     CollectionSerializers, LikeSerializers
 from blog.models import Comment, Collection, Blog, Like, Category, Tag, Share
@@ -10,7 +12,7 @@ from common.exception import exception
 from log.views import action_log
 
 
-@action_log()
+# @action_log()
 class BlogViewSet(BaseViewSet):
     serializer_class = BlogSerializers
     queryset = Blog.objects.all()
@@ -108,21 +110,25 @@ class BlogViewSet(BaseViewSet):
         '''点赞'''
 
         user = self.request.user
-        print(1111, request.user, request.user.is_authenticated)
         if not user.is_authenticated:
             raise exception.CustomValidationError('请先登录!')
 
         blog = self.get_object()
+        has_liked = Like.status(blog=blog, user=user)
+        if has_liked:
+            raise exception.CustomValidationError('已经点过赞啦!')
 
         key = f'like:{user.id}:{blog.id}'
         success = self.redis_conn.setnx(key, 'liked')
         if not success:
-            return exception.CustomValidationError('3秒内不能重复点赞哟!')
+            raise exception.CustomValidationError('3秒内不能重复点赞哟!')
 
         # 3秒内只能点一次赞
         self.redis_conn.expire(key, 3)
-        Like.create(user=self.request.user, blog=blog)
-
+        like_obj = Like()  # .objects.create(user=self.request.user, blog=blog).save()
+        like_obj.user = user
+        like_obj.blog = blog
+        like_obj.save()
         return SucResponse('点赞成功!')
 
     @action(methods=['get'], detail=False)

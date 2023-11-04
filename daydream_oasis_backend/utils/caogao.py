@@ -7,8 +7,6 @@ import re
 from blog.models import Tag, Blog
 from blog.models import Category
 import datetime
-
-# TODO 数据导入数据库
 from user.models import User
 
 old_dir = r'C:\Users\LLL03\Desktop\daydream_oasis\daydream_oasis_front\docs\blog'
