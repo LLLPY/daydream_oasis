@@ -79,7 +79,7 @@ padding-right: 0.2em;
 }
 
 #top-box .head .more {
-  font-size: 0.3em;
+  font-size: 0.6em;
   float: right;
 }
 

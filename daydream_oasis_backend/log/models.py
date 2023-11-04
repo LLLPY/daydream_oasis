@@ -1,8 +1,5 @@
-import re
 from datetime import datetime, timedelta
-from typing import List
 from django.db import models
-from django.db.models import Q
 from common.models import BaseModel
 from blog.models import Blog
 from user.models import User
@@ -43,10 +40,6 @@ class RequestRecord(BaseModel):
 
     def __str__(self):
         return self.path
-
-    @classmethod
-    def get_all(cls):
-        return cls.objects.all()
 
     # 获取某天或某月或某年的访问量
     @classmethod

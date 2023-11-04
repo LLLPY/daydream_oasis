@@ -42,7 +42,7 @@
             },
             randomSize() {
                 // 生成随机字体大小
-                return Math.floor(Math.random() * 10 + 8) + 'px';
+                return Math.floor(Math.random() * 10 + 7) + 'px';
             },
             fetchTags() {
                 axios_ins.get('/api/tag/?format=json').then(response => {

@@ -37,8 +37,8 @@
         methods: {
             get_blog_id() {
                 // 获取blog的id
-                // this.blog_id = document.getElementsByClassName('info-box')[0].id
-                this.blog_id = 1
+                //this.blog_id = document.getElementsByClassName('info-box')[0].id
+                // this.blog_id = 1
             },
             get_action_info() {
 

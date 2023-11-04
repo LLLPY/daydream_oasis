@@ -14,7 +14,7 @@ from rest_framework.routers import DefaultRouter
 from blog.views import CategoryViewSet, BlogViewSet, TagViewSet, CommentViewSet, CollectionViewSet, LikeViewSet
 from frontconfig.views import FrontConfigViewSet
 from file.views import FileViewSet
-# from log.views import
+from log.views import ActionViewSet
 from user.views import UserViewSet
 
 # 路由注册
@@ -25,7 +25,7 @@ router.register(r'tag', TagViewSet, basename='tag')
 router.register(r'comment', CommentViewSet, basename='comment')
 router.register(r'collection', CollectionViewSet, basename='collection')
 router.register(r'like', LikeViewSet, basename='like')
-# router.register(r'log', LikeViewSet, basename='log')
+router.register(r'action_log', ActionViewSet, basename='action_log')
 router.register(r'user', UserViewSet, basename='user')
 router.register(r'file', FileViewSet, basename='file')
 router.register(r'frontconfig', FrontConfigViewSet, basename='frontconfig')

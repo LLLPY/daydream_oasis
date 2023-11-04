@@ -1,34 +1,8 @@
-from os.path import join
-from django.http import JsonResponse
-from log.models import RequestRecord, Action
-from utils.tools import statisticData
-import re
-
-
-# 返回可视化的代码
-def returnPicture(request):
-    if request.method == 'POST':
-        whichOne = request.POST.get('whichOne')  # 1代表月数据 2代表年数据
-        with open(join('templates', f'demo{whichOne}.html'), 'r', encoding='utf8') as f:
-            content = f.read().replace(
-                '<script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>', '')
-            div = re.search(r'<div.*div>', content).group()
-            return JsonResponse({'div': div})  # ,'script':script
-    return JsonResponse({'div': '数据请求失败!'})
-
-
-# 绘制数据显示图标并将其写入文件
-def drawPictureAndWriteToFile():
-    for i in range(1, 3):
-        statisticData(RequestRecord, i)  # 绘图1和图2
-        with open(join('templates', f'demo{i}.html'), 'r', encoding='utf8') as f:
-            content = f.read().replace(
-                '<script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>', '')
-            script = re.sub(
-                r'(<div.*div>)|</script>|<script>|<!DOCTYPE html>|<html>|<head>|<meta charset="UTF-8">|<title>Awesome-pyecharts</title>|</head>|<body>|</body>|</html>',
-                '', content)
-        with open(join('static', 'js', f'demo{i}.js'), 'w+', encoding='utf8') as f:
-            f.write(script)
+from common.drf.response import SucResponse
+from common.views import BaseViewSet
+from log.models import Action
+from log.serializers import ActionSerializer
+from rest_framework.decorators import action
 
 
 def action_log():
@@ -80,3 +54,20 @@ def action_log():
         return DecoratedClass
 
     return inner
+
+
+class ActionViewSet(BaseViewSet):
+
+    serializer_class = ActionSerializer
+    queryset = Action.objects.all()
+
+    @action(methods=['post'], detail=True)
+    def upload_action(self, request, *args, **kwargs):
+        action_obj: Action = self.get_object(raise_on_not_found=True)
+        serialzer = self.get_serializer(data=self.request.data, include_fields=['action', 'cost_time'])
+        serialzer.is_valid(raise_exception=True)
+        action = serialzer.data.get('action')
+        cost_time = serialzer.data.get('cost_time')
+        action_obj.action = action
+
+        return SucResponse()

@@ -1,3 +1,12 @@
+---
+prev:
+  text: '体验css'
+  link: '/blog/前端/css学习/1.体验css'
+next:
+  text: 'django web开发技术清单'
+  link: '/blog/后端/Django/Django web开发技术清单'
+---
+
 
 <BlogInfo id="1194" title="Find the way with dfs" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=117 category="人工智能" tag_list="['数据结构', 'dfs']" create_time="2023.08.27 00:05:46.036973" update_time="2023.08.29 23:05:29.746130" />
 
