@@ -7,6 +7,7 @@ from rest_framework import serializers
 
 class ActionSerializer(DynamicFieldsSerializer):
 
-    action = serializers.IntegerField(help_text='希望')
+    blog_id = serializers.IntegerField(help_text='博客id')
+    action = serializers.IntegerField(help_text='行为')
     cost_time = serializers.FloatField(help_text='消耗的时长')
 

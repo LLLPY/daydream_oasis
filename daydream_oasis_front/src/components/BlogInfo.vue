@@ -25,11 +25,11 @@
                 console.log(tag_str)
             },
             upload_action() {
-                let res = axios_ins.post('/api/action_log/' + this.blog_id + '/upload_action/', {
-                    action: 1,
-                    cost_time: 0
+                let res = axios_ins.post('/api/action_log/upload_action/', {
+                    action: 6,
+                    cost_time: 0,
+                    blog_id: this.blog_id
                 })
-                console.log(res)
             }
 
         },

@@ -30,7 +30,6 @@ def custom_exception_handler(exc, context=None):
 
     # 这里统一打印异常的详细信息
     logger.error(exc, exc_info=True)
-    print(111111111,type(exc),exc)
     # 自定义的异常
     if isinstance(exc, exceptions.CustomValidationError):
         return exc.response

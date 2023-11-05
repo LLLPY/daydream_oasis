@@ -21,12 +21,14 @@ from utils import tools
 class RequestMiddleWare(MiddlewareMixin):
 
     def process_request(self, request):
+
+        # 跨域问题
         setattr(request, '_dont_enforce_csrf_checks', True)
         # 更新request上的user
         user_id = request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis'))
 
         # 如果没有user或者是匿名用户，尝试去获取用户
-        if not request.user or isinstance(request.user, AnonymousUser):
+        if not hasattr(request, 'user') or not request.user or isinstance(request.user, AnonymousUser):
             request.user = User.get_by_id(user_id) or AnonymousUser()
 
         print(f'cookie中获取的user_id:{user_id},user:{request.user} {request.user.is_authenticated}')
@@ -66,9 +68,9 @@ class RequestMiddleWare(MiddlewareMixin):
 
         request.request_log = request_log
         # 个性推荐
-        user = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
-        if not cache.has_key(f'{user}_recommend_list'):
+        user_id = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
+        if not cache.has_key(f'{user_id}_recommend_list'):
             user_recommend_queue = cache.get('user_recommend_queue') or []
-            if user not in user_recommend_queue:
-                user_recommend_queue.insert(0, user)
+            if user_id not in user_recommend_queue:
+                user_recommend_queue.insert(0, user_id)
             cache.set('user_recommend_queue', user_recommend_queue)

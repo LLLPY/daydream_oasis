@@ -5,7 +5,8 @@
   <span class="counter">{{ shared_count }}</span>
 </span>
         <span class="iconfont">
-  <svg class="icon" aria-hidden="true" :class="{active:has_collected}"><use xlink:href="#icon-shoucang-shoucang"></use></svg>
+  <svg class="icon" aria-hidden="true" :class="{active:has_collected}"><use xlink:href="#icon-shoucang-shoucang"
+                                                                            @click="collect"></use></svg>
   <span class="counter">{{ collected_count }}</span>
 
 </span>
@@ -38,7 +39,6 @@
             get_blog_id() {
                 // 获取blog的id
                 this.blog_id = document.getElementsByClassName('info-box')[0].id
-                // this.blog_id = 1
             },
             get_action_info() {
 
@@ -58,10 +58,25 @@
                     const data = response.data
                     if (data.code !== '0') {
                         Warning(data.message)
+                        return
                     }
-                }).catch(reason => {
+                    this.liked_count += 1
                 })
-            }
+            },
+            collect() {
+                //   收藏
+                axios_ins.post('/api/blog/' + this.blog_id + '/collect/').then(response => {
+                    const data = response.data
+                    if (data.code === '0') {
+                        this.liked_count += 1
+                    } else {
+                        Warning(data.message)
+
+                    }
+                })
+            },
+
+
         },
         mounted() {
             this.get_blog_id()

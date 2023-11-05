@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
     'common.middleware.rate_limit.RateLimitMixin',  # 限流
     'common.middleware.response_process.ResponseMiddleware',  # 响应中间件
     'django.middleware.security.SecurityMiddleware',
@@ -50,7 +51,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # 跨域请求
@@ -201,13 +201,9 @@ SIMPLEUI_LOGO = f'../../static/image/favorite.png'
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
 
-
-
 # 解决警告
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-from .handler import custom_exception_handler
 REST_FRAMEWORK = {
-    # 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     # 自定义异常捕获
     'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
 }

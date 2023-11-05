@@ -125,7 +125,33 @@ class BlogViewSet(BaseViewSet):
 
         # 3秒内只能点一次赞
         self.redis_conn.expire(key, 3)
-        like_obj = Like()  # .objects.create(user=self.request.user, blog=blog).save()
+        like_obj = Like()
+        like_obj.user = user
+        like_obj.blog = blog
+        like_obj.save()
+        return SucResponse('点赞成功!')
+
+    @action(methods=['post'], detail=True)
+    def collect(self, request, *args, **kwargs):
+        '''点赞'''
+
+        user = self.request.user
+        if not user.is_authenticated:
+            raise exception.CustomValidationError('请先登录!')
+
+        blog = self.get_object()
+        has_collected = Collection.status(blog=blog, user=user)
+        if has_collected:
+            raise exception.CustomValidationError('已经点过赞啦!')
+
+        key = f'like:{user.id}:{blog.id}'
+        success = self.redis_conn.setnx(key, 'liked')
+        if not success:
+            raise exception.CustomValidationError('3秒内不能重复点赞哟!')
+
+        # 3秒内只能点一次赞
+        self.redis_conn.expire(key, 3)
+        like_obj = Like()
         like_obj.user = user
         like_obj.blog = blog
         like_obj.save()
