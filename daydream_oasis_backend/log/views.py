@@ -1,15 +1,12 @@
-import re
-
-from django.db.models import Count, Sum, Q
-
+from django.db.models import Count
 from common.drf.response import SucResponse
 from common.views import BaseViewSet
 from log.models import Action
 from log.serializers import ActionSerializer
 from rest_framework.decorators import action
 import datetime
-
 from utils import tools
+from django.contrib.auth.decorators import login_required
 
 
 def action_log():
@@ -68,6 +65,7 @@ class ActionViewSet(BaseViewSet):
     queryset = Action.objects.all()
 
     @action(methods=['post'], detail=False)
+    @login_required
     def upload_action(self, request, *args, **kwargs):
         serialzer = self.get_serializer(data=self.request.data, include_fields=['blog_id', 'action', 'cost_time'])
         serialzer.is_valid(raise_exception=True)

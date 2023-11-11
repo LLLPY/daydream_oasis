@@ -38,8 +38,13 @@
                         'code': this.code,
                     }).then(response => {
                     const data = response.data
-                    Info(data.message)
-                }).catch(reason => {
+                    if (data.code === '0'){
+                        window.history.back();
+                        Info(data.message)
+                    }else{
+                        Warning(data.message)
+                    }
+
                 })
             }
         }

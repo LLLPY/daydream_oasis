@@ -7,13 +7,13 @@
 </span>
         <span class="iconfont">
   <svg class="icon" aria-hidden="true" :class="{active:has_collected}"><use xlink:href="#icon-shoucang-shoucang"
-                                                                            @click="collect"></use></svg>
+                                                                            @click="wrap_collect"></use></svg>
   <span class="counter">{{ collected_count }}</span>
 
 </span>
         <span class="iconfont">
   <svg class="icon" aria-hidden="true" :class="{active:has_liked}"><use xlink:href="#icon-dianzan_kuai"
-                                                                        @click="like"></use></svg>
+                                                                        @click="wrap_like"></use></svg>
   <span class="counter">{{ liked_count }}</span>
 </span>
     </div>
@@ -22,8 +22,8 @@
 
 <script>
 
-    import axios_ins from '../assets/axios'
-    import {Warning} from "../assets/MessageBox";
+import axios_ins from '../assets/axios'
+import {Warning} from "../assets/MessageBox";
 
     export default {
         data() {
@@ -67,17 +67,60 @@
                     
                 })
             },
+            cancel_like() {
+                //   点赞
+                axios_ins.post('/api/blog/' + this.blog_id + '/cancel_like/').then(response => {
+                    const data = response.data
+                    if (data.code === '0') {
+                        this.liked_count -= 1
+                        this.has_liked = false
+
+                    }else{
+                        Warning(data.message)
+                    }
+                    
+                })
+            },
+            wrap_like(){
+                if(this.has_liked){
+                    this.cancel_like()
+                }else{
+                    this.like()
+                }
+            },
+
             collect() {
                 //   收藏
                 axios_ins.post('/api/blog/' + this.blog_id + '/collect/').then(response => {
                     const data = response.data
                     if (data.code === '0') {
-                        this.liked_count += 1
+                        this.collected_count += 1
+                        this.has_collected = true
                     } else {
                         Warning(data.message)
 
                     }
                 })
+            },
+            cancel_collect() {
+                //   收藏
+                axios_ins.post('/api/blog/' + this.blog_id + '/cancel_collect/').then(response => {
+                    const data = response.data
+                    if (data.code === '0') {
+                        this.collected_count -= 1
+                        this.has_collected = false
+                    } else {
+                        Warning(data.message)
+
+                    }
+                })
+            },
+            wrap_collect(){
+                if(this.has_collected){
+                    this.cancel_collect()
+                }else{
+                    this.collect()
+                }
             },
 
 

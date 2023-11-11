@@ -22,7 +22,6 @@
             },
             get_tag_list() {
                 let tag_str = document.getElementById('tag-list').innerText
-                console.log(tag_str)
             },
             upload_action() {
                 let res = axios_ins.post('/api/action_log/upload_action/', {
@@ -35,8 +34,6 @@
         },
         mounted() {
             this.get_blog_id()
-            console.log('请求服务端')
-            console.log(this.blog_id)
             this.upload_action()
         }
     }

@@ -250,17 +250,24 @@ class Comment(BaseModel):
 class LikeMixin:
 
     @classmethod
-    @my_cache(30)
     def get_count(cls, blog: Blog):
         '''获取指定博客的点赞数量'''
         return cls.objects.filter(blog=blog).count()
 
     @classmethod
-    @my_cache(30)
     def status(cls, blog: Blog, user: User):
         '''判断当前用户是否点赞'''
-        if not user.is_authenticated: return False
-        return cls.objects.filter(blog=blog, user=user).exists()
+        if not user.is_authenticated:
+            return (None, False)
+        self = cls.objects.filter(blog=blog, user=user).first()
+        return (self, True) if self else (None, False)
+
+    @classmethod
+    def create(cls, blog: Blog, user: User):
+        self = cls()
+        self.blog = blog
+        self.user = user
+        self.save()
 
 
 # 点赞记录表

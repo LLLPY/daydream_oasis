@@ -1,5 +1,3 @@
-from rest_framework.viewsets import GenericViewSet
-
 from blog.serializers import BlogSerializers, CategorySerializers, TagSerializers, CommentSerializers, \
     CollectionSerializers, LikeSerializers
 from blog.models import Comment, Collection, Blog, Like, Category, Tag, Share
@@ -10,7 +8,7 @@ from common.drf.mixin import InstanceMixin
 from common.views import BaseViewSet
 from common.exception import exception
 from log.views import action_log
-
+from common.drf.decorators import login_required
 # @action_log()
 from utils import tools
 
@@ -20,6 +18,7 @@ class BlogViewSet(BaseViewSet):
     queryset = Blog.objects.all()
 
     # 新增博客
+    @login_required
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
@@ -51,9 +50,13 @@ class BlogViewSet(BaseViewSet):
         if detail:
             serializer = self.get_serializer(queryset, many=True)
         else:
-            serializer = self.get_serializer(queryset, many=True,
-                                             include_fields=['id', 'title', 'author', 'category', 'abstract',
-                                                             'section', 'tag_list'])
+            serializer = self.get_serializer(queryset,
+                                             many=True,
+                                             include_fields=[
+                                                 'id', 'title', 'author',
+                                                 'category', 'abstract',
+                                                 'section', 'tag_list'
+                                             ])
 
         data = serializer.data
         return SucResponse(data=data)
@@ -68,10 +71,12 @@ class BlogViewSet(BaseViewSet):
         return SucResponse(data=serializer.data)
 
     # 更新博客
+    @login_required
     def update(self, request, *args, **kwargs):
         ...
 
     # 删除博客
+    @login_required
     def destroy(self, request, *args, **kwargs):
         super().destroy(request, *args, **kwargs)
         return SucResponse('删除成功!')
@@ -88,11 +93,11 @@ class BlogViewSet(BaseViewSet):
 
         # 获取点赞次数和当前的点赞状态
         liked_count = Like.get_count(blog=blog)
-        has_liked = Like.status(blog=blog, user=user)
+        _, has_liked = Like.status(blog=blog, user=user)
 
         # 获取收藏次数和当前的收藏状态
         collected_count = Collection.get_count(blog=blog)
-        has_collected = Collection.status(blog=blog, user=user)
+        _, has_collected = Collection.status(blog=blog, user=user)
 
         # 获取分享次数
         shared_count = Share.get_count(blog=blog)
@@ -108,15 +113,14 @@ class BlogViewSet(BaseViewSet):
         return SucResponse(data=data)
 
     @action(methods=['post'], detail=True)
+    @login_required
     def like(self, request, *args, **kwargs):
         '''点赞'''
 
         user = self.request.user
-        if not user.is_authenticated:
-            raise exception.CustomValidationError('请先登录!')
 
         blog = self.get_object()
-        has_liked = Like.status(blog=blog, user=user)
+        _, has_liked = Like.status(blog=blog, user=user)
         if has_liked:
             raise exception.CustomValidationError('已经点过赞啦!')
 
@@ -127,38 +131,60 @@ class BlogViewSet(BaseViewSet):
 
         # 3秒内只能点一次赞
         self.redis_conn.expire(key, 3)
-        like_obj = Like()
-        like_obj.user = user
-        like_obj.blog = blog
-        like_obj.save()
+        Like.create(blog, user)
         return SucResponse('点赞成功!')
 
     @action(methods=['post'], detail=True)
+    @login_required
+    def cancel_like(self, request, *args, **kwargs):
+        '''取消点赞'''
+
+        user = self.request.user
+        blog = self.get_object()
+        like_obj, has_liked = Like.status(blog=blog, user=user)
+        if has_liked:
+            like_obj.delete()
+        else:
+            raise exception.CustomValidationError('还未点赞!')
+        return SucResponse('取消点赞成功!')
+
+    @action(methods=['post'], detail=True)
     def collect(self, request, *args, **kwargs):
-        '''点赞'''
+        '''收藏'''
 
         user = self.request.user
         if not user.is_authenticated:
             raise exception.CustomValidationError('请先登录!')
 
         blog = self.get_object()
-        has_collected = Collection.status(blog=blog, user=user)
+        _, has_collected = Collection.status(blog=blog, user=user)
         if has_collected:
-            raise exception.CustomValidationError('已经点过赞啦!')
+            raise exception.CustomValidationError('已经收藏啦!')
 
-        key = f'like:{user.id}:{blog.id}'
-        success = self.redis_conn.setnx(key, 'liked')
+        key = f'collect:{user.id}:{blog.id}'
+        success = self.redis_conn.setnx(key, 'collected')
         if not success:
-            raise exception.CustomValidationError('3秒内不能重复点赞哟!')
+            raise exception.CustomValidationError('3秒内不能重复收藏哟!')
 
         # 3秒内只能点一次赞
         self.redis_conn.expire(key, 3)
-        like_obj = Like()
-        like_obj.user = user
-        like_obj.blog = blog
-        like_obj.save()
-        return SucResponse('点赞成功!')
+        Collection.create(blog, user)
+        return SucResponse('收藏成功!')
 
+    @action(methods=['post'], detail=True)
+    @login_required
+    def cancel_collect(self, request, *args, **kwargs):
+        '''取消收藏'''
+
+        user = self.request.user
+        blog = self.get_object()
+        collect_obj, has_collected = Collection.status(blog=blog, user=user)
+        if has_collected:
+            collect_obj.delete()
+        else:
+            raise exception.CustomValidationError('还未收藏!')
+        return SucResponse('取消收藏成功!')
+    
     @action(methods=['get'], detail=False)
     def demo(self, request, *args, **kwargs):
         # TODO 将数据库中博客转成md文件并进行存储

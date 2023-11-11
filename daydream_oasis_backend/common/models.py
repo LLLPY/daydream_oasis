@@ -49,6 +49,8 @@ class BaseModel(models.Model):
     def delete(self):
         self.has_deleted = True
         self.save()
+        print(66666666666666666,self.has_deleted)
+
 
     @classmethod
     def get_by_id(cls, _id: int):
