@@ -5,7 +5,7 @@ from django_redis import get_redis_connection
 from rest_framework.permissions import AllowAny
 
 
-class BaseViewSet(viewsets.ModelViewSet, InstanceMixin):
+class BaseViewSet(InstanceMixin, viewsets.ModelViewSet):
     # redis连接对象
     redis_conn = get_redis_connection('default')
 

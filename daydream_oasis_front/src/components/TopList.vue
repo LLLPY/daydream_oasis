@@ -28,7 +28,6 @@
             top_info() {
                 axios_ins.get('/api/action_log/top_stat/').then(response => {
                     const data = response.data
-                    console.log(data)
                     if (data.code !== '0') {
                         Warning(data.message)
                         return
