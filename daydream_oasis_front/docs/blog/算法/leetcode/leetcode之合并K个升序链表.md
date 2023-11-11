@@ -145,7 +145,7 @@ if __name__ == '__main__':
 
 # 提交结果
 
-![](../media/image/2022/05/09/image-20220509204514-4.png)
+![](http://www.lll.plus/media/image/2022/05/09/image-20220509204514-4.png)
 
 
 

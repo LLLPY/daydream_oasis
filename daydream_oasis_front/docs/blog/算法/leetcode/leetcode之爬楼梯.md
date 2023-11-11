@@ -42,7 +42,7 @@
 
 2.求排列组合，运用排列组合的公式，虽然我忘记了，但是百度到了嘿嘿
 
-![](../media/image/2022/02/05/image-20220205195339-1.png)
+![](http://www.lll.plus/media/image/2022/02/05/image-20220205195339-1.png)
 
 ## **源码：**
 ```python
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
 ## **通过截图：**
 
-![](../media/image/2022/02/05/image-20220205195446-2.png)
+![](http://www.lll.plus/media/image/2022/02/05/image-20220205195446-2.png)
 
 
 

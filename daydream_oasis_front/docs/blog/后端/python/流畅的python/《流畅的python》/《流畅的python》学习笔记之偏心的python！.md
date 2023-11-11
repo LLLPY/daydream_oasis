@@ -26,7 +26,7 @@ if __name__ == '__main__':
 ```
 
 
-![](../media/image/2022/04/02/image-20220402122735-1.png)
+![](http://www.lll.plus/media/image/2022/04/02/image-20220402122735-1.png)
 
 实现__iter__方法后
 

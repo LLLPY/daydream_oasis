@@ -61,7 +61,7 @@ class Solution:
 
 通过截图：
 
-![](../media/image/2022/02/04/image-20220204215155-1.png)
+![](http://www.lll.plus/media/image/2022/02/04/image-20220204215155-1.png)
 
 
 

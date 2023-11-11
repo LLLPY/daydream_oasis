@@ -83,7 +83,7 @@ def bucket_sort(li, n=100, size=100):
 
 ### 测试
 
-![](../media/image/2022/05/07/image-20220507110130-1.png)
+![](http://www.lll.plus/media/image/2022/05/07/image-20220507110130-1.png)
 
 
 

@@ -41,7 +41,7 @@ intervals[i].length == 2
 
 下一个区间[2,6]
 
-![](../media/image/2022/03/28/image-20220328205340-1.png)
+![](http://www.lll.plus/media/image/2022/03/28/image-20220328205340-1.png)
 
 当发现下一个区间和当前区间不能合并时，直接将当前区间添加到结果集。
 

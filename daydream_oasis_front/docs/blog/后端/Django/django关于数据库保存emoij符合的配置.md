@@ -30,7 +30,7 @@ ALTER TABLE 表名 CONVERT TO CHARACTER SET utf8mb4;**
 ```
 
 ### 3.配置django中数据库连接的字符集
-![](../media/image/2022/02/02/image-20220202214819-1.png)
+![](http://www.lll.plus/media/image/2022/02/02/image-20220202214819-1.png)
 
 在settings文件的数据库相关配置中，添加options选项的配置，将字符集设置为utf8mb4即可！到这里就配置完成啦！???
 

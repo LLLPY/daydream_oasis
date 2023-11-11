@@ -35,7 +35,7 @@ ssh-ed25519 AAAA***5B Gitee SSH Key
 5..通过 ssh -T 测试，输出 SSH Key 绑定的用户名，证明添加成功 
 # 添加本地代码到test仓库
 1.新建test仓库
-![image.6e2e84f255c911eea0c5d9fd74d8f392.png](../../../media/image/2023/09/18/image.6e2e84f255c911eea0c5d9fd74d8f392.png)
+![image.6e2e84f255c911eea0c5d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/18/image.6e2e84f255c911eea0c5d9fd74d8f392.png)
 2.提交代码
 ```shell script
 # Git 全局设置

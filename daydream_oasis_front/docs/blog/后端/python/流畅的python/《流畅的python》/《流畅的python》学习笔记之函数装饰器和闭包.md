@@ -37,7 +37,7 @@ if __name__ == '__main__':
 ```
 
 
-![](../media/image/2022/03/22/image-20220322185624-1.png)
+![](http://www.lll.plus/media/image/2022/03/22/image-20220322185624-1.png)
 
 hsitory的绑定在返回的avg函数的__closure__属性中。avg.__closure__中的各个元素对应于avg.__code__.co_freevars中的一个名称。这些元素是cell对象，有个cell_contents属性，保存着真正的值。
 

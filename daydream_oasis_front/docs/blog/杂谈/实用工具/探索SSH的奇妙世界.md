@@ -4,7 +4,7 @@
 > 引言： 在现代互联网时代，安全远程管理和文件传输是许多企业和个人必备的技术需求。而SSH（Secure
 > Shell）作为一种安全的网络协议，为我们提供了一种加密的远程访问和文件传输解决方案。本博客将深入介绍SSH的基本概念、工作原理、常见用法和安全性等方面，帮助读者更好地理解和应用SSH技术。
 
-![openssh.1076aac04bd211eea0c4d9fd74d8f392.gif](../../../media/image/2023/09/05/openssh.1076aac04bd211eea0c4d9fd74d8f392.gif)
+![openssh.1076aac04bd211eea0c4d9fd74d8f392.gif](http://www.lll.plus/media/image/2023/09/05/openssh.1076aac04bd211eea0c4d9fd74d8f392.gif)
 
 ## 1.什么是SSH
 
@@ -22,7 +22,7 @@ SSH的工作原理：
 
 在开发过程中，当我们需要将项目部署到服务器，或者使用vscode连接远程服务器进行编码，或者是使用scp进行文件传输......等等这些，都能见到ssh的身影，举一个更加直观的例子，比如我想使用ssh连接一台服务器，我会进行如下操作：
 
-![image.917f98504bde11eea0c4d9fd74d8f392.png](../../../media/image/2023/09/05/image.917f98504bde11eea0c4d9fd74d8f392.png)
+![image.917f98504bde11eea0c4d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/05/image.917f98504bde11eea0c4d9fd74d8f392.png)
 
 那么这里的“ssh”命令和上面说的ssh协议有什么关系呢？其实这里的“ssh”命令是基于ssh协议实现的一个远程连接工具，它是[openssh](https://www.openssh.com/)工具下的一个子工具，openssh包含了ssh，scp和sftp三大工具，都是基于ssh协议实现的。
 
@@ -41,7 +41,7 @@ sudo apt install openssh-server
 sudo apt install openssh-server
 ```
 
-![image.f4d5b1724ca711eea0c4d9fd74d8f392.png](../../../media/image/2023/09/06/image.f4d5b1724ca711eea0c4d9fd74d8f392.png)
+![image.f4d5b1724ca711eea0c4d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/06/image.f4d5b1724ca711eea0c4d9fd74d8f392.png)
 
 在安装完openssh-server之后，它的默认的配置文件的地址是需要我们知道的，因为有一些功能是需要通过修改配置文件去实现的。
 
@@ -62,7 +62,7 @@ b.使用SSH命令连接远程服务器
 在远程安装完服务端，在本地安装客户端之后，就可以在本地通过客户端连接远程的服务端了。windows10及以上的终端中默认集成了openssh-
 client，因此就可以直接进行连接了。
 
-![image.92a171ac4ca811eea0c4d9fd74d8f392.png](../../../media/image/2023/09/06/image.92a171ac4ca811eea0c4d9fd74d8f392.png)
+![image.92a171ac4ca811eea0c4d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/06/image.92a171ac4ca811eea0c4d9fd74d8f392.png)
 
 ### 3.2SSH命令的基本用法
 
@@ -77,7 +77,7 @@ ssh lll@192.168.130.128
 ```
 
 
-![image.92a171ac4ca811eea0c4d9fd74d8f392.png](../../../media/image/2023/09/06/image.92a171ac4ca811eea0c4d9fd74d8f392.png)
+![image.92a171ac4ca811eea0c4d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/06/image.92a171ac4ca811eea0c4d9fd74d8f392.png)
 
 指定端口登录
 
@@ -93,7 +93,7 @@ b.退出SSH会话
 exit
 ```
 
-![image.69c480fc4ca911eea0c4d9fd74d8f392.png](../../../media/image/2023/09/06/image.69c480fc4ca911eea0c4d9fd74d8f392.png)
+![image.69c480fc4ca911eea0c4d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/06/image.69c480fc4ca911eea0c4d9fd74d8f392.png)
 
 c.执行远程命令：ssh [用户名]@[服务器地址] [命令]
 
@@ -104,7 +104,7 @@ c.执行远程命令：ssh [用户名]@[服务器地址] [命令]
 ssh lll@192.168.130.128 ls
 ```
 
-![image.7e642e2a4ecc11eea0c5d9fd74d8f392.png](../../../media/image/2023/09/09/image.7e642e2a4ecc11eea0c5d9fd74d8f392.png)
+![image.7e642e2a4ecc11eea0c5d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/09/image.7e642e2a4ecc11eea0c5d9fd74d8f392.png)
 
 ### 3.3SSH配置文件的常见选项和参数
 
@@ -114,19 +114,19 @@ ssh lll@192.168.130.128 ls
 
 -l[login_name]：指定登录时的用户名（感觉用处不大，直接用username@host更方便）。
 
-![image.32ab0f824fec11eea0c5d9fd74d8f392.png](../../../media/image/2023/09/10/image.32ab0f824fec11eea0c5d9fd74d8f392.png)
+![image.32ab0f824fec11eea0c5d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/10/image.32ab0f824fec11eea0c5d9fd74d8f392.png)
 
 -C[compression]：压缩传输，连接时带上这个参数后，所有的传输（命令，数据等）都会进行压缩和解压缩以提高传输的效率，在传输量较小或者适中的情况下可以开启，如果要传输的文件较大，压缩和解压可能会更加耗时。
 
-![image.9417fcda4fec11eea0c5d9fd74d8f392.png](../../../media/image/2023/09/10/image.9417fcda4fec11eea0c5d9fd74d8f392.png)
+![image.9417fcda4fec11eea0c5d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/10/image.9417fcda4fec11eea0c5d9fd74d8f392.png)
 
 -E[log_file]：指定ssh的日志文件，指定后，ssh会话的内容日志回输出到该文件中，当遇到问题，可以通过它来排查。
 
-![image.0d6199d44fed11eea0c5d9fd74d8f392.png](../../../media/image/2023/09/10/image.0d6199d44fed11eea0c5d9fd74d8f392.png)
+![image.0d6199d44fed11eea0c5d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/10/image.0d6199d44fed11eea0c5d9fd74d8f392.png)
 
 -i[identify_file]：指定密钥文件的路径，可用于免密登录。
 
-![image.ac5110604fed11eea0c5d9fd74d8f392.png](../../../media/image/2023/09/10/image.ac5110604fed11eea0c5d9fd74d8f392.png)
+![image.ac5110604fed11eea0c5d9fd74d8f392.png](http://www.lll.plus/media/image/2023/09/10/image.ac5110604fed11eea0c5d9fd74d8f392.png)
 
 ## 4.SSH的高级用法
 

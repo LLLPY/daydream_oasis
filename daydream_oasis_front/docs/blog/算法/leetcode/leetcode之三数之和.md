@@ -155,7 +155,7 @@ class Solution:
 ```
 
 ## **通过截图：**
-![](../media/image/2022/04/04/image-20220404211934-1.png)
+![](http://www.lll.plus/media/image/2022/04/04/image-20220404211934-1.png)
 
 
 

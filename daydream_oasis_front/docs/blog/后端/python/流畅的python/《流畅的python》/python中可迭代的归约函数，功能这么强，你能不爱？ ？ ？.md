@@ -38,7 +38,7 @@ print(sum(range(3), start=10))  # 0+1+2+10=13
 ```
 
 
-![](../media/image/2022/04/18/image-20220418101439-1.png)
+![](http://www.lll.plus/media/image/2022/04/18/image-20220418101439-1.png)
 
 请告诉我，这些函数中哪个你没有用到手软？？？如果有的话，那么证明你对python的爱还是不够哈哈哈哈哈哈
 

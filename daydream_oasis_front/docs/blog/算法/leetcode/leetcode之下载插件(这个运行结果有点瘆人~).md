@@ -136,4 +136,4 @@ if __name__ == '__main__':
 
 
 
-![](../media/image/2022/06/18/image-20220618210752-1.png)
+![](http://www.lll.plus/media/image/2022/06/18/image-20220618210752-1.png)

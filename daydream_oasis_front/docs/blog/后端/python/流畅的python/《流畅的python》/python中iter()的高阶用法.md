@@ -16,7 +16,7 @@ print(next(a_iter))
 print(next(a_iter))
 ```
 
-![](../media/image/2022/04/18/image-20220418103318-1.png)
+![](http://www.lll.plus/media/image/2022/04/18/image-20220418103318-1.png)
 
 上面就是iter()的一般用法。
 

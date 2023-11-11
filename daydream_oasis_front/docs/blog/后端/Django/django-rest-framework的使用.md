@@ -21,7 +21,7 @@
 
 **官方简介如下：**  
 
-![](../media/image/2022/02/02/image-20220202212526-1.png)
+![](http://www.lll.plus/media/image/2022/02/02/image-20220202212526-1.png)
 
 简单来说，django-rest-framework的作用等同于django中的view+form，我们既可以基于model来直接生成接口，也可以自定义serializers（跟form的用法很像）的字段来生成接口。
 

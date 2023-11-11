@@ -79,6 +79,6 @@ if __name__ == '__main__':
 
 最优的一次提交：
 
-![](../media/image/2022/02/03/image-20220203150426-2.png)
+![](http://www.lll.plus/media/image/2022/02/03/image-20220203150426-2.png)
 
 

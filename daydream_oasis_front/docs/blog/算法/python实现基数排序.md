@@ -75,7 +75,7 @@ def radix_sort(li):
 ### 测试
 
 
-![](../media/image/2022/05/09/image-20220509114915-2.png)
+![](http://www.lll.plus/media/image/2022/05/09/image-20220509114915-2.png)
 
 
 

@@ -49,6 +49,6 @@ func main() {
 
 效果如下，还算不错：
 
-![image.cc6edb2ad48711edb70fcd63b0e7ad35.png](../../../media/image/2023/04/06/image.cc6edb2ad48711edb70fcd63b0e7ad35.png)
+![image.cc6edb2ad48711edb70fcd63b0e7ad35.png](http://www.lll.plus/media/image/2023/04/06/image.cc6edb2ad48711edb70fcd63b0e7ad35.png)
 
 

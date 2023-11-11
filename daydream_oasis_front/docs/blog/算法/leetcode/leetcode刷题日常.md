@@ -69,7 +69,7 @@ class Solution:
 ```
 
 
-![](../media/image/2022/01/27/image-20220127162127-1.png)
+![](http://www.lll.plus/media/image/2022/01/27/image-20220127162127-1.png)
 
 
 
@@ -124,7 +124,7 @@ class Solution:
 ```
 
 
-![](../media/image/2022/01/27/image-20220127162448-2.png)
+![](http://www.lll.plus/media/image/2022/01/27/image-20220127162448-2.png)
 
 ## **[3\. 最接近的三数之和](https://leetcode-cn.com/problems/3sum-closest/)**
 
@@ -193,7 +193,7 @@ class Solution:
 ```
 
 
-![](../media/image/2022/01/27/image-20220127162754-3.png)
+![](http://www.lll.plus/media/image/2022/01/27/image-20220127162754-3.png)
 
 
 今天的收获：对正则和双指针法的复习???

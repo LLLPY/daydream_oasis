@@ -62,4 +62,4 @@ class Solution:
 
 ## **通过截图：**
 
-![](../media/image/2022/02/07/image-20220207211155-6.png)
+![](http://www.lll.plus/media/image/2022/02/07/image-20220207211155-6.png)

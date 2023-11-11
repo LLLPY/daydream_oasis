@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
 ```
 
-![](../media/image/2022/04/23/image-20220423170732-1.png)
+![](http://www.lll.plus/media/image/2022/04/23/image-20220423170732-1.png)
 
 
 根据with语句的执行步骤，我们只要实现__enter__和__exit__方法，就可以实现一个上下文管理器。

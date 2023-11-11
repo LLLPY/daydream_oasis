@@ -79,7 +79,7 @@ class Solution:
 
 # 通过截图
 
-![](../media/image/2022/06/28/image-20220628221307-1.png)
+![](http://www.lll.plus/media/image/2022/06/28/image-20220628221307-1.png)
 
 
 

@@ -81,7 +81,7 @@ if __name__ == '__main__':
 ```
 
 
-![](../media/image/2022/03/10/image-20220310234152-4.png)
+![](http://www.lll.plus/media/image/2022/03/10/image-20220310234152-4.png)
 
 
 

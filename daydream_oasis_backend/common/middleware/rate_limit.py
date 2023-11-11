@@ -16,7 +16,6 @@ class RateLimitMixin(MiddlewareMixin):
         msg = None
         # 实现限制某个时间段内的访问次数(例:1分钟内只能访问200次)
         ip_list = cache.get(ip, [])
-        print(len(ip_list), ip_list)
         # 时间限制在1分钟 (比较最新的请求和最早的请求的时间差，如果大于60秒，则踢出最早的请求)
         # 如果ip列表的长度大于200，就处于封禁状态，就不能进行pop操作
         while ip_list and time.time() - ip_list[-1] > 60 and len(ip_list) < 200:

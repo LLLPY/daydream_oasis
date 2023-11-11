@@ -5,7 +5,7 @@
 
 > 最近发现租用的轻量应用服务器快要到期了，于是马上就租用了一台新的服务器，至于为什么没有直接续费旧的服务器，有两个主要原因：1.旧的服务器宽带太低了，最高峰值只有5Mbps（也就只有几百k的样子），所以大多数时候网页加载还是有一点延迟的；2.太贵了，之前是通过学生优惠购买的，原价需要1000多，所以还是打算话几百钱买一个便宜点的。
 
-![image.161bb6b01cd811eeb56f1f971a1babd2.png](../../../media/image/2023/07/07/image.161bb6b01cd811eeb56f1f971a1babd2.png)
+![image.161bb6b01cd811eeb56f1f971a1babd2.png](http://www.lll.plus/media/image/2023/07/07/image.161bb6b01cd811eeb56f1f971a1babd2.png)
 
 ### 峰值计算
 
@@ -47,7 +47,7 @@ mysqldump -u username --all-databases > 备份文件名;
 mysqldump -uroot -p blog_plus > blog_plus.sql
 ```
 
-![image.fb6ed1941cdc11eeb56f1f971a1babd2.png](../../../media/image/2023/07/07/image.fb6ed1941cdc11eeb56f1f971a1babd2.png)
+![image.fb6ed1941cdc11eeb56f1f971a1babd2.png](http://www.lll.plus/media/image/2023/07/07/image.fb6ed1941cdc11eeb56f1f971a1babd2.png)
 
 ### 恢复
 
@@ -74,17 +74,17 @@ mysql -uroot -p blog_plus < 2023_7_8_blog_plus.sql;
 
 因为我的博客系统有文件下载的功能，因此我直接将备份的文件copy到了博客系统的指定目录下，在新的服务器上通过wget下载即可；
 
-![image.f738bfe61ce011eeb56f1f971a1babd2.png](../../../media/image/2023/07/08/image.f738bfe61ce011eeb56f1f971a1babd2.png)
+![image.f738bfe61ce011eeb56f1f971a1babd2.png](http://www.lll.plus/media/image/2023/07/08/image.f738bfe61ce011eeb56f1f971a1babd2.png)
 
 ##### 2.新建一个同名的数据库
 
 在进行恢复时，如果没有在mysql中建立数据库，在执行恢复操作时会报错，为了和原数据库保持一致，应该在新的服务器上新建一个数据库，并且同原数据库名。
 
-![image.0c8111b81ce211eeb56f1f971a1babd2.png](../../../media/image/2023/07/08/image.0c8111b81ce211eeb56f1f971a1babd2.png)
+![image.0c8111b81ce211eeb56f1f971a1babd2.png](http://www.lll.plus/media/image/2023/07/08/image.0c8111b81ce211eeb56f1f971a1babd2.png)
 
 最后查看数据表发现导入成功！
 
-![image.61ac4e1e1ce211eeb56f1f971a1babd2.png](../../../media/image/2023/07/08/image.61ac4e1e1ce211eeb56f1f971a1babd2.png)
+![image.61ac4e1e1ce211eeb56f1f971a1babd2.png](http://www.lll.plus/media/image/2023/07/08/image.61ac4e1e1ce211eeb56f1f971a1babd2.png)
 
 ### 结尾
 

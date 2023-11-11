@@ -37,7 +37,7 @@ if __name__ == '__main__':
 ```
 
 
-![](../media/image/2022/04/18/image-20220418092637-1.png)
+![](http://www.lll.plus/media/image/2022/04/18/image-20220418092637-1.png)
 
 列表是可以遍历的，所以它可以迭代，是可迭代对象；
 

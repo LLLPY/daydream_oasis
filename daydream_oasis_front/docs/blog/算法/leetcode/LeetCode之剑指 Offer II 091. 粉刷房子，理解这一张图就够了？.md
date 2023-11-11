@@ -35,7 +35,7 @@ costs[i].length == 3
 
 # 图解
 
-![](../media/image/2022/05/04/image-20220504001918-2.png)
+![](http://www.lll.plus/media/image/2022/05/04/image-20220504001918-2.png)
 
 
 

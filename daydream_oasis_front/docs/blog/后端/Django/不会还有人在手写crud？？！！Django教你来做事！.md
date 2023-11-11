@@ -7,19 +7,19 @@
 
 部分功能需求：
 
-![](../media/image/2022/02/10/image-20220210203757-7.png)![](../media/image/2022/02/10/image-20220210203836-8.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210203757-7.png)![](http://www.lll.plus/media/image/2022/02/10/image-20220210203836-8.png)
 
 ## **api及其文档（链接：[TaiHong apidocs](http://www.lll.plus:9091/api/docs/)，文档包含了shell，js和python对应的示例代码）：**
 
-![](../media/image/2022/02/10/image-20220210204024-9.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210204024-9.png)
 
 ## **admin管理后台：**
 
-![](../media/image/2022/02/10/image-20220210204408-13.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210204408-13.png)
 
 是不是看起来还挺高逼格的嘿嘿，就问你们这样的Django，你们爱了吗？？？???
 
-还是先总结一下这个寒假干了啥吧，最后再说项目吧。![](../media/image/2022/02/10/image-20220210204636-14.gif)
+还是先总结一下这个寒假干了啥吧，最后再说项目吧。![](http://www.lll.plus/media/image/2022/02/10/image-20220210204636-14.gif)
 
 
 
@@ -32,11 +32,11 @@
 
 对，看看我的寒假计划吧！
 
-![](../media/image/2022/02/10/image-20220210211021-15.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210211021-15.png)
 
 在寒假伊始，我就把寒假计划列好了，给自己安排的明明白白的嘿嘿，但是看了看自己要完成的东西，好像基本上都完成了，除了看书可能有点少（有时候写一天的代码，真没那个雅兴看书了??），差不多回来后一个星期左右完成了博客系统的重构，半个月左右的时间完成了《django企业开发实战》一书的学习，这真的是一本好书，力荐大家去看看！剩下的时间就在：leetcode，复习中度过...呜呜，想起这段时间，感觉简直就是度日如年，可能还是我太年轻，对于刷算法题和复习巩固这种需要沉的住心耐得住寂寞的事情太难了，所以也是出此下下策
-找同学要项目做??，可谁知，由于Django的功能太过强大，不出3天，它就被完成了，哎，大意了![](../media/image/2022/02/10/image-20220210212047-16.gif)
-所以在这个寒假，我感觉自己过的"悠闲"，也许就是没有像大一那样学到很多新的知识，也既没有像大二那样写很多的项目，而只是简单的重拾之前掉在地上的芝麻，不知道有没有和我经历差不多的小伙伴，也是我这种情况？![](../media/image/2022/02/10/image-20220210212400-17.gif)
+找同学要项目做??，可谁知，由于Django的功能太过强大，不出3天，它就被完成了，哎，大意了![](http://www.lll.plus/media/image/2022/02/10/image-20220210212047-16.gif)
+所以在这个寒假，我感觉自己过的"悠闲"，也许就是没有像大一那样学到很多新的知识，也既没有像大二那样写很多的项目，而只是简单的重拾之前掉在地上的芝麻，不知道有没有和我经历差不多的小伙伴，也是我这种情况？![](http://www.lll.plus/media/image/2022/02/10/image-20220210212400-17.gif)
 
 ## **开始项目吧！**
 
@@ -44,40 +44,40 @@
 我还是按照常规步骤来，讲讲我这个项目是怎么做出来的(假设已经创建了一个django项目)。
 需要的第三方库：django，django-rest-framework，simpleui（这些是主要的，你自己配置的时候可能还会有其他的）
 开始之前先将它们加入到INSTALLED_APPS中：
-![](../media/image/2022/02/10/image-20220210214419-26.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210214419-26.png)
 
 ## 1.需求分析，列出实体
 
-![](../media/image/2022/02/10/image-20220210213128-18.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210213128-18.png)
 
 ## 2.确定各个实体的属性及各个实体之间的关系并绘制ER图
 
-![](../media/image/2022/02/10/image-20220210213236-19.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210213236-19.png)
 
-![](../media/image/2022/02/10/image-20220210213253-20.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210213253-20.png)
 
 ##  
 3.根据ER图编写model层的代码
 
-![](../media/image/2022/02/10/image-20220210213447-21.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210213447-21.png)
 
 ## 4.编写admin对应的代码
 
-![](../media/image/2022/02/10/image-20220210213701-22.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210213701-22.png)
 
 到这里admin控制台的代码就完成了！
 
 ## 5.在app下新建serializers.py文件并编写相应的代码
 
-![](../media/image/2022/02/10/image-20220210213906-23.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210213906-23.png)
 
 ## 6.在app下新建apis.py文件并编写相应的代码：
 
-![](../media/image/2022/02/10/image-20220210214058-24.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210214058-24.png)
 
 ## 7.添加路由
 
-![](../media/image/2022/02/10/image-20220210214208-25.png)
+![](http://www.lll.plus/media/image/2022/02/10/image-20220210214208-25.png)
 
 最后启动你的Django项目，访问api/docs/就可以看到api文件的界面，访问admin/就可以登录控制台了！因为这些都是固定的写法，所有只是简单的将步骤列了出来。
 
@@ -85,6 +85,6 @@
 
 最后呢，还是希望自己不要太纠结于学了多少多少，只要每天不退步就行了哈哈哈
 
-加油！每天一小步，未来一大步！![](../media/image/2022/02/10/image-20220210215608-28.gif)![](../media/image/2022/02/10/image-20220210215608-28.gif)![](../media/image/2022/02/10/image-20220210215608-28.gif)
+加油！每天一小步，未来一大步！![](http://www.lll.plus/media/image/2022/02/10/image-20220210215608-28.gif)![](http://www.lll.plus/media/image/2022/02/10/image-20220210215608-28.gif)![](http://www.lll.plus/media/image/2022/02/10/image-20220210215608-28.gif)
 
 

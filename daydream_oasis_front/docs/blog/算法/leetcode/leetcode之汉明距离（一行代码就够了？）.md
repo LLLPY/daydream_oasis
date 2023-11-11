@@ -47,7 +47,7 @@ class Solution:
 ```
 
 
-![](../media/image/2022/03/14/image-20220314211823-2.png)
+![](http://www.lll.plus/media/image/2022/03/14/image-20220314211823-2.png)
 
 
 

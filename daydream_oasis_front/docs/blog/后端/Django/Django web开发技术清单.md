@@ -21,7 +21,7 @@
 **保留字也称为关键字**
 ，指被编程语言内部定义并保留使用的标识符，程序员编写程序时不能定义与保留字相同的标识符。每种程序设计语言都有一套保留字，保留字一般用来构成程序整体框架、表达关键值和具有结构性的复杂语义等。掌握一门编程语言首先要熟记其所对应的保留字。
 
-![](../media/image/2022/01/28/image-20220128160557-1.png)
+![](http://www.lll.plus/media/image/2022/01/28/image-20220128160557-1.png)
 
 
 
@@ -101,11 +101,11 @@ blog-2~all~top_ulrmf~default-2-108332447.pc_search_insert_ulrmf&utm_term=python%
 
 举个栗子康康：
 
-![](../media/image/2022/01/28/image-20220128175206-5.png)
+![](http://www.lll.plus/media/image/2022/01/28/image-20220128175206-5.png)
 
 使用lambda函数成功执行：
 
-![](../media/image/2022/01/28/image-20220128175258-6.png)
+![](http://www.lll.plus/media/image/2022/01/28/image-20220128175258-6.png)
 
 所以这个函数的功能是真的很强大的，使用场景也较多！
 
@@ -200,13 +200,13 @@ blog-2~all~top_ulrmf~default-2-108332447.pc_search_insert_ulrmf&utm_term=python%
 
 执行结果也是合理的：
 
-![](../media/image/2022/01/30/image-20220130205211-2.png)
+![](http://www.lll.plus/media/image/2022/01/30/image-20220130205211-2.png)
 
 ## **问题10：python中几种容器类型的差别及使用场景有哪些？**
 
 答：说实话，我在看到这个问题的时候，我都不知道python的容器是什么???，但是我可能用过，而且非常常用，于是c站上一搜，我自己都要笑了?
 
-![](../media/image/2022/01/30/image-20220130205753-3.png)
+![](http://www.lll.plus/media/image/2022/01/30/image-20220130205753-3.png)
 
 大致看到了几个关键词，我就知道了，不就是经常使用的列表list，元组tuple，字典dict，集合set吗?看来还是自己脑回路有点长，转不过弯来，虽然之前没有见过容器的定义，但是顾名思义：容器不就是可以容纳东西的器具吗？在想想list，tuple，dict，set它们的功能不就是来容纳东西/数据的吗？？我真是醉鸟哈哈哈哈
 
@@ -245,13 +245,13 @@ blog-2~all~sobaiduend~default-1-100811422.pc_search_insert_ulrmf&utm_term=python
 
 使用场景的话，我感觉就是在一个列表中进行循环，没有复杂的逻辑，只是对列表中的元素进行简单的操作，这时候可以使用列表推导式（或者在需要生成一个列表的时候，列表中的元素有一定的顾虑也可以使用），使用列表推导式的考出就是可以节省代码空间！
 
-![](../media/image/2022/01/30/image-20220130213330-5.png)
+![](http://www.lll.plus/media/image/2022/01/30/image-20220130213330-5.png)
 
 ## **问题12：介绍一下yield的用法。**
 
 答：说实话，这个东西我好像没怎么用过，除了在学习的时候了解过一下，在上一个问题提到的一篇博客我中记录了一些关于它的用法的，如下总结：
 
-![](../media/image/2022/01/30/image-20220130213211-4.png)
+![](http://www.lll.plus/media/image/2022/01/30/image-20220130213211-4.png)
 
 
 
@@ -278,9 +278,9 @@ re | 正则，用于匹配，使用场景感觉还是非常广泛的
 task-
 blog-2~all~top_ulrmf~default-2-80725738.pc_search_insert_ulrmf&utm_term=%E9%AD%94%E6%B3%95%E6%96%B9%E6%B3%95&spm=1018.2226.3001.4187)
 
-![](../media/image/2022/01/30/image-20220130215706-6.png)
+![](http://www.lll.plus/media/image/2022/01/30/image-20220130215706-6.png)
 
-哦哦，原来这个东东就是魔法方法，为啥这么多东西我都用过，但是不知其名?![](../media/image/2022/01/30/image-20220130220042-8.gif)
+哦哦，原来这个东东就是魔法方法，为啥这么多东西我都用过，但是不知其名?![](http://www.lll.plus/media/image/2022/01/30/image-20220130220042-8.gif)
 
 我经常使用的也好像不多，好像就只有__init__用于初始化，其他在学习中可能用到过，但现在基本都忘记了，唉?看来还是得多巩固巩固基础！
 
@@ -370,7 +370,7 @@ blog-2~all~top_ulrmf~default-15-105652399.pc_search_insert_ulrmf&utm_term=%E5%8D
 ```
 
 
-![](../media/image/2022/02/01/image-20220201173758-3.png)
+![](http://www.lll.plus/media/image/2022/02/01/image-20220201173758-3.png)
 
 ##
 **问题17：如何对python对象进行[序列化](https://blog.csdn.net/tree_ifconfig/article/details/82766587?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164370812016781683973771%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=164370812016781683973771&biz_id=0&utm_medium=distribute.pc_search_result.none-
@@ -430,13 +430,13 @@ blog-2~all~top_ulrmf~default-2-82766587.pc_search_insert_ulrmf&utm_term=%E5%BA%8
 ```
 
 
-![](../media/image/2022/02/01/image-20220201173657-1.png)
+![](http://www.lll.plus/media/image/2022/02/01/image-20220201173657-1.png)
 
 ## **问题18：是否熟练编写多线程和多进程程序？**
 
 答：还行，对线程比较属性，一般没有用到过进程，不过两个的用法都大致差不多。
 
-![](../media/image/2022/02/01/image-20220201184008-4.png)
+![](http://www.lll.plus/media/image/2022/02/01/image-20220201184008-4.png)
 
 
 

@@ -8,7 +8,7 @@
 不知道小伙伴有没有看过我上一篇的：[标准库中的生成器函数](https://blog.csdn.net/max_LLL/article/details/124241937
 "标准库中的生成器函数")，其中就讲到过一个生成器函数：itertools.chain()，它的功能就是将多个可迭代对象无缝连接在一起！
 
-![](../media/image/2022/04/18/image-20220418100701-1.png)
+![](http://www.lll.plus/media/image/2022/04/18/image-20220418100701-1.png)
 
 功能看上去不是很复杂，要不我们自己实现一下试试？
 

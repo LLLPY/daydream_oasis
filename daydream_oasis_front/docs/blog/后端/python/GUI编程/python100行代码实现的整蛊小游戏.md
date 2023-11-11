@@ -11,7 +11,7 @@
 ![](https://img-blog.csdnimg.cn/9dcbc3fb5daa4d5587a850a87340a456.png)
 ![](https://img-blog.csdnimg.cn/9dcbc3fb5daa4d5587a850a87340a456.png)
 
-![](../media/image/2022/05/06/image-20220506214532-2.png)
+![](http://www.lll.plus/media/image/2022/05/06/image-20220506214532-2.png)
 
 源码总共有两个文件：Surprise.py和res2.py
 

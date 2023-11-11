@@ -41,7 +41,7 @@
 
 **手动复现一下：**
 
-![](../media/image/2022/05/10/image-20220510203513-1.png)
+![](http://www.lll.plus/media/image/2022/05/10/image-20220510203513-1.png)
 
 
 # 源码
