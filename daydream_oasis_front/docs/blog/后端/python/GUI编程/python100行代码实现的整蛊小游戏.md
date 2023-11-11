@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="447" title="python100行代码实现的整蛊小游戏" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="167" category="GUI编程" tag_list="['整蛊', '              小游戏']" create_time="2022.05.06 21:45:51.882354" update_time="2022.09.15 20:43:00" />
 
@@ -101,6 +108,10 @@ res2.py文件是一个资源文件，有点大，链接：[res2.py](https://down
 "res2.py")
 
 **​附件**
-[surprise.exe](/media/file/2022/09/15/surprise.exe)
+[surprise.exe](http://www.lll.plus/media/file/2022/09/15/surprise.exe)
 
 
+
+
+
+<ActionBox />

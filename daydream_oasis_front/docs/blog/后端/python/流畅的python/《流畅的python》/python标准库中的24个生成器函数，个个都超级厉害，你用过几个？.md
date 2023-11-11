@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="769" title="python标准库中的24个生成器函数，个个都超级厉害，你用过几个？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="209" category="《流畅的python》" tag_list="['生成器函数']" create_time="2022.04.18 09:44:17.133579" update_time="2022.04.18 09:44:17" />
 
@@ -167,3 +174,7 @@ print(list(g2))
 python的大部分的内置功能都是用c实现的，这些生成器函数也不例外，它们不仅功能强大，性能也是相当不错的，因此，掌握它们对你的代码优化上会有不小的帮助哦！
 
 
+
+
+
+<ActionBox />

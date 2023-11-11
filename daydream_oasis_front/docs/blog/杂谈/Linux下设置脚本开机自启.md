@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="1061" title="Linux下设置脚本开机自启" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="51" category="杂谈" tag_list="['开机自启', '              Linux']" create_time="2021.08.18 10:42:55.608506" update_time="2021.08.18 10:42:55" />
 
@@ -40,3 +47,6 @@
 如果在显示的列表的最后一列中有你的程序的路径(我这里对应的第三行),说明你的程序已经启动,至此,开机自启就实现了!
 
   
+
+
+<ActionBox />

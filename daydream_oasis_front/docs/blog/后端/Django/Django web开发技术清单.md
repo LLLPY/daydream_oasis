@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="376" title="Django web开发技术清单" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="415" category="Django" tag_list="['清单', '              Django', '              python基础']" create_time="2022.01.28 17:59:57.543854" update_time="2022.07.11 10:56:58" />
 
@@ -592,3 +599,7 @@ python基础的清单算是完成了，大部分的都有所了解，但是有�
 
 
 
+
+
+
+<ActionBox />

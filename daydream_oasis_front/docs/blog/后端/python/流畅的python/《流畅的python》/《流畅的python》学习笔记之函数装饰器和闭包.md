@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="774" title="《流畅的python》学习笔记之函数装饰器和闭包" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="214" category="《流畅的python》" tag_list="['基础', '              闭包', '              装饰器']" create_time="2022.03.22 18:56:39.238598" update_time="2022.07.11 10:42:46" />
 
@@ -217,3 +224,7 @@ if __name__ == '__main__':
 
 print_obj是处理不同参数类型的基函数，通过register注册的专门函数处理专门的参数类型，如果处理不了就会丢给基函数来处理。这样就算有一个新的参数类型来了，只需要为其定义一个专门的处理函数即可！
 
+
+
+
+<ActionBox />

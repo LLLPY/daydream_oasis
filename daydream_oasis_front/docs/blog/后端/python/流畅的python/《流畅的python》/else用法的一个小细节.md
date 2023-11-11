@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="763" title="else用法的一个小细节" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="23" category="《流畅的python》" tag_list="['小细节', '              else']" create_time="2022.04.23 16:19:00.972018" update_time="2022.04.23 16:21:07" />
 
@@ -35,3 +42,7 @@ else:
 
 
 
+
+
+
+<ActionBox />

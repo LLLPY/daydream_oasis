@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="367" title="使用js检测表单的输入是否正确" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="7" category="Web开发编程" tag_list="['HTM', '              Lcss', '              JavaScript']" create_time="2021.10.11 18:14:37.752554" update_time="2021.10.11 18:14:37" />
 
@@ -8,3 +15,7 @@
 [第五次作业.zip](http://www.lll.plus/static/file/2021/10/11/第五次作业.zip)  
 
 
+
+
+
+<ActionBox />

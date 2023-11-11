@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="407" title="基于go语言的史上最流弊的学生成绩管理系统" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="123" category="golang" tag_list="['']" create_time="2022.10.30 12:11:42.791731" update_time="2022.10.30 12:11:42" />
 
@@ -207,3 +214,7 @@ gitee地址：[student-score-manage-system](https://gitee.com/max-LLL/student-sc
 
 
 
+
+
+
+<ActionBox />

@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="415" title="使用nginx+docker实现一个简单的负载均衡" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="319" category="nginx" tag_list="['nginx', '              负载均衡', '              docker']" create_time="2022.08.14 11:02:01.054565" update_time="2022.08.14 11:03:46" />
 
@@ -393,3 +400,7 @@ http {
 "nginx配置负载均衡")
 
 
+
+
+
+<ActionBox />

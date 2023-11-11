@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="383" title="不会还有人在手写crud？？！！Django教你来做事！" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="191" category="Django" tag_list="['admin', '              crud', '              drf']" create_time="2022.02.10 21:56:00" update_time="2022.07.11 10:54:00" />
 
@@ -88,3 +95,7 @@
 加油！每天一小步，未来一大步！![](http://www.lll.plus/media/image/2022/02/10/image-20220210215608-28.gif)![](http://www.lll.plus/media/image/2022/02/10/image-20220210215608-28.gif)![](http://www.lll.plus/media/image/2022/02/10/image-20220210215608-28.gif)
 
 
+
+
+
+<ActionBox />

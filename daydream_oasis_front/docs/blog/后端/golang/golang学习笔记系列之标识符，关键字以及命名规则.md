@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="404" title="golang学习笔记系列之标识符，关键字以及命名规则" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="96" category="golang" tag_list="['golang']" create_time="2022.09.10 17:48:20.288849" update_time="2022.09.13 19:58:21" />
 
@@ -140,3 +147,7 @@ const (
     HTTPS Scheme = "https"
 )
 ```
+
+
+
+<ActionBox />

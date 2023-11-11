@@ -58,7 +58,7 @@ provide('toggle-appearance', async ({clientX: x, clientY: y}: MouseEvent) => {
       <TagList/>
     </template>
     <template #doc-after>
-      <ActionBox/>
+      <!-- <ActionBox/> -->
     </template>
   </Layout>
 </template>

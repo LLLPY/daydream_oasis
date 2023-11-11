@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="1060" title="linux下程序重启脚本" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="103" category="杂谈" tag_list="['可控自启', '              Linux', '              脚本']" create_time="2021.09.04 20:24:53.472234" update_time="2021.09.04 20:24:53" />
 
@@ -117,3 +124,7 @@ if __name__ == '__main__':
   
 
 
+
+
+
+<ActionBox />

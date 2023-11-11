@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="390" title="golang学习笔记系列之go语言的环境搭建-linux系统" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="5" category="golang" tag_list="['golang', '              安装', '              环境搭建']" create_time="2022.07.28 12:38:00" update_time="2022.09.10 18:08:00" />
 
@@ -57,3 +64,7 @@ fmt.Println("hello,go!") } `
 同目录下在终端中输入：
 ![](https://img-blog.csdnimg.cn/ce848144e51a43c8a4f31e4f99cdfe1e.png)
  如上，执行成功！
+
+
+
+<ActionBox />

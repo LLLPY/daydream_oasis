@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="382" title="uwsgi配合nginx跑起你的django项目！" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="262" category="Django" tag_list="['Django']" create_time="2022.01.25 14:14:00" update_time="2022.07.10 12:38:00" />
 
@@ -201,3 +208,7 @@ tip：我这里仅仅说明了uwsgi和nginx的相关配置而已，其他的djan
 
 
 
+
+
+
+<ActionBox />

@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="377" title="django-rest-framework的使用" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="207" category="Django" tag_list="['Django', '              drw', '              restful']" create_time="2022.01.19 16:55:31.131907" update_time="2022.07.11 10:57:42" />
 
@@ -174,3 +181,7 @@ REST_FRAMEWORK = {
  ![](https://img-blog.csdnimg.cn/004af77a5f194cc0b1aa9e97feb46d17.gif)
 ![](https://img-blog.csdnimg.cn/004af77a5f194cc0b1aa9e97feb46d17.gif)
 ![](https://img-blog.csdnimg.cn/004af77a5f194cc0b1aa9e97feb46d17.gif)
+
+
+
+<ActionBox />

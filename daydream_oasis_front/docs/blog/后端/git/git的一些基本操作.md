@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="387" title="git的一些基本操作" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="27" category="git" tag_list="['git', '              版本控制']" create_time="2022.09.22 16:08:22.615161" update_time="2023.03.25 20:17:27.589470" />
 
@@ -98,3 +105,7 @@ git clone 远程仓库地址
 ```
 
 
+
+
+
+<ActionBox />

@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="594" title="数据处理之pandas的学习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="575" category="pandas学习" tag_list="['数据处理', '              pandas']" create_time="2021.08.28 17:45:29.372680" update_time="2021.08.28 18:19:38" />
 
@@ -631,3 +638,7 @@ gen_sum.plot(kind='bar',figsize=(20,8),colormap='cool',fontsize=16)
 plt.show()
 ```
 ![](https://img-blog.csdnimg.cn/3ba3bf7dbe144efbb888dcc6424dfb62.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAbGl0dGxl5Lqu772e,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+
+
+<ActionBox />

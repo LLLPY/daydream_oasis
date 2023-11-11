@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="776" title="《流畅的python》学习笔记之多继承下同名方法的调用顺序" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="135" category="《流畅的python》" tag_list="['mro', '              多继承']" create_time="2022.04.07 18:36:07.916893" update_time="2022.04.07 18:36:07" />
 
@@ -76,7 +83,7 @@ if __name__ == '__main__':
 
 还是相同的栗子，注意查看类D中继承类B和类C的书写顺序！
 
-![](/media/image/2022/04/07/image-20220407183553-1.png)
+![](http://www.lll.plus/media/image/2022/04/07/image-20220407183553-1.png)
 
 可以看到mro中指定类的调用顺序和书写的继承顺序是一致的！如果类B写在类C的前面，那么优先调用类B中的方法；同理如果类C写在类B的前面，优先调用类C中的方法。当然，前提是自己的类中没有定义该方法！
 
@@ -139,3 +146,7 @@ if __name__ == '__main__':
 
 
 
+
+
+
+<ActionBox />

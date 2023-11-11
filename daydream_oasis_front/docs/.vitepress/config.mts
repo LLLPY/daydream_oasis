@@ -11,7 +11,6 @@ export default getSidebarData().then(sidebar => {
             base: '/',
             // 忽略死链
             ignoreDeadLinks: true,
-            lastUpdated: true,
             head: [
                 ['link', {rel: 'icon', href: 'http://www.lll.plus/static/image/favorite.ico'}]
             ],
@@ -65,17 +64,6 @@ export default getSidebarData().then(sidebar => {
                     copyright: '鄂ICP备20013301号-copyrights©2021 0318-SPACE All Rights Reserved.'
                 },
 
-                // editLink
-                editLink: {
-                    pattern: 'https://github.com/vuejs/vitepress/edit/main/docs/:path',
-                    text: '编辑此文'
-                },
-
-                // lastUpdated
-                lastUpdated: {
-                    text: 'updated at',
-                },
-
                 // 广告
                 // carbonAds: {
                 //     code: 'your-carbon-code',
@@ -99,6 +87,7 @@ export default getSidebarData().then(sidebar => {
                 theme: 'github-dark-dimmed',
                 lineNumbers: true,
             },
+            
         })
 
 })

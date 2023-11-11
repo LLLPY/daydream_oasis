@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="384" title="《入门docker，这一篇就够了》" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="843" category="docker" tag_list="['容器', '              docker']" create_time="2022.08.11 11:52:31.299830" update_time="2022.08.11 11:52:31" />
 
@@ -604,6 +611,10 @@ redis-cli --cluster create 192.161.0.11:6379 192.161.0.12:6379 192.161.0.13:6379
 
 **​附件**
 
-[docker.pdf](/media/file/2022/08/11/docker.pdf)
+[docker.pdf](http://www.lll.plus/media/file/2022/08/11/docker.pdf)
 
 
+
+
+
+<ActionBox />

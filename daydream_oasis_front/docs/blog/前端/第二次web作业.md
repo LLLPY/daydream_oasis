@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="370" title="第二次web作业" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="7" category="Web开发编程" tag_list="['web']" create_time="2021.09.27 19:18:33.418070" update_time="2022.09.05 22:27:02" />
 
@@ -9,3 +16,7 @@
 [第二次作业.zip](../media/file/2021/09/27/第二次作业.zip)
 
 
+
+
+
+<ActionBox />

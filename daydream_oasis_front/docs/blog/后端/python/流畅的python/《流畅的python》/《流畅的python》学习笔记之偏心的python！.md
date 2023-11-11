@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="773" title="《流畅的python》学习笔记之偏心的python！" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="70" category="《流畅的python》" tag_list="['']" create_time="2022.04.02 12:27:49.239660" update_time="2022.07.11 10:42:08" />
 
@@ -97,3 +104,7 @@ if __name__ == '__main__':
 
 因为在python中，我们说一个对象是序列，往往不是因为它就是序列，而是因为它的行为像序列。而在一个对象中，如果实现了__getitem__方法，它就可以通过索引取值，而这种行为是序列的行为，所以上述的Dog（可能这个名字取得不太好，和队列一点关系都没有仿佛），我们也可以说它是一个序列！
 
+
+
+
+<ActionBox />

@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="406" title="go语言实现tree功能" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="26" category="golang" tag_list="['']" create_time="2022.10.12 16:39:25.491062" update_time="2023.04.06 22:32:06.634953" />
 
@@ -52,3 +59,7 @@ func main() {
 ![image.cc6edb2ad48711edb70fcd63b0e7ad35.png](http://www.lll.plus/media/image/2023/04/06/image.cc6edb2ad48711edb70fcd63b0e7ad35.png)
 
 
+
+
+
+<ActionBox />

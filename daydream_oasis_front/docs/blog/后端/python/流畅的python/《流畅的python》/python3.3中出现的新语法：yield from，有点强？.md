@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="764" title="python3.3中出现的新语法：yield from，有点强？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="40" category="《流畅的python》" tag_list="['yield from']" create_time="2022.04.18 10:07:11.395021" update_time="2022.04.18 10:07:11" />
 
@@ -40,3 +47,7 @@ def chain(*iterable):
 
 可以看到，结果还是一样的，但是使用yield from直接代替了内层的for循环！ 这样代码读起来更顺畅，其实除了代替循环之外，yield
 from还会创建通道，把内层生成器直接与外层生成器的客户端联系起来。把生成器当成协程使用时，这个通道特别重要，不仅能为客户端代码生成值，还能使用客户端代码提供值！协程就留着以后再讲吧~
+
+
+
+<ActionBox />

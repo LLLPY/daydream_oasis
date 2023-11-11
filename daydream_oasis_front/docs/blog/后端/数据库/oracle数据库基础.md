@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="999" title="oracle数据库基础" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="174" category="oracle" tag_list="['oracle基础', '              复习']" create_time="2021.11.24 17:33:37.122965" update_time="2021.11.24 17:33:37" />
 
@@ -227,3 +234,7 @@ set <列名>={新值|表达式}
 update student set 姓名='张三' where 学号=10001;  
 ```
 
+
+
+
+<ActionBox />

@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="770" title="《流畅的python》学习笔记之python是什么类型的语言？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="40" category="《流畅的python》" tag_list="['动态', '              强类型', '              解析性']" create_time="2022.04.03 16:32:08.172840" update_time="2022.10.15 20:58:33" />
 
@@ -26,7 +33,7 @@ print(0=='')
 print('0'==0)
 ```
 
-![](..image/2022/04/03/image-20220403163156-1.png)
+![](http://www.lll.plus/media/image/2022/04/03/image-20220403163156-1.png)
 
  因为python不会自动在字符串和数字之间强制转换，所以上述三个比较都是False。
 
@@ -50,3 +57,7 @@ print('0'==0)
 "php是静态还是动态语言,什么是静态语言和动态语言。史上秒懂的大白话翻译。")
 
 
+
+
+
+<ActionBox />

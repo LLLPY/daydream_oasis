@@ -8,20 +8,17 @@ def replace(file_path):
     content = None
     with open(file_path, 'r+', encoding='utf8') as f:
         content = f.read()
-        pattern = r'''!\[.*?\]\([\.\\](.*?media).*?\)'''
-        res = re.findall(pattern,content)
-        if res:
-            print(file_path)
-            pattern = r'''\]\([\.\/].*?media/image'''
-            content = re.sub(pattern, '](http://www.lll.plus/media/image', content)
-            print(res)
-        else:
-            content = None
-        # print(res)
-        # 找到有链接的地方
-    # if content:
-        # with open(file_path, 'w', encoding='utf8') as f:
-            # f.write(content)
+
+    with open(file_path, 'w', encoding='utf8') as f:
+        content = f'''---\n
+next: false\n
+---\n
+
+{content}
+\n
+<ActionBox />
+'''
+        f.write(content)
 
 
 # 替换所有链接

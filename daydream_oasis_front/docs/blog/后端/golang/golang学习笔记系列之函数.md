@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="393" title="golang学习笔记系列之函数" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="238" category="golang" tag_list="['']" create_time="2022.09.24 15:57:01.525162" update_time="2022.09.24 15:57:01" />
 
@@ -431,3 +438,6 @@ func main() {
 ```shell script
 102334155
 ```
+
+
+<ActionBox />

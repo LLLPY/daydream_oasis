@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="1063" title="window下如何让写的程序开机自启" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="97" category="杂谈" tag_list="['开机自启', '              Windows']" create_time="2021.07.19 11:13:23.439235" update_time="2021.07.19 11:13:23" />
 
@@ -63,3 +70,7 @@ while True:
 如果你看到自己想要开机自启的程序在"启动"这一栏中有显示,说明你就设置成功了!!!
 
 对于爬虫开发者来说应该有一定的帮助,欢迎留言评论~
+
+
+
+<ActionBox />

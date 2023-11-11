@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="366" title="使用js实现一个简单的四则运算" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="9" category="web开发" tag_list="['js', '              web']" create_time="2021.09.27 18:31:32.083805" update_time="2022.09.05 22:27:24" />
 
@@ -11,3 +18,7 @@
 [index.zip](../media/file/2021/09/27/index.zip)
 
 
+
+
+
+<ActionBox />

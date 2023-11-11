@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="683" title="数据处理之seaborn的学习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="556" category="seaborn" tag_list="['seaborn', '              数据处理', '              绘图']" create_time="2021.08.28 18:04:49.383012" update_time="2021.08.28 18:08:06" />
 
@@ -518,3 +525,6 @@ plt.show()
 
 ```
 ![](https://img-blog.csdnimg.cn/8ca4a840f1e742738858b838c4c5880d.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAbGl0dGxl5Lqu772e,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+
+<ActionBox />

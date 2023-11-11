@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="389" title="golang学习笔记系列之go语言代码的组织" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="21" category="golang" tag_list="['golang']" create_time="2022.09.10 17:33:14.948806" update_time="2022.09.13 19:59:17" />
 
@@ -23,3 +30,7 @@ go应用使用 **包** 和 **模块** 来组织代码，包对应到文件系统
   5. 相互调用     =======>       项目中各模块之间可以相互调用
 
 
+
+
+
+<ActionBox />

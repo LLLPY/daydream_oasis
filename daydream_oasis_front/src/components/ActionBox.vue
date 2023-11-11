@@ -1,4 +1,5 @@
 <template>
+    <br>
     <div id="action-box">
 <span class="iconfont">
   <svg class="icon" aria-hidden="true" :class="{active:false}"><use xlink:href="#icon-fenxiang"></use></svg>
@@ -56,11 +57,14 @@
                 //   点赞
                 axios_ins.post('/api/blog/' + this.blog_id + '/like/').then(response => {
                     const data = response.data
-                    if (data.code !== '0') {
+                    if (data.code === '0') {
+                        this.liked_count += 1
+                        this.has_liked = true
+
+                    }else{
                         Warning(data.message)
-                        return
                     }
-                    this.liked_count += 1
+                    
                 })
             },
             collect() {

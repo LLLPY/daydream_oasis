@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="369" title="第一次web开发的作业" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="8" category="web开发" tag_list="['js', '              html', '              css']" create_time="2021.09.14 22:05:05.439342" update_time="2022.09.05 22:27:53" />
 
@@ -11,3 +18,7 @@
 [第一次作业.zip](../media/file/2021/09/14/第一次作业.zip)
 
 
+
+
+
+<ActionBox />

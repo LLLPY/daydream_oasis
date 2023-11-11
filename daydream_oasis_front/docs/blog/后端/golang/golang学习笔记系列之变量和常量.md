@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="394" title="golang学习笔记系列之变量和常量" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="79" category="golang" tag_list="['golang']" create_time="2022.09.10 17:54:03.363674" update_time="2022.09.13 19:57:41" />
 
@@ -178,3 +185,7 @@ iota比较特殊，可以被认为是一个可被编译器修改的常量，它�
 
 
 
+
+
+
+<ActionBox />

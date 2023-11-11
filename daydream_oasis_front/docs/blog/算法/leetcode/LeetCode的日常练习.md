@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="1349" title="LeetCode的日常练习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="149" category="leetcode100题" tag_list="['leetcode', '              算法']" create_time="2021.10.22 12:18:09.992386" update_time="2021.10.22 12:21:52" />
 
@@ -179,3 +186,7 @@ if __name__ == '__main__':
     print(Solution().longestCommonPrefix(strs))
 ```
 ![](https://img-blog.csdnimg.cn/0f2ce23928e54007b2d79d1c518fa08b.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAbGl0dGxl5Lqu772e,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+
+
+<ActionBox />

@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="778" title="《流畅的python》学习笔记之我们常用的列表list和元组tuple还有这个秘密？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="105" category="《流畅的python》" tag_list="['笔记', '              序列', '              巩固']" create_time="2022.02.13 22:07:51.199276" update_time="2022.07.11 10:41:44" />
 
@@ -104,3 +111,7 @@ python中的扁平序列包含：str，bytes，bytearray，memoryview，=和arra
 
 
 
+
+
+
+<ActionBox />

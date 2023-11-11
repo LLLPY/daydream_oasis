@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="374" title="浅谈c++" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="815" category="c plus plus" tag_list="['c++', '              类', '              对象']" create_time="2021.06.25 20:02:38.318631" update_time="2022.08.28 16:39:23" />
 
@@ -1966,6 +1973,10 @@ friend <返回值类型>operator<运算符>(<形参表>);
 
 **​附件**
 
-[浅谈C.pdf](/media/file/2022/08/28/浅谈C.pdf)
+[浅谈C.pdf](http://www.lll.plus/media/file/2022/08/28/浅谈C.pdf)
 
 
+
+
+
+<ActionBox />

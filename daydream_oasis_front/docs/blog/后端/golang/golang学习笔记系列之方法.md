@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="400" title="golang学习笔记系列之方法" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="88" category="golang" tag_list="['']" create_time="2022.09.26 22:25:15.447820" update_time="2022.09.26 22:25:15" />
 
@@ -127,3 +134,7 @@ jerry.name: Jeeeeery
 > 可以看到通过传递地址的fix_name2在内部修改结构体的属性后，该结构体的属性值会随之变化，而通过值传递的fix_name在内部修改结构体的属性值并不会对原结构体产生任何影响。
 
 
+
+
+
+<ActionBox />

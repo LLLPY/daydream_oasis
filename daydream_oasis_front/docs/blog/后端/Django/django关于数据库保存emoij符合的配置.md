@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="380" title="django关于数据库保存emoij符合的配置" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="40" category="Django" tag_list="['字符集', '              Django', '              mysql']" create_time="2022.01.20 15:14:28.927453" update_time="2022.07.11 10:57:23" />
 
@@ -53,3 +60,7 @@ ALTER TABLE 表名 CONVERT TO CHARACTER SET utf8mb4;**
 
 
 
+
+
+
+<ActionBox />

@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="528" title="python中的协程" author="ChatGPT" pv=0 read_times=0 pre_cost_time="141" category="并发编程" tag_list="['']" create_time="2023.04.13 23:11:56.470974" update_time="2023.04.13 23:11:56.470983" />
 
@@ -115,3 +122,7 @@ asyncio.run(main())  # 启动协程的执行
 ## 总结
 协程作为一种高效、灵活的并发编程方式，已经被广泛应用于各种应用程序中。Python 作为一种支持原生协程的语言，使用 asyncio 模块可以非常方便地实现协程编程。虽然协程具有很多优点，但是在实际编程过程中，我们也需要注意协程的缺点，避免在不适合协程的场景中使用协程。
 ![](http://www.lll.plus/media/image/2023/04/13/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE_2023-04-13_230145.7c7ff1e0da0d11ed99717d68a677f7be.png)
+
+
+
+<ActionBox />

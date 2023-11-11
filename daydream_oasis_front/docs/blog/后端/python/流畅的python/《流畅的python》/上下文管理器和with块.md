@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="779" title="上下文管理器和with块" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="90" category="《流畅的python》" tag_list="['with', '              上下文管理器']" create_time="2022.04.23 17:07:46.540609" update_time="2022.04.23 17:08:22" />
 
@@ -96,3 +103,7 @@ if __name__ == '__main__':
 虽然with语句在我们的代码中频繁会被用到，但是其间的实现过程可能还不是很懂，希望这一文章会在你以后使用with语句时会有所帮助！
 
 
+
+
+
+<ActionBox />

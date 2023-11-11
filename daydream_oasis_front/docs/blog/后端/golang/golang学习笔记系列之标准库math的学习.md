@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="402" title="golang学习笔记系列之标准库math的学习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="103" category="golang" tag_list="['']" create_time="2022.12.25 17:59:52.866779" update_time="2022.12.25 17:59:52" />
 
@@ -129,3 +136,7 @@ rand.Float64(): 0.7215569611912539
 
 
 
+
+
+
+<ActionBox />

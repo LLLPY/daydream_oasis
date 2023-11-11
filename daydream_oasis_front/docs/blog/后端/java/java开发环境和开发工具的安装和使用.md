@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="409" title="java开发环境和开发工具的安装和使用" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="155" category="java" tag_list="['开发环境', '              java', '              开发工具']" create_time="2021.08.31 15:53:18.892729" update_time="2021.08.31 15:57:36" />
 
@@ -94,3 +101,6 @@ System.out.println("hello world");
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/36015d61454c4a23b58793229f91bcd6.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAbGl0dGxl5Lqu772e,size_20,color_FFFFFF,t_70,g_se,x_16)  
 可以看到在终端中输出:hello world  
 至此,神圣的"hello world"成功实现!!!  
+
+
+<ActionBox />

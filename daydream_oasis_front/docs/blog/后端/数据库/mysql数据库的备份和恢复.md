@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="998" title="mysql数据库的备份和恢复" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="92" category="数据库" tag_list="['mysql', '              备份', '              恢复']" create_time="2023.07.08 00:34:30.326272" update_time="2023.07.08 00:34:30.326287" />
 
@@ -91,3 +98,7 @@ mysql -uroot -p blog_plus < 2023_7_8_blog_plus.sql;
 这次的mysql备份和恢复过程比较顺利，一次性都成功了，不过这只是数据，对于整个项目，还有源代码，nginx和uwsgi的配置文件，运行环境等的准备；目前步骤还比较繁琐，希望后续能够写一个一键部署之类的脚本，加油！
 
 
+
+
+
+<ActionBox />

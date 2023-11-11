@@ -1,3 +1,10 @@
+---
+
+next: false
+
+---
+
+
 
 <BlogInfo id="379" title="django中定时任务的实现" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="58" category="Web开发编程" tag_list="['Django', '              定时任务']" create_time="2021.10.28 20:50:00" update_time="2021.10.28 20:50:00" />
 
@@ -34,3 +41,6 @@ def sched_test():
     th2.start()
 sched.start() #启动定时器
 ```
+
+
+<ActionBox />
