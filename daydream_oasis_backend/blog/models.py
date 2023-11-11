@@ -80,7 +80,7 @@ class Blog(BaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类', help_text='分类')
 
     # 标签
-    tag_list = models.ManyToManyField(Tag, verbose_name='标签', help_text='标签', related_name='blogs')
+    tag_list = models.ManyToManyField(Tag, verbose_name='标签', help_text='标签')
 
     # 摘要
     abstract = models.TextField(max_length=150, null=False, blank=False, verbose_name='摘要', help_text='摘要')
@@ -131,6 +131,7 @@ class Blog(BaseModel):
         return cls.objects.filter(category_id=category_id).count()
 
     # 更新阅读时长
+    @my_cache(60 * 60)
     def update_read_time(self) -> None:
         '''
         阅读时长计算公式:cost_time=总字数÷平均阅读速度+图片数*5

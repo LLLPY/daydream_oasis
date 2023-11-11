@@ -1,6 +1,6 @@
-# -*- coding: UTF-8 -*-                            
-# @Author  ：LLL                         
-# @Date    ：2023/1/18 10:36  
+# -*- coding: UTF-8 -*-
+# @Author  ：LLL
+# @Date    ：2023/1/18 10:36
 from common.drf.serializers import DynamicFieldsSerializer
 from rest_framework import serializers
 
@@ -24,19 +24,32 @@ class SectionSerializers(DynamicFieldsSerializer):
 class BlogSerializers(DynamicFieldsSerializer):
     id = serializers.IntegerField(help_text='id')
     title = serializers.CharField(required=True, max_length=20, help_text='标题')
-    # author = serializers.SerializerMethodField()
-    author = serializers.CharField()
+    author = serializers.SerializerMethodField()
+    # author = serializers.CharField()
     avatar = serializers.URLField(required=True, help_text='封面')
     category = serializers.CharField(required=True, help_text='分类')
-    tag_list = serializers.ListField(required=True, help_text='标签列表')
+    tag_list = serializers.SerializerMethodField(help_text='标签列表')
     content = serializers.CharField(required=True, min_length=5, help_text='内容')
     abstract = serializers.CharField()
+    pv = serializers.IntegerField()
+    read_times = serializers.IntegerField()
+    read_time = serializers.SerializerMethodField()
+    create_time = serializers.DateTimeField(format='%Y.%m.%d %H:%M:%S')
+    update_time = serializers.DateTimeField(format='%Y.%m.%d %H:%M:%S')
 
     def get_author(self, obj):
         return {
             'id': obj.author.id,
             'username': obj.author.username
         }
+
+    def get_read_time(self,obj):
+        obj.update_read_time()
+        return obj.transform_read_time()
+
+    def get_tag_list(self,obj):
+        return map(lambda item: item['title'],
+                   obj.tag_list.all().values('title'))
 
 
 # 评论

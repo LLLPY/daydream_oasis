@@ -65,8 +65,14 @@ class BlogViewSet(BaseViewSet):
     def retrieve(self, request, *args, **kwargs):
 
         blog = self.get_object()
-
-        serializer = self.get_serializer(blog)
+        print(11111,blog)
+        serializer = self.get_serializer(blog,
+                                         include_fields=[
+                                             'id', 'title', 'author', 'avatar',
+                                             'category', 'tag_list', 'pv',
+                                             'read_times', 'read_time',
+                                             'create_time', 'update_time'
+                                         ])
 
         return SucResponse(data=serializer.data)
 
@@ -184,7 +190,7 @@ class BlogViewSet(BaseViewSet):
         else:
             raise exception.CustomValidationError('还未收藏!')
         return SucResponse('取消收藏成功!')
-    
+
     @action(methods=['get'], detail=False)
     def demo(self, request, *args, **kwargs):
         # TODO 将数据库中博客转成md文件并进行存储
