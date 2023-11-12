@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "802964",
+      "name": "分类",
+      "font_class": "fenlei1",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "5387746",
+      "name": "标签_o",
+      "font_class": "biaoqian_o",
+      "unicode": "eb47",
+      "unicode_decimal": 60231
+    },
+    {
+      "icon_id": "18170357",
+      "name": "日历,日期",
+      "font_class": "calendar",
+      "unicode": "e9ab",
+      "unicode_decimal": 59819
+    },
+    {
       "icon_id": "1010107",
       "name": "密码",
       "font_class": "mima",

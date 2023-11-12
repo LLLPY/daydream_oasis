@@ -13,7 +13,7 @@ hero:
   actions:
     - theme: brand
       text: 开始探索
-      link: /blog/后端/
+      link: /blog/
     - theme: alt
       text: source code
       link: https://gitee.com/max-LLL/daydream_oasis/tree/dev/

@@ -54,6 +54,8 @@
         margin-bottom: 0;
         padding-left: 0.1em;
         padding-right: 0.1em;
+        box-shadow: 0 0 4px 0 rgba(0,0,0,.1);
+
     }
 
     #top-box .top {

@@ -11,10 +11,11 @@ from common.exception import exception
 from log.views import action_log
 from common.drf.decorators import login_required,rate_lock
 from utils import tools
-
+from common.drf.pagination import CustomPagination
 
 class BlogViewSet(BaseViewSet):
     serializer_class = BlogSerializers
+    pagination_class = CustomPagination
     queryset = Blog.objects.all()
 
     # 新增博客
@@ -43,23 +44,16 @@ class BlogViewSet(BaseViewSet):
 
     # 博客列表
     def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
         detail = self.request.query_params.get('detail', 'false')
         detail = True if detail.lower() == 'true' else False
-
-        if detail:
-            serializer = self.get_serializer(queryset, many=True)
-        else:
-            serializer = self.get_serializer(queryset,
-                                             many=True,
-                                             include_fields=[
-                                                 'id', 'title', 'author',
-                                                 'category', 'abstract',
-                                                 'section', 'tag_list'
-                                             ])
-
-        data = serializer.data
+        res = super().list(request, *args, **kwargs)
+        data = res.data['data']
+        if not detail:
+            results = data['results']
+            for blog_dict in results:
+                del blog_dict['content']
         return SucResponse(data=data)
+
 
     # 博客详情
     def retrieve(self, request, *args, **kwargs):

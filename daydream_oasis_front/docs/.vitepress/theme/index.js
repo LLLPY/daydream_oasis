@@ -8,6 +8,7 @@ import TopList from "../../../src/components/TopList.vue";
 import Logo from "../../../src/components/Logo.vue";
 import ActionBox from "../../../src/components/ActionBox.vue";
 import BlogInfo from "../../../src/components/BlogInfo.vue";
+import BlogList from "../../../src/components/BlogList.vue";
 // import Live2dWidget from "../../../src/components/Live2dWidget.vue";
 import {h} from 'vue'
 import Documate from '@documate/vue'
@@ -31,6 +32,7 @@ export default {
         app.component('Logo', Logo);
         app.component('ActionBox', ActionBox);
         app.component('BlogInfo', BlogInfo);
+        app.component('BlogList', BlogList);
         // app.component('Live2dWidget', Live2dWidget);
     }
 }
