@@ -13,6 +13,9 @@ import BlogList from "../../../src/components/BlogList.vue";
 import {h} from 'vue'
 import Documate from '@documate/vue'
 import '@documate/vue/dist/style.css'
+import { ElPagination } from "element-plus";
+import 'element-plus/dist/index.css'
+
 
 // 扩展默认的主题
 export default {
@@ -33,7 +36,11 @@ export default {
         app.component('ActionBox', ActionBox);
         app.component('BlogInfo', BlogInfo);
         app.component('BlogList', BlogList);
+        app.component('el-pagination', ElPagination);
         // app.component('Live2dWidget', Live2dWidget);
     }
 }
 
+// module.exports = {
+    // isCustomElement: tag => tag.startsWith('el-')
+// }

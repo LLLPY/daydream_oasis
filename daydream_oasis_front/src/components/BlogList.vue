@@ -20,7 +20,7 @@
         <span class="author info-box">
 
           <span class="iconfont">&#xe6a4;</span>
-          <span>{{blog.author.username}}</span>
+          <span>{{ blog.author.username }}</span>
         </span>
 
         <span class="category-box info-box">
@@ -43,8 +43,12 @@
     </li>
 
   </ul>
-
-  <el-pagination background layout="prev, pager, next" :total="1000" :size="10" />
+  <div id="pagination"> <el-pagination background layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
+      :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      />
+  </div>
 </template>
 
 <script>
@@ -74,11 +78,19 @@ export default {
           this.next = data.next
           this.blog_list = data.results
           console.log(this.blog_list)
-          
+
         } else {
           Warning(data.message)
         }
       })
+    },
+    handleSizeChange(val){
+      this.size = val
+      this.get_blog_list()
+    },
+    handleCurrentChange(val){
+      this.page = val
+      this.get_blog_list()
     }
   },
   mounted() {
@@ -210,5 +222,9 @@ export default {
 
 #blog-list .blog-preview .info .iconfont {
   margin: 0;
+}
+
+#pagination {
+  /* width: 100%; */
 }
 </style>

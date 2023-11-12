@@ -1,5 +1,5 @@
-import {defineConfig} from 'vitepress'
-import {getSidebarData, getNavData} from './utils.mjs'
+import { defineConfig } from 'vitepress'
+import { getSidebarData, getNavData } from './utils.mjs'
 
 export default getSidebarData().then(sidebar => {
 
@@ -12,7 +12,7 @@ export default getSidebarData().then(sidebar => {
             // 忽略死链
             ignoreDeadLinks: true,
             head: [
-                ['link', {rel: 'icon', href: 'http://www.lll.plus/static/image/favorite.ico'}]
+                ['link', { rel: 'icon', href: 'http://www.lll.plus/static/image/favorite.ico' }]
             ],
             themeConfig: {
                 i18nRouting: true,
@@ -20,20 +20,20 @@ export default getSidebarData().then(sidebar => {
                 siteTitle: '🌈白日梦想园',
                 // https://vitepress.dev/reference/default-theme-config
                 nav: [
-                    {text: 'Home🏡', link: '/'},
-                    {text: '前端💻', link: '/blog/前端/', activeMatch: '/前端/'},
-                    {text: '后端🛸', link: '/blog/后端/', activeMatch: '/后端/'},
-                    {text: 'AI🤖', link: '/blog/AI/'},
-                    {text: '标签🍒', link: '/tag'},
-                    {text: '分类🍰', link: '/category'},
-                    {text: '关于🦴', link: '/about'},
-                    {text: '登录/注册🚪', link: '/login'},
+                    { text: 'Home🏡', link: '/' },
+                    { text: '前端💻', link: '/blog/前端/', activeMatch: '/前端/' },
+                    { text: '后端🛸', link: '/blog/后端/', activeMatch: '/后端/' },
+                    { text: 'AI🤖', link: '/blog/AI/' },
+                    { text: '标签🍒', link: '/tag' },
+                    { text: '分类🍰', link: '/category' },
+                    { text: '关于🦴', link: '/about' },
+                    { text: '登录/注册🚪', link: '/login' },
                     {
                         text: '归档🗂️',
                         items: [
-                            {text: '归档1', link: '/file'},
-                            {text: '归档2', link: '/file'},
-                            {text: '归档3', link: '/file'},
+                            { text: '归档1', link: '/file' },
+                            { text: '归档2', link: '/file' },
+                            { text: '归档3', link: '/file' },
                         ]
                     },
                 ],
@@ -48,11 +48,11 @@ export default getSidebarData().then(sidebar => {
                     {
                         icon:
                         {
-                        svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 261.76 226.69"><path d="M161.096.001l-30.225 52.351L100.647.001H-.005l130.877 226.688L261.749.001z" fill="#41b883"/><path d="M161.096.001l-30.225 52.351L100.647.001H52.346l78.526 136.01L209.398.001z" fill="#34495e"/></svg>',
+                            svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 261.76 226.69"><path d="M161.096.001l-30.225 52.351L100.647.001H-.005l130.877 226.688L261.749.001z" fill="#41b883"/><path d="M161.096.001l-30.225 52.351L100.647.001H52.346l78.526 136.01L209.398.001z" fill="#34495e"/></svg>',
                         },
                         link: 'https://gitee.com/max-LLL',
                     },
-                    {icon: 'github', link: 'https://github.com/LLLPY'},
+                    { icon: 'github', link: 'https://github.com/LLLPY' },
 
                 ],
                 //   网站logo
@@ -87,7 +87,7 @@ export default getSidebarData().then(sidebar => {
                 theme: 'github-dark-dimmed',
                 lineNumbers: true,
             },
-            
+
         })
 
 })
