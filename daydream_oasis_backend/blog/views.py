@@ -1,5 +1,6 @@
-from blog.serializers import BlogSerializers, CategorySerializers, TagSerializers, CommentSerializers, \
-    CollectionSerializers, LikeSerializers
+from blog.serializers import (BlogSerializers, CategorySerializers,
+                              TagSerializers, CommentSerializers,
+                              CollectionSerializers, LikeSerializers)
 from blog.models import Comment, Collection, Blog, Like, Category, Tag, Share
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -8,8 +9,7 @@ from common.drf.mixin import InstanceMixin
 from common.views import BaseViewSet
 from common.exception import exception
 from log.views import action_log
-from common.drf.decorators import login_required
-# @action_log()
+from common.drf.decorators import login_required,rate_lock
 from utils import tools
 
 
@@ -65,13 +65,19 @@ class BlogViewSet(BaseViewSet):
     def retrieve(self, request, *args, **kwargs):
 
         blog = self.get_object()
-        print(11111,blog)
         serializer = self.get_serializer(blog,
                                          include_fields=[
-                                             'id', 'title', 'author', 'avatar',
-                                             'category', 'tag_list', 'pv',
-                                             'read_times', 'read_time',
-                                             'create_time', 'update_time'
+                                             'id',
+                                             'title',
+                                             'author',
+                                             'avatar',
+                                             'category',
+                                             'tag_list',
+                                             'pv',
+                                             'read_times',
+                                             'read_time',
+                                             'create_time',
+                                             'update_time',
                                          ])
 
         return SucResponse(data=serializer.data)
@@ -120,28 +126,21 @@ class BlogViewSet(BaseViewSet):
 
     @action(methods=['post'], detail=True)
     @login_required
+    @rate_lock()
     def like(self, request, *args, **kwargs):
         '''点赞'''
 
         user = self.request.user
-
         blog = self.get_object()
         _, has_liked = Like.status(blog=blog, user=user)
         if has_liked:
             raise exception.CustomValidationError('已经点过赞啦!')
-
-        key = f'like:{user.id}:{blog.id}'
-        success = self.redis_conn.setnx(key, 'liked')
-        if not success:
-            raise exception.CustomValidationError('3秒内不能重复点赞哟!')
-
-        # 3秒内只能点一次赞
-        self.redis_conn.expire(key, 3)
         Like.create(blog, user)
         return SucResponse('点赞成功!')
 
     @action(methods=['post'], detail=True)
     @login_required
+    @rate_lock()
     def cancel_like(self, request, *args, **kwargs):
         '''取消点赞'''
 
@@ -155,6 +154,8 @@ class BlogViewSet(BaseViewSet):
         return SucResponse('取消点赞成功!')
 
     @action(methods=['post'], detail=True)
+    @login_required
+    @rate_lock()
     def collect(self, request, *args, **kwargs):
         '''收藏'''
 
@@ -167,18 +168,12 @@ class BlogViewSet(BaseViewSet):
         if has_collected:
             raise exception.CustomValidationError('已经收藏啦!')
 
-        key = f'collect:{user.id}:{blog.id}'
-        success = self.redis_conn.setnx(key, 'collected')
-        if not success:
-            raise exception.CustomValidationError('3秒内不能重复收藏哟!')
-
-        # 3秒内只能点一次赞
-        self.redis_conn.expire(key, 3)
         Collection.create(blog, user)
         return SucResponse('收藏成功!')
 
     @action(methods=['post'], detail=True)
     @login_required
+    @rate_lock()
     def cancel_collect(self, request, *args, **kwargs):
         '''取消收藏'''
 

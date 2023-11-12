@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 import datetime
 from utils import tools
 from django.contrib.auth.decorators import login_required
+from utils.cache import my_cache
 
 
 def action_log():
@@ -65,7 +66,6 @@ class ActionViewSet(BaseViewSet):
     queryset = Action.objects.all()
 
     @action(methods=['post'], detail=False)
-    @login_required
     def upload_action(self, request, *args, **kwargs):
         serialzer = self.get_serializer(data=self.request.data, include_fields=['blog_id', 'action', 'cost_time'])
         serialzer.is_valid(raise_exception=True)
@@ -84,6 +84,7 @@ class ActionViewSet(BaseViewSet):
 
         return SucResponse('行为上传成功!')
 
+    @my_cache()
     @action(methods=['get'], detail=False)
     def top_stat(self, request, *args, **kwargs):
         '''排行榜统计'''
