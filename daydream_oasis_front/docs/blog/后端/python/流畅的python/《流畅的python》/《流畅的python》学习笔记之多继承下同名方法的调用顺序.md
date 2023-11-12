@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="776" title="《流畅的python》学习笔记之多继承下同名方法的调用顺序" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="135" category="《流畅的python》" tag_list="['mro', '              多继承']" create_time="2022.04.07 18:36:07.916893" update_time="2022.04.07 18:36:07" />
+<BlogInfo id="776"/>
 
 ###  类名限定法
 

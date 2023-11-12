@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="468" title="python2中的一些内置函数的用法" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="950" category="python" tag_list="['']" create_time="2022.10.08 17:54:00.761892" update_time="2022.10.14 16:04:34" />
+<BlogInfo id="468"/>
 
 
 

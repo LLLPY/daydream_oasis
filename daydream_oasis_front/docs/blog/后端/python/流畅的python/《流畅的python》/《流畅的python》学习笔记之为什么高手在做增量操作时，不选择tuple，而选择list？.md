@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="772" title="《流畅的python》学习笔记之为什么高手在做增量操作时，不选择tuple，而选择list？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="66" category="《流畅的python》" tag_list="['基础', '              笔记', '              巩固']" create_time="2022.02.14 14:31:09.939869" update_time="2022.07.11 10:43:04" />
+<BlogInfo id="772"/>
 
 ### tuple输在了哪里？
 

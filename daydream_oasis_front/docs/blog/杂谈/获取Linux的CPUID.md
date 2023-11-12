@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="1076" title="获取Linux的CPUID" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="19" category="杂谈" tag_list="['Linux', '              CPUID']" create_time="2021.07.29 21:10:49.189734" update_time="2021.07.29 21:10:49" />
+<BlogInfo id="1076"/>
 
 
 ```python

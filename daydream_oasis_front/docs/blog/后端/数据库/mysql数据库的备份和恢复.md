@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="998" title="mysql数据库的备份和恢复" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="92" category="数据库" tag_list="['mysql', '              备份', '              恢复']" create_time="2023.07.08 00:34:30.326272" update_time="2023.07.08 00:34:30.326287" />
+<BlogInfo id="998"/>
 
 ### 前言
 

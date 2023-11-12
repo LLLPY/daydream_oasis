@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="448" title="Python实现飞机大战小游戏(工具包文件)" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="136" category="pygame" tag_list="['飞机大战', '              game']" create_time="2021.06.26 21:42:23.821740" update_time="2021.06.26 21:42:23" />
+<BlogInfo id="448"/>
 
 
 ```python

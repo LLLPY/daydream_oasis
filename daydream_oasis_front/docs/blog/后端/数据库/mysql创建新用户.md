@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="997" title="mysql创建新用户" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="6" category="数据库编程" tag_list="['']" create_time="2022.07.06 16:22:08.575303" update_time="2022.07.06 16:34:39" />
+<BlogInfo id="997"/>
 
 **1.创建用户**
 

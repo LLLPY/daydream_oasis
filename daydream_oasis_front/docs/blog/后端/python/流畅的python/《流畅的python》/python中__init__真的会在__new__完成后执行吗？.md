@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="766" title="python中__init__真的会在__new__完成后执行吗？" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="30" category="《流畅的python》" tag_list="['笔记']" create_time="2022.07.15 14:48:46.107470" update_time="2022.09.03 10:16:24" />
+<BlogInfo id="766"/>
 
 ### 前言
 

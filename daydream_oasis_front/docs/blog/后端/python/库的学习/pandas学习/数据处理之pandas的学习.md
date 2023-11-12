@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="594" title="数据处理之pandas的学习" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="575" category="pandas学习" tag_list="['数据处理', '              pandas']" create_time="2021.08.28 17:45:29.372680" update_time="2021.08.28 18:19:38" />
+<BlogInfo id="594"/>
 
 ## 1.pandas中的几种数据结构
 ```python

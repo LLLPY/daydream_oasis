@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="1068" title="探索SSH的奇妙世界" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="197" category="实用工具" tag_list="['ssh', '              远程连接', '              文件传输']" create_time="2023.09.10 23:55:11.780732" update_time="2023.09.10 23:57:58.874192" />
+<BlogInfo id="1068"/>
 
 > 引言： 在现代互联网时代，安全远程管理和文件传输是许多企业和个人必备的技术需求。而SSH（Secure
 > Shell）作为一种安全的网络协议，为我们提供了一种加密的远程访问和文件传输解决方案。本博客将深入介绍SSH的基本概念、工作原理、常见用法和安全性等方面，帮助读者更好地理解和应用SSH技术。

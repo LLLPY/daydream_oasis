@@ -39,6 +39,7 @@ class BlogSerializers(DynamicFieldsSerializer):
     read_time = serializers.SerializerMethodField()
     create_time = serializers.DateTimeField(format='%Y.%m.%d %H:%M:%S')
     update_time = serializers.DateTimeField(format='%Y.%m.%d %H:%M:%S')
+    category_parent_list = serializers.SerializerMethodField()
 
     def get_author(self, obj):
         return {'id': obj.author.id, 'username': obj.author.username}
@@ -48,8 +49,8 @@ class BlogSerializers(DynamicFieldsSerializer):
         return obj.transform_read_time()
 
     def get_tag_list(self, obj):
-        return map(lambda item: item['title'],
-                   obj.tag_list.all().values('title'))
+        return list( map(lambda item: item['title'],
+                   obj.tag_list.all().values('title')))
 
     def get_pv(self, obj):
         return Action.objects.filter(blog=obj).values('id').count()
@@ -63,6 +64,9 @@ class BlogSerializers(DynamicFieldsSerializer):
             content = re.sub(r'<ActionBox />', '', content)
             abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', content))[:150].replace('\n','')
         return abstract
+
+    def get_category_parent_list(self,obj):
+        return obj.category.get_parent_list()
 
 
 # 评论

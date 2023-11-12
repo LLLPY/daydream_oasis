@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="1063" title="window下如何让写的程序开机自启" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="97" category="杂谈" tag_list="['开机自启', '              Windows']" create_time="2021.07.19 11:13:23.439235" update_time="2021.07.19 11:13:23" />
+<BlogInfo id="1063"/>
 
 
 我有一个癖好,就是看到好看的图片就喜欢保存下来然后做自己的电脑壁纸用,然后我发现bing首页的背景图片都非常好看,而且它每天都会更新,所以我每天都会不辞辛劳的打开bing的首页,然后f12打开调试者工具,找到背景图片的url所在的位置:

@@ -7,9 +7,7 @@
       <hr>
       <div class="content">
         <div class="avatar">
-          <img
-            src="http://www.lll.plus/media/image/2023/09/14/Snipaste_2023-09-14_22-24-27.6a0ddac6530d11eea0c5d9fd74d8f392.png"
-            alt="">
+          <img :src="blog.avatar" alt="">
         </div>
         <div class="article">
           {{ blog.abstract }}
@@ -37,17 +35,15 @@
 
           <span>{{ blog.update_time }}</span></span>
 
-        <span class="read info-box"><a href="#">阅读原文>></a> </span>
+        <span class="read info-box"><a :href="convert_url(blog)">阅读原文>></a> </span>
       </div>
 
     </li>
 
   </ul>
   <div id="pagination"> <el-pagination background layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
-      :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      />
+      :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
+      @current-change="handleCurrentChange" />
   </div>
 </template>
 
@@ -84,13 +80,29 @@ export default {
         }
       })
     },
-    handleSizeChange(val){
+    handleSizeChange(val) {
       this.size = val
       this.get_blog_list()
     },
-    handleCurrentChange(val){
+    handleCurrentChange(val) {
       this.page = val
       this.get_blog_list()
+    },
+    convert_url(blog) {
+      console.log(blog)
+      let path = blog.category_parent_list.join('/')
+      let url
+      if (blog.category === blog.title) {
+        url = `${path}/${blog.category}/`
+      } else {
+        url = `${path}/${blog.category}/${blog.title}.html`
+
+      }
+
+      if (url.startsWith('blog')) {
+        url = url.substring(5)
+      }
+      return url
     }
   },
   mounted() {
@@ -134,7 +146,6 @@ export default {
   margin-bottom: 1rem;
   cursor: pointer;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, .1);
-  background-color: #fff;
 
 }
 

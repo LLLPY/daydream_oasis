@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="1062" title="python中的一些进阶语法" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="122" category="杂谈" tag_list="['生成器、迭代器', '              三元表达式', '              推导式']" create_time="2021.11.08 21:06:00" update_time="2021.11.08 21:06:00" />
+<BlogInfo id="1062"/>
 
 最近在csdn上看了一些关于python的进阶语法，感觉写的确实不错，在开发中特别实用，有的虽然很少见，但是功能确实特别强，所以索性自己将其总结了一下，有些自己用的很熟就没有写。
 

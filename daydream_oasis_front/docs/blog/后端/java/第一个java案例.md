@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="412" title="第一个java案例" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="48" category="java" tag_list="['java', '              初学']" create_time="2021.09.01 15:50:01.687111" update_time="2021.09.01 15:50:01" />
+<BlogInfo id="412"/>
 
 需求:
 

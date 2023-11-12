@@ -33,6 +33,17 @@ class Category(BaseModel):
     @classmethod
     def get_by_name(cls, name):
         return cls.objects.filter(title=name).first()
+    
+    def get_parent_list(self):
+        parent_list = []
+        while self:
+            if self.parent:
+                parent_list.append(self.parent.title)
+                self = self.parent
+            else:
+                break
+        parent_list.reverse()
+        return parent_list
 
 
 # 标签

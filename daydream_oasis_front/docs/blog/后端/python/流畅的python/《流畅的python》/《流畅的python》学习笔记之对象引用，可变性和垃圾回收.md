@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="777" title="《流畅的python》学习笔记之对象引用，可变性和垃圾回收" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="140" category="《流畅的python》" tag_list="['笔记', '              对象引用', '              深浅拷贝']" create_time="2022.03.24 21:33:25.586174" update_time="2022.07.11 10:42:28" />
+<BlogInfo id="777"/>
 
 
 ### **引用式变量**

@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="1061" title="Linux下设置脚本开机自启" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="51" category="杂谈" tag_list="['开机自启', '              Linux']" create_time="2021.08.18 10:42:55.608506" update_time="2021.08.18 10:42:55" />
+<BlogInfo id="1061"/>
 
 **核心思想:把要启动的脚本放到系统的"服务"目录下,系统在开机,重启时就会运行脚本程序**
 

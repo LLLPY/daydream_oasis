@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="1340" title="LeetCode之完全平方数" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="76" category="leetcode100题" tag_list="['leetcode', '              动态规划']" create_time="2022.07.13 08:39:20.001563" update_time="2022.07.13 08:39:20" />
+<BlogInfo id="1340"/>
 
 # **题目**
 

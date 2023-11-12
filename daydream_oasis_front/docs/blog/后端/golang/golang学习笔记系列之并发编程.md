@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="397" title="golang学习笔记系列之并发编程" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="568" category="golang" tag_list="['']" create_time="2022.10.05 16:17:09.592346" update_time="2022.10.05 16:17:09" />
+<BlogInfo id="397"/>
 
 ##
 ![](https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp8.itc.cn%2Fq_70%2Fimages03%2F20210221%2Fd778753d6a0d4ab9b685aaf362810c0d.gif&refer=http%3A%2F%2Fp8.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665661975&t=37860c72d333426b69c936abcb7d5473)

@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="398" title="golang学习笔记系列之指针和结构体" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="293" category="golang" tag_list="['']" create_time="2022.09.24 22:09:33.034463" update_time="2022.09.24 22:09:33" />
+<BlogInfo id="398"/>
 
 ![](https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fp8.itc.cn%2Fq_70%2Fimages03%2F20210221%2Fd778753d6a0d4ab9b685aaf362810c0d.gif&refer=http%3A%2F%2Fp8.itc.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1665661975&t=37860c72d333426b69c936abcb7d5473)
 

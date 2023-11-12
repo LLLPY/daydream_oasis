@@ -77,7 +77,7 @@ class ActionViewSet(BaseViewSet):
         action_obj = Action()
         action_obj.action = action
         action_obj.cost_time = cost_time
-        action_obj.user = request.user
+        action_obj.user = request.user if request.user.is_authenticated else None
         action_obj.uuid = request.COOKIES.get('uuid', '-')
         action_obj.blog_id = blog_id
         action_obj.save()

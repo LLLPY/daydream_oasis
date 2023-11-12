@@ -5,7 +5,7 @@ next: false
 ---
 
 
-<BlogInfo id="378" title="Django中ckeditor的使用" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="170" category="Django" tag_list="['Django', '              插件', '              ckeditor']" create_time="2022.01.17 21:39:20.760395" update_time="2022.07.11 10:58:39" />
+<BlogInfo id="378"/>
 
 [CKEditor即大名鼎鼎的FCKeditor（文本编辑器），它终于在最近发布新版本了，与增加版本号不同，这次完全把它改名了，更名为CKeditor。这应该是和它的开发公司CKSource(波兰华沙的公司)的名字有关吧，该公司的另一个产品为CKFinder（一个Ajax文件管理器），这次可能为了保持一致，将FCK更改为CK，但是版本号继承了下来，为CKeditor3.0版。](https://baike.baidu.com/item/CKEditor/626256?fr=aladdin)
 

@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="365" title="使用js完成一个简单的表格" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="16" category="Web开发编程" tag_list="['js', '              table', '              css']" create_time="2021.10.15 22:26:44.722927" update_time="2022.09.05 22:24:42" />
+<BlogInfo id="365"/>
 
 制作一个表格,要求如下:
 要求

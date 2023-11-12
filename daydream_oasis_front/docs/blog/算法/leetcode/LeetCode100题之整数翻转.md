@@ -6,7 +6,7 @@ next: false
 
 
 
-<BlogInfo id="1325" title="LeetCode100题之整数翻转" author="白日梦想猿" pv=0 read_times=0 pre_cost_time="32" category="leetcode100题" tag_list="['leetcode', '              翻转']" create_time="2021.10.20 15:36:31.011400" update_time="2021.10.20 15:36:31" />
+<BlogInfo id="1325"/>
 
 '''
 给你一个 32 位的有符号整数 x ，返回将 x 中的数字部分反转后的结果。
