@@ -37,11 +37,10 @@
         methods: {
             randomColor() {
                 // 生成随机颜色
-                let hue = Math.floor(Math.random() * 360); // 随机色相值（0-359）
-                let saturation = Math.floor(Math.random() * 50) + 50; // 随机饱和度（50-100）
-                let lightness = Math.floor(Math.random() * 20) + 50; // 随机亮度（50-70）
-
-                return 'hsl(' + hue + ', ' + saturation + '%, ' + lightness + '%)';
+                const colors = ['#f43f5e', '#3b82f6', '#22c55e'];
+                const randomIndex = Math.floor(Math.random() * colors.length);
+                const randomColor = colors[randomIndex];
+                return randomColor
             },
             randomSize() {
                 // 生成随机字体大小
