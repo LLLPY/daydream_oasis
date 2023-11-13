@@ -184,6 +184,8 @@ export default {
   flex: 7;
   overflow: hidden;
   font-size: 0.9rem;
+  word-break: break-all; /* 或者 word-wrap: break-word; */
+
 
 }
 
@@ -220,8 +222,10 @@ export default {
   margin-left: 0;
 }
 
+/* 靠右，同时清楚浮动的影响 */
 #blog-list .blog-preview .info .read {
   float: right;
+  clear: float; 
 }
 
 #blog-list .blog-preview .info .read a {
@@ -248,6 +252,10 @@ export default {
 }
 
 #pagination {
-  /* width: 100%; */
+  width: 100%;
+}
+
+#pagination .el-pagination {
+  width: 100% !important;
 }
 </style>
