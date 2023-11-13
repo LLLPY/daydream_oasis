@@ -177,6 +177,7 @@ export default {
   height: 100%;
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
+  overflow: hidden;
 }
 
 #blog-list .blog-preview .content .article {
@@ -186,8 +187,21 @@ export default {
 
 }
 
+/* 移动端适配 */
+@media (max-width: 450px) {
+  #blog-list .blog-preview .content {
+    display: inline-block;
+  }
+
+  #blog-list .blog-preview .content .avatar,
+  #blog-list .blog-preview .content .article {
+    width: 100%;
+  }
+
+}
+
 #blog-list .blog-preview .info {
-  height: 35px;
+  min-height: 35px;
   font-size: 0.75rem;
 
 }
