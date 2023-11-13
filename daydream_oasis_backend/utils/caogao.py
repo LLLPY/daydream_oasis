@@ -49,6 +49,20 @@ def replace(file_path):
         f.write(content)
 
 
+def rename(file_path):
+    content = None
+    with open(file_path, 'r', encoding='utf8') as f:
+        content = f.read()
+    os.remove(file_path)
+    file_name = str(file_path).split(os.sep)[-1]
+    new_file_name = re.sub(r'^\d+\.','',file_name)
+    cur_dir = os.path.dirname(file_path)
+    new_file_path = os.path.join(cur_dir,new_file_name)
+    print(new_file_path)
+    with open(new_file_path, 'w', encoding='utf8') as f:
+        f.write(content)
+
+
 @transaction.atomic
 def tree(_dir):
 
@@ -57,7 +71,7 @@ def tree(_dir):
         if os.path.isdir(cur_path):
             tree(cur_path)
         else:
-            replace(cur_path)
+            rename(cur_path)
 
 
 def main():
@@ -70,6 +84,7 @@ def tag_strip():
         tag.title = tag.title.replace(' ', '').strip()
         print(tag.title)
         tag.save()
+
 
 def aaaa():
     for blog in Blog.objects.all():

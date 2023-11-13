@@ -73,7 +73,6 @@ export default {
           this.pre = data.previous
           this.next = data.next
           this.blog_list = data.results
-          console.log(this.blog_list)
 
         } else {
           Warning(data.message)
@@ -89,7 +88,6 @@ export default {
       this.get_blog_list()
     },
     convert_url(blog) {
-      console.log(blog)
       let path = blog.category_parent_list.join('/')
       let url
       if (blog.category === blog.title) {
