@@ -34,7 +34,7 @@ class TagAdmin(admin.ModelAdmin, MyBaseAdmin):
 class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
     form = BlogAdminForm
     list_display = ['id', 'title', 'author', 'category', 'dpv', 'duv', 'pv', 'uv', 'likes',
-                    'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top', 'abstract']
+                    'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top']
     search_fields = ['title', 'author__username', 'category__title', 'abstract']
     list_filter = ['author__username', 'category__title', 'update_time', 'has_deleted']
     fieldsets = [

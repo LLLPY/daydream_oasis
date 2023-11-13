@@ -85,10 +85,12 @@ def tag_strip():
         print(tag.title)
         tag.save()
 
-
+@transaction.atomic
 def aaaa():
     for blog in Blog.objects.all():
-        print(blog.tag_list.all())
+        # print(blog.tag_list.all())
+        blog.title = re.sub(r'^\d+\.','',blog.title)
+        blog.save()
 
 
 if __name__ == '__main__':

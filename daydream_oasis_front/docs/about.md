@@ -1,4 +1,8 @@
+---
 
+next: false
+
+---
 
 <BlogInfo title="关于" author="白日梦想猿" pv=0 read_times=0 pre_cost_time=29 category="开发记录" tag_list="[]" create_time="2023.03.26 10:38:00" update_time="2023.04.06 22:27:00" />
 
@@ -17,3 +21,5 @@
 
 
 ![about](http://www.lll.plus/media/image/2023/03/28/1659087037824.5d545402cd3911ed960cdcf505c52fb0.jpg)
+
+<ActionBox />
