@@ -9,6 +9,7 @@ import Logo from "../../../src/components/Logo.vue";
 import ActionBox from "../../../src/components/ActionBox.vue";
 import BlogInfo from "../../../src/components/BlogInfo.vue";
 import BlogList from "../../../src/components/BlogList.vue";
+import Vditor from "../../../src/components/Vditor.vue";
 // import Live2dWidget from "../../../src/components/Live2dWidget.vue";
 import {h} from 'vue'
 import Documate from '@documate/vue'
@@ -37,6 +38,7 @@ export default {
         app.component('BlogInfo', BlogInfo);
         app.component('BlogList', BlogList);
         app.component('el-pagination', ElPagination);
+        app.component('Vditor', Vditor);
         // app.component('Live2dWidget', Live2dWidget);
     }
 }

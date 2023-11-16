@@ -28,7 +28,9 @@ export default getSidebarData().then(sidebar => {
                     { text: '标签🍒', link: '/tag' },
                     { text: '分类🍰', link: '/category' },
                     { text: '关于🦴', link: '/blog/总结/开发记录/关于' },
+                    { text: '写博客✍️', link: '/write' },
                     { text: '登录/注册🚪', link: '/login' },
+                    { text: '个人中心🍴', link: '/home' },
                     {
                         text: '归档🗂️',
                         items: [
