@@ -9,20 +9,13 @@
     "documate:upload": "documate upload"
   },
   "dependencies": {
-    "@documate/vue": "^0.3.1",
     "axios": "^1.5.0",
     "element-plus": "^2.3.14",
     "live2d-widget": "^3.0.5",
-    "pinia": "^2.1.6",
-    "sass": "^1.68.0",
-    "sass-loader": "^13.3.2",
     "unplugin-element-plus": "^0.8.0",
-    "vditor": "^3.9.6",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "vditor": "^3.9.6"
   },
   "devDependencies": {
-    "@documate/documate": "^0.2.1",
     "@vitejs/plugin-vue": "^4.3.1",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.2",
