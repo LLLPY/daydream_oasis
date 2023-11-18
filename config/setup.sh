@@ -2,7 +2,7 @@
 source ../venv/bin/activate
 
 #启动uwsgi
-kill -9 $(lsof -i:6666)
+kill -9 $(lsof -i:8000)
 uwsgi uwsgi.ini
 
 #重载nginx
