@@ -226,6 +226,7 @@ export default {
 #blog-list .blog-preview .info .read {
   float: right;
   clear: float; 
+  display: inline-block;
 }
 
 #blog-list .blog-preview .info .read a {

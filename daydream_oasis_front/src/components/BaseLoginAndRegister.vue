@@ -12,8 +12,8 @@
 
         data() {
             return {
-                username: 'root',
-                password: '1234',
+                username: '',
+                password: '',
                 code: '1234'
             }
 

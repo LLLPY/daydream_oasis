@@ -17,15 +17,14 @@ export default {
 
   data() {
     return {
-      username: 'root',
-      password: '1234',
+      username: '',
+      password: '',
       code: '1234'
     }
 
   },
   methods: {
     submit(event) {
-      alert(11111111111)
       // 阻止默认事件
       event.preventDefault();
       if (this.username.length === 0) {

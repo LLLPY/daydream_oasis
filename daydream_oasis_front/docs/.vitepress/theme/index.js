@@ -9,10 +9,11 @@ import Logo from "../../../src/components/Logo.vue";
 import ActionBox from "../../../src/components/ActionBox.vue";
 import BlogInfo from "../../../src/components/BlogInfo.vue";
 import BlogList from "../../../src/components/BlogList.vue";
-// import Live2dWidget from "../../../src/components/Live2dWidget.vue";
-import {h} from 'vue'
-import Documate from '@documate/vue'
-import '@documate/vue/dist/style.css'
+import Vditor from "../../../src/components/Vditor.vue";
+import Live2dWidget from "../../../src/components/Live2dWidget.vue";
+// import {h} from 'vue'
+// import Documate from '@documate/vue'
+// import '@documate/vue/dist/style.css'
 import { ElPagination } from "element-plus";
 import 'element-plus/dist/index.css'
 
@@ -20,12 +21,12 @@ import 'element-plus/dist/index.css'
 // 扩展默认的主题
 export default {
     ...DefaultTheme,
-    // Layout:MyLayout,
-    Layout: h(MyLayout, null, {
-        'nav-bar-content-before': () => h(Documate, {
-            endpoint: 'https://rm6pzfp19v.us.aircode.run/ask',
-        }),
-    }),
+    Layout:MyLayout,
+    // Layout: h(MyLayout, null, {
+    //     'nav-bar-content-before': () => h(Documate, {
+    //         endpoint: 'https://rm6pzfp19v.us.aircode.run/ask',
+    //     }),
+    // }),
     enhanceApp({app}) {
         app.component('Login', Login);
         app.component('Register', Register);
@@ -37,7 +38,8 @@ export default {
         app.component('BlogInfo', BlogInfo);
         app.component('BlogList', BlogList);
         app.component('el-pagination', ElPagination);
-        // app.component('Live2dWidget', Live2dWidget);
+        app.component('Vditor', Vditor);
+        app.component('Live2dWidget', Live2dWidget);
     }
 }
 
