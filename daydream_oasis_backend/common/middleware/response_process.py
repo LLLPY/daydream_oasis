@@ -12,6 +12,6 @@ class ResponseMiddleware(MiddlewareMixin):
         _uuid = request.COOKIES.get('uuid')
         if not _uuid:
             _uuid = str(uuid.uuid4())
-            response.set_cookie('uuid', _uuid, samesite='None', secure='true')
+            response.set_cookie('uuid', _uuid, samesite='None', secure=False)
 
         return response

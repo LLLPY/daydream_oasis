@@ -99,6 +99,12 @@
         background-color: rgba(0, 0, 0, 0.2);
     }
 
+  @media (max-width: 450px) {
+  #formBox {
+    margin: auto 2%;
+   }
+  }
+
     #formBox:hover {
         background-color: transparent;
         box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
