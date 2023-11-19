@@ -195,8 +195,8 @@ export default {
 
 <style>
 #container {
-    padding-left: 1%;
-    padding-right: 1%;
+    padding-left: 5%;
+    padding-right: 5%;
     min-width: 1200px;
 
 }
