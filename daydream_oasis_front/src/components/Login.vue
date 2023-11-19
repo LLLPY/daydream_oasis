@@ -3,10 +3,10 @@
 </template>
 <script>
 
-import {Warning} from '../assets/MessageBox.js'
+import {Warning, Info} from '../assets/MessageBox.js'
 import axios_ins from "../assets/axios";
 import BaseLoginAndRegister from './BaseLoginAndRegister.vue'
-import {Info} from "../assets/MessageBox";
+
 
 export default {
   extends:BaseLoginAndRegister,

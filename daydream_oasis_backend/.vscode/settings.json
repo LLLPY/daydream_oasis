@@ -1,0 +1,7 @@
+{
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint_django",
+        "--disable-msg=['C0103','C0301','W0312','W0511','W0232','E1101']",
+    ],
+}
