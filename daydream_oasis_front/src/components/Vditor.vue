@@ -412,3 +412,12 @@ onMounted(() => {
     <div id="vditor"></div>
 </template>
 
+<style>
+.vditor-emojis{
+ max-height:100px;
+ overflow:auto;
+
+
+}
+
+</style>

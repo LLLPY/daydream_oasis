@@ -3,4 +3,10 @@ layout: page
 sidebar: false
 ---
 
-<Vditor />
+
+
+
+
+
+
+<Write />

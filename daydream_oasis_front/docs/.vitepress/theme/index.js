@@ -10,11 +10,14 @@ import ActionBox from "../../../src/components/ActionBox.vue";
 import BlogInfo from "../../../src/components/BlogInfo.vue";
 import BlogList from "../../../src/components/BlogList.vue";
 import Vditor from "../../../src/components/Vditor.vue";
+import Write from "../../../src/components/Write.vue";
 // import Live2dWidget from "../../../src/components/Live2dWidget.vue";
 // import {h} from 'vue'
 // import Documate from '@documate/vue'
 // import '@documate/vue/dist/style.css'
-import { ElPagination } from "element-plus";
+import { ElPagination,ElCol,ElAutocomplete,ElRow,ElCascader,ElInput,ElUpload,ElIcon,ElDialog,ElTag,ElButton } from "element-plus";
+import { Plus,Delete, ZoomIn } from '@element-plus/icons-vue'
+
 import 'element-plus/dist/index.css'
 
 
@@ -38,7 +41,21 @@ export default {
         app.component('BlogInfo', BlogInfo);
         app.component('BlogList', BlogList);
         app.component('el-pagination', ElPagination);
+        app.component('el-col', ElCol);
+        app.component('el-row', ElRow);
+        app.component('el-autocomplete', ElAutocomplete);
+        app.component('el-cascader', ElCascader);
+        app.component('el-input', ElInput);
+        app.component('el-upload', ElUpload);
+        app.component('el-icon', ElIcon);
+        app.component('Plus', Plus);
+        app.component('Delete', Delete);
+        app.component('ZoomIn', ZoomIn);
+        app.component('el-dialog', ElDialog);
+        app.component('el-tag', ElTag);
+        app.component('el-button', ElButton);
         app.component('Vditor', Vditor);
+        app.component('Write', Write);
         // app.component('Live2dWidget', Live2dWidget);
     }
 }
