@@ -62,7 +62,7 @@ onMounted(() => {
             }
         ],
         //编辑模式---wysiwyg:所见即所得 ir:及时渲染 sv:分屏预览
-        mode: 'ir',
+        mode: 'sv',
         preview: {
             mode: "both",
             markdown: {
