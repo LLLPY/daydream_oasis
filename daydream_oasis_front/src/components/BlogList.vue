@@ -22,18 +22,24 @@
         </span>
 
         <span class="category-box info-box">
-          <span class="iconfont">&#xe64e;</span>
-          <span class="category">{{ blog.category }}</span></span>
+
+          <span class="category">
+            <!-- <span class="iconfont">&#xe64e;</span> -->
+            {{ blog.category }}</span></span>
 
 
         <span class="tag-list info-box" v-if="blog.tag_list.length">
-          <span class="iconfont">&#xeb47;</span>
-          <span class="tag" v-for="tag in blog.tag_list">{{ tag }}</span>
+
+          <span class="tag" v-for="tag in blog.tag_list">
+            <!-- <span class="iconfont">&#xeb47;</span> -->
+            {{ tag }}
+          </span>
         </span>
 
-        <span class="update_time info-box"><span class="iconfont">&#xe9ab;</span>
+        <span class="update_time info-box">
+          <!-- <span class="iconfont">&#xe9ab;</span> -->
 
-          <span>{{ blog.update_time }}</span></span>
+          <span class="date">{{ blog.update_time }}</span></span>
 
         <span class="read info-box"><a :href="convert_url(blog)">阅读原文>></a> </span>
       </div>
@@ -217,7 +223,6 @@ export default {
     margin-bottom: 1.5rem;
   }
 
-
 }
 
 #blog-list .blog-preview .info {
@@ -237,17 +242,31 @@ export default {
   text-decoration: none;
 }
 
-#blog-list .blog-preview .info .category {
-  background-color: orange;
+#blog-list .blog-preview .info .category,
+#blog-list .blog-preview .info .tag,
+#blog-list .blog-preview .info .date {
   border-radius: 4px;
   padding: 0.1rem;
+}
+
+#blog-list .blog-preview .info .category {
+  background-color: orange;
+
 }
 
 
 #blog-list .blog-preview .info .tag {
   background-color: #22c55e;
-  border-radius: 4px;
-  padding: 0.1rem;
+  margin-left: 1px;
+}
+
+#blog-list .blog-preview .info .tag:nth-child(1){
+  margin-left: 0;
+}
+
+
+#blog-list .blog-preview .info .date {
+  background-color: skyblue;
 }
 
 #blog-list .blog-preview .info .iconfont {
