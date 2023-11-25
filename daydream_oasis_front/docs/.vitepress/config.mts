@@ -12,7 +12,7 @@ export default getSidebarData().then(sidebar => {
             // 忽略死链
             ignoreDeadLinks: true,
             head: [
-                ['link', { rel: 'icon', href: 'http://www.lll.plus/static/image/favorite.ico' }]
+                ['link', { rel: 'icon', href: 'http://www.lll.plus/media/image/favorite.ico' }]
             ],
             themeConfig: {
                 i18nRouting: true,
