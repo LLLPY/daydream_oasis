@@ -52,6 +52,8 @@ class BlogViewSet(BaseViewSet):
             results = data['results']
             for blog_dict in results:
                 del blog_dict['content']
+                blog_dict['create_time'] = blog_dict['create_time'].split(' ')[0]
+                blog_dict['update_time'] = blog_dict['update_time'].split(' ')[0]
         return SucResponse(data=data)
 
 
