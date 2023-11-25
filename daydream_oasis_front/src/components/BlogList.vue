@@ -125,7 +125,7 @@ export default {
 }
 
 #blog-list .blog-preview:hover {
-  transform: scale(1.1, 1.1);
+  transform: scale(1.05, 1.05);
 }
 
 #blog-list .blog-preview:hover>#blog-list .blog-preview:not(:hover) {
@@ -152,9 +152,10 @@ export default {
   margin-bottom: 0;
 }
 
+
 #blog-list .blog-preview hr {
   margin-top: 2px;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   border: 1px solid #0000001f;
 }
 
@@ -184,8 +185,7 @@ export default {
   flex: 7;
   overflow: hidden;
   font-size: 0.9rem;
-  word-break: break-all; /* 或者 word-wrap: break-word; */
-
+  word-break: break-all;
 
 }
 
@@ -200,40 +200,42 @@ export default {
     width: 100%;
   }
 
+  /* 移动端最多显示三行内容 */
+  #blog-list .blog-preview .content .article {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .VPDoc {
+    padding-left: 0.55rem !important;
+    padding-right: 0.55rem !important;
+  }
+
+  #blog-list .blog-preview {
+    margin-bottom: 1.5rem;
+  }
+
+
 }
 
 #blog-list .blog-preview .info {
-  min-height: 35px;
   font-size: 0.75rem;
-
-}
-
-#blog-list .blog-preview .info span {
-  line-height: 35px;
-  margin-left: 0.1rem;
+  line-height: 1.5;
 }
 
 #blog-list .blog-preview .info .info-box {
   margin-left: 0.5rem;
-
 }
 
 #blog-list .blog-preview .info .info-box:nth-child(1) {
   margin-left: 0;
 }
 
-/* 靠右，同时清楚浮动的影响 */
-#blog-list .blog-preview .info .read {
-  float: right;
-  clear: float; 
-  display: inline-block;
-}
-
 #blog-list .blog-preview .info .read a {
   text-decoration: none;
 }
-
-#blog-list .blog-preview .info .author {}
 
 #blog-list .blog-preview .info .category {
   background-color: orange;
