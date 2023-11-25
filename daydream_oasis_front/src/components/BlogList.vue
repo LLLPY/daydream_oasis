@@ -257,7 +257,7 @@ export default {
 
 #blog-list .blog-preview .info .tag {
   background-color: #22c55e;
-  margin-left: 1px;
+  margin-left: 2px;
 }
 
 #blog-list .blog-preview .info .tag:nth-child(1){

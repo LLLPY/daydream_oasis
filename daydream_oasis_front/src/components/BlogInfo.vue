@@ -1,4 +1,3 @@
-<style src="../assets/font/iconfont.css"></style>
 <script setup>
     defineProps(['id'])
 </script>
@@ -6,6 +5,8 @@
 import '../assets/font/iconfont'
 import { Warning } from "../assets/MessageBox";
 import axios_ins from "../assets/axios";
+import '../assets/font/iconfont.css'
+import '../assets/css/blog_info.css'
 
 export default {
     data() {
@@ -87,17 +88,3 @@ export default {
     </div>
     
 </template>
-
-<style scoped>
-.info-box span {
-    display: inline-block;
-    font-size: 0.8em;
-    color: silver;
-    margin: 0.2em;
-}
-
-a {
-    text-decoration: none;
-}
-
-</style>

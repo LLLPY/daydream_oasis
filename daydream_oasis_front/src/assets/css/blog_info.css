@@ -1,0 +1,14 @@
+.info-box span {
+    display: inline-block;
+    font-size: 0.8em;
+    color: silver;
+    margin: 0.2em;
+}
+
+a {
+    text-decoration: none;
+}
+
+.vp-doc h2{
+    border-top: none!important;
+}

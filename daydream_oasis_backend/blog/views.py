@@ -9,14 +9,22 @@ from common.drf.mixin import InstanceMixin
 from common.views import BaseViewSet
 from common.exception import exception
 from log.views import action_log
-from common.drf.decorators import login_required,rate_lock
+from common.drf.decorators import login_required, rate_lock
 from utils import tools
 from common.drf.pagination import CustomPagination
+
 
 class BlogViewSet(BaseViewSet):
     serializer_class = BlogSerializers
     pagination_class = CustomPagination
     queryset = Blog.objects.all()
+
+    def get_queryset(self):
+
+        if self.action == 'list':
+            return self.queryset.filter(is_draft=False)
+
+        return self.queryset
 
     # 新增博客
     @login_required
@@ -55,7 +63,6 @@ class BlogViewSet(BaseViewSet):
                 blog_dict['create_time'] = blog_dict['create_time'].split(' ')[0]
                 blog_dict['update_time'] = blog_dict['update_time'].split(' ')[0]
         return SucResponse(data=data)
-
 
     # 博客详情
     def retrieve(self, request, *args, **kwargs):
