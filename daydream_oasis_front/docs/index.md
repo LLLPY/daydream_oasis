@@ -7,9 +7,6 @@ hero:
   name: "🏝️白日梦想园🏡"
   text: "欢迎来到Daydream Oasis！"
   tagline: 白日梦想猿🦍的梦想圣地！
-  image:
-    src: /logo.svg
-    alt: VitePress  
   actions:
     - theme: brand
       text: 开始探索

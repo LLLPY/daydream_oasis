@@ -30,7 +30,12 @@
   width: 12em;
   height: 12em;
   font-size: 14px;
-  margin: auto;
+  margin: 50px auto;
+  
+}
+
+.wheel-and-hamster:hover{
+  --dur:none;
 }
 
 .wheel,
