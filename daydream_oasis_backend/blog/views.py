@@ -53,15 +53,22 @@ class BlogViewSet(BaseViewSet):
     # 博客列表
     def list(self, request, *args, **kwargs):
         detail = self.request.query_params.get('detail', 'false')
+        is_all = self.request.query_params.get('is_all', 'false')
         detail = True if detail.lower() == 'true' else False
-        res = super().list(request, *args, **kwargs)
-        data = res.data['data']
-        if not detail:
-            results = data['results']
-            for blog_dict in results:
-                del blog_dict['content']
-                blog_dict['create_time'] = blog_dict['create_time'].split(' ')[0]
-                blog_dict['update_time'] = blog_dict['update_time'].split(' ')[0]
+        is_all = True if is_all.lower() == 'true' else False
+        if is_all:
+            data = self.get_queryset()
+            serializer = self.get_serializer(data, many=True)
+            data = {"results": serializer.data}
+        else:
+            res = super().list(request, *args, **kwargs)
+            data = res.data['data']
+            if not detail:
+                results = data['results']
+                for blog_dict in results:
+                    del blog_dict['content']
+                    blog_dict['create_time'] = blog_dict['create_time'].split(' ')[0]
+                    blog_dict['update_time'] = blog_dict['update_time'].split(' ')[0]
         return SucResponse(data=data)
 
     # 博客详情

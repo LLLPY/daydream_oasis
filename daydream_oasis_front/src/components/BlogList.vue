@@ -94,19 +94,21 @@ export default {
       this.get_blog_list()
     },
     convert_url(blog) {
-      let path = blog.category_parent_list.join('/')
-      let url
-      if (blog.category === blog.title) {
-        url = `${path}/${blog.category}/`
-      } else {
-        url = `${path}/${blog.category}/${blog.title}.html`
+      // let path = blog.category_parent_list.join('/')
+      // let url
+      // if (blog.category === blog.title) {
+      //   url = `${path}/${blog.category}/`
+      // } else {
+      //   url = `${path}/${blog.category}/${blog.title}.html`
 
-      }
+      // }
 
-      if (url.startsWith('blog')) {
-        url = url.substring(5)
-      }
-      return url
+      // if (url.startsWith('blog')) {
+      //   url = url.substring(5)
+      // }
+
+      // return url
+      return blog.id
     }
   },
   mounted() {
