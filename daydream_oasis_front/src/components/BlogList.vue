@@ -45,8 +45,9 @@
     </li>
 
   </ul>
-  <div id="pagination"> <el-pagination background small layout="prev, pager, next, sizes, jumper" :total="total"
-      :size="size" :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
+  <div id="pagination">
+    <el-pagination background small layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
+      :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
       @current-change="handleCurrentChange" />
   </div>
 </template>
@@ -54,7 +55,7 @@
 <script>
 import axios_ins from "../assets/axios";
 import { Warning } from "../assets/MessageBox";
-
+import { ref, computed } from 'vue';
 export default {
   data() {
     return {
@@ -65,6 +66,9 @@ export default {
       next: null,
       detail: 'false',
       blog_list: [],
+      screen_width: computed(() => {
+        return window.innerWidth
+      })
     }
   },
   methods: {
@@ -119,9 +123,10 @@ function paginationResize() {
 
   }
 }
-
-setTimeout(function(){window.addEventListener('load', paginationResize());
-window.addEventListener('resize', paginationResize());},1000)
+setTimeout(function () {
+  window.addEventListener('load', paginationResize());
+  window.addEventListener('resize', paginationResize());
+}, 1000)
 
 
 </script>
@@ -238,8 +243,6 @@ window.addEventListener('resize', paginationResize());},1000)
   }
 
 }
-
-
 
 #blog-list .blog-preview .info {
   font-size: 0.75rem;
