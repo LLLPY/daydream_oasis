@@ -194,7 +194,7 @@ CKEDITOR_UPLOAD_PATH = os.path.join(BASE_DIR, 'media', 'image')
 DEFAULT_FILE_STORAGE = 'daydream_oasis_backend.storage.WatermarkStorage'
 
 # 后台的logo
-SIMPLEUI_LOGO = f'../../static/image/favorite.png'
+SIMPLEUI_LOGO = f'http://www.lll.plus/media/image/default_blog_avatar.jpg'
 
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False

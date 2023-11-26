@@ -33,7 +33,7 @@ router.register(r'frontconfig', FrontConfigViewSet, basename='frontconfig')
 urlpatterns = [
     re_path(r'^api/', include((router.urls, 'api'), namespace='api')),  # 接口地址
 
-    re_path(r'^admin/', my_site.urls),
+    re_path(r'^api/admin/', my_site.urls),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),  # 访问media文件
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),  # 富文本
     re_path(r'^rss|feed$', cache_page(60 * 60, key_prefix='rss_cache')(LatestBlogFeed()), name='rss'),  # rss
