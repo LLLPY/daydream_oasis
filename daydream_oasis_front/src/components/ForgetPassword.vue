@@ -1,7 +1,7 @@
 <script>
 
 import {Warning} from '../assets/MessageBox.js'
-import axios from 'axios'
+import axios_ins from "../assets/axios";
 import BaseLoginAndRegister from './BaseLoginAndRegister.vue'
 
 export default {
@@ -11,8 +11,8 @@ export default {
 
   data() {
     return {
-      username: 'root',
-      password: '1234',
+      username: '',
+      password: '',
       code: '1234'
     }
 
@@ -31,7 +31,7 @@ export default {
         return;
       }
       console.log(this.password)
-      axios.post('http://127.0.0.1:8000/api/user/login/',
+      axios_ins.post('http://127.0.0.1:8000/api/user/login/',
           {
             'username': this.username,
             'password': this.password,
