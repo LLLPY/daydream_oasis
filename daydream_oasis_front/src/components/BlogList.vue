@@ -46,7 +46,7 @@
 
   </ul>
   <div id="pagination">
-    <el-pagination background small layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
+    <el-pagination background :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
       :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
       @current-change="handleCurrentChange" />
   </div>
@@ -107,22 +107,6 @@ export default {
     this.get_blog_list()
   }
 }
-
-// pagination样式的修改
-function paginationResize() {
-  let pagination = document.getElementsByClassName('el-pagination')[0];
-  if (window.innerWidth > 450) {
-    pagination.classList.remove('el-pagination--small');
-  } else {
-    pagination.classList.add('el-pagination--small');
-
-  }
-}
-// setTimeout(function () {
-//   window.addEventListener('load', paginationResize());
-//   window.addEventListener('resize', paginationResize());
-// }, 1000)
-
 
 </script>
 
