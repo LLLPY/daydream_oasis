@@ -1,5 +1,3 @@
-
-
 <template>
   <ul id="blog-list">
     <li class="blog-preview" v-for="(blog, index) in blog_list">
@@ -41,14 +39,14 @@
 
           <span class="date">{{ blog.update_time }}</span></span>
 
-        <span class="read info-box"><a :href="convert_url(blog)">阅读原文>></a> </span>
+        <span class="read info-box"><a :href="blog.id">阅读原文>></a> </span>
       </div>
 
     </li>
 
   </ul>
-  <div id="pagination"> <el-pagination background layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
-      :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
+  <div id="pagination"> <el-pagination background small layout="prev, pager, next, sizes, jumper" :total="total"
+      :size="size" :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
       @current-change="handleCurrentChange" />
   </div>
 </template>
@@ -90,31 +88,41 @@ export default {
       this.get_blog_list()
     },
     handleCurrentChange(val) {
+      // 当点击分页按钮时，滚动到指定的锚点
+      let element = document.getElementById('VPContent');
+      // 当点击分页按钮时，滚动到页面顶部
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // 可以添加平滑滚动效果
+      });
+
+      const scrollPosition = window.scrollY;
+      console.log(scrollPosition); // 输出当前滚动条的位置
+
       this.page = val
       this.get_blog_list()
-    },
-    convert_url(blog) {
-      // let path = blog.category_parent_list.join('/')
-      // let url
-      // if (blog.category === blog.title) {
-      //   url = `${path}/${blog.category}/`
-      // } else {
-      //   url = `${path}/${blog.category}/${blog.title}.html`
-
-      // }
-
-      // if (url.startsWith('blog')) {
-      //   url = url.substring(5)
-      // }
-
-      // return url
-      return blog.id
     }
   },
   mounted() {
     this.get_blog_list()
   }
 }
+
+// pagination样式的修改
+function paginationResize() {
+  let pagination = document.getElementsByClassName('el-pagination')[0];
+  console.log(pagination)
+  if (window.innerWidth > 450) {
+    pagination.classList.remove('el-pagination--small');
+  } else {
+    pagination.classList.add('el-pagination--small');
+
+  }
+}
+
+setTimeout(function(){window.addEventListener('load', paginationResize());
+window.addEventListener('resize', paginationResize());},1000)
+
 
 </script>
 
@@ -128,8 +136,6 @@ export default {
   padding: 0;
   margin: 0;
   width: 100%;
-  /* border: 1px solid red; */
-
 }
 
 #blog-list .blog-preview:hover {
@@ -225,7 +231,15 @@ export default {
     margin-bottom: 1.5rem;
   }
 
+  /* 隐藏掉分页的jumper */
+  #pagination .el-pagination__jump,
+  #pagination .el-pagination__sizes {
+    display: none;
+  }
+
 }
+
+
 
 #blog-list .blog-preview .info {
   font-size: 0.75rem;
@@ -262,7 +276,7 @@ export default {
   margin-left: 2px;
 }
 
-#blog-list .blog-preview .info .tag:nth-child(1){
+#blog-list .blog-preview .info .tag:nth-child(1) {
   margin-left: 0;
 }
 
@@ -273,13 +287,5 @@ export default {
 
 #blog-list .blog-preview .info .iconfont {
   margin: 0;
-}
-
-#pagination {
-  width: 100%;
-}
-
-#pagination .el-pagination {
-  width: 100% !important;
 }
 </style>
