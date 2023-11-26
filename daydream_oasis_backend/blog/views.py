@@ -1,6 +1,8 @@
+from django.db.models import Q
+
 from blog.serializers import (BlogSerializers, CategorySerializers,
                               TagSerializers, CommentSerializers,
-                              CollectionSerializers, LikeSerializers)
+                              CollectionSerializers, LikeSerializers, SearchSerializers)
 from blog.models import Comment, Collection, Blog, Like, Category, Tag, Share
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -25,6 +27,12 @@ class BlogViewSet(BaseViewSet):
             return self.queryset.filter(is_draft=False)
 
         return self.queryset
+
+    def get_serializer_class(self):
+        if self.action == 'search':
+            return SearchSerializers
+
+        return self.serializer_class
 
     # 新增博客
     @login_required
@@ -200,6 +208,39 @@ class BlogViewSet(BaseViewSet):
     def demo(self, request, *args, **kwargs):
         # TODO 将数据库中博客转成md文件并进行存储
         ...
+
+    @action(methods=['get'], detail=False)
+    def search(self, request, *args, **kwargs):
+        '''根据条件搜索'''
+        serializer = self.get_serializer(data=self.request.query_params,
+                                         include_fields=['category', 'tag', 'author', 'keyword'])
+        serializer.is_valid(raise_exception=True)
+        # 分类 标签 作者 关键字
+        filter_dict = {}
+        category = serializer.data.get('category')
+        tag = serializer.data.get('tag')
+        author = serializer.data.get('author')
+        keyword = serializer.data.get('keyword')
+
+        queryset = self.get_queryset()
+
+        if category:
+            filter_dict.update(category__title=category)
+        if tag:
+            tag = Tag.objects.filter(title=tag).first()
+            filter_dict.update(tag_list=tag)
+        if author:
+            filter_dict.update(author=author)
+
+        queryset = queryset.filter(**filter_dict)
+        if keyword:
+            title_query = Q(title__icontains=keyword)
+            content_query = Q(content__icontains=keyword)
+            category_query = Q(category__title__icontains=keyword)
+            queryset = queryset.filter(title_query | category_query | content_query)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return SucResponse(data=serializer.data)
 
 
 class CategoryViewSet(BaseViewSet):
