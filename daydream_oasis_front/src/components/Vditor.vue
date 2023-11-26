@@ -402,6 +402,8 @@ onMounted(() => {
 
 
     })
+
+    window.vditor = vditor.value
 })
 
 </script>

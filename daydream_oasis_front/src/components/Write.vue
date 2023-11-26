@@ -2,7 +2,7 @@
 <template>
     <div id="container">
         <div id="info-form" style="box-shadow: var(--el-box-shadow-light);">
-            <el-row  :gutter="20" justify="center">
+            <el-row :gutter="20" justify="center">
 
                 <!-- 标题 -->
                 <el-col :span="6">
@@ -15,8 +15,8 @@
                 <el-col :span="5">
                     <el-row>
                         <el-col :span="5" class="el-input-group__prepend title-box">分类</el-col>
-                        <el-col :span="19"> <el-cascader placeholder="请输入分类" filterable clearable :props="props"
-                                size="large"></el-cascader>
+                        <el-col :span="19"> <el-cascader v-model="category" placeholder="请输入分类" filterable clearable
+                                :props="props" size="large"></el-cascader>
                         </el-col>
 
                     </el-row>
@@ -68,7 +68,7 @@
 
                 <!-- 发布 -->
                 <el-col :span="2" style="text-align: right;">
-                    <el-button type="primary" size="large">发&nbsp;&nbsp;布</el-button>
+                    <el-button type="primary" size="large" @click="submit">发&nbsp;&nbsp;布</el-button>
                 </el-col>
 
 
@@ -78,14 +78,17 @@
 
 
         <Vditor />
+
     </div>
 </template>
 <script>
 import Vditor from './Vditor.vue'
-import { nextTick, ref } from 'vue'
 import { Warning } from '../assets/MessageBox.js'
-let id = 0
+import { ref, onMounted } from 'vue';
 
+let id = 0
+const vditor = ref()
+console.log(vditor)
 export default {
     data() {
         return {
@@ -93,7 +96,7 @@ export default {
             avatar: { value: '' },
             category: '',
             tag: '',
-            tag_list: [{ value: 'tag1' }, { value: 'tag2' }],
+            tag_list: [],
             inputTagValue: '',
             inputTagVisible: { value: false },
             dialogVisible: { value: false },
@@ -182,7 +185,38 @@ export default {
                 }
 
             }
+        },
+        submit() {
+
+            if (this.title.length === 0 || this.title.length > 30) {
+                Warning('标题的长度范围是0~30!')
+                return
+            }
+            if (this.category.length === 0 || this.category.length > 8) {
+                Warning('分类的长度范围是0~8!')
+                return;
+            }
+            if (this.tag_list.length === 0) {
+                Warning('请至少选择一个标签叭!')
+                return;
+            }
+
+            let content = window.vditor.getValue()
+            if (content.length <= 5) {
+                Warning('内容太短辣!')
+                return;
+            }
+            let data = {
+                'title': this.title,
+                'category': this.category,
+                'avatar': this.avatar.value,
+                'tag_list': this.tag_list,
+                'content': content
+            }
+            console.log(data);
+
         }
+
 
 
 
@@ -230,9 +264,9 @@ export default {
 
 }
 
-#info-form .el-input__wrapper{
-    border-top-left-radius: 0!important;
-    border-bottom-left-radius: 0!important;
-    
+#info-form .el-input__wrapper {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+
 }
 </style>

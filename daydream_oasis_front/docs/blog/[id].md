@@ -2,15 +2,15 @@
 sidebar: false
 next: false
 ---
-  <!-- @content -->
+<BlogInfo/>
 
+<!-- @content -->
 
-
-
+<ActionBox />
 
 <style>
  #top-box {
-        margin-top:0.5rem!important;
+  margin-top:0.5rem!important;
  }
 
 </style>

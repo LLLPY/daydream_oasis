@@ -118,10 +118,10 @@ function paginationResize() {
 
   }
 }
-setTimeout(function () {
-  window.addEventListener('load', paginationResize());
-  window.addEventListener('resize', paginationResize());
-}, 1000)
+// setTimeout(function () {
+//   window.addEventListener('load', paginationResize());
+//   window.addEventListener('resize', paginationResize());
+// }, 1000)
 
 
 </script>

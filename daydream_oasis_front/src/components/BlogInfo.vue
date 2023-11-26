@@ -20,8 +20,8 @@ upload_action()
 
 </script>
 
-<template :id="blog.id">
-    <div class="info-box">
+<template>
+    <div class="info-box" :id="blog.id">
         <h1>{{ blog.title }}</h1>
         <span class="author">作者:<a href="#">{{ blog.author_username }}</a></span>
         <span class="category">分类:<a href="#">{{ blog.category }}</a></span>
