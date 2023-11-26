@@ -99,10 +99,6 @@ export default {
         top: 0,
         behavior: 'smooth' // 可以添加平滑滚动效果
       });
-
-      const scrollPosition = window.scrollY;
-      console.log(scrollPosition); // 输出当前滚动条的位置
-
       this.page = val
       this.get_blog_list()
     }
@@ -115,7 +111,6 @@ export default {
 // pagination样式的修改
 function paginationResize() {
   let pagination = document.getElementsByClassName('el-pagination')[0];
-  console.log(pagination)
   if (window.innerWidth > 450) {
     pagination.classList.remove('el-pagination--small');
   } else {

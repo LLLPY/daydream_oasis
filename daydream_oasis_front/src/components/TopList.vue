@@ -6,8 +6,9 @@
         </div>
 
         <li v-for="(top,index) in top_list" :key="index" class="top">
-            <span class="number" :style="{ fontSize: 20-index+'px' }">{{ index+1 }}</span><span
-                class="title">{{ top.title }}</span><span class="pv">{{ top.pv }}</span>
+            <span class="number" :style="{ fontSize: 20-index+'px' }">{{ index+1 }}</span>
+            <span class="title"> <a :href="top.id">{{ top.title }}</a> </span>
+            <span class="pv">{{ top.pv }}</span>
         </li>
 
     </ul>
@@ -33,6 +34,7 @@
                         return
                     }
                     this.top_list = data.data
+                    console.log(this.top_list)
                 })
 
             }
@@ -69,6 +71,12 @@
     #top-box .top .title {
         width: 65%;
         font-size: 0.9rem;
+        transition: color linear .3s;
+        
+    }
+    #top-box .top .title:hover{
+        color: skyblue;
+        text-decoration: underline;
     }
 
     #top-box .top .number,

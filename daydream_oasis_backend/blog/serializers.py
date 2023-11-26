@@ -6,6 +6,7 @@ from rest_framework import serializers
 from log.models import Action
 import re
 
+
 # 博客分类
 class CategorySerializers(DynamicFieldsSerializer):
     title = serializers.CharField(required=True, help_text='分类名')
@@ -49,8 +50,8 @@ class BlogSerializers(DynamicFieldsSerializer):
         return obj.transform_read_time()
 
     def get_tag_list(self, obj):
-        return list( map(lambda item: item['title'],
-                   obj.tag_list.all().values('title')))
+        return list(map(lambda item: item['title'],
+                        obj.tag_list.all().values('title')))
 
     def get_pv(self, obj):
         return Action.objects.filter(blog=obj).values('id').count()
@@ -62,10 +63,10 @@ class BlogSerializers(DynamicFieldsSerializer):
             content = re.sub(r'---[\s\n]*?.*?[\s\n]*?---', '', content)
             content = re.sub(r'<BlogInfo.*?/>', '', content)
             content = re.sub(r'<ActionBox />', '', content)
-            abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', content))[:150].replace('\n','')
+            abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', content))[:150].replace('\n', '')
         return abstract
 
-    def get_category_parent_list(self,obj):
+    def get_category_parent_list(self, obj):
         return obj.category.get_parent_list()
 
 
