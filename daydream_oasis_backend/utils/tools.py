@@ -49,17 +49,16 @@ def md5(content: Union[str, bytes, dict]):
     return md.hexdigest()
 
 
-def limit_str(s: str, max_len=12, suffix='...'):
+def limit_str(s: str, max_len=9, suffix='...'):
     '''限制字符串的长度'''
 
     # 替换掉开头的序号
     s = re.sub(r'^\d+.', '', s)
-
     cur_len = 0
     end = 0
     for i in range(len(s)):
-        '''2汉字=3字母 这里一个字母长度设置为2/3'''
-        step = 2 / 3 if s[i].isalpha() else 1
+        '''2汉字=3字母 这里一个字母/空格长度设置为2/3'''
+        step = 2 / 3 if s[i].isalpha() or s[i] == ' ' else 1
         cur_len += step
         if cur_len >= max_len:
             end = i

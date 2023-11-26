@@ -60,9 +60,6 @@ class BlogSerializers(DynamicFieldsSerializer):
         abstract = obj.abstract
         if not abstract:
             content = obj.content
-            content = re.sub(r'---[\s\n]*?.*?[\s\n]*?---', '', content)
-            content = re.sub(r'<BlogInfo.*?/>', '', content)
-            content = re.sub(r'<ActionBox />', '', content)
             abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', content))[:150].replace('\n', '')
         return abstract
 
