@@ -11,7 +11,10 @@ export default defineConfig({
     // 忽略死链
     ignoreDeadLinks: true,
     head: [
-        ['link', { rel: 'icon', href: 'http://www.lll.plus/media/image/favorite.ico' }]
+        ['link', { rel: 'icon', href: 'http://www.lll.plus/media/image/favorite.ico' }],
+        ['link', { rel: 'stylesheet', href: '//cdn.jsdelivr.net/npm/element-plus/dist/index.css' }],
+        // ['script', { src:'//cdn.jsdelivr.net/npm/vue@3' }],
+        ['script', { src:'//cdn.jsdelivr.net/npm/element-plus' }],
     ],
     themeConfig: {
         i18nRouting: true,
