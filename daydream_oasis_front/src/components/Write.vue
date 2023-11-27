@@ -84,7 +84,7 @@
 <script>
 import Vditor from './Vditor.vue'
 import { Warning } from '../assets/MessageBox.js'
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 let id = 0
 const vditor = ref()
