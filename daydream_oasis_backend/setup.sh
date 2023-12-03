@@ -7,4 +7,4 @@ source venv/bin/activate
 uwsgi uwsgi.ini
 
 #重载nginx
-systemctl reload nginx
+nginx -s reload

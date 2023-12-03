@@ -14,7 +14,7 @@ echo "前端的根目录:$front_path"
 
 # 1.启动后端服务
 echo "3.开始启动后端服务..."
-cd "$root_path/config" && bash "setup.sh"
+cd "$backend_path" && bash "setup.sh"
 echo "4.后端服务启动成功..."
 
 # 2.启动前端服务
