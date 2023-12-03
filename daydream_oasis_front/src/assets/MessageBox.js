@@ -1,3 +1,5 @@
+import {ElMessage} from "element-plus";
+
 export function Error(msg) {
     ElMessage({
         showClose: true,
