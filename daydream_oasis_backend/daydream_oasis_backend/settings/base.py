@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'log',  # 访问日志
     'file',  # 文件
     'common',  # 公共部分
-    'task',  # 任务
+    # 'task',  # 任务
     'frontconfig',  # 前端配置
     'corsheaders',  # CORS跨域问题
 
