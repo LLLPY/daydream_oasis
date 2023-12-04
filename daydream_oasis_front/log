@@ -1,0 +1,12 @@
+
+> daydream_oasis_front@0.0.0 docs:dev
+> vitepress dev docs --port 81
+
+Port 81 is in use, trying another one...
+Port 82 is in use, trying another one...
+Port 83 is in use, trying another one...
+
+  vitepress v1.0.0-rc.31
+
+  ➜  Local:   http://localhost:84/
+  ➜  Network: use --host to expose

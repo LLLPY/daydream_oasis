@@ -13,13 +13,15 @@ echo "后端的根目录:$backend_path"
 echo "前端的根目录:$front_path"
 
 # 1.启动后端服务
-echo "3.开始启动后端服务..."
-cd "$backend_path" && bash "setup.sh"
-echo "4.后端服务启动成功..."
+echo "1.开始启动后端服务..."
+cd "$backend_path" && bash "setup.sh" && tail -30 "$backend_path/uwsgi.log"
+wait
+echo "2.后端服务启动成功..."
 
 # 2.启动前端服务
-echo "7.开始启动前端服务..."
-cd "$front_path" && bash "setup.sh" 
-echo "8.前端服务启动成功..."
+echo "3.开始启动前端服务..."
+cd "$front_path" && bash "setup.sh" && tail -200 "$front_path/setup.log"
+wait
+echo "4.前端服务启动成功..."
 
-echo "daydream_oasis启动成功!!!"
+echo "5.$project_name启动成功!!!"
