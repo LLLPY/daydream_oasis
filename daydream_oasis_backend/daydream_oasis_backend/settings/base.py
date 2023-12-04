@@ -177,11 +177,15 @@ CKEDITOR_CONFIGS = {
 }
 
 # 静态文件的目录
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static'),
+#]
 
 STATIC_URL = '/static/'  # 指定静态文件的路由
+
+# 静态文件收集后存放的目录
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 # 媒体文件的存放
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 存储路径
