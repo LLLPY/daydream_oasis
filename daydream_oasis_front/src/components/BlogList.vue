@@ -16,19 +16,19 @@
         <span class="author info-box">
 
           <span class="iconfont">&#xe6a4;</span>
-          <span>{{ blog.author.username }}</span>
+          <span @click="search({author:blog.author.id})">{{ blog.author.username }}</span>
         </span>
 
         <span class="category-box info-box">
 
-          <span class="category">
+          <span class="category" @click="search({category:blog.category})">
             <!-- <span class="iconfont">&#xe64e;</span> -->
             {{ blog.category }}</span></span>
 
 
         <span class="tag-list info-box" v-if="blog.tag_list.length">
 
-          <span class="tag" v-for="tag in blog.tag_list">
+          <span class="tag" v-for="tag in blog.tag_list" @click="search({tag:tag})">
             <!-- <span class="iconfont">&#xeb47;</span> -->
             {{ tag }}
           </span>
@@ -56,6 +56,8 @@
 import axios_ins from "../assets/axios";
 import { Warning } from "../assets/MessageBox";
 import { ref, computed } from 'vue';
+
+
 export default {
   data() {
     return {
@@ -68,7 +70,8 @@ export default {
       blog_list: [],
       screen_width: computed(() => {
         return window.innerWidth
-      })
+      }),
+      search_url:'http://localhost:8000/api/blog/search/'
     }
   },
   methods: {
@@ -101,6 +104,27 @@ export default {
       });
       this.page = val
       this.get_blog_list()
+    },
+    search(params){
+      let url = this.search_url+'?'
+      for(let key in params){
+        if (params.hasOwnProperty(key) && params[key]){
+          url+=`${key}=${params[key]}&`
+          console.log(key)
+          console.log(params[key])
+        }
+      }
+      axios_ins(url).then(response =>{
+          let data = response.data
+        if (data.code === '0') {
+          data = data.data
+          console.log(data)
+          this.blog_list = data
+
+        } else {
+          Warning(data.message)
+        }
+      })
     }
   },
   mounted() {
