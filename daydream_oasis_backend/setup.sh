@@ -18,7 +18,7 @@ source venv/bin/activate
 wait
 
 # 收集静态文件
-if ! [-d "static" ]; then
+if ! [ -d "static" ]; then
     echo "静态文件不存在,开始收集..."
     python3 manage.py collectstatic 
     echo "yes"
