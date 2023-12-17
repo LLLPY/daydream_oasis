@@ -83,7 +83,7 @@ class UserViewSet(BaseViewSet):
     # 登录
     @action(methods=['post'], detail=False)
     def login(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=self.request.data, include_fields=['username', 'password', 'code'])
+        serializer = self.get_serializer(data=self.request.data, include_fields=['username', 'password'])
         serializer.is_valid(raise_exception=True)
 
         username = serializer.data.get('username')  # 用户名

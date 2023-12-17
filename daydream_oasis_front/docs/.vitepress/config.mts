@@ -1,8 +1,4 @@
 import { defineConfig } from 'vitepress'
-import { getSidebarData, getNavData } from './utils.mjs'
-
-// export default getSidebarData().then(sidebar => {
-
 export default defineConfig({
     lang: 'en-US', //zh-CN|en-US
     title: "白日梦想园",
@@ -38,15 +34,15 @@ export default defineConfig({
             { text: '关于🦴', link: '/blog/1053', activeMatch: '/1053' },
             { text: '写博客✍️', link: '/write' },
             { text: '登录/注册🚪', link: '/login' },
-            { text: '个人中心🍴', link: '/home' },
-            {
-                text: '归档🗂️',
-                items: [
-                    { text: '归档1', link: '/file' },
-                    { text: '归档2', link: '/file' },
-                    { text: '归档3', link: '/file' },
-                ]
-            },
+            // { text: '个人中心🍴', link: '/home' },
+            // {
+            //     text: '归档🗂️',
+            //     items: [
+            //         { text: '归档1', link: '/file' },
+            //         { text: '归档2', link: '/file' },
+            //         { text: '归档3', link: '/file' },
+            //     ]
+            // },
         ],
         // 侧边栏
         // sidebar: [],
@@ -102,7 +98,6 @@ export default defineConfig({
 }
 )
 
-// })
 
 
 

@@ -1,5 +1,10 @@
-<script setup>
+<!--<link rel="stylesheet" href="https://unpkg.com/vditor@3.9.6/dist/index.css" />-->
 
+<script setup>
+// 1.1 引入Vditor 构造函数
+import Vditor from 'vditor'
+// 1.2 引入样式
+import 'vditor/dist/index.css';
 import { ref, onMounted } from 'vue';
 // 2. 获取DOM引用
 const vditor = ref()
@@ -98,11 +103,20 @@ onMounted(() => {
         upload: {
             accept: 'image/*,.mp3, .wav, .rar',
             token: 'test',
-            url: 'http://localhost:8000/api/file/upload',
-            linkToImgUrl: 'http://localhost:8000/api/upload/fetch',
+            url: 'http://localhost:80/api/file/upload/',
+            linkToImgUrl: 'http://localhost:80/api/file/upload/',
             filename(name) {
                 return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
             },
+          withCredentials:true,
+          success(editor, msg) {
+            console.log(msg)
+          },
+          format(files, responseText) {
+            console.log(files)
+            console.log(responseText)
+          }
+
         },
 
         hint: {
@@ -371,7 +385,7 @@ onMounted(() => {
         },
         //字数统计
         counter: {
-            enable: true,
+            enable: false,
             //回调
             after(count) {
                 console.log('字数为' + count);
@@ -399,6 +413,7 @@ onMounted(() => {
 
 
     })
+
 
     window.vditor = vditor.value
 })

@@ -31,13 +31,12 @@ class WatermarkStorage(FileSystemStorage):
         margin = 10
         if fontfamily:
             font = ImageFont.truetype(fontfamily, int(height / 10))
-
         else:
             font = None
 
-        textWidth, textHeight = draw.textsize(text, font)
+        textWidth = draw.textlength(text, font)
         x = (width - textWidth - margin)  # 计算横轴位置
-        y = (height - textHeight - margin)  # 计算纵轴位置
+        y = (height - margin)  # 计算纵轴位置
 
         draw.text((x, y), text, color, font)
         return image

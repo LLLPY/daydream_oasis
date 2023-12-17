@@ -247,11 +247,27 @@ class CategoryViewSet(BaseViewSet):
     serializer_class = CategorySerializers
     queryset = Category.objects.all()
 
+    def get_queryset(self):
+        if self.action in ['list']:
+            title = self.request.query_params.get('title')
+            k = self.request.query_params.get('k')
+            if title:
+                self.queryset = self.queryset.filter(title__contains=title)
+            # 限制数量
+            if k and k.isnumeric():
+                k = int(k)
+                self.queryset = self.queryset[:k]
+        return self.queryset
+
     def list(self, request, *args, **kwargs):
-        '分类列表'
+        '''分类列表'''
+        serializer = self.get_serializer(data=self.request.query_params, include_fields=['id', 'title'])
+        serializer.is_valid()
+        res = super().list(request, *args, **kwargs)
+        return res
 
 
-class TagViewSet(BaseViewSet):
+class TagViewSet(CategoryViewSet):
     serializer_class = TagSerializers
     queryset = Tag.objects.all()
 

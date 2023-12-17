@@ -9,13 +9,14 @@ import re
 
 # 博客分类
 class CategorySerializers(DynamicFieldsSerializer):
-    title = serializers.CharField(required=True, help_text='分类名')
+    id = serializers.IntegerField(required=False, allow_null=True)
+    k = serializers.IntegerField(required=False, allow_null=True, help_text='数量')
+    title = serializers.CharField(required=False, allow_null=True, help_text='分类名')
 
 
 # 标签
-class TagSerializers(DynamicFieldsSerializer):
-    title = serializers.CharField(required=True, help_text='标签名')
-
+class TagSerializers(CategorySerializers):
+    ...
 
 # 专栏
 class SectionSerializers(DynamicFieldsSerializer):
