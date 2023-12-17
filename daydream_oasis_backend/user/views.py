@@ -101,7 +101,7 @@ class UserViewSet(BaseViewSet):
 
         res = SucResponse('登录成功!')
         res.set_signed_cookie('user_id', tmp_user.id, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7,
-                              samesite='',secure='',httponly='')
+                              samesite='', secure='', httponly='')
         # raise exception.CustomValidationError('')
         return res
 
@@ -150,7 +150,6 @@ class UserViewSet(BaseViewSet):
                                                                              seconds=now.second)).seconds
             self.redis_conn.set(used_key, use_count + 1)
             self.redis_conn.expire(used_key, expired)
-
 
             return SucResponse('验证码已发送至您的手机,请注意查收!')
         else:
