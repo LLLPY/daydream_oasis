@@ -1,7 +1,7 @@
 import datetime
 from ckeditor_uploader.fields import RichTextUploadingField
 from common.models import BaseModel
-from django.db import models
+from django.db import models, transaction
 from lxml import etree
 from user.models import User
 from utils.cache import my_cache
@@ -33,7 +33,7 @@ class Category(BaseModel):
     @classmethod
     def get_by_name(cls, name):
         return cls.objects.filter(title=name).first()
-    
+
     def get_parent_list(self):
         parent_list = []
         while self:
@@ -221,6 +221,22 @@ class Blog(BaseModel):
         recommend_blog_list.sort(key=lambda a: -a.recommendation_score)
 
         return recommend_blog_list
+
+    @classmethod
+    @transaction.atomic()
+    def create(cls, title, user, category, tag_list, content, section):
+        blog = cls()
+        blog.title = title
+        blog.author = user
+        category = Category.get_or_create(category)
+        blog.category = category
+        blog.save()
+        for tag in tag_list:
+            tag = Tag.get_or_create(tag['value'], creator=user)
+            blog.tag_list.add(tag)
+        blog.content = content
+        blog.section = section
+        blog.save()
 
 
 class BlogTagRelease(models.Model):

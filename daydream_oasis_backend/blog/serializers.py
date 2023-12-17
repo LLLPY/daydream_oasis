@@ -18,6 +18,7 @@ class CategorySerializers(DynamicFieldsSerializer):
 class TagSerializers(CategorySerializers):
     ...
 
+
 # 专栏
 class SectionSerializers(DynamicFieldsSerializer):
     title = serializers.CharField(required=True, help_text='专栏名')
@@ -29,7 +30,7 @@ class BlogSerializers(DynamicFieldsSerializer):
     title = serializers.CharField(required=True, max_length=20, help_text='标题')
     author = serializers.SerializerMethodField()
     # author = serializers.CharField()
-    avatar = serializers.URLField(required=True, help_text='封面')
+    avatar = serializers.CharField(required=False, help_text='封面', allow_null=True)
     category = serializers.CharField(required=True, help_text='分类')
     tag_list = serializers.SerializerMethodField(help_text='标签列表')
     content = serializers.CharField(required=True,
@@ -66,6 +67,16 @@ class BlogSerializers(DynamicFieldsSerializer):
 
     def get_category_parent_list(self, obj):
         return obj.category.get_parent_list()
+
+
+class BlogCreateSerializers(DynamicFieldsSerializer):
+    title = serializers.CharField(required=True, max_length=20, help_text='标题')
+    avatar = serializers.CharField(required=False, allow_null=True, allow_blank=True, help_text='封面')
+    category = serializers.CharField(required=True, help_text='分类')
+    tag_list = serializers.ListField(help_text='标签列表')
+    content = serializers.CharField(required=True,
+                                    min_length=5,
+                                    help_text='内容')
 
 
 # 评论

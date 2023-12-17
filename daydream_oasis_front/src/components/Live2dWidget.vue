@@ -1,5 +1,5 @@
 <script>
-import { L2Dwidget } from 'live2d-widget'
+import { L2Dwidget } from 'live2d-widget/lib/L2Dwidget.min.js'
 
 export default {
   created() {

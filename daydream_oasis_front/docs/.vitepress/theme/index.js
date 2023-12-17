@@ -45,8 +45,6 @@ export default {
         app.component('el-dialog', ElDialog);
         app.component('el-tag', ElTag);
         app.component('el-button', ElButton);
-        app.component('el-select', ElSelect);
-        app.component('el-option', ElOption);
         app.component('Vditor', Vditor);
         app.component('Write', Write);
         // app.component('Live2dWidget', Live2dWidget);

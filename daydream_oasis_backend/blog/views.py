@@ -1,8 +1,7 @@
 from django.db.models import Q
-
 from blog.serializers import (BlogSerializers, CategorySerializers,
                               TagSerializers, CommentSerializers,
-                              CollectionSerializers, LikeSerializers, SearchSerializers)
+                              CollectionSerializers, LikeSerializers, SearchSerializers, BlogCreateSerializers)
 from blog.models import Comment, Collection, Blog, Like, Category, Tag, Share
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -12,7 +11,6 @@ from common.views import BaseViewSet
 from common.exception import exception
 from log.views import action_log
 from common.drf.decorators import login_required, rate_lock
-from utils import tools
 from common.drf.pagination import CustomPagination
 
 
@@ -31,6 +29,8 @@ class BlogViewSet(BaseViewSet):
     def get_serializer_class(self):
         if self.action == 'search':
             return SearchSerializers
+        elif self.action == 'create':
+            return BlogCreateSerializers
 
         return self.serializer_class
 
@@ -40,22 +40,12 @@ class BlogViewSet(BaseViewSet):
         serializer = self.get_serializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         user = self.request.user
-
         title = serializer.data.get('title')
         category = serializer.data.get('category')
         tag_list = serializer.data.get('tag_list')
         content = serializer.data.get('content')
         section = serializer.data.get('section')
-
-        blog = Blog()
-        blog.title = title
-        blog.author = user
-        blog.category = category
-        blog.tags = tag_list
-        blog.content = content
-        blog.section = section
-        blog.save()
-
+        Blog.create(title, user, category, tag_list, content, section)
         return SucResponse('新增博客成功!')
 
     # 博客列表
@@ -176,11 +166,7 @@ class BlogViewSet(BaseViewSet):
     @rate_lock()
     def collect(self, request, *args, **kwargs):
         '''收藏'''
-
         user = self.request.user
-        if not user.is_authenticated:
-            raise exception.CustomValidationError('请先登录!')
-
         blog = self.get_object()
         _, has_collected = Collection.status(blog=blog, user=user)
         if has_collected:

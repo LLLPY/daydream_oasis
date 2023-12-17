@@ -33,7 +33,7 @@ class FileViewSet(viewsets.ModelViewSet):
             'filename': filename,
             'content_type': content_type,
             'url': f'../media/{file.path}',
-            'data':{
+            'data': {
                 'succMap': {
                     filename: f'http://localhost/media/{file.path}'
                 }

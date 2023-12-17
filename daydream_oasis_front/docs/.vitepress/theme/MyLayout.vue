@@ -6,8 +6,6 @@ import {nextTick, provide} from 'vue'
 import TagList from '../../../src/components/TagList.vue'
 import TopList from '../../../src/components/TopList.vue'
 import Logo from '../../../src/components/Logo.vue'
-import ActionBox from "../../../src/components/ActionBox.vue";
-// import AsideOutlineAfter from "./AsideOutlineAfter.vue";
 
 const {Layout} = DefaultTheme
 
@@ -60,7 +58,7 @@ provide('toggle-appearance', async ({clientX: x, clientY: y}: MouseEvent) => {
     <template #doc-after>
       <!-- <ActionBox/> -->
     </template>
-    <!-- <Live2dWidget/> -->
+<!--     <Live2dWidget/>-->
   </Layout>
 </template>
 

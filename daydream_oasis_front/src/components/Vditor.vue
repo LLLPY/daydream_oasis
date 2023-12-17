@@ -4,7 +4,7 @@
 // 1.1 引入Vditor 构造函数
 import Vditor from 'vditor'
 // 1.2 引入样式
-import 'vditor/dist/index.css';
+import '../assets/css/vditor@3.9.6.css';
 import { ref, onMounted } from 'vue';
 // 2. 获取DOM引用
 const vditor = ref()

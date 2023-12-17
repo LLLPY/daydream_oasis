@@ -87,15 +87,12 @@ export default {
       title: '',
       avatar: {value: ''},
       category: '',
+      category_list: [],
       tag: '',
       tag_list: [],
-      category_list: [],
-      inputTagValue: '',
-      inputTagVisible: {value: false},
       dialogVisible: {value: false},
-      disabled: false,
       fileList: [],
-      withCredentials:true
+      withCredentials: true
     }
   },
   methods: {
@@ -132,7 +129,7 @@ export default {
       this.fileList[0] = uploadFile
       document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
     },
-    handlePictureSucc(response, uploadFile, uploadFiles){
+    handlePictureSucc(response, uploadFile, uploadFiles) {
       console.log(response)
     },
     //标签
@@ -201,8 +198,14 @@ export default {
         'tag_list': this.tag_list,
         'content': content
       }
-      console.log(data);
+      axios_ins.post('/api/blog/', data).then(response => {
+        let data = response.data
+        if(data['code']==='1'){
+          Warning(data['message'])
+        }else{
 
+        }
+      })
     }
   }
 }
