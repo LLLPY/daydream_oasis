@@ -70,6 +70,7 @@ class BlogSerializers(DynamicFieldsSerializer):
 
 
 class BlogCreateSerializers(DynamicFieldsSerializer):
+    id = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     title = serializers.CharField(required=True, max_length=20, help_text='标题')
     avatar = serializers.CharField(required=False, allow_null=True, allow_blank=True, help_text='封面')
     category = serializers.CharField(required=True, help_text='分类')
@@ -77,6 +78,7 @@ class BlogCreateSerializers(DynamicFieldsSerializer):
     content = serializers.CharField(required=True,
                                     min_length=5,
                                     help_text='内容')
+    is_draft = serializers.BooleanField()
 
 
 # 评论

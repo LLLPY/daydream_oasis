@@ -45,8 +45,15 @@ class BlogViewSet(BaseViewSet):
         tag_list = serializer.data.get('tag_list')
         content = serializer.data.get('content')
         section = serializer.data.get('section')
-        Blog.create(title, user, category, tag_list, content, section)
-        return SucResponse('新增博客成功!')
+        is_draft = serializer.data.get('is_draft')
+        blog_id = serializer.data.get('id')
+        print(serializer.data)
+        new_blog_id = Blog.create_or_update(blog_id, title, user, category, tag_list, content, section, is_draft)
+        if is_draft and not blog_id and new_blog_id:
+            data = {'blog_id': new_blog_id}
+        else:
+            data = {}
+        return SucResponse(message='新增博客成功!', data=data)
 
     # 博客列表
     def list(self, request, *args, **kwargs):
@@ -191,9 +198,19 @@ class BlogViewSet(BaseViewSet):
         return SucResponse('取消收藏成功!')
 
     @action(methods=['get'], detail=False)
-    def demo(self, request, *args, **kwargs):
-        # TODO 将数据库中博客转成md文件并进行存储
-        ...
+    @login_required
+    def get_draft(self, request, *args, **kwargs):
+        '''获取最后一次编辑但为提交的草稿'''
+        user = self.request.user
+        draft = Blog.get_draft(user.id)
+        if draft:
+            serializer = self.get_serializer(draft, include_fields=['id', 'title', 'avatar', 'category', 'tag_list',
+                                                                    'content'])
+            data = serializer.data
+        else:
+            data = {}
+        print(data)
+        return SucResponse(data=data)
 
     @action(methods=['get'], detail=False)
     def search(self, request, *args, **kwargs):
