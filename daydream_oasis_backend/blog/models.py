@@ -1,5 +1,7 @@
 import datetime
 from ckeditor_uploader.fields import RichTextUploadingField
+from mdeditor.fields import MDTextField
+
 from common.models import BaseModel
 from django.db import models, transaction
 from lxml import etree
@@ -18,7 +20,7 @@ class Category(BaseModel):
     title = models.CharField(max_length=8, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
     # avatar
-    avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
+    avatar = models.URLField(default='http://www.lll.plus/media/image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
 
     # 父类
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
@@ -82,7 +84,7 @@ class Blog(BaseModel):
     title = models.CharField(max_length=30, blank=True, verbose_name='标题', help_text='标题')
 
     # 封面
-    avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
+    avatar = models.URLField(default='http://www.lll.plus/media/image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
 
     # 专栏
     section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True, verbose_name='专栏', help_text='专栏')
@@ -94,10 +96,11 @@ class Blog(BaseModel):
     tag_list = models.ManyToManyField(Tag, verbose_name='标签', help_text='标签')
 
     # 摘要
-    abstract = models.TextField(max_length=150, null=False, blank=False, verbose_name='摘要', help_text='摘要')
+    abstract = models.TextField(max_length=150, null=True, blank=True, verbose_name='摘要', help_text='摘要')
 
     # 文章正文
-    content = RichTextUploadingField(null=False, blank=False, verbose_name='文章内容', help_text='文章内容')
+    # content = RichTextUploadingField(null=False, blank=False, verbose_name='文章内容', help_text='文章内容')
+    content = MDTextField(null=False, blank=False, verbose_name='文章内容', help_text='文章内容')
 
     # daily page view
     dpv = models.PositiveIntegerField(default=0, verbose_name='dpv', help_text='dpv')

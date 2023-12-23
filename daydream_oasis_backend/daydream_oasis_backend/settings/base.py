@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # 'task',  # 任务
     'frontconfig',  # 前端配置
     'corsheaders',  # CORS跨域问题
+    'mdeditor'
 
 ]
 
