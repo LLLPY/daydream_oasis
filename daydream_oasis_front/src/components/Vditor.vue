@@ -407,7 +407,7 @@ onMounted(() => {
       // 是否固定工具栏
       pin: true,
     },
-
+    cdn:""
 
   })
 

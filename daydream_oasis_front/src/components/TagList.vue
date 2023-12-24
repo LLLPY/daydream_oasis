@@ -11,7 +11,7 @@
                 <span class="green box"></span>
             </div>
             <div class="more">
-                <span class=""><a href="/tag.html">更多</a></span>
+                <span class=""><a href="/blog/1389.html">更多</a></span>
             </div>
         </div>
         <div class="card__content">
