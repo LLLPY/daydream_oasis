@@ -228,7 +228,7 @@ let blog = {
           if (data['code'] === '1') {
             Warning(data['message'])
           } else {
-            window.location.href = "/blog/"
+            window.location.href = `/blog/${this.blog_id}.html`
           }
         })
       }

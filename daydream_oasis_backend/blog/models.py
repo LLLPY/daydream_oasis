@@ -1,10 +1,14 @@
 import datetime
+import os
+
 from ckeditor_uploader.fields import RichTextUploadingField
 from mdeditor.fields import MDTextField
 
 from common.models import BaseModel
 from django.db import models, transaction
 from lxml import etree
+
+from daydream_oasis_backend.settings.base import BASE_DIR
 from user.models import User
 from utils.cache import my_cache
 from utils.collaborative_filltering import cf_user
@@ -200,12 +204,14 @@ class Blog(BaseModel):
         recommend_blog_list.sort(key=lambda a: -a.recommendation_score)
 
         return recommend_blog_list
+
     def get_abstract(self):
         abstract = self.abstract
         if not abstract:
             content = self.content
             abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', content))[:150].replace('\n', '')
         return abstract
+
     @classmethod
     @transaction.atomic()
     def create_or_update(cls, blog_id, title, user, category, tag_list, content, section, is_draft):
@@ -227,11 +233,34 @@ class Blog(BaseModel):
             blog.tag_list.add(tag)
         blog.save()
 
+        # 更新md文件
+        blog.save_md()
         return blog.id
 
     @classmethod
     def get_draft(cls, author_id):
-        return cls.objects.filter(author_id=author_id,is_draft=True).first()
+        return cls.objects.filter(author_id=author_id, is_draft=True).first()
+
+    def save_md(self):
+        blog_dir = os.path.join(BASE_DIR, "..", "daydream_oasis_front", "docs", "blog")
+        md_content = """---
+sidebar: false
+next: false
+---
+<BlogInfo/>
+
+{}
+
+<ActionBox />
+        """
+        style = """<style>#top-box {margin-top:0.5rem!important;}</style>"""
+
+        md_content = md_content.format(self.content)
+        md_content += f"\n{style}"
+        path = os.path.join(blog_dir, str(self.id) + ".md")
+        if not self.is_draft:
+            with open(path, 'w+', encoding='utf8') as f:
+                f.write(md_content)
 
 
 class BlogTagRelease(models.Model):
