@@ -373,12 +373,6 @@ onMounted(() => {
         '女科学家': '👩\u200d🔬',
       },
 
-
-      //设置常用表情
-      emojiTail: '',
-      //设置表情图片地址
-      emojiPath: "https://cdn.jsdelivr.net/npm/vditor@3.2.0/dist/images/emoji",
-
     },
     //字数统计
     counter: {
@@ -407,7 +401,7 @@ onMounted(() => {
       // 是否固定工具栏
       pin: true,
     },
-    cdn:""
+    cdn:"http://www.lll.plus/media/vditor"
 
   })
 

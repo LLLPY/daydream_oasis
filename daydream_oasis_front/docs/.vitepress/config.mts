@@ -10,12 +10,12 @@ export default defineConfig({
         ['link', { rel: 'icon', href: 'http://www.lll.plus/media/image/favorite.ico' }],
 
         // element-plus
-        ['link', { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/element-plus/dist/index.css' }],
+        // ['link', { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/element-plus/dist/index.css' }],
         // ['script', { src:'//cdn.jsdelivr.net/npm/vue@3' }],
-        ['script', { src:'https://cdn.jsdelivr.net/npm/element-plus' }],
+        // ['script', { src:'https://cdn.jsdelivr.net/npm/element-plus' }],
 
         // vditor
-        // ['link', { rel: 'stylesheet', href: 'https://unpkg.com/vditor@3.9.6/dist/index.css' }],
+        ['link', { rel: 'stylesheet', href: 'http://www.lll.plus/media/vditor/dist/js/icons/ant.js' }],
         // ['script', { src:'https://unpkg.com/vditor@3.9.6/dist/index.min.js' }],
     ],
     themeConfig: {
