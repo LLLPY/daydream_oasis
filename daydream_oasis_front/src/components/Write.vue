@@ -81,9 +81,11 @@
 import {Warning} from '../assets/MessageBox.js'
 import axios_ins from "../assets/axios";
 
-export default {
+var last_form_data = {};
+let blog = {
   data() {
     return {
+      blog_id: null,
       title: '',
       avatar: {value: ''},
       category: '',
@@ -92,7 +94,19 @@ export default {
       tag_list: [],
       dialogVisible: {value: false},
       fileList: [],
-      withCredentials: true
+      withCredentials: true,
+    }
+  },
+  computed: {
+    form_data: function () {
+      return {
+        'id': this.blog_id,
+        'title': this.title,
+        'category': this.category,
+        'avatar': this.avatar.value,
+        'tag_list': this.tag_list,
+        'content': null,
+      }
     }
   },
   methods: {
@@ -127,6 +141,7 @@ export default {
     },
     handlePictureChange(uploadFile, uploadFiles) {
       this.fileList[0] = uploadFile
+      console.log(uploadFile)
       document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
     },
     handlePictureSucc(response, uploadFile, uploadFiles) {
@@ -172,44 +187,136 @@ export default {
 
       }
     },
-    submit() {
+    form_check(warn = true) {
       if (this.title.length === 0 || this.title.length > 30) {
-        Warning('标题的长度范围是0~30!')
-        return
+        if (warn) {
+          Warning('标题的长度范围是0~30!')
+        }
+
+        return false;
       }
       if (this.category.length === 0 || this.category.length > 8) {
-        Warning('分类的长度范围是0~8!')
-        return;
+        if (warn) {
+          Warning('分类的长度范围是0~8!')
+        }
+        return false;
       }
       if (this.tag_list.length === 0) {
-        Warning('请至少选择一个标签叭!')
-        return;
+        if (warn) {
+          Warning('请至少选择一个标签叭!')
+        }
+        return false;
       }
 
       let content = window.vditor.getValue()
       if (content.length <= 5) {
-        Warning('内容太短辣!')
-        return;
+        if (warn) {
+          Warning('内容太短辣!')
+        }
+        return false;
       }
-      let data = {
-        'title': this.title,
-        'category': this.category,
-        'avatar': this.avatar.value,
-        'tag_list': this.tag_list,
-        'content': content
+      return true;
+    },
+    submit() {
+      let is_valid = this.form_check()
+      if (is_valid) {
+        let data = this.form_data
+        data.is_draft = false
+        data.content = window.vditor.getValue()
+        axios_ins.post('/api/blog/?action=submit', data).then(response => {
+          let data = response.data
+          if (data['code'] === '1') {
+            Warning(data['message'])
+          } else {
+            window.location.href = `/blog/${this.blog_id}.html`
+          }
+        })
       }
-      axios_ins.post('/api/blog/', data).then(response => {
+    },
+    get_draft() {
+      // 获取最近的一次草稿
+      axios_ins("/api/blog/get_draft/").then(response => {
         let data = response.data
-        if(data['code']==='1'){
-          Warning(data['message'])
-        }else{
-
+        if (Object.keys(data.data).length) {
+          if (data.code === "0") {
+            data = data.data
+            this.blog_id = data.id
+            this.title = data.title
+            this.category = data.category
+            this.avatar.value = data.avatar
+            this.fileList[0] = {url: data.avatar}
+            document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
+            this.tag_list = data.tag_list.map(function (val) {
+              return {value: val}
+            })
+            this.content = data.content
+            let obj = this
+            let interval = setInterval(function () {
+              try {
+                window.vditor.setValue(data.content)
+                last_form_data = {...obj.form_data}
+                last_form_data.content = window.vditor.getValue()
+                clearInterval(interval)
+                console.log("结束调用")
+              } catch (e) {
+                console.log("继续调用")
+              }
+            }, 500)
+            Warning("接着上次继续编辑...")
+          } else {
+            Warning(data.message)
+          }
         }
       })
-    }
+    },
+    sortAndStringify(obj) {
+      // 将对象的属性名按照字母顺序排序
+      let sortedObj = {};
+      Object.keys(obj).sort().forEach(key => {
+        sortedObj[key] = obj[key];
+      });
+      // 将排序后的对象转换为字符串
+      return JSON.stringify(sortedObj);
+    },
+    _update_draft() {
+      let is_valid = this.form_check(false)
+      let data = this.form_data
+      data.content = window.vditor.getValue()
+      let is_change = this.sortAndStringify(last_form_data) !== this.sortAndStringify(data); // 输出 true
+      console.log("is_valid", is_valid)
+      console.log("is_change", is_change)
+
+      if (is_valid && is_change) {
+        console.log("合法且发生了变化....")
+        last_form_data = {...data}
+        data.is_draft = true
+        axios_ins.post('/api/blog/?action=update_draft', data).then(response => {
+          let data = response.data
+          if (data['code'] === '1') {
+            Warning(data['message'])
+          } else {
+            let new_blog_id = data.data.blog_id
+            if (new_blog_id) {
+              this.blog_id = new_blog_id
+            }
+          }
+        })
+      } else {
+        console.log("....")
+      }
+    },
+    update_draft() {
+      //   更新草稿
+      this.interval = setInterval(this._update_draft, 3000)
+    },
+
+  },
+  mounted() {
+    this.get_draft()
+    setTimeout(this.update_draft, 5000)
   }
 }
-
+export default blog
 
 </script>
 

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from daydream_oasis_backend.admin_site import my_site
 from common.admin import MyBaseAdmin
-from blog.adminforms import BlogAdminForm
 from blog.models import Comment, Collection, Tag, Blog, Category, Search, Recommend, Like
 from user.models import User
 
@@ -32,7 +31,6 @@ class TagAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 文章
 @admin.register(Blog, site=my_site)
 class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
-    form = BlogAdminForm
     list_display = ['id', 'title', 'author', 'category', 'dpv', 'duv', 'pv', 'uv', 'likes',
                     'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top']
     search_fields = ['title', 'author__username', 'category__title', 'abstract']
@@ -51,6 +49,9 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
             'fields': ['abstract', 'content'],
         }),
     ]
+
+    # def save_model(self, request, obj, form, change):
+    #     print(form,change)
 
     # custom
     def get_queryset(self, request):

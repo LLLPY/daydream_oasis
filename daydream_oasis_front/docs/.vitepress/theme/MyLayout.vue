@@ -56,9 +56,7 @@ provide('toggle-appearance', async ({clientX: x, clientY: y}: MouseEvent) => {
       <TagList/>
     </template>
     <template #doc-after>
-      <!-- <ActionBox/> -->
     </template>
-<!--     <Live2dWidget/>-->
   </Layout>
 </template>
 

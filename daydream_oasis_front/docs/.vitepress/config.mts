@@ -15,8 +15,8 @@ export default defineConfig({
         ['script', { src:'https://cdn.jsdelivr.net/npm/element-plus' }],
 
         // vditor
-        ['link', { rel: 'stylesheet', href: 'https://unpkg.com/vditor@3.9.6/dist/index.css' }],
-        ['script', { src:'https://unpkg.com/vditor@3.9.6/dist/index.min.js' }],
+        // ['link', { rel: 'stylesheet', href: 'https://unpkg.com/vditor@3.9.6/dist/index.css' }],
+        // ['script', { src:'https://unpkg.com/vditor@3.9.6/dist/index.min.js' }],
     ],
     themeConfig: {
         i18nRouting: true,

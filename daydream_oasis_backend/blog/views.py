@@ -1,3 +1,5 @@
+import os.path
+
 from django.db.models import Q
 from blog.serializers import (BlogSerializers, CategorySerializers,
                               TagSerializers, CommentSerializers,
@@ -45,8 +47,15 @@ class BlogViewSet(BaseViewSet):
         tag_list = serializer.data.get('tag_list')
         content = serializer.data.get('content')
         section = serializer.data.get('section')
-        Blog.create(title, user, category, tag_list, content, section)
-        return SucResponse('新增博客成功!')
+        is_draft = serializer.data.get('is_draft')
+        blog_id = serializer.data.get('id')
+        print(serializer.data)
+        new_blog_id = Blog.create_or_update(blog_id, title, user, category, tag_list, content, section, is_draft)
+        if is_draft and not blog_id and new_blog_id:
+            data = {'blog_id': new_blog_id}
+        else:
+            data = {}
+        return SucResponse(message='新增博客成功!', data=data)
 
     # 博客列表
     def list(self, request, *args, **kwargs):
@@ -91,9 +100,32 @@ class BlogViewSet(BaseViewSet):
         return SucResponse(data=serializer.data)
 
     # 更新博客
+    @action(methods=['get'],detail=False)
     @login_required
-    def update(self, request, *args, **kwargs):
-        ...
+    def update2(self, request, *args, **kwargs):
+        blog_objs = Blog.objects.all()
+        base_dir = '/Users/lvliangliang/Desktop/daydream_oasis/daydream_oasis_front/docs/blog/'
+        md_content = """---
+sidebar: false
+next: false
+---
+<BlogInfo/>
+
+{}
+
+<ActionBox />
+        """
+        aaa = """<style>#top-box {margin-top:0.5rem!important;}</style>"""
+
+        for blog in blog_objs:
+            res = md_content.format(blog.content)
+            res += f"\n{aaa}"
+            print(res)
+            path = os.path.join(base_dir,str(blog.id)+".md")
+            with open(path,'w+',encoding='utf8') as f:
+                f.write(res)
+
+        return SucResponse(data=res)
 
     # 删除博客
     @login_required
@@ -191,9 +223,19 @@ class BlogViewSet(BaseViewSet):
         return SucResponse('取消收藏成功!')
 
     @action(methods=['get'], detail=False)
-    def demo(self, request, *args, **kwargs):
-        # TODO 将数据库中博客转成md文件并进行存储
-        ...
+    @login_required
+    def get_draft(self, request, *args, **kwargs):
+        '''获取最后一次编辑但为提交的草稿'''
+        user = self.request.user
+        draft = Blog.get_draft(user.id)
+        if draft:
+            serializer = self.get_serializer(draft, include_fields=['id', 'title', 'avatar', 'category', 'tag_list',
+                                                                    'content'])
+            data = serializer.data
+        else:
+            data = {}
+        print(data)
+        return SucResponse(data=data)
 
     @action(methods=['get'], detail=False)
     def search(self, request, *args, **kwargs):

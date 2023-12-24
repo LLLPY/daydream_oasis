@@ -7,10 +7,4 @@ next: false
 <!-- @content -->
 
 <ActionBox />
-
-<style>
- #top-box {
-  margin-top:0.5rem!important;
- }
-
-</style>
+<style>#top-box {margin-top:0.5rem!important;}</style>

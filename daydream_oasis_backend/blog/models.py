@@ -1,8 +1,14 @@
 import datetime
+import os
+
 from ckeditor_uploader.fields import RichTextUploadingField
+from mdeditor.fields import MDTextField
+
 from common.models import BaseModel
 from django.db import models, transaction
 from lxml import etree
+
+from daydream_oasis_backend.settings.base import BASE_DIR
 from user.models import User
 from utils.cache import my_cache
 from utils.collaborative_filltering import cf_user
@@ -18,7 +24,8 @@ class Category(BaseModel):
     title = models.CharField(max_length=8, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
     # avatar
-    avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
+    avatar = models.URLField(default='http://www.lll.plus/media/image/default_blog_avatar.jpg', verbose_name='封面',
+                             help_text='封面')
 
     # 父类
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
@@ -82,7 +89,8 @@ class Blog(BaseModel):
     title = models.CharField(max_length=30, blank=True, verbose_name='标题', help_text='标题')
 
     # 封面
-    avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
+    avatar = models.URLField(default='http://www.lll.plus/media/image/default_blog_avatar.jpg', verbose_name='封面',
+                             help_text='封面')
 
     # 专栏
     section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True, verbose_name='专栏', help_text='专栏')
@@ -94,10 +102,11 @@ class Blog(BaseModel):
     tag_list = models.ManyToManyField(Tag, verbose_name='标签', help_text='标签')
 
     # 摘要
-    abstract = models.TextField(max_length=150, null=False, blank=False, verbose_name='摘要', help_text='摘要')
+    abstract = models.TextField(max_length=150, null=True, blank=True, verbose_name='摘要', help_text='摘要')
 
     # 文章正文
-    content = RichTextUploadingField(null=False, blank=False, verbose_name='文章内容', help_text='文章内容')
+    # content = RichTextUploadingField(null=False, blank=False, verbose_name='文章内容', help_text='文章内容')
+    content = MDTextField(null=False, blank=False, verbose_name='文章内容', help_text='文章内容')
 
     # daily page view
     dpv = models.PositiveIntegerField(default=0, verbose_name='dpv', help_text='dpv')
@@ -162,32 +171,6 @@ class Blog(BaseModel):
         return self.read_time
 
     @classmethod
-    def create_or_update(cls, _id: str, title: str, avatar: str, category: Category, tag_list: [], content: str,
-                         author: User) -> 'Blog':
-        tmp_blog = cls.get_by_id(_id)
-        if tmp_blog:
-            tmp_blog.update_time = datetime.datetime.now()
-        else:
-            tmp_blog = cls()
-        tmp_blog.title = title
-        tmp_blog.author = author
-        if avatar:
-            tmp_blog.avatar = avatar
-        tmp_blog.category = category
-        tmp_blog.content = content
-        # 摘要为内容的前150字
-        tmp_blog.abstract = ''.join(
-            etree.HTML(content).xpath('//text()'))[:150]
-        # 更新阅读时长
-        tmp_blog.update_read_time()
-        for tag in tag_list:
-            tag = Tag.get_or_create(tag, creator=author)
-            tmp_blog.tags.add(tag)
-        tmp_blog.save()
-
-        return tmp_blog
-
-    @classmethod
     def recommend(cls, user, action_data, blog_list=[]):
 
         # 添加缓存，提高性能
@@ -222,21 +205,62 @@ class Blog(BaseModel):
 
         return recommend_blog_list
 
+    def get_abstract(self):
+        abstract = self.abstract
+        if not abstract:
+            content = self.content
+            abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', content))[:150].replace('\n', '')
+        return abstract
+
     @classmethod
     @transaction.atomic()
-    def create(cls, title, user, category, tag_list, content, section):
-        blog = cls()
+    def create_or_update(cls, blog_id, title, user, category, tag_list, content, section, is_draft):
+        if blog_id:
+            blog = cls.get_by_id(blog_id)
+        else:
+            blog = cls()
         blog.title = title
         blog.author = user
         category = Category.get_or_create(category)
         blog.category = category
+        blog.content = content
+        blog.abstract = blog.get_abstract()
+        blog.section = section
+        blog.is_draft = is_draft
         blog.save()
         for tag in tag_list:
             tag = Tag.get_or_create(tag['value'], creator=user)
             blog.tag_list.add(tag)
-        blog.content = content
-        blog.section = section
         blog.save()
+
+        # 更新md文件
+        blog.save_md()
+        return blog.id
+
+    @classmethod
+    def get_draft(cls, author_id):
+        return cls.objects.filter(author_id=author_id, is_draft=True).first()
+
+    def save_md(self):
+        blog_dir = os.path.join(BASE_DIR, "..", "daydream_oasis_front", "docs", "blog")
+        md_content = """---
+sidebar: false
+next: false
+---
+<BlogInfo/>
+
+{}
+
+<ActionBox />
+        """
+        style = """<style>#top-box {margin-top:0.5rem!important;}</style>"""
+
+        md_content = md_content.format(self.content)
+        md_content += f"\n{style}"
+        path = os.path.join(blog_dir, str(self.id) + ".md")
+        if not self.is_draft:
+            with open(path, 'w+', encoding='utf8') as f:
+                f.write(md_content)
 
 
 class BlogTagRelease(models.Model):
