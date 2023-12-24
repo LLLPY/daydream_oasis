@@ -6,6 +6,7 @@ import '../assets/css/vditor@3.9.6.css';
 import {ref, onMounted} from 'vue';
 // 2. 获取DOM引用
 const vditor = ref()
+const CDN = "http://www.lll.plus/media/vditor"
 
 // 3. 在组件初始化时，就创建Vditor对象，并引用
 onMounted(() => {
@@ -64,6 +65,10 @@ onMounted(() => {
     //编辑模式---wysiwyg:所见即所得 ir:及时渲染 sv:分屏预览
     mode: 'sv',
     preview: {
+      theme: {
+        current: "light",
+        path: `${CDN}/dist/css/content-theme`,
+      },
       mode: "both",
       markdown: {
         toc: true, //目录
@@ -372,7 +377,7 @@ onMounted(() => {
         '男技工': '👨\u200d🔧',
         '女科学家': '👩\u200d🔬',
       },
-
+      emojiPath: `${CDN}/dist/images/emoji`,
     },
     //字数统计
     counter: {
@@ -401,7 +406,7 @@ onMounted(() => {
       // 是否固定工具栏
       pin: true,
     },
-    cdn:"http://www.lll.plus/media/vditor"
+    cdn:CDN
 
   })
 
