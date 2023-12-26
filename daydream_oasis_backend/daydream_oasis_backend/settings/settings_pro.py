@@ -8,11 +8,11 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog_plus',
-        'HOST': '127.0.0.1',
+        'NAME': 'daydream_oasis',
+        'HOST': 'www.lll.plus',
         'PORT': '3306',
-        'USER': "lvll",
-        "PASSWORD": "LVLL0318",
+        'USER': "daydream_oasis",
+        "PASSWORD": "daydream_oasis@lll",
         'OPTIONS': {
             'charset': 'utf8mb4',
             "init_command": "SET foreign_key_checks = 0;",

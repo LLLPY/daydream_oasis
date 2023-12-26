@@ -10,9 +10,23 @@ DEBUG = True
 # INSTALLED_APPS.append('debug_toolbar')  # 性能测试
 
 # 数据库
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'daydream_oasis',
+        'HOST': 'www.lll.plus',
+        'PORT': '3306',
+        'USER': "daydream_oasis",
+        "PASSWORD": "daydream_oasis@lll",
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            "init_command": "SET foreign_key_checks = 0;",
+        },
     }
 }
