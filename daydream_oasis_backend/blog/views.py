@@ -130,7 +130,9 @@ next: false
     # 删除博客
     @login_required
     def destroy(self, request, *args, **kwargs):
-        super().destroy(request, *args, **kwargs)
+        obj = self.get_object()
+        obj.delete()
+        obj.delete_md()
         return SucResponse('删除成功!')
 
     @action(methods=['get'], detail=False)

@@ -1,8 +1,27 @@
+<template>
+  <div class="info-box" :id="blog.id">
+    <h1>{{ blog.title }}</h1>
+    <span class="author">作者:<a href="#">{{ blog.author.username }}</a></span>
+    <span class="category">分类:<a href="#">{{ blog.category }}</a></span>
+    <span id="tag-list" v-if="blog.tag_list.length">标签: <span v-for="tag in blog.tag_list" class="tag"><a href="#">{{
+        tag
+      }}</a></span> </span>
+    <span>浏览量:{{ blog.pv }}</span>
+    <span>阅读量:{{ blog.read_times }}</span>
+    <span>预计阅读时长:{{ blog.read_time }}</span>
+    <span>创建时间:{{ blog.create_time }}</span>
+    <span>更新时间:{{ blog.update_time }}</span>
+    <span class="edit">编辑</span>
+    <span class="delete" @click="delete_blog">删除</span>
+    <hr/>
+  </div>
+</template>
 <script>
 import axios_ins from "../assets/axios";
 import '../assets/font/iconfont'
 import '../assets/font/iconfont.css'
 import '../assets/css/blog_info.css'
+import {Info, Warning} from "../assets/MessageBox";
 
 
 export default {
@@ -42,7 +61,19 @@ export default {
         blog_id: this.blog.id
       })
     },
+    delete_blog() {
+      axios_ins.delete(`/api/blog/${this.blog.id}/`).then(response => {
+        let data = response.data
+        if (data['code'] === '0') {
+          window.location.href = '/blog/'
+          Info(datt['message'])
+        } else {
+          Warning(data['message'])
+        }
+      })
+    }
   },
+
 
   mounted() {
     this.get_blog_info()
@@ -53,19 +84,3 @@ export default {
 
 </script>
 
-<template>
-  <div class="info-box" :id="blog.id">
-    <h1>{{ blog.title }}</h1>
-    <span class="author">作者:<a href="#">{{ blog.author.username }}</a></span>
-    <span class="category">分类:<a href="#">{{ blog.category }}</a></span>
-    <span id="tag-list" v-if="blog.tag_list.length">标签: <span v-for="tag in blog.tag_list" class="tag"><a href="#">{{
-        tag
-      }}</a></span> </span>
-    <span>浏览量:{{ blog.pv }}</span>
-    <span>阅读量:{{ blog.read_times }}</span>
-    <span>预计阅读时长:{{ blog.read_time }}</span>
-    <span>创建时间:{{ blog.create_time }}</span>
-    <span>更新时间:{{ blog.update_time }}</span>
-    <hr/>
-  </div>
-</template>
