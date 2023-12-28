@@ -11,7 +11,7 @@
     <span>预计阅读时长:{{ blog.read_time }}</span>
     <span>创建时间:{{ blog.create_time }}</span>
     <span>更新时间:{{ blog.update_time }}</span>
-    <span class="edit">编辑</span>
+    <span class="edit" @click="edit_blog">编辑</span>
     <span class="delete" @click="delete_blog">删除</span>
     <hr/>
   </div>
@@ -62,15 +62,30 @@ export default {
       })
     },
     delete_blog() {
-      axios_ins.delete(`/api/blog/${this.blog.id}/`).then(response => {
-        let data = response.data
-        if (data['code'] === '0') {
-          window.location.href = '/blog/'
-          Info(datt['message'])
-        } else {
-          Warning(data['message'])
-        }
-      })
+      let res = confirm('确认删除吗?')
+      if (res) {
+        axios_ins.delete(`/api/blog/${this.blog.id}/`).then(response => {
+          let data = response.data
+          if (data['code'] === '0') {
+            window.location.href = '/blog/'
+            Info(data['message'])
+          } else {
+            Warning(data['message'])
+          }
+        })
+      }
+
+    },
+    edit_blog(){
+       axios_ins.put(`/api/blog/${this.blog.id}/`).then(response => {
+          let data = response.data
+          if (data['code'] === '0') {
+            window.location.href = '/write'
+            Info(data['message'])
+          } else {
+            Warning(data['message'])
+          }
+        })
     }
   },
 

@@ -100,32 +100,19 @@ class BlogViewSet(BaseViewSet):
         return SucResponse(data=serializer.data)
 
     # 更新博客
-    @action(methods=['get'],detail=False)
     @login_required
-    def update2(self, request, *args, **kwargs):
-        blog_objs = Blog.objects.all()
-        base_dir = '/Users/lvliangliang/Desktop/daydream_oasis/daydream_oasis_front/docs/blog/'
-        md_content = """---
-sidebar: false
-next: false
----
-<BlogInfo/>
+    def update(self, request, *args, **kwargs):
+        obj = self.get_object()
+        user = self.request.user
+        has_draft = Blog.objects.filter(author_id=user.id, is_draft=True).exists()
+        if has_draft:
+            raise exception.CustomValidationError('您有未编辑完的草稿...')
+        obj.is_draft = True
+        obj.save()
 
-{}
+        return SucResponse()
 
-<ActionBox />
-        """
-        aaa = """<style>#top-box {margin-top:0.5rem!important;}</style>"""
 
-        for blog in blog_objs:
-            res = md_content.format(blog.content)
-            res += f"\n{aaa}"
-            print(res)
-            path = os.path.join(base_dir,str(blog.id)+".md")
-            with open(path,'w+',encoding='utf8') as f:
-                f.write(res)
-
-        return SucResponse(data=res)
 
     # 删除博客
     @login_required
