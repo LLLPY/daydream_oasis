@@ -22,7 +22,7 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
     job = models.CharField(max_length=20, default='打工的人儿~', verbose_name='职业', help_text='职业')
 
     class Meta:
-        db_table = '用户'  # 修改表名
+        db_table = 'user'  # 修改表名
         verbose_name_plural = verbose_name = db_table  # admin 后台显示
 
     def __str__(self):
@@ -71,7 +71,7 @@ class ChatRecord(BaseModel):
 
 
     class Meta:
-        db_table = '信息'
+        db_table = 'chat_record'
         verbose_name = verbose_name_plural = db_table
         ordering = ['create_time']
 
@@ -97,7 +97,7 @@ class Message(BaseModel):
     weight = models.PositiveIntegerField(default=0, verbose_name='权重', help_text='权重')
 
     class Meta:
-        db_table = '留言'
+        db_table = 'message'
         verbose_name_plural = verbose_name = db_table
         ordering = ['-weight', '-create_time']
 

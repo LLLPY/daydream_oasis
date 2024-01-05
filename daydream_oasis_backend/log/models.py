@@ -35,7 +35,7 @@ class RequestRecord(BaseModel):
     username = models.CharField(max_length=50, default='', verbose_name='用户名', help_text='用户名')
 
     class Meta:
-        db_table = '请求日志'
+        db_table = 'request_log'
         verbose_name = verbose_name_plural = db_table
 
     def __str__(self):
@@ -159,7 +159,7 @@ class Action(BaseModel):
     score = models.IntegerField(default=0, verbose_name='分值', help_text='分值')
 
     class Meta:
-        db_table = '操作日志'
+        db_table = 'action_log'
         verbose_name = verbose_name_plural = db_table
 
     @classmethod
@@ -222,5 +222,5 @@ class Error(BaseModel):
     time = models.DateTimeField(default=datetime.now, verbose_name='时间', help_text='时间')
 
     class Meta:
-        db_table = '错误日志'
+        db_table = 'error_log'
         verbose_name = verbose_name_plural = db_table

@@ -47,7 +47,7 @@ class File(BaseModel):
 
 
     class Meta:
-        db_table = '文件'
+        db_table = 'file'
         verbose_name_plural = verbose_name = db_table
 
     @classmethod

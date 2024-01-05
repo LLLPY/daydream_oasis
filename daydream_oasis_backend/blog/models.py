@@ -34,7 +34,7 @@ class Category(BaseModel):
     depth = models.SmallIntegerField(default=1, help_text='深度', verbose_name='深度')
 
     class Meta:
-        db_table = '分类'  # 修改表名
+        db_table = 'category'  # 修改表名
         verbose_name_plural = verbose_name = db_table
 
     @classmethod
@@ -62,7 +62,7 @@ class Tag(BaseModel):
     title = models.CharField(max_length=5, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
     class Meta:
-        db_table = '标签'
+        db_table = 'tag'
         verbose_name_plural = verbose_name = db_table
 
 
@@ -79,6 +79,9 @@ class Section(BaseModel):
     # 封面
     avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
 
+    class Meta:
+        db_table = 'section'
+        verbose_name_plural = verbose_name = db_table
 
 # 博客
 class Blog(BaseModel):
@@ -142,7 +145,7 @@ class Blog(BaseModel):
     is_original = models.BooleanField(default=True, verbose_name='是否原创', help_text='是否原创')
 
     class Meta:
-        db_table = '博客'
+        db_table = 'blog'
         verbose_name = verbose_name_plural = db_table
         ordering = ['-is_top', '-update_time']
 
@@ -300,7 +303,7 @@ class Comment(BaseModel):
     client = models.CharField(max_length=20, verbose_name='设备', help_text='设备')
 
     class Meta:
-        db_table = '评论'
+        db_table = 'comment'
         verbose_name = verbose_name_plural = db_table
 
     # 根据博客id获取该博客下的评论量
@@ -341,7 +344,7 @@ class Like(BaseModel, LikeMixin):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被点赞的博客', help_text='被点赞的博客')
 
     class Meta:
-        db_table = '点赞'
+        db_table = 'like'
         verbose_name = verbose_name_plural = db_table
 
 
@@ -354,7 +357,7 @@ class Collection(BaseModel, LikeMixin):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被收藏的博客', help_text='被收藏的博客')
 
     class Meta:
-        db_table = '收藏'
+        db_table = 'collect'
         verbose_name = verbose_name_plural = db_table
 
 
@@ -367,7 +370,7 @@ class Share(BaseModel, LikeMixin):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被分享的博客', help_text='被分享的博客')
 
     class Meta:
-        db_table = '分享'
+        db_table = 'share'
         verbose_name = verbose_name_plural = db_table
 
 
@@ -383,7 +386,7 @@ class Search(BaseModel):
     result = models.CharField(max_length=100, verbose_name='搜索结果', help_text='搜索结果')
 
     class Meta:
-        db_table = '搜索记录'
+        db_table = 'search'
         verbose_name = verbose_name_plural = db_table
 
     @classmethod
@@ -403,7 +406,7 @@ class Recommend(BaseModel):
     blog_list = models.ManyToManyField(Blog, verbose_name='博客列表', help_text='博客列表')
 
     class Meta:
-        db_table = '相关推荐'
+        db_table = 'recommend'
         verbose_name = verbose_name_plural = db_table
 
     @classmethod
