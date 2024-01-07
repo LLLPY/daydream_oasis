@@ -6,7 +6,8 @@ import '../assets/css/vditor@3.9.6.css';
 import {ref, onMounted} from 'vue';
 // 2. 获取DOM引用
 const vditor = ref()
-const CDN = "http://www.lll.plus/media/vditor"
+// const CDN = "http://www.lll.plus/media/vditor"
+const CDN = "https://cdn.jsdelivr.net/npm/vditor@3.9.8"
 
 // 3. 在组件初始化时，就创建Vditor对象，并引用
 onMounted(() => {

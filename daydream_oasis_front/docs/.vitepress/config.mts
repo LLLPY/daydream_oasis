@@ -21,8 +21,8 @@ export default defineConfig({
             // ['script', { src:'https://cdn.jsdelivr.net/npm/element-plus' }],
 
             // vditor
-            ['link', {rel: 'stylesheet', href: 'http://www.lll.plus/media/vditor/dist/js/icons/ant.js'}],
-            ['link', {rel: 'stylesheet', href: 'http://www.lll.plus/media/vditor/dist/css/content-theme/light.css'}],
+            // ['link', {rel: 'stylesheet', href: 'http://www.lll.plus/media/vditor/dist/js/icons/ant.js'}],
+            // ['link', {rel: 'stylesheet', href: 'http://www.lll.plus/media/vditor/dist/css/content-theme/light.css'}],
             // ['script', { src:'https://unpkg.com/vditor@3.9.6/dist/index.min.js' }],
         ],
         themeConfig: {
