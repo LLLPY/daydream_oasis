@@ -13,7 +13,7 @@ import Vditor from "../../../src/components/Vditor.vue";
 import Write from "../../../src/components/Write.vue";
 import { ElPagination,ElCol,ElAutocomplete,ElRow,ElCascader,ElInput,ElUpload,ElIcon,ElDialog,ElTag,ElButton } from "element-plus";
 import { Plus,Delete, ZoomIn } from '@element-plus/icons-vue'
-import 'element-plus/dist/index.css'
+// import 'element-plus/dist/index.css'
 
 
 // 扩展默认的主题
