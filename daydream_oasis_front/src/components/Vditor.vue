@@ -107,8 +107,8 @@ onMounted(() => {
     upload: {
       accept: 'image/*,.mp3, .wav, .rar',
       token: 'test',
-      url: 'http://localhost:80/api/file/upload/',
-      linkToImgUrl: 'http://localhost:80/api/file/upload/',
+      url: 'http://www.lll.plus/api/file/upload/',
+      linkToImgUrl: 'http://www.lll.plus/api/file/upload/',
       filename(name) {
         return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
       },

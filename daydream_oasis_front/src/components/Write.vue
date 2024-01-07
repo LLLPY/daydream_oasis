@@ -28,7 +28,7 @@
             <el-col :span="8" class="el-input-group__prepend title-box">封面</el-col>
             <el-col :span="16">
               <el-upload v-model:file-list="fileList"
-                         action="http://localhost:80/api/file/upload/"
+                         action="http://www.lll.plus/api/file/upload/"
                          :with-credentials="withCredentials"
                          list-type="picture-card" :on-preview="handlePictureCardPreview"
                          :on-remove="handlePictureRemove"
