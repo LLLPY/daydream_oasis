@@ -182,7 +182,7 @@ export default {
 }
 
 #blog-list .blog-preview .content {
-  min-height: 80px;
+  //min-height: 80px;
   max-height: 150px;
   display: flex;
   flex-direction: row;
