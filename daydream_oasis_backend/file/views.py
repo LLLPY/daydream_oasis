@@ -1,5 +1,7 @@
 import uuid
 from rest_framework.decorators import action
+
+from common.drf.decorators import login_required
 from common.drf.response import SucResponse, ErrResponse
 from file.models import File
 from rest_framework import viewsets
@@ -9,6 +11,7 @@ class FileViewSet(viewsets.ModelViewSet):
 
     # 图片上传服务
     @action(methods=['post'], detail=False)
+    @login_required
     def upload(self, request, *args, **kwargs):
         file = request.FILES.get('file') or request.FILES.get('file[]')
 
