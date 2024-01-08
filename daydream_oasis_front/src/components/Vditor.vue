@@ -106,19 +106,20 @@ onMounted(() => {
     //文件上传
     upload: {
       accept: 'image/*,.mp3, .wav, .rar',
-      token: 'test',
       url: 'http://www.lll.plus/api/file/upload/',
       linkToImgUrl: 'http://www.lll.plus/api/file/upload/',
       filename(name) {
         return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
       },
       withCredentials: true,
-      success(editor, msg) {
-        console.log(msg)
-      },
       format(files, responseText) {
-        console.log(files)
-        console.log(responseText)
+        // TODO 异常判断
+        // 转换为指定的格式
+        let data = JSON.parse(responseText)
+        console.log(data)
+        data = data['data']
+        data['errFiles'] = []
+        return JSON.stringify(data)
       }
 
     },

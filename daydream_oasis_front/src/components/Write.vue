@@ -32,7 +32,6 @@
                          :with-credentials="withCredentials"
                          list-type="picture-card" :on-preview="handlePictureCardPreview"
                          :on-remove="handlePictureRemove"
-                         :on-change="handlePictureChange"
                          :on-success="handlePictureSucc"
                          w-full>
                 <el-icon>
@@ -130,21 +129,28 @@ let blog = {
 
     //图片上传
     handlePictureRemove(uploadFile, uploadFiles) {
+      // 移除图片
       this.avatar.value = ''
       this.dialogVisible.value = false
+      this.fileList.pop()
       document.getElementsByClassName('el-upload--picture-card')[0].classList.remove('hidden');
-
     },
     handlePictureCardPreview(file) {
+      // 大图预览
       this.avatar.value = file.url
       this.dialogVisible.value = true
     },
-    handlePictureChange(uploadFile, uploadFiles) {
-      this.fileList[0] = uploadFile
-      console.log(uploadFile)
-      document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
-    },
     handlePictureSucc(response, uploadFile, uploadFiles) {
+      // 后端响应成功
+      if (response['code'] === '0') {
+        // 图片上传成功
+        this.fileList[0] = uploadFile
+        document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
+        this.avatar.value = response['data']['url']
+      } else {
+        this.handlePictureRemove(null, null)
+        Warning(response['message'])
+      }
       console.log(response)
     },
     //标签
