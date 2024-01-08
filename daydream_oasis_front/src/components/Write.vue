@@ -220,6 +220,8 @@ let blog = {
     submit() {
       let is_valid = this.form_check()
       if (is_valid) {
+        // 提交前关闭自动更新，否则可能会导致提交在更新之后
+        clearInterval(this.interval)
         let data = this.form_data
         data.is_draft = false
         data.content = window.vditor.getValue()
@@ -283,11 +285,7 @@ let blog = {
       let data = this.form_data
       data.content = window.vditor.getValue()
       let is_change = this.sortAndStringify(last_form_data) !== this.sortAndStringify(data); // 输出 true
-      console.log("is_valid", is_valid)
-      console.log("is_change", is_change)
-
       if (is_valid && is_change) {
-        console.log("合法且发生了变化....")
         last_form_data = {...data}
         data.is_draft = true
         axios_ins.post('/api/blog/?action=update_draft', data).then(response => {
@@ -301,8 +299,6 @@ let blog = {
             }
           }
         })
-      } else {
-        console.log("....")
       }
     },
     update_draft() {
