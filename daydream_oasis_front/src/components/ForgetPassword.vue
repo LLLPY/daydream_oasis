@@ -31,7 +31,7 @@ export default {
         return;
       }
       console.log(this.password)
-      axios_ins.post('http://127.0.0.1:8000/api/user/login/',
+      axios_ins.post('/api/user/login/',
           {
             'username': this.username,
             'password': this.password,

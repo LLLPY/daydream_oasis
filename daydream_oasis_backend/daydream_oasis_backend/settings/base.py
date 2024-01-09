@@ -178,15 +178,14 @@ CKEDITOR_CONFIGS = {
 }
 
 # 静态文件的目录
-#STATICFILES_DIRS = [
+# STATICFILES_DIRS = [
 #    os.path.join(BASE_DIR, 'static'),
-#]
+# ]
 
 STATIC_URL = '/static/'  # 指定静态文件的路由
 
 # 静态文件收集后存放的目录
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 
 # 媒体文件的存放
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 存储路径
@@ -197,9 +196,6 @@ CKEDITOR_UPLOAD_PATH = os.path.join(BASE_DIR, 'media', 'image')
 
 # 修改默认的文件存储为自定义的
 DEFAULT_FILE_STORAGE = 'daydream_oasis_backend.storage.WatermarkStorage'
-
-# 后台的logo
-SIMPLEUI_LOGO = f'http://www.lll.plus/media/image/default_blog_avatar.jpg'
 
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False
@@ -214,3 +210,6 @@ REST_FRAMEWORK = {
 
 # host
 HOST = 'http://www.lll.plus/'
+
+# 后台的logo
+SIMPLEUI_LOGO = f'{HOST}media/image/default_blog_avatar.jpg'
