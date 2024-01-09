@@ -211,3 +211,6 @@ REST_FRAMEWORK = {
     # 自定义异常捕获
     'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
 }
+
+# host
+HOST = 'http://www.lll.plus/'

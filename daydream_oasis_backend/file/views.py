@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 
 from common.drf.decorators import login_required
 from common.drf.response import SucResponse, ErrResponse
+from daydream_oasis_backend.settings.base import HOST
 from file.models import File
 from rest_framework import viewsets
 
@@ -32,14 +33,10 @@ class FileViewSet(viewsets.ModelViewSet):
         filename = '.'.join(filename_list)
         file.name = filename
         file = File.create(request.user, File.type_size_dict[content_type][1], file)
+        file_url = f'{HOST}media/{file.path}'
         data = {
             'filename': filename,
             'content_type': content_type,
-            'url': f'../media/{file.path}',
-            'data': {
-                'succMap': {
-                    filename: f'http://localhost/media/{file.path}'
-                }
-            }
+            'url': file_url
         }
         return SucResponse(data=data)
