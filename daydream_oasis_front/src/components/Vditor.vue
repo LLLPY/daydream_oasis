@@ -4,6 +4,7 @@ import Vditor from 'vditor'
 // 1.2 引入样式
 import '../assets/css/vditor@3.9.6.css';
 import {ref, onMounted} from 'vue';
+import {Warning} from "../assets/MessageBox";
 // 2. 获取DOM引用
 const vditor = ref()
 // const CDN = "http://www.lll.plus/media/vditor"
@@ -113,13 +114,18 @@ onMounted(() => {
       },
       withCredentials: true,
       format(files, responseText) {
-        // TODO 异常判断
         // 转换为指定的格式
         let data = JSON.parse(responseText)
-        console.log(data)
-        data = data['data']
-        data['errFiles'] = []
-        return JSON.stringify(data)
+        if (data['code'] === '0') {
+          data = data['data']
+          let succMap = {}
+          succMap[data.filename] = data.url
+          let res = {"data": {"errFiles": [], "succMap": succMap}}
+          return JSON.stringify(res)
+        } else {
+          Warning(data['message'])
+        }
+
       }
 
     },
