@@ -188,7 +188,7 @@ STATIC_URL = '/static/'  # 指定静态文件的路由
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # 媒体文件的存放
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 存储路径
+MEDIA_ROOT = os.path.join('/share/daydream_oasis', 'media')  # 存储路径
 MEDIA_URL = '/media/'
 
 # 富文本编辑器中图片的上传路径
