@@ -22,8 +22,6 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'simpleui',  # 后台美化
-    'ckeditor',  # 富文本编辑器
-    'ckeditor_uploader',  # 富文本中图片的上传,
     'rest_framework',  # restful api
     'django.contrib.admin',
     'django.contrib.auth',
@@ -167,32 +165,21 @@ AUTH_USER_MODEL = 'user.User'  # 子应用名.模型类名
 # 修改上传文件的最大值
 DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000  # 默认设置为500M
 
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 800,
-        'width': '100%',
-        'tabSpaces': 4,
-        'extraPlugins': 'codesnippet',  # 配置代码插件
-    }
-}
-
 # 静态文件的目录
-# STATICFILES_DIRS = [
-#    os.path.join(BASE_DIR, 'static'),
-# ]
-
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, 'static'),
+]
 STATIC_URL = '/static/'  # 指定静态文件的路由
 
 # 静态文件收集后存放的目录
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # 媒体文件的存放
-MEDIA_ROOT = os.path.join('/share/daydream_oasis', 'media')  # 存储路径
+# 共享文件的目录（媒体文件）
+SHARE_DIR = '/share/daydream_oasis'
+MEDIA_ROOT = os.path.join(SHARE_DIR, 'media')  # 存储路径
 MEDIA_URL = '/media/'
 
-# 富文本编辑器中图片的上传路径
-CKEDITOR_UPLOAD_PATH = os.path.join(BASE_DIR, 'media', 'image')
 
 # 修改默认的文件存储为自定义的
 DEFAULT_FILE_STORAGE = 'daydream_oasis_backend.storage.WatermarkStorage'
@@ -205,7 +192,8 @@ SIMPLEUI_ANALYSIS = False
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 REST_FRAMEWORK = {
     # 自定义异常捕获
-    'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
+    'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler',
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 # host

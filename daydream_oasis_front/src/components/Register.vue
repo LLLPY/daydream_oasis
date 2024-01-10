@@ -31,7 +31,7 @@ export default {
         return;
       }
       console.log(this.password)
-      axios_ins.post('/api/user/login/',
+      axios_ins.post('/api/user/register/',
           {
             'username': this.username,
             'password': this.password,

@@ -1,7 +1,6 @@
 import datetime
 import os
 
-from ckeditor_uploader.fields import RichTextUploadingField
 from mdeditor.fields import MDTextField
 
 from common.models import BaseModel

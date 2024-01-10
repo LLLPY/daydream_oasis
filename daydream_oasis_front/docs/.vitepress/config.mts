@@ -62,11 +62,35 @@ export default defineConfig({
                 {
                     icon:
                         {
-                            svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 261.76 226.69"><path d="M161.096.001l-30.225 52.351L100.647.001H-.005l130.877 226.688L261.749.001z" fill="#41b883"/><path d="M161.096.001l-30.225 52.351L100.647.001H52.346l78.526 136.01L209.398.001z" fill="#34495e"/></svg>',
+                            svg: '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100px" height="100px" viewBox="0 0 88 88" enable-background="new 0 0 88 88" xml:space="preserve">  <image id="image0" width="88" height="88" x="0" y="0"\n' +
+                                '    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAMAAABGS8AGAAAABGdBTUEAALGPC/xhBQAAACBjSFJN\n' +
+                                'AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA7VBMVEUAAAD/gIDIHiPIHyTH\n' +
+                                'HiPIHiTIHSPIHiPIHSTIHiTOHSfJHiPIHiPfIEDKHyTIHiTIHSPVKyvIHyPIHiP/QEDHHSTIHibH\n' +
+                                'HSPVKyvHHiXIHSPLHibIHiPJHyfIHiPJHiTHHiPHHiXIHiT/VVXHHSPLLTPbcXTstLb01db67Oz+\n' +
+                                '/v7////78PHcc3fMMzjopaf++/vdeXz89vbHICbnoaP77/Dccnb44+TQQ0jHHyXstrjJKC7QQkfH\n' +
+                                'HiT78fLcdHjKKzDpqKrKKi/89PT23d7uvsDee3/+/PzNNTvppqj88/PMNDn+/f3YYmbffoEJwGXi\n' +
+                                'AAAAJHRSTlMAAjNiibDR3+z5Gm3vCFu5/Qx05wRyPNIGkv4izELwVWVusQMCq8UIAAAAAWJLR0Qr\n' +
+                                'JLnkCAAAAAd0SU1FB+gBCg4sG93UddMAAAK7SURBVFjD7Zn5V9swDMfTpGmT3vddjs5cSzLGLjpY\n' +
+                                'Ydwwtv3/f85a1rDKsmO51Htvb/3+iJTPcy1bloRlrbXW/6GU7aTdTNbzfS+bcdOOnVoFNZd3C4xT\n' +
+                                'wc3nXkYtlsoVJlSlXCouja3W6ixB9Vp1KWyj6TGFvGZDn9tqq7AztVua2E63R+Ey1ut2dLj9AQ07\n' +
+                                '06BP5w436FzGNoZU7qavw2XM36Rxtyp63Omh3iKtV5s7JRPWPNTch/luKPe5rxW3hQgqzkZH45xB\n' +
+                                'DZLPc3dZLmPdJG4L37ed3b39g9eBRGH07NhLuN0NlB/eHL4NEhX+8W3LM1KT5x69C1Ra8G7KuFUu\n' +
+                                'T77/oMQCsCfLzzVuvRTuIpjVxNwi914cUbgAXBe/ViUubur9neoj+KYkBJch+JDCDT+Bb8oibg4m\n' +
+                                'n53nc3YcjT8TL0lFVBVsQ5/dmHtySqTOlBeAR9BlL16vDpe5mJvi6p39OTjS4bICrr5szuVgDv6i\n' +
+                                'BWY2AjucR5x3JnpgB4HTnIfoAhCURmB3NWAcvYwCHIXCC8LHNoPAWQVYyAX5+ElZBPYUYEoSmspD\n' +
+                                'YH81YP/vgY1thSp4ZzQwDp7quJ2fkcD4uOldkK8XEju+IGktMLuU2PGVdvTAE4kdJyFbDzyW2HHa\n' +
+                                '5BO9AhzNzVfwz4JEzz9NyeDT47n5WhU79JjG4Esh9yQ230CD6DHlnv/4ywtEnoyjeL1BcAtMwuef\n' +
+                                'K1gCku7uwUfCgoUrsWjgB/hjxCUWLApJ3G+PgCspCmEZS+F+/wEXLCljYeFN4f6EXGnhDVoFwj5w\n' +
+                                '65W3CqC5CRXYu4dHjpvQ3Cy2Y1EC+er65vaewya2Y+YaSHMtr7Em3dxYwdwgxNzoxtywydx4zNxA\n' +
+                                'z9wI0jI2NLXMjXktY4PpmQyN0p+U2x7h4f/opcP/33pl5N8Va631D+gX+FNZtIGr8cIAAAAldEVY\n' +
+                                'dGRhdGU6Y3JlYXRlADIwMjQtMDEtMTBUMTQ6NDQ6MjcrMDA6MDBjf98CAAAAJXRFWHRkYXRlOm1v\n' +
+                                'ZGlmeQAyMDI0LTAxLTEwVDE0OjQ0OjI3KzAwOjAwEiJnvgAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAA\n' +
+                                'MjAyNC0wMS0xMFQxNDo0NDoyNyswMDowMEU3RmEAAAAASUVORK5CYII=" />\n' + '</svg>',
                         },
                     link: 'https://gitee.com/max-LLL',
                 },
                 {icon: 'github', link: 'https://github.com/LLLPY'},
+
 
             ],
             //   网站logo
