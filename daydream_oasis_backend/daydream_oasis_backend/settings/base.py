@@ -4,7 +4,6 @@
 
 import os
 from pathlib import Path
-import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -165,10 +164,8 @@ AUTH_USER_MODEL = 'user.User'  # 子应用名.模型类名
 # 修改上传文件的最大值
 DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000  # 默认设置为500M
 
-# 静态文件的目录
-STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, 'static'),
-]
+# 指定现有的静态文件的目录 参考：https://www.qikqiak.com/post/django-staticroot-staticfilesdirs-function/
+STATICFILES_DIRS = []
 STATIC_URL = '/static/'  # 指定静态文件的路由
 
 # 静态文件收集后存放的目录
