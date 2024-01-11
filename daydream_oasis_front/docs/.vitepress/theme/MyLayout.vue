@@ -6,6 +6,7 @@ import {nextTick, provide} from 'vue'
 import TagList from '../../../src/components/TagList.vue'
 import TopList from '../../../src/components/TopList.vue'
 import Logo from '../../../src/components/Logo.vue'
+import Nav from '../../../src/components/Nav.vue'
 
 const {Layout} = DefaultTheme
 
@@ -51,7 +52,11 @@ provide('toggle-appearance', async ({clientX: x, clientY: y}: MouseEvent) => {
     <template #home-hero-image>
       <Logo/>
     </template>
+    <template #nav-bar-content-after>
+      <Nav/>
+    </template>
     <template #aside-outline-after>
+
       <TopList/>
       <TagList/>
     </template>

@@ -40,7 +40,7 @@ export default defineConfig({
                 {text: '分类🍰', link: '/blog/1390', activeMatch: '/1390'},
                 {text: '关于🦴', link: '/blog/1053', activeMatch: '/1053'},
                 {text: '写博客✍️', link: '/write'},
-                {text: '登录/注册🚪', link: '/login'},
+                // {text: '登录/注册🚪', link: '/login'},
                 // { text: '个人中心🍴', link: '/home' },
                 // {
                 //     text: '归档🗂️',
