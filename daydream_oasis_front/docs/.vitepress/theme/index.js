@@ -13,7 +13,7 @@ import Vditor from "../../../src/components/Vditor.vue";
 import Write from "../../../src/components/Write.vue";
 import Nav from "../../../src/components/Nav.vue";
 import Home from "../../../src/components/Home.vue";
-import { ElPagination,ElCol,ElAutocomplete,ElRow,ElCascader,ElInput,ElUpload,ElIcon,ElDialog,ElTag,ElButton } from "element-plus";
+import { ElPagination,ElCol,ElAutocomplete,ElRow,ElCascader,ElInput,ElUpload,ElIcon,ElDialog,ElTag,ElButton,ElAvatar } from "element-plus";
 import { Plus,Delete, ZoomIn } from '@element-plus/icons-vue'
 // import 'element-plus/dist/index.css'
 
@@ -41,6 +41,7 @@ export default {
         app.component('el-input', ElInput);
         app.component('el-upload', ElUpload);
         app.component('el-icon', ElIcon);
+        app.component('el-avatar', ElAvatar);
         app.component('Plus', Plus);
         app.component('Delete', Delete);
         app.component('ZoomIn', ZoomIn);

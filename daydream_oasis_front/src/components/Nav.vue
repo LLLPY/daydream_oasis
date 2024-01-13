@@ -1,26 +1,17 @@
 <template>
   <div class="nav">
     <div class="login">
-      <div class="" @click="goLogin">{{ !isLogin && '登录🚪' || user }}</div>
+      <div v-if="isLogin" @click="goLogin" class="block">
+        <el-avatar :size="25" :src="user.avatar" :alt="user.username" :title="user.username"/>
+      </div>
+      <div v-else @click="goLogin">登录🚪</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import {get_cookie, decodeByteString} from '../assets/js/tools'
-
-let isLogin = ref(false)
-let user = ref()
-
-let username = get_cookie('username')
-
-if (username) {
-  username = decodeByteString(username)
-  isLogin.value = true
-  user.value = username
-}
-
+import {ref, unref} from 'vue'
+import axios_ins from "../assets/axios";
 
 const goLogin = () => {
 
@@ -34,8 +25,18 @@ const goLogin = () => {
 }
 
 const initView = () => {
-  user = '白日梦想圆'
+  axios_ins.get('/api/user/info/').then(response => {
+    let data = response.data.data
+    isLogin.value = true
+    user = unref(data)
+  })
 }
+
+let isLogin = ref(false)
+let user = ref()
+
+initView()
+
 </script>
 
 <style scoped>
@@ -44,6 +45,11 @@ const initView = () => {
   align-items: center;
   height: 100%;
 }
+.block {
+  display: flex;
+  align-items: center;
+}
+
 
 .login:hover {
   cursor: pointer;
