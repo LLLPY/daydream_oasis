@@ -231,7 +231,7 @@ export default {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    //white-space: nowrap;
   }
 
   .VPDoc {
