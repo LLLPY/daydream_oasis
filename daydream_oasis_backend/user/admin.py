@@ -16,7 +16,7 @@ class UserAdmin(admin.ModelAdmin, MyBaseAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         obj.password = make_password(obj.password)
-        obj.resize(obj.avatar.path, 50, 50)
+        # obj.resize(obj.avatar.path, 50, 50)
         super().save_model(request, obj, form, change)
 
 
