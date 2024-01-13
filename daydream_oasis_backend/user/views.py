@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
 from random import choices
 from django.contrib.auth.hashers import check_password
+from rest_framework.response import Response
+
+from common.drf.decorators import login_required
 from user.models import User, ChatRecord
 from user.serializers import UserSerializers
 from utils.message_service import send_message
@@ -174,3 +177,9 @@ class UserViewSet(BaseViewSet):
         res = SucResponse('退出登录成功!')
         tools.delete_cookie(res)
         return res
+
+    @action(methods=['get'], detail=False)
+    @login_required
+    def info(self, request, *args, **kwargs):
+        serializer = self.get_serializer(request.user, include_fields=['username', 'avatar', 'id'])
+        return SucResponse(data=serializer.data)

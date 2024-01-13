@@ -7,6 +7,8 @@ from daydream_oasis_backend.settings.base import HOST
 from file.models import File
 from rest_framework import viewsets
 
+from utils import tools
+
 
 class FileViewSet(viewsets.ModelViewSet):
 
@@ -33,7 +35,7 @@ class FileViewSet(viewsets.ModelViewSet):
         filename = '.'.join(filename_list)
         file.name = filename
         file = File.create(request.user, File.type_size_dict[content_type][1], file)
-        file_url = f'{HOST}media/{file.path}'
+        file_url = tools.get_full_media_url(file.path)
         data = {
             'filename': filename,
             'content_type': content_type,

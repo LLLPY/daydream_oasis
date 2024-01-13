@@ -171,7 +171,7 @@ STATICFILES_DIRS = []
 SHARE_DIR = '/share/daydream_oasis'
 
 # 静态文件收集后存放的目录
-STATIC_ROOT = os.path.join(SHARE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'  # 指定静态文件的路由
 
 # 媒体文件的存放

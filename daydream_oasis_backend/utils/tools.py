@@ -1,7 +1,11 @@
 import re
 import hashlib
 from typing import Union
+from urllib.parse import urlparse
+
 import orjson
+
+from daydream_oasis_backend.settings.base import HOST
 
 
 # 获取ip相关的信息,
@@ -71,6 +75,15 @@ def delete_cookie(response, delete_cookie_list=[]):
     delete_cookie_list = delete_cookie_list or ['auth_token', 'username']
     for delete_cookie_key in delete_cookie_list:
         response.delete_cookie(delete_cookie_key)
+
+
+def get_full_media_url(media_url):
+    '''获取完整的媒体文件的链接'''
+    result = urlparse(media_url)
+    if not all([result.scheme, result.netloc]):
+        media_url = media_url.strip('/')
+        media_url = f'{HOST}media/{media_url}'
+    return media_url
 
 
 if __name__ == '__main__':
