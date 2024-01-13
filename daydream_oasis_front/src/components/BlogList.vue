@@ -231,7 +231,7 @@ export default {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; //隐藏超出部分并且移除空格
+    white-space: nowrap;
   }
 
   .VPDoc {
