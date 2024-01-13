@@ -34,6 +34,6 @@ class LoginRequired(CustomValidationError):
 
     @property
     def response(self):
-        res = ErrResponse(message=self.msg, error_code=self)
+        res = ErrResponse(message=self.msg, error_code=self.error_code)
         tools.delete_cookie(res)
         return res
