@@ -1,4 +1,3 @@
-import datetime
 from typing import List, Dict
 import jieba
 from django.db import models
@@ -16,10 +15,10 @@ class RealManager(models.Manager):
 
 class BaseModel(models.Model):
     # 创建时间
-    create_time = models.DateTimeField(default=datetime.datetime.now, verbose_name='创建时间', help_text='创建时间')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间', help_text='创建时间')
 
     # 文章最后修改的时间
-    update_time = models.DateTimeField(default=datetime.datetime.now, verbose_name='最后修改时间',
+    update_time = models.DateTimeField(auto_now=True, verbose_name='最后修改时间',
                                        help_text='最后修改时间')
 
     # 是否删除

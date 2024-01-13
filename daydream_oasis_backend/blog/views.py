@@ -43,6 +43,7 @@ class BlogViewSet(BaseViewSet):
         serializer.is_valid(raise_exception=True)
         user = self.request.user
         title = serializer.data.get('title')
+        avatar = serializer.data.get('avatar')
         category = serializer.data.get('category')
         tag_list = serializer.data.get('tag_list')
         content = serializer.data.get('content')
@@ -50,7 +51,7 @@ class BlogViewSet(BaseViewSet):
         is_draft = serializer.data.get('is_draft')
         blog_id = serializer.data.get('id')
         print(serializer.data)
-        new_blog_id = Blog.create_or_update(blog_id, title, user, category, tag_list, content, section, is_draft)
+        new_blog_id = Blog.create_or_update(blog_id, title, avatar, user, category, tag_list, content, section, is_draft)
         if is_draft and not blog_id and new_blog_id:
             data = {'blog_id': new_blog_id}
         else:

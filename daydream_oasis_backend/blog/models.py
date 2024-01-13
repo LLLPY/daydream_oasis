@@ -216,12 +216,14 @@ class Blog(BaseModel):
 
     @classmethod
     @transaction.atomic()
-    def create_or_update(cls, blog_id, title, user, category, tag_list, content, section, is_draft):
+    def create_or_update(cls, blog_id, title, avatar, user, category, tag_list, content, section, is_draft):
         if blog_id:
             blog = cls.get_by_id(blog_id)
         else:
             blog = cls()
         blog.title = title
+        if avatar:
+            blog.avatar = avatar
         blog.author = user
         category = Category.get_or_create(category)
         blog.category = category
