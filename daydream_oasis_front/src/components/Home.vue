@@ -19,6 +19,7 @@ export default {
         let data = response.data
         console.log(data)
         window.history.back();
+        location.reload();
 
       })
     }
