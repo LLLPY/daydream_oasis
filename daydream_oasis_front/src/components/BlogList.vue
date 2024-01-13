@@ -47,7 +47,7 @@
   </ul>
   <div id="pagination">
     <el-pagination background :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
-      :hide-on-single-page="true" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
+      :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
       @current-change="handleCurrentChange" />
   </div>
 </template>
@@ -56,7 +56,6 @@
 import axios_ins from "../assets/axios";
 import { Warning } from "../assets/MessageBox";
 import { ref, computed } from 'vue';
-
 
 export default {
   data() {
@@ -103,6 +102,7 @@ export default {
         behavior: 'smooth' // 可以添加平滑滚动效果
       });
       this.page = val
+      localStorage.setItem('page', val)
       this.get_blog_list()
     },
     search(params){
@@ -128,6 +128,7 @@ export default {
     }
   },
   mounted() {
+    this.page = +localStorage.getItem('page') || 1
     this.get_blog_list()
   }
 }

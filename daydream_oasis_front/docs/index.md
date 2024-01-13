@@ -34,3 +34,7 @@ features:
 
 ---
 
+<script setup>
+  localStorage.removeItem('page')
+</script>
+
