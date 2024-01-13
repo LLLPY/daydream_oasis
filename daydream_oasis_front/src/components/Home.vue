@@ -6,6 +6,7 @@
 
 import axios_ins from "../assets/axios";
 import {get_cookie, decodeByteString} from "../assets/js/tools";
+import {Warning} from "../assets/MessageBox";
 
 export default {
   data() {
@@ -25,7 +26,12 @@ export default {
     }
   },
   mounted() {
-    this.username = decodeByteString(get_cookie('username'))
+    if (!get_cookie('username')) {
+      Warning('请先登录!')
+      history.back()
+    } else {
+      this.username = decodeByteString(get_cookie('username'))
+    }
   }
 }
 

@@ -298,8 +298,6 @@ let blog = {
     if (!get_cookie('username')) {
       Warning('请先登录!')
       history.back()
-
-
     } else {
       this.get_draft()
       setTimeout(this.update_draft, 5000)

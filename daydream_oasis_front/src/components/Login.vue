@@ -13,8 +13,6 @@ export default {
   components: {
     BaseLoginAndRegister
   },
-  
-
   data() {
     return {
       username: '',
