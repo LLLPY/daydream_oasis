@@ -47,15 +47,16 @@
   </ul>
   <div id="pagination">
     <el-pagination background :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
-      :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" />
+                   :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]"
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"/>
   </div>
 </template>
 
 <script>
 import axios_ins from "../assets/axios";
-import { Warning } from "../assets/MessageBox";
-import { ref, computed } from 'vue';
+import {Warning} from "../assets/MessageBox";
+import {ref, computed} from 'vue';
 
 export default {
   data() {
@@ -70,7 +71,7 @@ export default {
       screen_width: computed(() => {
         return window.innerWidth
       }),
-      search_url:'http://localhost:8000/api/blog/search/'
+      search_url: 'http://localhost:8000/api/blog/search/'
     }
   },
   methods: {
@@ -105,17 +106,17 @@ export default {
       localStorage.setItem('page', val)
       this.get_blog_list()
     },
-    search(params){
-      let url = this.search_url+'?'
-      for(let key in params){
-        if (params.hasOwnProperty(key) && params[key]){
-          url+=`${key}=${params[key]}&`
+    search(params) {
+      let url = this.search_url + '?'
+      for (let key in params) {
+        if (params.hasOwnProperty(key) && params[key]) {
+          url += `${key}=${params[key]}&`
           console.log(key)
           console.log(params[key])
         }
       }
-      axios_ins(url).then(response =>{
-          let data = response.data
+      axios_ins(url).then(response => {
+        let data = response.data
         if (data.code === '0') {
           data = data.data
           console.log(data)
@@ -151,7 +152,7 @@ export default {
   transform: scale(1.05, 1.05);
 }
 
-#blog-list .blog-preview:hover>#blog-list .blog-preview:not(:hover) {
+#blog-list .blog-preview:hover > #blog-list .blog-preview:not(:hover) {
   filter: blur(10px);
   transform: scale(0.9, 0.9);
 }
@@ -184,7 +185,7 @@ export default {
 
 #blog-list .blog-preview .content {
   //min-height: 80px;
-  max-height: 150px;
+  //max-height: 150px;
   display: flex;
   flex-direction: row;
 
@@ -229,6 +230,8 @@ export default {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; //隐藏超出部分并且移除空格
   }
 
   .VPDoc {
