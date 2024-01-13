@@ -79,6 +79,7 @@ def delete_cookie(response, delete_cookie_list=[]):
 
 def get_full_media_url(media_url):
     '''获取完整的媒体文件的链接'''
+    media_url = str(media_url)
     result = urlparse(media_url)
     if not all([result.scheme, result.netloc]):
         media_url = media_url.strip('/')
