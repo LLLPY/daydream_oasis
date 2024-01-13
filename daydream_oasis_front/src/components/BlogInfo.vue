@@ -51,7 +51,6 @@ export default {
       axios_ins.get(`/api/blog/${this.blog.id}/`).then(response => {
         let data = response.data
         this.blog = data.data
-        console.log(this.blog)
       })
     },
     upload_action() {

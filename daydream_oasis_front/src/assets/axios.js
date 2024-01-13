@@ -24,12 +24,13 @@ axios_ins.interceptors.response.use(function (response) {
     if (data['code'] !== '0') {
         Warning(data['message'])
         // 结果异常，直接结束
-        return
+        return Promise.reject(new Error('Response code is not 0'));
+
     }
     return response;
 }, function (error) {
     // 对响应错误做点什么
-    return Promise.reject(error);
+    return Promise.reject(error.message);
 });
 axios_ins.defaults.withCredentials = true;
 export default axios_ins
