@@ -208,10 +208,7 @@ class Blog(BaseModel):
         return recommend_blog_list
 
     def get_abstract(self):
-        abstract = self.abstract
-        if not abstract:
-            content = self.content
-            abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', content))[:150].replace('\n', '')
+        abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', self.content))[:150].replace('\n', '')
         return abstract
 
     @classmethod

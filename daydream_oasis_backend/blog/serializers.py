@@ -59,11 +59,7 @@ class BlogSerializers(DynamicFieldsSerializer):
         return Action.objects.filter(blog=obj).values('id').count()
 
     def get_abstract(self, obj):
-        abstract = obj.abstract
-        if not abstract:
-            content = obj.content
-            abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', content))[:150].replace('\n', '')
-        return abstract
+        return obj.get_abstract()
 
     def get_category_parent_list(self, obj):
         return obj.category.get_parent_list()
