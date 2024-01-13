@@ -11,7 +11,7 @@ def login_required(func):
 
         if not hasattr(self.request,
                        'user') or not self.request.user.is_authenticated:
-            raise exception.CustomValidationError('请先登录!')
+            raise exception.LoginRequired('请先登录!')
 
         res = func(self, *args, **kwargs)
 

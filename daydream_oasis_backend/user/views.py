@@ -100,9 +100,16 @@ class UserViewSet(BaseViewSet):
             raise exception.CustomValidationError('密码错误!')
 
         res = SucResponse('登录成功!')
-        res.set_signed_cookie('user_id', tmp_user.id, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7,
+        auth_token = tools.md5(f'{tmp_user.id}_daydream_oasis')
+        res.set_signed_cookie('auth_token', auth_token, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7,
                               samesite='', secure='', httponly='')
-        # raise exception.CustomValidationError('')
+
+        res.set_cookie('username', tmp_user.username.encode('utf-8'), max_age=3600 * 24 * 7, samesite='', secure='',
+                       httponly='')
+        # 登录信息写入缓存
+        self.redis_conn.set(auth_token, tmp_user.id)
+        self.redis_conn.expire(auth_token, 3600 * 24 * 7)
+
         return res
 
     # 发送验证码
@@ -159,7 +166,11 @@ class UserViewSet(BaseViewSet):
             raise exception.CustomValidationError('验证码发送失败!')
 
     # 退出登录
-    @action(methods=['post'], detail=True)
+    @action(methods=['post'], detail=False)
     def logout(self, request, *args, **kwargs):
+        auth_token = request.get_signed_cookie('auth_token', default='', salt=tools.md5('daydream_oasis'))
+        self.redis_conn.delete(auth_token)
         default_logout(self.request)
-        return SucResponse('退出登录成功!')
+        res = SucResponse('退出登录成功!')
+        tools.delete_cookie(res)
+        return res

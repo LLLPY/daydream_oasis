@@ -4,6 +4,7 @@
 
 from common.drf.response import ErrResponse
 from common.exception.service_code import (OBJ_NOT_EXIST, VERIFICATION_ERROR)
+from utils import tools
 
 
 class CustomValidationError(Exception):
@@ -25,3 +26,13 @@ class CustomValidationError(Exception):
 class ObjectNotFound(CustomValidationError):
     def __init__(self, msg=None, error_code=OBJ_NOT_EXIST, **kwargs):
         super(ObjectNotFound, self).__init__(msg or '对象不存在', error_code=error_code, **kwargs)
+
+
+class LoginRequired(CustomValidationError):
+    def __init__(self, msg=None, error_code=OBJ_NOT_EXIST, **kwargs):
+        super(LoginRequired, self).__init__(msg or '请先登录!', error_code=error_code, **kwargs)
+
+    def response(self):
+        res = ErrResponse(message=self.msg, error_code=self)
+        tools.delete_cookie(res)
+        return res

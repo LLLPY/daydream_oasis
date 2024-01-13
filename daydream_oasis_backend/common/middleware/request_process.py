@@ -4,10 +4,13 @@ from django.contrib.auth.models import AnonymousUser
 from django.core.cache import cache
 from django.http import HttpResponseBadRequest
 from django.utils.deprecation import MiddlewareMixin
+from django_redis import get_redis_connection
 
 from user.models import User
 from utils import tools
 import uuid
+
+redis_conn = get_redis_connection('default')
 
 '''
 中间件的基本流程:
@@ -26,7 +29,9 @@ class RequestMiddleWare(MiddlewareMixin):
         # 跨域问题
         setattr(request, '_dont_enforce_csrf_checks', True)
         # 更新request上的user
-        user_id = request.get_signed_cookie('user_id', default=None, salt=tools.md5('daydream_oasis'))
+        auth_token = request.get_signed_cookie('auth_token', default='', salt=tools.md5('daydream_oasis'))
+
+        user_id = redis_conn.get(auth_token)
         _uuid = request.COOKIES.get('uuid')
         
         # 如果没有user或者是匿名用户，尝试去获取用户
