@@ -66,26 +66,18 @@ export default {
       if (res) {
         axios_ins.delete(`/api/blog/${this.blog.id}/`).then(response => {
           let data = response.data
-          if (data['code'] === '0') {
-            window.location.href = '/blog/'
-            Info(data['message'])
-          } else {
-            Warning(data['message'])
-          }
+          window.location.href = '/blog/'
+          Info(data['message'])
         })
       }
 
     },
-    edit_blog(){
-       axios_ins.put(`/api/blog/${this.blog.id}/`).then(response => {
-          let data = response.data
-          if (data['code'] === '0') {
-            window.location.href = '/write'
-            Info(data['message'])
-          } else {
-            Warning(data['message'])
-          }
-        })
+    edit_blog() {
+      axios_ins.put(`/api/blog/${this.blog.id}/`).then(response => {
+        let data = response.data
+        window.location.href = '/write'
+        Info(data['message'])
+      })
     }
   },
 

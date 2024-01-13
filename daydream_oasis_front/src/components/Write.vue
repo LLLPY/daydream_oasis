@@ -142,17 +142,10 @@ let blog = {
       this.dialogVisible.value = true
     },
     handlePictureSucc(response, uploadFile, uploadFiles) {
-      // 后端响应成功
-      if (response['code'] === '0') {
-        // 图片上传成功
-        this.fileList[0] = uploadFile
-        document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
-        this.avatar.value = response['data']['url']
-      } else {
-        this.handlePictureRemove(null, null)
-        Warning(response['message'])
-      }
-      console.log(response)
+      // 图片上传成功
+      this.fileList[0] = uploadFile
+      document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
+      this.avatar.value = response['data']['url']
     },
     //标签
     handleTagClose(tag) {
@@ -233,12 +226,7 @@ let blog = {
         data.is_draft = false
         data.content = window.vditor.getValue()
         axios_ins.post('/api/blog/?action=submit', data).then(response => {
-          let data = response.data
-          if (data['code'] === '1') {
-            Warning(data['message'])
-          } else {
-            window.location.href = `/blog/${this.blog_id}.html`
-          }
+          window.location.href = `/blog/${this.blog_id}.html`
         })
       }
     },
@@ -247,34 +235,30 @@ let blog = {
       axios_ins("/api/blog/get_draft/").then(response => {
         let data = response.data
         if (Object.keys(data.data).length) {
-          if (data.code === "0") {
-            data = data.data
-            this.blog_id = data.id
-            this.title = data.title
-            this.category = data.category
-            this.avatar.value = data.avatar
-            this.fileList[0] = {url: data.avatar}
-            document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
-            this.tag_list = data.tag_list.map(function (val) {
-              return {value: val}
-            })
-            this.content = data.content
-            let obj = this
-            let interval = setInterval(function () {
-              try {
-                window.vditor.setValue(data.content)
-                last_form_data = {...obj.form_data}
-                last_form_data.content = window.vditor.getValue()
-                clearInterval(interval)
-                console.log("结束调用")
-              } catch (e) {
-                console.log("继续调用")
-              }
-            }, 500)
-            Warning("接着上次继续编辑...")
-          } else {
-            Warning(data.message)
-          }
+          data = data.data
+          this.blog_id = data.id
+          this.title = data.title
+          this.category = data.category
+          this.avatar.value = data.avatar
+          this.fileList[0] = {url: data.avatar}
+          document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
+          this.tag_list = data.tag_list.map(function (val) {
+            return {value: val}
+          })
+          this.content = data.content
+          let obj = this
+          let interval = setInterval(function () {
+            try {
+              window.vditor.setValue(data.content)
+              last_form_data = {...obj.form_data}
+              last_form_data.content = window.vditor.getValue()
+              clearInterval(interval)
+              console.log("结束调用")
+            } catch (e) {
+              console.log("继续调用")
+            }
+          }, 500)
+          Warning("接着上次继续编辑...")
         }
       })
     },
@@ -297,13 +281,9 @@ let blog = {
         data.is_draft = true
         axios_ins.post('/api/blog/?action=update_draft', data).then(response => {
           let data = response.data
-          if (data['code'] === '1') {
-            Warning(data['message'])
-          } else {
-            let new_blog_id = data.data.blog_id
-            if (new_blog_id) {
-              this.blog_id = new_blog_id
-            }
+          let new_blog_id = data.data.blog_id
+          if (new_blog_id) {
+            this.blog_id = new_blog_id
           }
         })
       }

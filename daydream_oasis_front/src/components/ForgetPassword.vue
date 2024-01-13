@@ -40,7 +40,6 @@ export default {
         const cookie = response.headers['set-cookie'];
         console.log(cookie)
         console.log(response.headers)
-      }).catch(reason => {
       })
     }
   }
