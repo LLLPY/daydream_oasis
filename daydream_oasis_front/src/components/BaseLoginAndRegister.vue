@@ -40,6 +40,7 @@
                     const data = response.data
                     if (data.code === '0'){
                         window.history.back();
+                        location.reload();
                         Info(data.message)
                     }else{
                         Warning(data.message)
