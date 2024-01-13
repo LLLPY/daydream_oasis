@@ -3,6 +3,8 @@ from common.drf.serializers import DynamicFieldsSerializer
 import re
 from common.exception import exception
 
+from utils import tools
+
 
 # 用户
 class UserSerializers(DynamicFieldsSerializer):
@@ -12,6 +14,8 @@ class UserSerializers(DynamicFieldsSerializer):
     code = serializers.CharField(required=True, help_text='验证码')
     password = serializers.CharField(required=True, help_text='密码')
     action = serializers.CharField(allow_null=True, help_text='操作')
+    avatar = serializers.SerializerMethodField(help_text='头像')
+    id = serializers.CharField(allow_blank=True, allow_null=True, help_text='')
 
     def validate_mobile(self, value):
         ...
@@ -34,7 +38,9 @@ class UserSerializers(DynamicFieldsSerializer):
         return bool(
             6 <= len(password) <= 20 and re.match(r'.*\d+.*', password) and re.match(r'.*[a-zA-Z]+.*', password))
 
-    # 更新
+    def get_avatar(self, obj):
+        avatar = tools.get_full_media_url(obj.avatar)
+        return avatar
 
 
 # 留言
