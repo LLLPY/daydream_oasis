@@ -21,9 +21,8 @@ source venv/bin/activate
 wait
 
 # 收集静态文件
-echo "静态文件不存在,开始收集..."
-python3 manage.py collectstatic 
-echo "yes"
+echo "开始收集静态文件..."
+python3 manage.py collectstatic --noinput
 echo "静态文件收集完成..."
 wait
 
