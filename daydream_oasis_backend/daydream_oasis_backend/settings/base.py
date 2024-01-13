@@ -166,14 +166,15 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000  # 默认设置为500M
 
 # 指定现有的静态文件的目录 参考：https://www.qikqiak.com/post/django-staticroot-staticfilesdirs-function/
 STATICFILES_DIRS = []
-STATIC_URL = '/static/'  # 指定静态文件的路由
 
-# 静态文件收集后存放的目录
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# 媒体文件的存放
 # 共享文件的目录（媒体文件）
 SHARE_DIR = '/share/daydream_oasis'
+
+# 静态文件收集后存放的目录
+STATIC_ROOT = os.path.join(SHARE_DIR, 'static')
+STATIC_URL = '/static/'  # 指定静态文件的路由
+
+# 媒体文件的存放
 MEDIA_ROOT = os.path.join(SHARE_DIR, 'media')  # 存储路径
 MEDIA_URL = '/media/'
 
