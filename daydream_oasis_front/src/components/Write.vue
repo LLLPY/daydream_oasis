@@ -79,6 +79,7 @@
 <script>
 import {Warning} from '../assets/MessageBox.js'
 import axios_ins from "../assets/axios";
+import {get_cookie} from "../assets/js/tools";
 
 var last_form_data = {};
 let blog = {
@@ -314,8 +315,16 @@ let blog = {
 
   },
   mounted() {
-    this.get_draft()
-    setTimeout(this.update_draft, 5000)
+    if (!get_cookie('username')) {
+      Warning('请先登录!')
+      history.back()
+
+
+    } else {
+      this.get_draft()
+      setTimeout(this.update_draft, 5000)
+    }
+
   }
 }
 export default blog

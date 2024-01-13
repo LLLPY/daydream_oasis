@@ -66,5 +66,11 @@ def limit_str(s: str, max_len=9, suffix='...'):
     return s[:end or max_len] + (suffix if end != 0 else '')
 
 
+def delete_cookie(response,delete_cookie_list=[]):
+    delete_cookie_list =delete_cookie_list or ['auth_token', 'username']
+    for delete_cookie in delete_cookie_list:
+        response.delete_cookie(delete_cookie)
+
+
 if __name__ == '__main__':
     ...

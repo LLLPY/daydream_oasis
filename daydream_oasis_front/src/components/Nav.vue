@@ -7,12 +7,30 @@
 </template>
 
 <script setup>
-import { ref, unref } from 'vue'
+import {ref} from 'vue'
+import {get_cookie, decodeByteString} from '../assets/js/tools'
+
 let isLogin = ref(false)
 let user = ref()
-const goLogin=() => {
+
+let username = get_cookie('username')
+
+if (username) {
+  username = decodeByteString(username)
   isLogin.value = true
-  initView()
+  user.value = username
+}
+
+
+const goLogin = () => {
+
+  if (isLogin.value) {
+    // 跳转到个人中心
+    location.href = '/home'
+  } else {
+    // 跳转到登录页面
+    location.href = '/login'
+  }
 }
 
 const initView = () => {
@@ -25,6 +43,10 @@ const initView = () => {
   display: flex;
   align-items: center;
   height: 100%;
+}
+
+.login:hover {
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {

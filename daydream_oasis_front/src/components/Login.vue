@@ -44,14 +44,8 @@ export default {
           }).then(response => {
           const data = response.data
           Info(data.message)
-        const cookie = response.headers['set-cookie'];
-        console.log(cookie)
-        console.log(response.headers)
-        console.log(document.referrer)
+
       })
-    },
-    fun(){
-      console.log(66666)
     }
   }
 }
