@@ -13,17 +13,16 @@
         </div>
       </div>
       <div class="item_extra">
-        <span class="info-box" @click="search({author:blog.author.id})"><span
-            class="iconfont">&#xe6a4;</span>{{ blog.author.username }}</span>
+        <span class="info-box" @click="search({author:blog.author.id})">
+          <span class="iconfont">&#xe6a4;</span>{{ blog.author.username }} {{ blog.update_time }}
+        </span>
         <span class="info-box category" @click="search({category:blog.category})"> {{ blog.category }} </span>
         <span class="info-box tag" v-for="tag in blog.tag_list" @click="search({tag:tag})">{{ tag }}</span>
-        <span class="info-box date">{{ blog.update_time }}</span>
         <span class="info-box read"><a :href="blog.id">阅读原文>></a> </span>
         <span></span>
       </div>
     </div>
   </div>
-
 
   <div id="pagination">
     <el-pagination
@@ -119,7 +118,7 @@ export default {
 
   .item {
     padding: 12px;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);
     border-radius: 8px;
     margin-bottom: 24px;
     transition: all linear .5s;
@@ -166,16 +165,22 @@ export default {
     }
 
     .item_extra {
+      padding-top: 8px;
       border-top: 1px solid #eee;
 
       .info-box {
-        margin-left: 10px;
+        margin-left: 8px;
         font-size: 0.8rem;
         border-radius: 2px;
-      }
+        padding: 2px 4px;
 
-      .info-box:nth-child(1) {
-        margin-left: 0;
+        .iconfont {
+          font-size: 14px;
+        }
+
+        &:nth-child(1) {
+          margin-left: 0;
+        }
       }
 
       .category {
@@ -186,10 +191,6 @@ export default {
         background-color: rgba(235, 235, 250, 0.7);
       }
 
-      .date {
-        background-color: rgba(135, 206, 250, 0.7);
-      }
-
       a {
         text-decoration: none;
       }
@@ -197,9 +198,9 @@ export default {
 
   }
 
-  .item:hover {
+  /* .item:hover {
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, .3);
-  }
+  } */
 
 
 }
