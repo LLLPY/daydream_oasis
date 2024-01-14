@@ -295,7 +295,8 @@ let blog = {
 
   },
   mounted() {
-    if (!get_cookie('username')) {
+    console.log()
+    if (!get_cookie('auth_token')) {
       Warning('请先登录!')
       history.back()
     } else {

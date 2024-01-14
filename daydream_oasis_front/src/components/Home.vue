@@ -7,6 +7,7 @@
 import axios_ins from "../assets/axios";
 import {get_cookie, decodeByteString} from "../assets/js/tools";
 import {Warning} from "../assets/MessageBox";
+import {unref} from "vue";
 
 export default {
   data() {
@@ -17,8 +18,6 @@ export default {
   methods: {
     logout() {
       axios_ins.post('/api/user/logout/',).then(response => {
-        let data = response.data
-        console.log(data)
         window.history.back();
         location.reload();
 
@@ -26,11 +25,14 @@ export default {
     }
   },
   mounted() {
-    if (!get_cookie('username')) {
+    if (!get_cookie('auth_token')) {
       Warning('请先登录!')
       history.back()
     } else {
-      this.username = decodeByteString(get_cookie('username'))
+      axios_ins.get('/api/user/info/').then(response => {
+        let data = response.data.data
+        this.username = data.username
+      })
     }
   }
 }
