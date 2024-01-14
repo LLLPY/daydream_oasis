@@ -40,7 +40,7 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
             'fields': ['title', 'avatar', 'author', 'category', 'tag_list'],
         }),
         ('数据', {
-            'fields': ['create_time', 'update_time', 'dpv', 'duv', 'pv', 'uv'],
+            'fields': ['dpv', 'duv', 'pv', 'uv'],
         }),
         ('状态', {
             'fields': ['has_deleted', 'is_top', 'is_draft'],

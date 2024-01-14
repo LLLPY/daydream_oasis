@@ -10,6 +10,8 @@ class MyBaseAdmin:
     list_select_related = True
     save_as = True
     list_display = ['id']
+    exclude = ('create_time', 'update_time')
+
 
 
 # 背景音乐

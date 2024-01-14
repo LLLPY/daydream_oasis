@@ -11,7 +11,8 @@ from daydream_oasis_backend.settings.base import BASE_DIR
 from user.models import User
 from utils.cache import my_cache
 from utils.collaborative_filltering import cf_user
-import re
+
+import markdown
 
 
 # 博客分类
@@ -158,9 +159,10 @@ class Blog(BaseModel):
         '''
         阅读时长计算公式:cost_time=总字数÷平均阅读速度+图片数*5
         '''
-        text_list = re.findall(r'[\u4e00-\u9fa5|a-z|A-Z]+', self.content)
-        text_len = len(''.join(text_list))
-        img_count = len(etree.HTML(self.content).xpath('//img'))
+        html = self.get_html()
+        text_len = len(self.get_text())
+        e = etree.HTML(html)
+        img_count = len(e.xpath('//img'))
         avg_speed = 400  # 除以3的原因：内容中除了中文以外可能还有英文
         read_time = 60 * (text_len / avg_speed) / 3 + img_count * 5
         self.read_time = read_time
@@ -208,8 +210,18 @@ class Blog(BaseModel):
         return recommend_blog_list
 
     def get_abstract(self):
-        abstract = ''.join(re.findall(r'[\u4e00-\u9fa5a-zA-Z\s\n]+', self.content))[:150].replace('\n', '')
-        return abstract
+        return self.get_text()[:150]
+
+    def get_html(self):
+        '''获取html'''
+        html = markdown.markdown(self.content)
+        return html
+
+    def get_text(self):
+        '''获取文本内容'''
+        return ''.join(etree.HTML(self.get_html()).xpath('//*[not(self::code)]/text()')).replace('```', '')
+
+
 
     @classmethod
     @transaction.atomic()
