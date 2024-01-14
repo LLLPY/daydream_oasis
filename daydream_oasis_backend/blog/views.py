@@ -121,6 +121,8 @@ class BlogViewSet(BaseViewSet):
     @login_required
     def destroy(self, request, *args, **kwargs):
         obj = self.get_object()
+        if obj.author_id != request.user.id:
+            raise exception.CustomValidationError('无权限编辑!')
         obj.delete()
         obj.delete_md()
         return SucResponse('删除成功!')
