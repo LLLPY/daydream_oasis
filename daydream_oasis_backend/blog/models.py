@@ -210,7 +210,7 @@ class Blog(BaseModel):
         return recommend_blog_list
 
     def get_abstract(self):
-        return self.get_text()[:150]
+        return self.get_text()[:100]
 
     def get_html(self):
         '''获取html'''
@@ -220,8 +220,6 @@ class Blog(BaseModel):
     def get_text(self):
         '''获取文本内容'''
         return ''.join(etree.HTML(self.get_html()).xpath('//*[not(self::code)]/text()')).replace('```', '')
-
-
 
     @classmethod
     @transaction.atomic()

@@ -23,7 +23,6 @@
 <script>
 
 import axios_ins from '../assets/axios'
-import {Warning} from "../assets/MessageBox";
 
 export default {
   data() {
