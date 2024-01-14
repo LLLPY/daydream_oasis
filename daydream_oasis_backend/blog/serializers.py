@@ -27,7 +27,7 @@ class SectionSerializers(DynamicFieldsSerializer):
 # 文章
 class BlogSerializers(DynamicFieldsSerializer):
     id = serializers.IntegerField(help_text='id')
-    title = serializers.CharField(required=True, max_length=20, help_text='标题')
+    title = serializers.CharField(required=True, max_length=30, help_text='标题')
     author = serializers.SerializerMethodField()
     # author = serializers.CharField()
     avatar = serializers.CharField(required=False, help_text='封面', allow_null=True)
