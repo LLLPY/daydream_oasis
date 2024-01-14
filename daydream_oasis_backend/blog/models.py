@@ -21,7 +21,7 @@ class Category(BaseModel):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
 
     # 标题
-    title = models.CharField(max_length=8, blank=True, unique=True, verbose_name='标题', help_text='标题')
+    title = models.CharField(max_length=10, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
     # avatar
     avatar = models.URLField(default='http://www.lll.plus/media/image/default_blog_avatar.jpg', verbose_name='封面',
@@ -59,7 +59,7 @@ class Tag(BaseModel):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
 
     # title
-    title = models.CharField(max_length=5, blank=True, unique=True, verbose_name='标题', help_text='标题')
+    title = models.CharField(max_length=10, blank=True, unique=True, verbose_name='标题', help_text='标题')
 
     class Meta:
         db_table = 'tag'
