@@ -50,7 +50,6 @@ class BlogViewSet(BaseViewSet):
         section = serializer.data.get('section')
         is_draft = serializer.data.get('is_draft')
         blog_id = serializer.data.get('id')
-        print(serializer.data)
         new_blog_id = Blog.create_or_update(blog_id, title, avatar, user, category, tag_list, content, section, is_draft)
         if is_draft and not blog_id and new_blog_id:
             data = {'blog_id': new_blog_id}
@@ -224,7 +223,6 @@ class BlogViewSet(BaseViewSet):
             data = serializer.data
         else:
             data = {}
-        print(data)
         return SucResponse(data=data)
 
     @action(methods=['get'], detail=False)

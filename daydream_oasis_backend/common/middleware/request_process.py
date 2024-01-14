@@ -6,9 +6,10 @@ from django.http import HttpResponseBadRequest
 from django.utils.deprecation import MiddlewareMixin
 from django_redis import get_redis_connection
 
+from daydream_oasis_backend.settings.base import logger
 from user.models import User
 from utils import tools
-import uuid
+
 
 redis_conn = get_redis_connection('default')
 
@@ -38,7 +39,7 @@ class RequestMiddleWare(MiddlewareMixin):
         if not hasattr(request, 'user') or not request.user or isinstance(request.user, AnonymousUser):
             request.user = User.get_by_id(user_id) or AnonymousUser()
 
-        print(f'cookie中获取的user_id:{user_id},user:{request.user} {request.user.is_authenticated},uuid:{_uuid}')
+        logger.info(f'cookie中获取的user_id:{user_id},user:{request.user},uuid:{_uuid},auth_token:{auth_token}')
         # return HttpResponse('后台维护，暂停访问...')
 
         start_time = time.time()

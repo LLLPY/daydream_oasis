@@ -1,11 +1,9 @@
 # -*- coding: UTF-8 -*-                            
 # @Author  ：LLL                         
 # @Date    ：2023/9/8 23:02  
-import logging
 import common.exception.exception as exceptions
 from common.drf.response import ErrResponse
-
-logger = logging.getLogger(__name__)
+from daydream_oasis_backend.settings.base import logger
 
 
 def custom_exception_handler(exc, context=None):

@@ -106,12 +106,8 @@ class UserViewSet(BaseViewSet):
         auth_token = tools.md5(f'{tmp_user.id}_daydream_oasis')
         res.set_signed_cookie('auth_token', auth_token, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7,
                               samesite='', secure='', httponly='')
-
-        res.set_cookie('username', tmp_user.username.encode('utf-8'), max_age=3600 * 24 * 7, samesite='', secure='',
-                       httponly='')
         # 登录信息写入缓存
-        self.redis_conn.set(auth_token, tmp_user.id)
-        self.redis_conn.expire(auth_token, 3600 * 24 * 7)
+        self.redis_conn.set(auth_token, tmp_user.id, 3600 * 24 * 7)
 
         return res
 
@@ -158,8 +154,7 @@ class UserViewSet(BaseViewSet):
             now = datetime.now()
             expired = (timedelta(hours=24, minutes=0, seconds=0) - timedelta(hours=now.hour, minutes=now.minute,
                                                                              seconds=now.second)).seconds
-            self.redis_conn.set(used_key, use_count + 1)
-            self.redis_conn.expire(used_key, expired)
+            self.redis_conn.set(used_key, use_count + 1, expired)
 
             return SucResponse('验证码已发送至您的手机,请注意查收!')
         else:
@@ -181,5 +176,6 @@ class UserViewSet(BaseViewSet):
     @action(methods=['get'], detail=False)
     @login_required
     def info(self, request, *args, **kwargs):
+        '''用户信息'''
         serializer = self.get_serializer(request.user, include_fields=['username', 'avatar', 'id'])
         return SucResponse(data=serializer.data)

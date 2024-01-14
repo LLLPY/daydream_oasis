@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-                            
 # @Author  ：LLL                         
-# @Date    ：2023/1/10 0:39  
-
+# @Date    ：2023/1/10 0:39
+import logging
 import os
 from pathlib import Path
 
@@ -178,7 +178,6 @@ STATIC_URL = '/static/'  # 指定静态文件的路由
 MEDIA_ROOT = os.path.join(SHARE_DIR, 'media')  # 存储路径
 MEDIA_URL = '/media/'
 
-
 # 修改默认的文件存储为自定义的
 DEFAULT_FILE_STORAGE = 'daydream_oasis_backend.storage.WatermarkStorage'
 
@@ -199,3 +198,42 @@ HOST = 'http://www.lll.plus/'
 
 # 后台的logo
 SIMPLEUI_LOGO = f'{HOST}media/image/default_blog_avatar.jpg'
+
+# 日志的配置
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'formatters': {
+        'daydream_oasis': {
+            'format': '{name} {levelname} {asctime} {message}; pid:{process:d} tid:{thread:d} {pathname}:{lineno}',
+            'style': '{',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': [],
+            'class': 'logging.StreamHandler',
+            'formatter': 'daydream_oasis',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': [],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'daydream_oasis',
+        }
+    },
+    'loggers': {
+        'daydream_oasis': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        }
+    }
+}
+
+logger = logging.getLogger('daydream_oasis')
