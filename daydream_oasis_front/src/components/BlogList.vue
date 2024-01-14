@@ -2,7 +2,7 @@
   <div class="wrap">
     <div class="item" v-for="(blog, index) in blog_list" :key="blog.id">
       <div class="item_title">
-        {{ blog.title }} 
+        {{ blog.title }}
       </div>
       <div class="item_content">
         <div class="item_img">
@@ -12,67 +12,31 @@
           {{ blog.abstract }}
         </div>
       </div>
+      <div class="item_extra">
+        <span class="info-box" @click="search({author:blog.author.id})"><span
+            class="iconfont">&#xe6a4;</span>{{ blog.author.username }}</span>
+        <span class="info-box category" @click="search({category:blog.category})"> {{ blog.category }} </span>
+        <span class="info-box tag" v-for="tag in blog.tag_list" @click="search({tag:tag})">{{ tag }}</span>
+        <span class="info-box date">{{ blog.update_time }}</span>
+        <span class="info-box read"><a :href="blog.id">阅读原文>></a> </span>
+        <span></span>
+      </div>
     </div>
   </div>
-  <!-- <ul id="blog-list">
-    <li class="blog-preview" v-for="(blog, index) in blog_list">
-      <h3 class="title">{{ blog.title }}</h3>
-      <hr>
-      <div class="content">
-        <div class="avatar">
-          <img :src="blog.avatar" alt="">
-        </div>
-        <div class="article">
-          {{ blog.abstract }}
-        </div>
-      </div>
-      <hr>
-      <div class="info">
-        <span class="author info-box">
-
-          <span class="iconfont">&#xe6a4;</span>
-          <span @click="search({author:blog.author.id})">{{ blog.author.username }}</span>
-        </span>
-
-        <span class="category-box info-box">
-
-          <span class="category" @click="search({category:blog.category})">
-             <span class="iconfont">&#xe64e;</span>
-            {{ blog.category }}</span></span>
 
 
-        <span class="tag-list info-box" v-if="blog.tag_list.length">
-
-          <span class="tag" v-for="tag in blog.tag_list" @click="search({tag:tag})">
-            <span class="iconfont">&#xeb47;</span>
-            {{ tag }}
-          </span>
-        </span>
-
-        <span class="update_time info-box">
-         <span class="iconfont">&#xe9ab;</span> 
-
-          <span class="date">{{ blog.update_time }}</span></span>
-
-        <span class="read info-box"><a :href="blog.id">阅读原文>></a> </span>
-      </div>
-
-    </li>
-
-  </ul> -->
   <div id="pagination">
     <el-pagination
-      background 
-      :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
-      :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"/>
+        background
+        :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
+        :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"/>
   </div>
 </template>
 
 <script>
 import axios_ins from "../assets/axios";
-import {Warning} from "../assets/MessageBox";
 import {ref, computed} from 'vue';
 
 export default {
@@ -130,8 +94,8 @@ export default {
       }
       axios_ins(url).then(response => {
         let data = response.data
-          data = data.data
-          this.blog_list = data
+        data = data.data
+        this.blog_list = data
       })
     }
   },
@@ -144,7 +108,12 @@ export default {
 </script>
 
 
-<style scoped >
+<style>
+
+#top-box {
+  margin-top: 0;
+}
+
 .wrap {
   width: 100%;
 
@@ -153,6 +122,7 @@ export default {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, .1);
     border-radius: 8px;
     margin-bottom: 24px;
+    transition: all linear .5s;
 
     .item_title {
       padding: 10px 0;
@@ -165,6 +135,8 @@ export default {
     .item_content {
       display: flex;
       height: 150px;
+      margin-bottom: 10px;
+
 
       .item_img {
         width: 40%;
@@ -184,33 +156,100 @@ export default {
       .item_abstract {
         flex: 1;
         font-size: 16px;
-        line-height: 1.5;
         overflow: hidden;
         text-overflow: ellipsis;
         line-height: 32px;
-        /* letter-spacing: 1px; */
-        /* text-align: justify; */
+        letter-spacing: 1px;
+        text-align: justify;
         word-break: break-all;
       }
     }
+
+    .item_extra {
+      border-top: 1px solid #eee;
+
+      .info-box {
+        margin-left: 10px;
+        font-size: 0.8rem;
+        border-radius: 2px;
+      }
+
+      .info-box:nth-child(1) {
+        margin-left: 0;
+      }
+
+      .category {
+        background-color: rgba(255, 165, 0, 0.7);
+      }
+
+      .tag {
+        background-color: rgba(235, 235, 250, 0.7);
+      }
+
+      .date {
+        background-color: rgba(135, 206, 250, 0.7);
+      }
+
+      a {
+        text-decoration: none;
+      }
+    }
+
+  }
+
+  .item:hover {
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .3);
+  }
+
+
+}
+
+@media (max-width: 450px) {
+
+  .VPDoc {
+    padding-left: 0.55rem !important;
+    padding-right: 0.55rem !important;
+    padding-top: 12px!important;
+  }
+
+  .item {
+    width: 100%;
+
+    .item_content {
+      display: block !important;
+      height: auto !important;
+
+      .item_img {
+        width: 100% !important;
+        border-radius: 8px !important;
+
+        img {
+          width: 100% !important;
+          max-height: 250px;
+
+        }
+      }
+
+      .item_abstract {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+
+  /* 隐藏掉分页的jumper */
+  #pagination .el-pagination__jump,
+  #pagination .el-pagination__sizes {
+    display: none;
   }
 }
 
-@media (max-width: 767px) {
-  .item_content {
-   flex-direction: column;
-   height: auto !important;
-
-    .item_img {
-      width: 100% !important;
-      border-radius: 8px !important;
-    }
-
-    .item_abstract {
-      display: -webkit-box;
-      -webkit-line-clamp: 3; /* 指定要显示的行数 */
-      -webkit-box-orient: vertical;
-    }
-  }
+// 分页第一个按钮边距很大
+.el-page,
+.vp-doc ul {
+  padding-left: 0 !important;
 }
+
 </style>
