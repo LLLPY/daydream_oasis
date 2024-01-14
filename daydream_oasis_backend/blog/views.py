@@ -24,7 +24,7 @@ class BlogViewSet(BaseViewSet):
     def get_queryset(self):
 
         if self.action == 'list':
-            return self.queryset.filter(is_draft=False)
+            return self.queryset.filter(is_draft=False, is_nav=False)
 
         return self.queryset
 

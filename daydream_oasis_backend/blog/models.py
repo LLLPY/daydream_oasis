@@ -144,6 +144,10 @@ class Blog(BaseModel):
     # 是否原创
     is_original = models.BooleanField(default=True, verbose_name='是否原创', help_text='是否原创')
 
+    # 是否在导航页
+    is_nav = models.BooleanField(default=False, verbose_name='是否在导航页', help_text='是否在导航页')
+
+
     class Meta:
         db_table = 'blog'
         verbose_name = verbose_name_plural = db_table
