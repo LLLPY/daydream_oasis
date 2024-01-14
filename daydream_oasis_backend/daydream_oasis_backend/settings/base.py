@@ -58,39 +58,6 @@ MIDDLEWARE = [
 # 解决跨域
 CORS_ALLOW_CREDENTIALS = True  # 允许携带Cookie
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    '*'
-)
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173'
-]
-
-CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
-
-CORS_ALLOW_HEADERS = (
-    'XMLHttpRequest',
-    'X_FILENAME',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'Pragma',
-    '*'
-)
-
-CORS_ALLOW_METHODS = (
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-    'VIEW',
-)
 
 ROOT_URLCONF = 'daydream_oasis_backend.urls'
 
