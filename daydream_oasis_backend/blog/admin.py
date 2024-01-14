@@ -43,7 +43,7 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
             'fields': ['dpv', 'duv', 'pv', 'uv'],
         }),
         ('状态', {
-            'fields': ['has_deleted', 'is_top', 'is_draft'],
+            'fields': ['has_deleted', 'is_top', 'is_draft', 'is_nav'],
         }),
         ('内容', {
             'fields': ['abstract', 'content'],
