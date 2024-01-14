@@ -1,5 +1,20 @@
 <template>
-  <ul id="blog-list">
+  <div class="wrap">
+    <div class="item" v-for="(blog, index) in blog_list" :key="blog.id">
+      <div class="item_title">
+        {{ blog.title }} 
+      </div>
+      <div class="item_content">
+        <div class="item_img">
+          <img :src="blog.avatar" alt="">
+        </div>
+        <div class="item_abstract">
+          {{ blog.abstract }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <ul id="blog-list">
     <li class="blog-preview" v-for="(blog, index) in blog_list">
       <h3 class="title">{{ blog.title }}</h3>
       <hr>
@@ -22,20 +37,20 @@
         <span class="category-box info-box">
 
           <span class="category" @click="search({category:blog.category})">
-            <!-- <span class="iconfont">&#xe64e;</span> -->
+             <span class="iconfont">&#xe64e;</span>
             {{ blog.category }}</span></span>
 
 
         <span class="tag-list info-box" v-if="blog.tag_list.length">
 
           <span class="tag" v-for="tag in blog.tag_list" @click="search({tag:tag})">
-            <!-- <span class="iconfont">&#xeb47;</span> -->
+            <span class="iconfont">&#xeb47;</span>
             {{ tag }}
           </span>
         </span>
 
         <span class="update_time info-box">
-          <!-- <span class="iconfont">&#xe9ab;</span> -->
+         <span class="iconfont">&#xe9ab;</span> 
 
           <span class="date">{{ blog.update_time }}</span></span>
 
@@ -44,12 +59,14 @@
 
     </li>
 
-  </ul>
+  </ul> -->
   <div id="pagination">
-    <el-pagination background :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
-                   :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]"
-                   @size-change="handleSizeChange"
-                   @current-change="handleCurrentChange"/>
+    <el-pagination
+      background 
+      :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
+      :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"/>
   </div>
 </template>
 
@@ -127,165 +144,73 @@ export default {
 </script>
 
 
-<style>
-#top-box {
-  margin-top: 0;
-}
-
-#blog-list {
-  padding: 0;
-  margin: 0;
+<style scoped >
+.wrap {
   width: 100%;
-}
 
-#blog-list .blog-preview:hover {
-  transform: scale(1.05, 1.05);
-}
+  .item {
+    padding: 12px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, .1);
+    border-radius: 8px;
+    margin-bottom: 24px;
 
-#blog-list .blog-preview:hover > #blog-list .blog-preview:not(:hover) {
-  filter: blur(10px);
-  transform: scale(0.9, 0.9);
-}
+    .item_title {
+      padding: 10px 0;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
 
+    .item_content {
+      display: flex;
+      height: 150px;
 
-#blog-list .blog-preview {
-  list-style: none;
-  width: 100%;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  transition: 400ms;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .1);
+      .item_img {
+        width: 40%;
+        height: 100%;
+        margin-right: 12px;
+        flex-shrink: 0;
+        border-radius: 8px;
 
-}
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+      }
 
-#blog-list .blog-preview .title {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-
-#blog-list .blog-preview hr {
-  margin-top: 2px;
-  margin-bottom: 3px;
-  border: 1px solid #0000001f;
-}
-
-#blog-list .blog-preview .content {
-  //min-height: 80px;
-  max-height: 150px;
-  display: flex;
-  flex-direction: row;
-
-}
-
-#blog-list .blog-preview .content .avatar {
-  flex: 4;
-  padding-right: 2%;
-
-}
-
-#blog-list .blog-preview .content .avatar img {
-  width: 100%;
-  height: 100%;
-  border: 1px solid #dee2e6;
-  border-radius: 0.25rem;
-  overflow: hidden;
-}
-
-#blog-list .blog-preview .content .article {
-  flex: 7;
-  overflow: hidden;
-  font-size: 0.9rem;
-  word-break: break-all;
-
-}
-
-/* 移动端适配 */
-@media (max-width: 450px) {
-  #blog-list .blog-preview .content {
-    display: inline-block;
+      .item_abstract {
+        flex: 1;
+        font-size: 16px;
+        line-height: 1.5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 32px;
+        /* letter-spacing: 1px; */
+        /* text-align: justify; */
+        word-break: break-all;
+      }
+    }
   }
+}
 
-  #blog-list .blog-preview .content .avatar,
-  #blog-list .blog-preview .content .article {
-    width: 100%;
+@media (max-width: 767px) {
+  .item_content {
+   flex-direction: column;
+   height: auto !important;
+
+    .item_img {
+      width: 100% !important;
+      border-radius: 8px !important;
+    }
+
+    .item_abstract {
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* 指定要显示的行数 */
+      -webkit-box-orient: vertical;
+    }
   }
-
-  /* 移动端最多显示三行内容 */
-  #blog-list .blog-preview .content .article {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    //white-space: nowrap;
-  }
-
-  .VPDoc {
-    padding-left: 0.55rem !important;
-    padding-right: 0.55rem !important;
-  }
-
-  #blog-list .blog-preview {
-    margin-bottom: 1.5rem;
-  }
-
-  /* 隐藏掉分页的jumper */
-  #pagination .el-pagination__jump,
-  #pagination .el-pagination__sizes {
-    display: none;
-  }
-
-}
-
-#blog-list .blog-preview .info {
-  font-size: 0.75rem;
-  line-height: 1.5;
-}
-
-#blog-list .blog-preview .info .info-box {
-  margin-left: 0.5rem;
-}
-
-#blog-list .blog-preview .info .info-box:nth-child(1) {
-  margin-left: 0;
-}
-
-#blog-list .blog-preview .info .read a {
-  text-decoration: none;
-}
-
-#blog-list .blog-preview .info .category,
-#blog-list .blog-preview .info .tag,
-#blog-list .blog-preview .info .date {
-  border-radius: 4px;
-  padding: 0.1rem;
-}
-
-#blog-list .blog-preview .info .category {
-  background-color: orange;
-
-}
-
-
-#blog-list .blog-preview .info .tag {
-  background-color: #22c55e;
-  margin-left: 2px;
-}
-
-#blog-list .blog-preview .info .tag:nth-child(1) {
-  margin-left: 0;
-}
-
-
-#blog-list .blog-preview .info .date {
-  background-color: skyblue;
-}
-
-#blog-list .blog-preview .info .iconfont {
-  margin: 0;
 }
 </style>
