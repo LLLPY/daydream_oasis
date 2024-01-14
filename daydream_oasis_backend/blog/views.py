@@ -107,6 +107,9 @@ class BlogViewSet(BaseViewSet):
         has_draft = Blog.objects.filter(author_id=user.id, is_draft=True).exists()
         if has_draft:
             raise exception.CustomValidationError('您有未编辑完的草稿...')
+        if obj.author_id != user.id:
+            raise exception.CustomValidationError('无权限编辑!')
+
         obj.is_draft = True
         obj.save()
 
