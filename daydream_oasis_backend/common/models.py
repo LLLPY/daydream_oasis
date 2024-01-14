@@ -1,7 +1,5 @@
-from typing import List, Dict
 import jieba
 from django.db import models
-from daydream_oasis_backend.settings.base import MEDIA_URL
 from PIL.Image import open as imgOpen
 from os.path import isfile
 from log.logger import logger
@@ -53,64 +51,6 @@ class BaseModel(models.Model):
     @classmethod
     def get_by_id(cls, _id: int):
         return cls.objects.filter(id=_id).first()
-
-    # 将对象转成字典
-    def to_dict(self, fields: List[str], exclude_list: List[str] = [], extra_map: Dict = {}) -> Dict:
-        '''
-        fields:需要转换的字段列表
-        exclude_list:不需要转换的字段列表
-        extra_map:需要二次to_dict的对象的配置表
-        例如：
-            blog:(title,author)--->author需要再次to_dict
-            对于author的fields和exclude_list配置，可以写在extra_map中
-            extra_map={
-                'author':{
-                    'fields':[],
-                    'exclude_list':[],
-                    }
-            }
-        '''
-        fields = fields or self._meta.get_fields()
-        con = {}
-        for k in fields:
-            if k not in exclude_list and hasattr(self, k):
-
-                obj_v = getattr(self, k)
-
-                # 需要再次to_dict
-                if isinstance(obj_v, models.Model):
-                    k_extra_map = extra_map.get(k, {})
-                    _fields = k_extra_map.get('fields', [])
-                    _exclude_list = extra_map.get('exclude_list', exclude_list)
-                    con[k] = obj_v.to_dict(fields=_fields, exclude_list=_exclude_list, extra_map=extra_map)
-
-                # 时间
-                elif k in ['create_time', 'update_time']:
-                    con[k] = str(obj_v).split('.')[0]
-
-                # 阅读时长
-                elif k in ['read_time']:
-                    minute = int(obj_v) // 60
-                    seconds = int(obj_v) % 60
-                    con[k] = f'{minute}分{seconds}秒'
-
-                # 多对多关系的
-                elif k in ['tags', 'blog_list']:
-                    con[k] = [str(tag.to_dict(exclude_list=exclude_list, extra_map=extra_map)) for tag in obj_v.all()]
-
-                # 文件
-                elif k in ['avatar', 'path']:
-                    v = str(obj_v).strip('/')
-                    if not v.startswith('http'):
-                        if 'media' not in v:
-                            v = f'..{MEDIA_URL}{v}'
-                    con[k] = v
-
-                # 一般字段
-                else:
-                    con[k] = obj_v
-
-        return con
 
     # 获取，没有就创建
     @classmethod
