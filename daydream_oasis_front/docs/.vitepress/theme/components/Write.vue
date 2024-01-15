@@ -77,8 +77,8 @@
   </div>
 </template>
 <script>
-import {Warning} from '../assets/MessageBox.js'
-import axios_ins from "../assets/axios";
+import {Warning} from '../assets/js/MessageBox.js'
+import axios_ins from "../assets/js/axios";
 import {get_cookie} from "../assets/js/tools";
 
 var last_form_data = {};

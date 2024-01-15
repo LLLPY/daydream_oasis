@@ -1,8 +1,8 @@
 <script>
 
-import {Warning} from '../assets/MessageBox.js'
+import {Warning} from '../assets/js/MessageBox.js'
 import BaseLoginAndRegister from './BaseLoginAndRegister.vue'
-import axios_ins from "../assets/axios";
+import axios_ins from "../assets/js/axios";
 
 export default {
   components: {

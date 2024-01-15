@@ -3,9 +3,8 @@ defineProps(['title', 'sub_title1', 'sub_link1', 'sub_title2', 'sub_link2'])
 </script>
 <script>
 
-import {Warning} from '../assets/MessageBox.js'
-import axios_ins from '../assets/axios'
-import {Info} from "../assets/MessageBox";
+import axios_ins from '../assets/js/axios'
+import {Warning,Info} from "../assets/js/MessageBox";
 
 
 export default {

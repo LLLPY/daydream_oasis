@@ -1,10 +1,8 @@
 <script setup>
 // 1.1 引入Vditor 构造函数
 import Vditor from 'vditor'
-// 1.2 引入样式
-import '../assets/css/vditor@3.9.6.css';
 import {ref, onMounted} from 'vue';
-import {Warning} from "../assets/MessageBox";
+import {Warning} from "../assets/js/MessageBox";
 // 2. 获取DOM引用
 const vditor = ref()
 // const CDN = "http://www.lll.plus/media/vditor"

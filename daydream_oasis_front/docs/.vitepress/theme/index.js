@@ -1,22 +1,21 @@
 import {default as DefaultTheme} from "vitepress/theme";
 import MyLayout from "./MyLayout.vue";
-import Login from "../../../src/components/Login.vue";
-import Register from "../../../src/components/Register.vue";
-import ForgetPassword from "../../../src/components/ForgetPassword.vue";
-import TagList from "../../../src/components/TagList.vue";
-import TopList from "../../../src/components/TopList.vue";
-import Logo from "../../../src/components/Logo.vue";
-import ActionBox from "../../../src/components/ActionBox.vue";
-import BlogInfo from "../../../src/components/BlogInfo.vue";
-import BlogList from "../../../src/components/BlogList.vue";
-import Vditor from "../../../src/components/Vditor.vue";
-import Write from "../../../src/components/Write.vue";
-import Nav from "../../../src/components/Nav.vue";
-import Home from "../../../src/components/Home.vue";
+import Login from "./components/Login.vue";
+import Register from "./components/Register.vue";
+import ForgetPassword from "./components/ForgetPassword.vue";
+import TagList from "./components/TagList.vue";
+import TopList from "./components/TopList.vue";
+import Logo from "./components/Logo.vue";
+import ActionBox from "./components/ActionBox.vue";
+import BlogInfo from "./components/BlogInfo.vue";
+import BlogList from "./components/BlogList.vue";
+import Vditor from "./components/Vditor.vue";
+import Write from "./components/Write.vue";
+import Nav from "./components/Nav.vue";
+import Home from "./components/Home.vue";
 import { ElPagination,ElCol,ElAutocomplete,ElRow,ElCascader,ElInput,ElUpload,ElIcon,ElDialog,ElTag,ElButton,ElAvatar } from "element-plus";
 import { Plus,Delete, ZoomIn } from '@element-plus/icons-vue'
-import '../../../src/assets/css/index.css'
-// import 'element-plus/dist/index.css'
+// import '../../../src/assets/css/index.css'
 
 
 

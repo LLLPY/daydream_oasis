@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import axios_ins from "../assets/axios";
-import {ref, computed} from 'vue';
+import axios_ins from "../assets/js/axios";
+import {computed} from 'vue';
 
 export default {
   data() {

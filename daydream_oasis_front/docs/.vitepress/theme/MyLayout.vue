@@ -3,10 +3,10 @@
 import {useData} from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import {nextTick, provide} from 'vue'
-import TagList from '../../../src/components/TagList.vue'
-import TopList from '../../../src/components/TopList.vue'
-import Logo from '../../../src/components/Logo.vue'
-import Nav from '../../../src/components/Nav.vue'
+import TagList from './components/TagList.vue'
+import TopList from './components/TopList.vue'
+import Logo from './components/Logo.vue'
+import Nav from './components/Nav.vue'
 
 const {Layout} = DefaultTheme
 

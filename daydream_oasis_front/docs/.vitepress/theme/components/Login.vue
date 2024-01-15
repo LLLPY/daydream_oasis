@@ -1,14 +1,18 @@
+<template>
+  <BaseLoginAndRegister title="Login" sub_title1="注册" sub_link1="/register.html" sub_title2="忘记密码?" sub_link2="/forget_password.html"></BaseLoginAndRegister>
+</template>
 <script>
 
-import {Warning} from '../assets/MessageBox.js'
-import axios_ins from "../assets/axios";
+import {Warning, Info} from '../assets/js/MessageBox.js'
+import axios_ins from "../assets/js/axios";
 import BaseLoginAndRegister from './BaseLoginAndRegister.vue'
 
+
 export default {
+  extends:BaseLoginAndRegister,
   components: {
     BaseLoginAndRegister
   },
-
   data() {
     return {
       username: '',
@@ -30,22 +34,20 @@ export default {
         Warning('密码不能为空!')
         return;
       }
-      console.log(this.password)
       axios_ins.post('/api/user/login/',
           {
             'username': this.username,
             'password': this.password,
             'code': this.code
           }).then(response => {
-        const cookie = response.headers['set-cookie'];
-        console.log(cookie)
-        console.log(response.headers)
+          const data = response.data
+          Info(data.message)
+
       })
     }
   }
 }
+
+
 </script>
 
-<template>
-  <BaseLoginAndRegister title="Forget" sub_title1="注册" sub_link1="/register.html" sub_title2="登录" sub_link2="/login.html"></BaseLoginAndRegister>
-</template>

@@ -17,11 +17,10 @@
   </div>
 </template>
 <script>
-import axios_ins from "../assets/axios";
+import axios_ins from "../assets/js/axios"
 import '../assets/font/iconfont'
 import '../assets/font/iconfont.css'
-import '../assets/css/blog_info.css'
-import {Info, Warning} from "../assets/MessageBox";
+import {Info} from "../assets/js/MessageBox"
 
 
 export default {
@@ -90,3 +89,23 @@ export default {
 
 </script>
 
+<style>
+.info-box span {
+  display: inline-block;
+  font-size: 0.8em;
+  margin: 0.2em;
+}
+
+a {
+  text-decoration: none;
+}
+
+.vp-doc h2 {
+  border-top: none !important;
+}
+
+.info-box .edit,
+.info-box .delete:hover {
+  cursor: pointer;
+}
+</style>

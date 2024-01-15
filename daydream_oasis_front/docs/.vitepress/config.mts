@@ -1,11 +1,5 @@
 import {defineConfig} from 'vitepress'
-import vue from "@vitejs/plugin-vue";
-import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
-import {ElementPlusResolver} from "unplugin-vue-components/resolvers";
-
 export default defineConfig({
-        // plugins: [vue(),AutoImport({resolvers: [ElementPlusResolver()],}),Components({resolvers: [ElementPlusResolver()],}),],
         lang: 'en-US', //zh-CN|en-US
         title: "白日梦想园",
         description: "Daydream Oasis是一个致力于启发和创造的博客系统，为您提供了一个欣赏、分享和沉浸在各种幻想和梦想中的机会。Daydream Oasis将成为您的梦想之家。",
@@ -20,10 +14,6 @@ export default defineConfig({
             // ['script', { src:'//cdn.jsdelivr.net/npm/vue@3' }],
             // ['script', { src:'https://cdn.jsdelivr.net/npm/element-plus' }],
 
-            // vditor
-            // ['link', {rel: 'stylesheet', href: 'http://www.lll.plus/media/vditor/dist/js/icons/ant.js'}],
-            // ['link', {rel: 'stylesheet', href: 'http://www.lll.plus/media/vditor/dist/css/content-theme/light.css'}],
-            // ['script', { src:'https://unpkg.com/vditor@3.9.6/dist/index.min.js' }],
         ],
         themeConfig: {
             i18nRouting: true,
@@ -40,16 +30,6 @@ export default defineConfig({
                 {text: '分类🍰', link: '/blog/1390', activeMatch: '/1390'},
                 {text: '关于🦴', link: '/blog/1053', activeMatch: '/1053'},
                 {text: '写博客✍️', link: '/write'},
-                // {text: '登录/注册🚪', link: '/login'},
-                // { text: '个人中心🍴', link: '/home' },
-                // {
-                //     text: '归档🗂️',
-                //     items: [
-                //         { text: '归档1', link: '/file' },
-                //         { text: '归档2', link: '/file' },
-                //         { text: '归档3', link: '/file' },
-                //     ]
-                // },
             ],
             // 侧边栏
             // sidebar: [],
