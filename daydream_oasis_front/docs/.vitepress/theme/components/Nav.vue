@@ -11,7 +11,7 @@
 
 <script setup>
 import {ref, unref} from 'vue'
-import axios_ins from "../assets/js/axios";
+import {axios_ins} from "../assets/js/axios";
 
 const goLogin = () => {
 

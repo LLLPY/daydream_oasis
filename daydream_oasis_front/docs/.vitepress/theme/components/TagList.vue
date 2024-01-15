@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import axios_ins from '../assets/js/axios'
+import {axios_ins} from '../assets/js/axios'
 
 export default {
   data() {

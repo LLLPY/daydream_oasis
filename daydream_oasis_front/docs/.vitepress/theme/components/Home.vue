@@ -4,7 +4,7 @@
 </template>
 <script>
 
-import axios_ins from "../assets/js/axios";
+import {axios_ins} from "../assets/js/axios";
 import {get_cookie} from "../assets/js/tools";
 import {Warning} from "../assets/js/MessageBox";
 
