@@ -28,7 +28,7 @@
             <el-col :span="8" class="el-input-group__prepend title-box">封面</el-col>
             <el-col :span="16">
               <el-upload v-model:file-list="fileList"
-                         :action="api_url"
+                         action="http://www.lll.plus/api/file/upload/"
                          :with-credentials="withCredentials"
                          list-type="picture-card" :on-preview="handlePictureCardPreview"
                          :on-remove="handlePictureRemove"
@@ -78,7 +78,7 @@
 </template>
 <script>
 import {Warning} from '../assets/js/MessageBox.js'
-import {axios_ins,upload_api} from "../assets/js/axios";
+import axios_ins from "../assets/js/axios";
 import {get_cookie} from "../assets/js/tools";
 
 var last_form_data = {};
@@ -95,7 +95,6 @@ let blog = {
       dialogVisible: {value: false},
       fileList: [],
       withCredentials: true,
-      api_url:upload_api
     }
   },
   computed: {

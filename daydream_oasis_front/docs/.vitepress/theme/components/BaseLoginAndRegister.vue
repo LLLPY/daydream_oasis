@@ -3,7 +3,7 @@ defineProps(['title', 'sub_title1', 'sub_link1', 'sub_title2', 'sub_link2'])
 </script>
 <script>
 
-import {axios_ins} from '../assets/js/axios'
+import axios_ins from '../assets/js/axios'
 import {Warning,Info} from "../assets/js/MessageBox";
 
 

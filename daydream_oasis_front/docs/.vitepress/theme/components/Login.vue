@@ -4,7 +4,7 @@
 <script>
 
 import {Warning, Info} from '../assets/js/MessageBox.js'
-import {axios_ins} from "../assets/js/axios";
+import axios_ins from "../assets/js/axios";
 import BaseLoginAndRegister from './BaseLoginAndRegister.vue'
 
 

@@ -1,16 +1,16 @@
 <script setup>
 // 1.1 引入Vditor 构造函数
 import Vditor from 'vditor'
-import {onMounted} from 'vue';
-import {Warning} from '../assets/js/MessageBox';
-import {upload_api} from '../assets/js/axios'
-
-
+import {ref, onMounted} from 'vue';
+import {Warning} from "../assets/js/MessageBox";
+// 2. 获取DOM引用
+const vditor = ref()
+// const CDN = "http://www.lll.plus/media/vditor"
 const CDN = "https://cdn.jsdelivr.net/npm/vditor@3.9.8"
 
 // 3. 在组件初始化时，就创建Vditor对象，并引用
 onMounted(() => {
-  new Vditor('vditor', {
+  vditor.value = new Vditor('vditor', {
 
     // 获取焦点方法
     focus(md) {
@@ -105,8 +105,8 @@ onMounted(() => {
     //文件上传
     upload: {
       accept: 'image/*,.mp3, .wav, .rar',
-      url: upload_api,
-      linkToImgUrl: upload_api,
+      url: 'http://www.lll.plus/api/file/upload/',
+      linkToImgUrl: 'http://www.lll.plus/api/file/upload/',
       filename(name) {
         return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
       },
@@ -415,6 +415,9 @@ onMounted(() => {
     cdn:CDN
 
   })
+
+
+  window.vditor = vditor.value
 
 
 })

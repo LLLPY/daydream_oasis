@@ -15,7 +15,7 @@ import Nav from "./components/Nav.vue";
 import Home from "./components/Home.vue";
 import { ElPagination,ElCol,ElAutocomplete,ElRow,ElCascader,ElInput,ElUpload,ElIcon,ElDialog,ElTag,ElButton,ElAvatar } from "element-plus";
 import { Plus,Delete, ZoomIn } from '@element-plus/icons-vue'
-import './assets/css/index.css'
+// import '../../../src/assets/css/index.css'
 
 
 

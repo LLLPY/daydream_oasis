@@ -1,11 +1,11 @@
 import axios from "axios";
 import {Warning} from "./MessageBox";
 
-// const API_URL = 'http://www.lll.plus'
-const API_URL = 'http://localhost:8000'
 const axios_ins = axios.create({
     withCredentials: true,
-    baseURL: API_URL,
+    // baseURL: 'http://localhost:8000',
+    baseURL: 'http://www.lll.plus'
+
 })
 
 // 添加请求拦截器
@@ -32,10 +32,5 @@ axios_ins.interceptors.response.use(function (response) {
     // 对响应错误做点什么
     return Promise.reject(error.message);
 });
-// axios_ins.defaults.withCredentials = true;
-
-const upload_api = `${API_URL}/api/file/upload/`
-
-
-export {axios_ins, API_URL, upload_api}
-
+axios_ins.defaults.withCredentials = true;
+export default axios_ins
