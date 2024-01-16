@@ -4,7 +4,7 @@ from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
 
 
-def send_message(phoneNumber, code):
+def send_message(phone_number, code):
     ACCESSKEYID = 'LTAI5tKziR22m9SD9enPTLR6'
     ACCESSSECRET = 'l6rEqIDfSNeYYRNgM3q8YZtnmxD99m'
     # 这三个参数即 AccessKey ID， AccessKey Secret， 地区的id，关于地区id怎么获得我会贴在文章最下方
@@ -21,7 +21,7 @@ def send_message(phoneNumber, code):
     # 配置地区id  地区id即为 cn_%s % (所在的地区名，应该是可以细分到市级的，如cn_hangzhou)
     request.add_query_param("RegionId", "cn-shanghai")
     # 配置要发送的手机号码
-    request.add_query_param("PhoneNumbers", phoneNumber)
+    request.add_query_param("PhoneNumbers", phone_number)
     # 配置你所设置的信息模板code,文章下方我会贴出来在哪边可以设置信息模板
     request.add_query_param("TemplateCode", "SMS_218285754")
     # 这个TemplateParam参数是给信息模板中的变量传值的，正常使用应该是后端获取验证码然后塞到这个参数中的

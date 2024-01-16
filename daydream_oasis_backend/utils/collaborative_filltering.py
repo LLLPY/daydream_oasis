@@ -3,7 +3,7 @@
 # @Date    ：2023/4/5 16:47
 
 from collections import OrderedDict
-import scipy.stats
+# import scipy.stats
 import numpy as np
 
 
@@ -39,8 +39,8 @@ def get_cos_similar(v1: list, v2: list):
     return (num / denom) if denom != 0 else 0
 
 #计算用户的皮尔孙相似度
-def get_pearsonr_similar(v1: list, v2: list):
-    return scipy.stats.pearsonr(v1, v2)
+# def get_pearsonr_similar(v1: list, v2: list):
+#     return scipy.stats.pearsonr(v1, v2)
 
 # 基于用户的协同过滤算法
 # @my_cache(timeout=60 * 60)

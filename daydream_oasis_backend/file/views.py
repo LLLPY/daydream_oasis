@@ -19,7 +19,7 @@ class FileViewSet(viewsets.ModelViewSet):
         file = request.FILES.get('file') or request.FILES.get('file[]')
 
         content_type = file.content_type.split('/')[0]
-        content_type = 'other' if content_type == 'application' else content_type
+        content_type = 'other' if content_type in ['', 'application'] else content_type
         # 1.图片的大小限制在2M以内
         # 2.视频的大小限制在200M以内
         # 3.音频的大小限制在50M以内

@@ -7,13 +7,11 @@ wait
 if ! [ -d "venv" ]; then
     echo "虚拟环境不存在,开始安装虚拟环境..."
     python3 -m venv venv
-    source venv/bin/activate
     echo "虚拟环境创建完成..."
 fi
 
 # 安装第三方库
 pip3 install -r requirements.txt
-
 wait
 
 # 激活虚拟环境

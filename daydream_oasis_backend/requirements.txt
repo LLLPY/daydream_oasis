@@ -12,7 +12,7 @@ numpy==1.26.2
 apscheduler==3.10.1
 jieba==0.42.1
 scipy==1.11.2
-uwsgi==2.0.23
+
 orjson==3.9.7
 django-cors-headers==4.2.0
 markdown==3.5.2
