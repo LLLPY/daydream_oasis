@@ -29,11 +29,11 @@ class File(BaseModel):
     # 文件大小的限制
     MB = 1024 * 1024
     type_size_dict = {
-        'image': (2 * MB, IMAGE),
-        'video': (200 * MB, VIDEO),
-        'audio': (50 * MB, AUDIO),
-        'text': (20 * MB, TEXT),
-        'other': (200 * MB, OTHER),
+        'image': (2, IMAGE),
+        'video': (200, VIDEO),
+        'audio': (50, AUDIO),
+        'text': (20, TEXT),
+        'other': (200, OTHER),
     }
 
     # 上传者

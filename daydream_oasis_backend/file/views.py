@@ -25,7 +25,7 @@ class FileViewSet(viewsets.ModelViewSet):
         # 3.音频的大小限制在50M以内
         # 4.文档的大小限制在20M以内
         # 5.其他的大小限制在200M以内
-        if file.size > File.type_size_dict[content_type][0]:
+        if file.size > File.type_size_dict[content_type][0] * File.MB:
             return ErrResponse(message=f'上传失败,{content_type}最大支持{File.type_size_dict[content_type][0]}MB！')
 
         # 基于时间戳的uuid，防止文件重名
