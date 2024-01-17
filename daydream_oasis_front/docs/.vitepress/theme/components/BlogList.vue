@@ -143,6 +143,7 @@ export default {
         margin-right: 12px;
         flex-shrink: 0;
         border-radius: 8px;
+        overflow: hidden;
 
         img {
           width: 100%;
