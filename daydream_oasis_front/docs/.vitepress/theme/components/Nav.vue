@@ -4,7 +4,7 @@
       <div v-if="isLogin" @click="goLogin" class="block">
         <el-avatar :size="25" :src="user.avatar" :alt="user.username" :title="user.username"/>
       </div>
-      <div v-else @click="goLogin">登录🚪</div>
+      <div v-else @click="goLogin">登录</div>
     </div>
   </div>
 </template>
