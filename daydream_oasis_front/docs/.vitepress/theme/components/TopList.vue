@@ -2,7 +2,7 @@
     <ul id="top-box">
         <div class="head">
             <span class="title">Top</span>
-            <span class="more">更多</span>
+<!--            <span class="more">更多</span>-->
         </div>
 
         <li v-for="(top,index) in top_list" :key="index" class="top">

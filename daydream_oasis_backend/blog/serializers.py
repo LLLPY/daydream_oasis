@@ -39,17 +39,13 @@ class BlogSerializers(DynamicFieldsSerializer):
     abstract = serializers.SerializerMethodField()
     pv = serializers.SerializerMethodField()
     read_times = serializers.IntegerField()
-    read_time = serializers.SerializerMethodField()
+    read_time = serializers.CharField()
     create_time = serializers.DateTimeField(format='%Y.%m.%d %H:%M:%S')
     update_time = serializers.DateTimeField(format='%Y.%m.%d %H:%M:%S')
     category_parent_list = serializers.SerializerMethodField()
 
     def get_author(self, obj):
         return {'id': obj.author.id, 'username': obj.author.username}
-
-    def get_read_time(self, obj):
-        obj.update_read_time()
-        return obj.transform_read_time()
 
     def get_tag_list(self, obj):
         return list(map(lambda item: item['title'],

@@ -130,7 +130,7 @@ class Blog(BaseModel):
     is_top = models.BooleanField(default=False, verbose_name='是否置顶', help_text='是否置顶')
 
     # 预计阅读时长
-    read_time = models.PositiveIntegerField(default=0, verbose_name='预计阅读时长', help_text='预计阅读时长')
+    read_time = models.CharField(max_length=32, verbose_name='预计阅读时长', help_text='预计阅读时长')
 
     # 质量分数
     quality_score = models.PositiveIntegerField(default=10, verbose_name='质量分数', help_text='质量分数')
@@ -159,7 +159,7 @@ class Blog(BaseModel):
 
     # 更新阅读时长
     @my_cache(60 * 60)
-    def update_read_time(self) -> None:
+    def get_read_time(self):
         '''
         阅读时长计算公式:cost_time=总字数÷平均阅读速度+图片数*5
         '''
@@ -169,14 +169,12 @@ class Blog(BaseModel):
         img_count = len(e.xpath('//img'))
         avg_speed = 400  # 除以3的原因：内容中除了中文以外可能还有英文
         read_time = 60 * (text_len / avg_speed) / 3 + img_count * 5
-        self.read_time = read_time
+        # 转换阅读时间的显示方式
+        minute = int(read_time) // 60
+        seconds = int(read_time) % 60
+        return f'{minute}分{seconds}秒'
 
-    # 转换阅读时间的显示方式
-    def transform_read_time(self):
-        minute = int(self.read_time) // 60
-        seconds = int(self.read_time) % 60
-        self.read_time = f'{minute}分{seconds}秒'
-        return self.read_time
+
 
     @classmethod
     def recommend(cls, user, action_data, blog_list=[]):
@@ -242,6 +240,7 @@ class Blog(BaseModel):
         blog.abstract = blog.get_abstract()
         blog.section = section
         blog.is_draft = is_draft
+        blog.read_time = blog.get_read_time()
         blog.save()
         for tag in tag_list:
             tag = Tag.get_or_create(tag['value'], creator=user)

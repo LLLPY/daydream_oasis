@@ -89,7 +89,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .info-box span {
   display: inline-block;
   font-size: 0.8em;
