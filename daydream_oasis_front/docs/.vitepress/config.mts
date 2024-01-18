@@ -1,4 +1,5 @@
 import {defineConfig} from 'vitepress'
+
 export default defineConfig({
         lang: 'en-US', //zh-CN|en-US
         title: "白日梦想园",
@@ -10,9 +11,12 @@ export default defineConfig({
             ['link', {rel: 'icon', href: 'http://www.lll.plus/media/image/favorite.ico'}],
 
             // element-plus
-            ['link', { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/element-plus/dist/index.css' }],
+            ['link', {rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/element-plus/dist/index.css'}],
             // ['script', { src:'//cdn.jsdelivr.net/npm/vue@3' }],
             // ['script', { src:'https://cdn.jsdelivr.net/npm/element-plus' }],
+            // vditor
+            ['link', {rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/vditor@3.9.8/dist/index.css'}],
+
 
         ],
         themeConfig: {
