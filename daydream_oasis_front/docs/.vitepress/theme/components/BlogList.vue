@@ -133,7 +133,7 @@ export default {
 
     .item_content {
       display: flex;
-      height: 150px;
+      height: 152px;
       margin-bottom: 10px;
 
 
