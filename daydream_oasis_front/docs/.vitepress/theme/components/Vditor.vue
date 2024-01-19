@@ -10,7 +10,7 @@ const CDN = "https://cdn.jsdelivr.net/npm/vditor@3.9.8"
 
 // 3. 在组件初始化时，就创建Vditor对象，并引用
 onMounted(() => {
-  new Vditor('vditor', {
+  window.vditor = new Vditor('vditor', {
 
     // 获取焦点方法
     focus(md) {
@@ -415,7 +415,6 @@ onMounted(() => {
     cdn:CDN
 
   })
-
 
 })
 
