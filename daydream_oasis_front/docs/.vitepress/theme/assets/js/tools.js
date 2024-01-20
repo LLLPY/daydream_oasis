@@ -18,3 +18,13 @@ export function get_cookie(key) {
     }
     return val
 }
+
+export function goBackOrRedirect(url) {
+    if (document.referrer === '' || document.referrer === window.location.href) {
+        // 如果没有上一页或者上一页是当前页面，则跳转到指定页面
+        window.location.href = url;
+    } else {
+        // 如果有上一页，则返回上一页
+        window.history.back();
+    }
+}

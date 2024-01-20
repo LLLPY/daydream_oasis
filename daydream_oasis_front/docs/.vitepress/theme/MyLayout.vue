@@ -96,6 +96,8 @@ div.item a article {
   width: 100%;
 }
 
-
+span:hover{
+  cursor: pointer;
+}
 </style>
 

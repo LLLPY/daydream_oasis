@@ -18,10 +18,10 @@ class UserSerializers(DynamicFieldsSerializer):
     id = serializers.CharField(allow_blank=True, allow_null=True, help_text='')
 
     def validate_mobile(self, value):
-        ...
+        # 监测手机号是否合法
         if not self.is_valid_mobile(value):
             raise exception.CustomValidationError('手机号码格式不正确!')
-        # 监测手机号是否合法
+        return value
 
     @classmethod
     def is_valid_mobile(cls, mobile: str) -> bool:

@@ -2,11 +2,17 @@
 import re
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
+import os
+
+
+from common.exception import exception
 
 
 def send_message(phone_number, code):
-    ACCESSKEYID = 'LTAI5tKziR22m9SD9enPTLR6'
-    ACCESSSECRET = 'l6rEqIDfSNeYYRNgM3q8YZtnmxD99m'
+    ACCESSKEYID = os.environ.get('ACCESSSECRET')
+    ACCESSSECRET = os.environ.get('ACCESSSECRET')
+    if not all([ACCESSKEYID, ACCESSSECRET]):
+        raise exception.CustomValidationError('Access Key未配置.')
     # 这三个参数即 AccessKey ID， AccessKey Secret， 地区的id，关于地区id怎么获得我会贴在文章最下方
     client = AcsClient(ACCESSKEYID, ACCESSSECRET, "cn-shanghai")
     # 下面就是一些规定的配置，复制即可
@@ -41,3 +47,7 @@ def send_message(phone_number, code):
         # print('短信发送失败!')
         return False
     return False
+
+
+if __name__ == '__main__':
+    send_message(1111, 'aaa')

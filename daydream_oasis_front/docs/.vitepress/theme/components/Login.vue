@@ -1,15 +1,12 @@
-<template>
-  <BaseLoginAndRegister title="Login" sub_title1="注册" sub_link1="/register.html" sub_title2="忘记密码?" sub_link2="/forget_password.html"></BaseLoginAndRegister>
-</template>
 <script>
 
 import {Warning, Info} from '../assets/js/MessageBox.js'
 import {axios_ins} from "../assets/js/axios";
 import BaseLoginAndRegister from './BaseLoginAndRegister.vue'
+import {goBackOrRedirect} from "../assets/js/tools";
 
 
 export default {
-  extends:BaseLoginAndRegister,
   components: {
     BaseLoginAndRegister
   },
@@ -17,14 +14,21 @@ export default {
     return {
       username: '',
       password: '',
-      code: '1234'
+      code: ''
     }
 
   },
   methods: {
-    submit(event) {
-      // 阻止默认事件
-      event.preventDefault();
+    updateUsername(value) {
+      this.username = value
+    },
+    updatePassword(value) {
+      this.password = value
+    },
+    submit() {
+      console.log('login中的方法...')
+      console.log(this.username)
+
       if (this.username.length === 0) {
         Warning('用户名不能为空!')
         return;
@@ -38,16 +42,31 @@ export default {
           {
             'username': this.username,
             'password': this.password,
-            'code': this.code
+            'code': this.code,
           }).then(response => {
-          const data = response.data
-          Info(data.message)
+        const data = response.data
+        goBackOrRedirect('/blog/')
+        Info(data.message)
 
       })
     }
   }
 }
-
-
 </script>
+<template>
+  <BaseLoginAndRegister title="Login" sub_title1="注册" sub_link1="/register.html" sub_title2="忘记密码?"
+                        sub_link2="/forget_password.html"
+                        needCode=''
+                        :username="username" @updateUsername="updateUsername"
+                        :password="password" @updatePassword="updatePassword"
+                        @submit="submit"
+  ></BaseLoginAndRegister>
+</template>
+
+<style scoped>
+.code-box{
+  display: none;
+}
+</style>
+
 
