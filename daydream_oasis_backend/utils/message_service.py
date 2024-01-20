@@ -9,7 +9,7 @@ from common.exception import exception
 
 
 def send_message(phone_number, code):
-    ACCESSKEYID = os.environ.get('ACCESSSECRET')
+    ACCESSKEYID = os.environ.get('ACCESSKEYID')
     ACCESSSECRET = os.environ.get('ACCESSSECRET')
     if not all([ACCESSKEYID, ACCESSSECRET]):
         raise exception.CustomValidationError('Access Key未配置.')
