@@ -14,7 +14,7 @@ function isValidPhoneNumber(phoneNumber) {
 }
 
 function count_down() {
-  let count = 10
+  let count = 60
   let interval = setInterval(function () {
     code_msg.value = count + '秒'
     if (count <= 0) {
