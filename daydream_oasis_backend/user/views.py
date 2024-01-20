@@ -34,11 +34,11 @@ class UserViewSet(BaseViewSet):
         password = serializer.data.get('password')
 
         # 比较验证码是否正确
-        local_code = self.redis_conn.get(f'register:code:{mobile}').decode('utf-8')
+        local_code = self.redis_conn.get(f'register:code:{mobile}')
         if not local_code:
             raise exception.CustomValidationError('验证码已过期,请重新发送!')
 
-        if code != local_code:
+        if code != local_code.decode('utf-8'):
             raise exception.CustomValidationError('验证码错误!')
 
         # 检测手机号是否已注册
@@ -58,10 +58,10 @@ class UserViewSet(BaseViewSet):
         password = serializer.data.get('password')
 
         # 比较验证码是否正确
-        local_code = self.redis_conn.get(f'forget:code:{mobile}').decode('utf-8')
+        local_code = self.redis_conn.get(f'forget:code:{mobile}')
         if not local_code:
             raise exception.CustomValidationError('验证码已过期,请重新发送!')
-        if code != local_code:
+        if code != local_code.decode('utf-8'):
             raise exception.CustomValidationError('验证码错误!')
 
         # 检测手机号是否已注册
@@ -130,7 +130,7 @@ class UserViewSet(BaseViewSet):
 
         # 获取今天发送短信的次数
         used_key = f'used:{mobile}'
-        use_count = int(self.redis_conn.get(used_key).decode('utf-8') or 0)
+        use_count = int(self.redis_conn.get(used_key) or 0)
         if use_count >= 3:
             # 让验证码直接过期
             self.redis_conn.expire(key, 0)
