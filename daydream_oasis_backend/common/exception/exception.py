@@ -3,7 +3,7 @@
 # @Date    ：2023/9/8 23:03  
 
 from common.drf.response import ErrResponse
-from common.exception.service_code import (OBJ_NOT_EXIST, VERIFICATION_ERROR)
+from common.exception.service_code import OBJ_NOT_EXIST, VERIFICATION_ERROR
 from utils import tools
 
 

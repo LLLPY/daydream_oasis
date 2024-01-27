@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-
 # @Author  ：LLL
 # @Date    ：2023/1/18 10:36
-from common.drf.serializers import DynamicFieldsSerializer
-from rest_framework import serializers
-from log.models import Action
 import re
+
+from rest_framework import serializers
+
+from common.drf.serializers import DynamicFieldsSerializer
+from log.models import Action
 
 
 # 博客分类

@@ -1,8 +1,10 @@
+import datetime
 import os
+
 from django.db import models
+
 from common.models import BaseModel
 from user.models import User
-import datetime
 
 
 # 文件上传的位置

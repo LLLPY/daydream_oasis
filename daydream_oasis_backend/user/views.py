@@ -1,16 +1,18 @@
 from datetime import datetime, timedelta
 from random import choices
+
+from django.contrib.auth import logout as default_logout
 from django.contrib.auth.hashers import check_password
+from rest_framework.decorators import action
+
 from common.drf.decorators import login_required
+from common.drf.response import SucResponse
+from common.exception import exception
+from common.views import BaseViewSet
 from user.models import User
 from user.serializers import UserSerializers
-from utils.message_service import send_message
-from django.contrib.auth import logout as default_logout
-from common.exception import exception
-from rest_framework.decorators import action
-from common.drf.response import SucResponse
-from common.views import BaseViewSet
 from utils import tools
+from utils.message_service import send_message
 
 # 在登录中往往都需要使用post请求，在使用该请求是，需要进行csrf_token的验证，通过该验证有3中方法
 '''

@@ -1,9 +1,11 @@
+from django_redis import get_redis_connection
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+
 from common.drf.mixin import InstanceMixin
 from common.drf.response import SucResponse
-from django_redis import get_redis_connection
-from rest_framework.permissions import AllowAny
 from daydream_oasis_backend.settings.base import logger
+
 
 class BaseViewSet(InstanceMixin, viewsets.ModelViewSet):
     # redis连接对象

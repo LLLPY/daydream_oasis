@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-                            
 # @Author  ：LLL                         
 # @Date    ：2023/1/10 0:16  
-from django.urls import re_path,include
-from user import views
+from django.urls import include, re_path
 from rest_framework.routers import DefaultRouter
-from .apis import UserViewSet,MessageViewSet
+
+from user import views
+
+from .apis import MessageViewSet, UserViewSet
 
 router = DefaultRouter()
 router.register(r'user', UserViewSet, basename='user')

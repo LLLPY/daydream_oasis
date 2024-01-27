@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-                            
 # @Author  ：LLL                         
 # @Date    ：2023/10/14 13:26  
-from django.utils.deprecation import MiddlewareMixin
 import uuid
+
+from django.utils.deprecation import MiddlewareMixin
 
 from utils import tools
 from utils.cache import redis_conn

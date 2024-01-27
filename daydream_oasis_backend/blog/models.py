@@ -1,18 +1,16 @@
 import datetime
 import os
 
+import markdown
+from django.db import models, transaction
+from lxml import etree
 from mdeditor.fields import MDTextField
 
 from common.models import BaseModel
-from django.db import models, transaction
-from lxml import etree
-
 from daydream_oasis_backend.settings.base import BASE_DIR
 from user.models import User
 from utils.cache import my_cache
 from utils.collaborative_filltering import cf_user
-
-import markdown
 
 
 # 博客分类

@@ -1,7 +1,8 @@
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont
+
 from django.core.files.storage import FileSystemStorage
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from PIL import Image, ImageDraw, ImageFont
 
 
 # 添加水印

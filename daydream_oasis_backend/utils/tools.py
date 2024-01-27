@@ -1,5 +1,5 @@
-import re
 import hashlib
+import re
 from typing import Union
 from urllib.parse import urlparse
 

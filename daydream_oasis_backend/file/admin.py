@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from daydream_oasis_backend.admin_site import my_site
 from common.admin import MyBaseAdmin
+from daydream_oasis_backend.admin_site import my_site
+
 from .models import File
 
 

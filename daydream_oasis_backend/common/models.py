@@ -1,9 +1,11 @@
+from os.path import isfile
+
 import jieba
 from django.db import models
-from PIL.Image import open as imgOpen
-from os.path import isfile
-from log.logger import logger
 from django_redis import get_redis_connection
+from PIL.Image import open as imgOpen
+
+from log.logger import logger
 
 
 class RealManager(models.Manager):
