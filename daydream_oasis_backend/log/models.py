@@ -22,7 +22,8 @@ class RequestRecord(BaseModel):
         (OTHER, '其他'),
 
     ]
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, verbose_name='博客', help_text='博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True,
+                             verbose_name='博客', help_text='博客')
     path = models.TextField(max_length=1000, default='/', verbose_name='请求路径', help_text='请求路径')
     path_type = models.PositiveIntegerField(default=PAGE, choices=PATH_TYPE_CHOICES, verbose_name='请求路径类型',
                                             help_text='请求路径类型')
@@ -33,7 +34,8 @@ class RequestRecord(BaseModel):
     country = models.CharField(max_length=50, default='', verbose_name='国家', help_text='国家')
     province = models.CharField(max_length=50, default='', verbose_name='省份', help_text='省份')
     city = models.CharField(max_length=50, default='', verbose_name='城市', help_text='城市')
-    computer_name = models.CharField(max_length=50, default='', verbose_name='计算机名', help_text='计算机名')
+    computer_name = models.CharField(max_length=50, default='',
+                                     verbose_name='计算机名', help_text='计算机名')
     username = models.CharField(max_length=50, default='', verbose_name='用户名', help_text='用户名')
 
     class Meta:
@@ -47,9 +49,12 @@ class RequestRecord(BaseModel):
     @classmethod
     def get_pv(cls, year=None, moth=None, day=None):
         request_li = cls.objects.filter(path_type=cls.PAGE)
-        if year: request_li = request_li.filter(time__year=year)
-        if moth: request_li = request_li.filter(time__month=moth)
-        if day: request_li = request_li.filter(time__day=day)
+        if year:
+            request_li = request_li.filter(time__year=year)
+        if moth:
+            request_li = request_li.filter(time__month=moth)
+        if day:
+            request_li = request_li.filter(time__day=day)
         # request_li = request_li.values_list('ip').distinct()
         return request_li.count()
 
@@ -142,7 +147,8 @@ class Action(BaseModel):
     }
 
     # 用户
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='用户', help_text='用户')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True,
+                             verbose_name='用户', help_text='用户')
 
     # uuid
     uuid = models.CharField(max_length=200, null=False, verbose_name='uuid',
@@ -175,7 +181,8 @@ class Action(BaseModel):
         if action == cls.READ:
             # 按阅读时间比例给分
             rate = cost_time / _self.blog.read_time
-            score = min(float('%.2f' % (rate * cls.ACTION_SCORE_MAPPING[action])), cls.ACTION_SCORE_MAPPING[cls.READ])
+            score = min(
+                float('%.2f' % (rate * cls.ACTION_SCORE_MAPPING[action])), cls.ACTION_SCORE_MAPPING[cls.READ])
         else:
 
             score = cls.ACTION_SCORE_MAPPING[action]

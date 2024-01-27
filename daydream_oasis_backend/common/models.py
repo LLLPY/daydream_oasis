@@ -49,7 +49,6 @@ class BaseModel(models.Model):
         self.has_deleted = True
         self.save()
 
-
     @classmethod
     def get_by_id(cls, _id: int):
         return cls.objects.filter(id=_id).first()
@@ -75,7 +74,8 @@ class BaseModel(models.Model):
 
     @classmethod
     def resize(cls, img_path, target_width, target_height):
-        if not isfile(img_path): return
+        if not isfile(img_path):
+            return
         img = imgOpen(img_path)
         w, h = img.size
         k = max(target_width / w, target_height / h)

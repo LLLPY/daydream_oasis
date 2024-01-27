@@ -29,7 +29,8 @@ class UserViewSet(BaseViewSet):
     # 注册
     @action(methods=['post'], detail=False)
     def register(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=self.request.data, include_fields=['mobile', 'code', 'password'])
+        serializer = self.get_serializer(data=self.request.data, include_fields=[
+                                         'mobile', 'code', 'password'])
         serializer.is_valid(raise_exception=True)
         mobile = serializer.data.get('mobile')
         code = serializer.data.get('code')
@@ -53,7 +54,8 @@ class UserViewSet(BaseViewSet):
 
     @action(methods=['post'], detail=False)
     def modify_password(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=self.request.data,include_fields=['username', 'code', 'password'])
+        serializer = self.get_serializer(data=self.request.data, include_fields=[
+                                         'username', 'code', 'password'])
         serializer.is_valid(raise_exception=True)
         mobile = serializer.data.get('username')
         code = str(serializer.data.get('code'))
@@ -77,7 +79,8 @@ class UserViewSet(BaseViewSet):
     # 登录
     @action(methods=['post'], detail=False)
     def login(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=self.request.data, include_fields=['username', 'password'])
+        serializer = self.get_serializer(
+            data=self.request.data, include_fields=['username', 'password'])
         serializer.is_valid(raise_exception=True)
 
         username = serializer.data.get('username')  # 用户名
@@ -109,7 +112,8 @@ class UserViewSet(BaseViewSet):
         if not uid:
             raise exception.CustomValidationError('非法请求!')
 
-        serializer = self.get_serializer(data=self.request.data, include_fields=['mobile', 'action'])
+        serializer = self.get_serializer(
+            data=self.request.data, include_fields=['mobile', 'action'])
         serializer.is_valid(raise_exception=True)
         mobile = serializer.data.get('mobile')
         _action = serializer.data.get('action')
@@ -155,7 +159,8 @@ class UserViewSet(BaseViewSet):
     # 退出登录
     @action(methods=['post'], detail=False)
     def logout(self, request, *args, **kwargs):
-        auth_token = request.get_signed_cookie('auth_token', default='', salt=tools.md5('daydream_oasis'))
+        auth_token = request.get_signed_cookie(
+            'auth_token', default='', salt=tools.md5('daydream_oasis'))
         self.redis_conn.delete(auth_token)
         default_logout(self.request)
         res = SucResponse('退出登录成功!')

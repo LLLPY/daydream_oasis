@@ -14,7 +14,6 @@ class MyBaseAdmin:
     exclude = ('create_time', 'update_time')
 
 
-
 # 背景音乐
 @admin.register(BackgroundMusic, site=my_site)
 class BackgroundMusicAdmin(admin.ModelAdmin, MyBaseAdmin):

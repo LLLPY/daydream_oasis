@@ -1,5 +1,5 @@
-# -*- coding: UTF-8 -*-                            
-# @Author  ：LLL                         
+# -*- coding: UTF-8 -*-
+# @Author  ：LLL
 # @Date    ：2023/3/15 9:56
 from django.http import JsonResponse
 from django.views.generic.base import View

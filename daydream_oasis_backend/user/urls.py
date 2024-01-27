@@ -1,6 +1,6 @@
-# -*- coding: UTF-8 -*-                            
-# @Author  ：LLL                         
-# @Date    ：2023/1/10 0:16  
+# -*- coding: UTF-8 -*-
+# @Author  ：LLL
+# @Date    ：2023/1/10 0:16
 from django.urls import include, re_path
 from rest_framework.routers import DefaultRouter
 
