@@ -1,9 +1,9 @@
 import datetime
 import os
 
-from django.db import models
-
 from common.models import BaseModel
+from django.db import models
+from PIL import Image
 from user.models import User
 
 
@@ -62,3 +62,27 @@ class File(BaseModel):
 
         obj.save()
         return obj
+
+    @classmethod
+    def resize_image(cls, input_path, output_path, new_size=50):
+        '''
+        将图片缩放到指定的大小，new_size指定了新的大小，长度和宽度都是该值。
+        '''
+        # 打开传入的图片
+        input_image = Image.open(input_path)
+
+        # 计算裁剪的位置
+        width, height = input_image.size
+        left = (width - min(width, height)) / 2
+        top = (height - min(width, height)) / 2
+        right = (width + min(width, height)) / 2
+        bottom = (height + min(width, height)) / 2
+
+        # 裁剪图片
+        input_image = input_image.crop((left, top, right, bottom))
+
+        # 缩放图片
+        input_image = input_image.resize((new_size, new_size))
+
+        # 保存处理后的图片
+        input_image.save(output_path)

@@ -19,4 +19,3 @@ repos:
     rev: v2.0.4  # select the tag or revision you want, or run `pre-commit autoupdate`
     hooks:
     - id: autopep8
-      args: ["."]

@@ -1,10 +1,6 @@
-from os.path import isfile
-
 import jieba
 from django.db import models
 from django_redis import get_redis_connection
-from PIL.Image import open as imgOpen
-
 from log.logger import logger
 
 
@@ -71,20 +67,6 @@ class BaseModel(models.Model):
         words = jieba.lcut(s)
         keyword_list = list(set(word for word in words if word not in stop_words))
         return keyword_list
-
-    @classmethod
-    def resize(cls, img_path, target_width, target_height):
-        if not isfile(img_path):
-            return
-        img = imgOpen(img_path)
-        w, h = img.size
-        k = max(target_width / w, target_height / h)
-        # resize图片
-        image = img.resize((int(w * k), int(h * k)), ANTIALIAS)
-        if image.mode == 'P' or image.mode == 'RGBA':
-            image = image.convert('RGB')
-        # 将新图像保存
-        image.save(img_path, 'JPEG')  # quality指定存储图片的质量
 
 
 # 背景音乐
