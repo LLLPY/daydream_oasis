@@ -1,0 +1,12 @@
+[pycodestyle]
+
+#每一行的最大长度
+max_line_length = 120
+#原地替换
+in-place = true
+# 递归目录
+recursive = true
+# 打印详细详细
+verbose = 1
+#需要排除的目录或文件
+exclude = venv
