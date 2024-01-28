@@ -89,7 +89,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 .info-box span {
   display: inline-block;
   font-size: 0.8em;
@@ -102,6 +102,7 @@ a {
 
 .vp-doc h2 {
   border-top: none !important;
+  margin-top: 24px!important;
 }
 
 .info-box .edit,
