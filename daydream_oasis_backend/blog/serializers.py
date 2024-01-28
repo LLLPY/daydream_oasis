@@ -1,10 +1,12 @@
 # -*- coding: UTF-8 -*-
 # @Author  ：LLL
 # @Date    ：2023/1/18 10:36
-from common.drf.serializers import DynamicFieldsSerializer
-from rest_framework import serializers
-from log.models import Action
 import re
+
+from rest_framework import serializers
+
+from common.drf.serializers import DynamicFieldsSerializer
+from log.models import Action
 
 
 # 博客分类
@@ -64,7 +66,8 @@ class BlogSerializers(DynamicFieldsSerializer):
 class BlogCreateSerializers(DynamicFieldsSerializer):
     id = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     title = serializers.CharField(required=True, max_length=30, help_text='标题')
-    avatar = serializers.CharField(required=False, allow_null=True, allow_blank=True, help_text='封面')
+    avatar = serializers.CharField(required=False, allow_null=True,
+                                   allow_blank=True, help_text='封面')
     category = serializers.CharField(required=True, help_text='分类')
     tag_list = serializers.ListField(help_text='标签列表')
     content = serializers.CharField(required=True,

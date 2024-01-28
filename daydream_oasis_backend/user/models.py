@@ -2,6 +2,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Q
+
 from common.models import BaseModel
 
 
@@ -12,10 +13,12 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
     first_name = None
 
     # 手机号
-    mobile = models.CharField(max_length=11, unique=True, verbose_name='手机', help_text='手机', null=True)
+    mobile = models.CharField(max_length=11, unique=True,
+                              verbose_name='手机', help_text='手机', null=True)
 
     # 头像信息 图片上传的逻辑走file应用，这里只用保存地址
-    avatar = models.URLField(default='image/default_user_avatar.png', verbose_name='头像', help_text='头像')
+    avatar = models.URLField(default='image/default_user_avatar.png',
+                             verbose_name='头像', help_text='头像')
 
     # job
     job = models.CharField(max_length=20, default='打工的人儿~', verbose_name='职业', help_text='职业')
@@ -67,7 +70,6 @@ class ChatRecord(BaseModel):
 
     # 是否已读
     is_read = models.BooleanField(default=False, verbose_name='是否已读', help_text='是否已读')
-
 
     class Meta:
         db_table = 'chat_record'

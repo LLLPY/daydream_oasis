@@ -1,19 +1,21 @@
 import os.path
 
 from django.db.models import Q
-from blog.serializers import (BlogSerializers, CategorySerializers,
-                              TagSerializers, CommentSerializers,
-                              CollectionSerializers, LikeSerializers, SearchSerializers, BlogCreateSerializers)
-from blog.models import Comment, Collection, Blog, Like, Category, Tag, Share
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from common.drf.response import SucResponse
-from common.drf.mixin import InstanceMixin
-from common.views import BaseViewSet
-from common.exception import exception
-from log.views import action_log
+
+from blog.models import Blog, Category, Collection, Comment, Like, Share, Tag
+from blog.serializers import (BlogCreateSerializers, BlogSerializers,
+                              CategorySerializers, CollectionSerializers,
+                              CommentSerializers, LikeSerializers,
+                              SearchSerializers, TagSerializers)
 from common.drf.decorators import login_required, rate_lock
+from common.drf.mixin import InstanceMixin
 from common.drf.pagination import CustomPagination
+from common.drf.response import SucResponse
+from common.exception import exception
+from common.views import BaseViewSet
+from log.views import action_log
 
 
 class BlogViewSet(BaseViewSet):
@@ -50,7 +52,8 @@ class BlogViewSet(BaseViewSet):
         section = serializer.data.get('section')
         is_draft = serializer.data.get('is_draft')
         blog_id = serializer.data.get('id')
-        new_blog_id = Blog.create_or_update(blog_id, title, avatar, user, category, tag_list, content, section, is_draft)
+        new_blog_id = Blog.create_or_update(
+            blog_id, title, avatar, user, category, tag_list, content, section, is_draft)
         if is_draft and not blog_id and new_blog_id:
             data = {'blog_id': new_blog_id}
         else:
@@ -115,9 +118,8 @@ class BlogViewSet(BaseViewSet):
 
         return SucResponse()
 
-
-
     # 删除博客
+
     @login_required
     def destroy(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -282,7 +284,8 @@ class CategoryViewSet(BaseViewSet):
 
     def list(self, request, *args, **kwargs):
         '''分类列表'''
-        serializer = self.get_serializer(data=self.request.query_params, include_fields=['id', 'title'])
+        serializer = self.get_serializer(
+            data=self.request.query_params, include_fields=['id', 'title'])
         serializer.is_valid()
         res = super().list(request, *args, **kwargs)
         return res

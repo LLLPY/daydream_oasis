@@ -1,13 +1,15 @@
-# -*- coding: UTF-8 -*-                            
-# @Author  ：LLL                         
+# -*- coding: UTF-8 -*-
+# @Author  ：LLL
 # @Date    ：2023/3/15 9:56
 from django.http import JsonResponse
 from django.views.generic.base import View
 from rest_framework import viewsets
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+
 from user.models import User
+
 
 # 关闭csrf
 class CsrfExemptSessionAuthentication(SessionAuthentication):

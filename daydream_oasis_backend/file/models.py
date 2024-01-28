@@ -1,15 +1,18 @@
+import datetime
 import os
+
 from django.db import models
+
 from common.models import BaseModel
 from user.models import User
-import datetime
 
 
 # 文件上传的位置
 def upload_to(o, filename):
     root_dir = list(o.type_size_dict.keys())[o.type]
     now = datetime.datetime.now()
-    path = os.path.join(root_dir, f'{now.year}', f'{str(now.month).zfill(2)}', f'{str(now.day).zfill(2)}', filename)
+    path = os.path.join(
+        root_dir, f'{now.year}', f'{str(now.month).zfill(2)}', f'{str(now.day).zfill(2)}', filename)
     return path
 
 
@@ -40,11 +43,11 @@ class File(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='上传者', help_text='上传者')
 
     # 类型 图片 视频 音频 文档  其他
-    type = models.PositiveIntegerField(default=IMAGE, choices=TYPE_CHOICES, verbose_name='类型', help_text='类型')
+    type = models.PositiveIntegerField(
+        default=IMAGE, choices=TYPE_CHOICES, verbose_name='类型', help_text='类型')
 
     # 路径
-    path = models.FileField(upload_to=upload_to,verbose_name='路径', help_text='路径')
-
+    path = models.FileField(upload_to=upload_to, verbose_name='路径', help_text='路径')
 
     class Meta:
         db_table = 'file'

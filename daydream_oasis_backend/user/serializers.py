@@ -1,8 +1,9 @@
-from rest_framework import serializers
-from common.drf.serializers import DynamicFieldsSerializer
 import re
-from common.exception import exception
 
+from rest_framework import serializers
+
+from common.drf.serializers import DynamicFieldsSerializer
+from common.exception import exception
 from utils import tools
 
 

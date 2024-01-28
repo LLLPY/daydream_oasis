@@ -1,8 +1,6 @@
 from common.exception import exception
 
 
-
-
 class InstanceMixin(object):
     def get_object(self, raise_on_not_found=True):
         """

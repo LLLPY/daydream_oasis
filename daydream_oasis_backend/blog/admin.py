@@ -1,7 +1,9 @@
 from django.contrib import admin
-from daydream_oasis_backend.admin_site import my_site
+
+from blog.models import (Blog, Category, Collection, Comment, Like, Recommend,
+                         Search, Tag)
 from common.admin import MyBaseAdmin
-from blog.models import Comment, Collection, Tag, Blog, Category, Search, Recommend, Like
+from daydream_oasis_backend.admin_site import my_site
 from user.models import User
 
 

@@ -10,7 +10,6 @@ from daydream_oasis_backend.settings.base import logger
 from user.models import User
 from utils import tools
 
-
 redis_conn = get_redis_connection('default')
 
 '''

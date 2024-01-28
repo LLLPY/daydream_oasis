@@ -1,18 +1,16 @@
 import datetime
 import os
 
+import markdown
+from django.db import models, transaction
+from lxml import etree
 from mdeditor.fields import MDTextField
 
 from common.models import BaseModel
-from django.db import models, transaction
-from lxml import etree
-
 from daydream_oasis_backend.settings.base import BASE_DIR
 from user.models import User
 from utils.cache import my_cache
 from utils.collaborative_filltering import cf_user
-
-import markdown
 
 
 # 博客分类
@@ -21,7 +19,8 @@ class Category(BaseModel):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
 
     # 标题
-    title = models.CharField(max_length=10, blank=True, unique=True, verbose_name='标题', help_text='标题')
+    title = models.CharField(max_length=10, blank=True, unique=True,
+                             verbose_name='标题', help_text='标题')
 
     # avatar
     avatar = models.URLField(default='http://www.lll.plus/media/image/default_blog_avatar.jpg', verbose_name='封面',
@@ -59,7 +58,8 @@ class Tag(BaseModel):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
 
     # title
-    title = models.CharField(max_length=10, blank=True, unique=True, verbose_name='标题', help_text='标题')
+    title = models.CharField(max_length=10, blank=True, unique=True,
+                             verbose_name='标题', help_text='标题')
 
     class Meta:
         db_table = 'tag'
@@ -77,13 +77,16 @@ class Section(BaseModel):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='创建者', help_text='创建者')
 
     # 封面
-    avatar = models.URLField(default='image/default_blog_avatar.jpg', verbose_name='封面', help_text='封面')
+    avatar = models.URLField(default='image/default_blog_avatar.jpg',
+                             verbose_name='封面', help_text='封面')
 
     class Meta:
         db_table = 'section'
         verbose_name_plural = verbose_name = db_table
 
 # 博客
+
+
 class Blog(BaseModel):
     # 作者
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者', help_text='作者')
@@ -96,16 +99,19 @@ class Blog(BaseModel):
                              help_text='封面')
 
     # 专栏
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True, verbose_name='专栏', help_text='专栏')
+    section = models.ForeignKey(Section, on_delete=models.CASCADE,
+                                null=True, verbose_name='专栏', help_text='专栏')
 
     # 分类
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类', help_text='分类')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,
+                                 verbose_name='分类', help_text='分类')
 
     # 标签
     tag_list = models.ManyToManyField(Tag, verbose_name='标签', help_text='标签')
 
     # 摘要
-    abstract = models.TextField(max_length=150, null=True, blank=True, verbose_name='摘要', help_text='摘要')
+    abstract = models.TextField(max_length=150, null=True, blank=True,
+                                verbose_name='摘要', help_text='摘要')
 
     # 文章正文
     # content = RichTextUploadingField(null=False, blank=False, verbose_name='文章内容', help_text='文章内容')
@@ -136,7 +142,8 @@ class Blog(BaseModel):
     quality_score = models.PositiveIntegerField(default=10, verbose_name='质量分数', help_text='质量分数')
 
     # 推荐分数 (临时变量，用于给用户推荐使用)
-    recommendation_score = models.PositiveIntegerField(default=0, verbose_name='推荐分数', help_text='推荐分数')
+    recommendation_score = models.PositiveIntegerField(
+        default=0, verbose_name='推荐分数', help_text='推荐分数')
 
     # 草稿
     is_draft = models.BooleanField(default=True, verbose_name='是否是草稿', help_text='是否是草稿')
@@ -146,7 +153,6 @@ class Blog(BaseModel):
 
     # 是否在导航页
     is_nav = models.BooleanField(default=False, verbose_name='是否在导航页', help_text='是否在导航页')
-
 
     class Meta:
         db_table = 'blog'
@@ -173,8 +179,6 @@ class Blog(BaseModel):
         minute = int(read_time) // 60
         seconds = int(read_time) % 60
         return f'{minute}分{seconds}秒'
-
-
 
     @classmethod
     def recommend(cls, user, action_data, blog_list=[]):
@@ -302,13 +306,15 @@ class Comment(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='评论人', help_text='评论人')
 
     # 评论的博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被评论的博客', help_text='被评论的博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE,
+                             verbose_name='被评论的博客', help_text='被评论的博客')
 
     # 评论内容
     content = models.CharField(max_length=500, verbose_name='评论内容', help_text='评论内容')
 
     # 父评论
-    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE, verbose_name='父评论', help_text='父评论')
+    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE,
+                               verbose_name='父评论', help_text='父评论')
 
     # 设备 手机 电脑
     client = models.CharField(max_length=20, verbose_name='设备', help_text='设备')
@@ -352,7 +358,8 @@ class Like(BaseModel, LikeMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='点赞人', help_text='点赞人')
 
     # 被点赞的博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被点赞的博客', help_text='被点赞的博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE,
+                             verbose_name='被点赞的博客', help_text='被点赞的博客')
 
     class Meta:
         db_table = 'like'
@@ -365,7 +372,8 @@ class Collection(BaseModel, LikeMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='收藏人', help_text='收藏人')
 
     # 被收藏的博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被收藏的博客', help_text='被收藏的博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE,
+                             verbose_name='被收藏的博客', help_text='被收藏的博客')
 
     class Meta:
         db_table = 'collect'
@@ -378,7 +386,8 @@ class Share(BaseModel, LikeMixin):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='分享人', help_text='分享人')
 
     # 被分享的博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='被分享的博客', help_text='被分享的博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE,
+                             verbose_name='被分享的博客', help_text='被分享的博客')
 
     class Meta:
         db_table = 'share'

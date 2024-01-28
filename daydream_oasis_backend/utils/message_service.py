@@ -1,9 +1,9 @@
 # coding=utf-8
+import os
 import re
+
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
-import os
-
 
 from common.exception import exception
 

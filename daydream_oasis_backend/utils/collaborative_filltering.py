@@ -1,8 +1,9 @@
-# -*- coding: UTF-8 -*-                            
-# @Author  ：LLL                         
+# -*- coding: UTF-8 -*-
+# @Author  ：LLL
 # @Date    ：2023/4/5 16:47
 
 from collections import OrderedDict
+
 # import scipy.stats
 import numpy as np
 
@@ -32,18 +33,22 @@ def process_user(user1: dict, user2: dict):
     return sorted_user1, sorted_user2
 
 # 计算用户的余弦相似度
+
+
 def get_cos_similar(v1: list, v2: list):
     num = float(np.dot(v1, v2))  # 向量点乘
     denom = np.linalg.norm(v1) * np.linalg.norm(v2)  # 求模长的乘积
     # return 0.5 + 0.5 * (num / denom) if denom != 0 else 0
     return (num / denom) if denom != 0 else 0
 
-#计算用户的皮尔孙相似度
+# 计算用户的皮尔孙相似度
 # def get_pearsonr_similar(v1: list, v2: list):
 #     return scipy.stats.pearsonr(v1, v2)
 
 # 基于用户的协同过滤算法
 # @my_cache(timeout=60 * 60)
+
+
 def cf_user(user, data):
     # 初始化推荐度字典和相似度字典
     recommendation = {}

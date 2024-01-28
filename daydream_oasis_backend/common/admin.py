@@ -1,6 +1,7 @@
 from django.contrib import admin
-from daydream_oasis_backend.admin_site import my_site
+
 from common.models import BackgroundMusic
+from daydream_oasis_backend.admin_site import my_site
 
 
 # 构建一个公共基类，设置默认配置项
@@ -11,7 +12,6 @@ class MyBaseAdmin:
     save_as = True
     list_display = ['id']
     exclude = ('create_time', 'update_time')
-
 
 
 # 背景音乐
