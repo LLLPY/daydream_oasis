@@ -18,7 +18,7 @@
 </template>
 <script>
 import {axios_ins} from "../assets/js/axios"
-import '../assets/font/iconfont'
+// import '../assets/font/iconfont'
 import '../assets/font/iconfont.css'
 import {Info} from "../assets/js/MessageBox"
 

@@ -248,7 +248,7 @@ export default {
   }
 }
 
-// 分页第一个按钮边距很大
+/*分页第一个按钮边距很大*/
 .el-page,
 .vp-doc ul {
   padding-left: 0 !important;

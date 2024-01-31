@@ -126,7 +126,6 @@ input {
   border: none;
   margin-left: 1em;
   width: 70%;
-  //border: 1px solid red;
 }
 
 
