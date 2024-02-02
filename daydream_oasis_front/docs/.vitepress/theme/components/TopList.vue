@@ -29,7 +29,6 @@
                 axios_ins.get('/api/action_log/top_stat/').then(response => {
                     const data = response.data
                     this.top_list = data.data
-                    console.log(this.top_list)
                 })
 
             }
@@ -67,7 +66,7 @@
         width: 65%;
         font-size: 0.9rem;
         transition: color linear .3s;
-        
+
     }
     #top-box .top .title:hover{
         color: skyblue;

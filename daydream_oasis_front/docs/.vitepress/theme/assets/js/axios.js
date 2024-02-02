@@ -1,8 +1,8 @@
 import axios from "axios";
 import {Warning} from "./MessageBox";
 
-const API_URL = 'http://www.lll.plus'
-//const API_URL = 'http://localhost:8000'
+// const API_URL = 'http://www.lll.plus'
+const API_URL = 'http://localhost:8000'
 const axios_ins = axios.create({
     withCredentials: true,
     baseURL: API_URL,
@@ -38,4 +38,3 @@ const upload_api = `${API_URL}/api/file/upload/`
 
 
 export {axios_ins, API_URL, upload_api}
-

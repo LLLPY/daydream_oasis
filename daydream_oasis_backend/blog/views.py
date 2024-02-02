@@ -1,9 +1,5 @@
 import os.path
 
-from django.db.models import Q
-from rest_framework import viewsets
-from rest_framework.decorators import action
-
 from blog.models import Blog, Category, Collection, Comment, Like, Share, Tag
 from blog.serializers import (BlogCreateSerializers, BlogSerializers,
                               CategorySerializers, CollectionSerializers,
@@ -15,7 +11,10 @@ from common.drf.pagination import CustomPagination
 from common.drf.response import SucResponse
 from common.exception import exception
 from common.views import BaseViewSet
+from django.db.models import Q
 from log.views import action_log
+from rest_framework import viewsets
+from rest_framework.decorators import action
 
 
 class BlogViewSet(BaseViewSet):
@@ -98,6 +97,7 @@ class BlogViewSet(BaseViewSet):
                                              'read_time',
                                              'create_time',
                                              'update_time',
+                                             'content'
                                          ])
 
         return SucResponse(data=serializer.data)

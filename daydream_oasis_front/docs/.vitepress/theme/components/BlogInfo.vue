@@ -1,7 +1,8 @@
 <template>
+
   <div class="info-box" :id="blog.id">
     <h1>{{ blog.title }}</h1>
-    <span class="author">作者:<a href="#">{{ blog.author.username }}</a></span>
+    <span class="author">作者:<a href="#">{{ blog.author_username }}</a></span>
     <span class="category">分类:<a href="#">{{ blog.category }}</a></span>
     <span id="tag-list" v-if="blog.tag_list.length">标签: <span v-for="tag in blog.tag_list" class="tag"><a href="#">{{
         tag
@@ -16,76 +17,53 @@
     <hr/>
   </div>
 </template>
-<script>
+<script setup>
 import {axios_ins} from "../assets/js/axios"
 // import '../assets/font/iconfont'
 import '../assets/font/iconfont.css'
 import {Info} from "../assets/js/MessageBox"
+import {useData} from 'vitepress'
+import { data } from '../assets/js/example.data'
+
+console.log(data)
+let {params} = useData()
+const blog = params.value
 
 
-export default {
-  data() {
-    return {
-      blog: {
-        id: parseInt(window.location.pathname.split("/").pop()),
-        title: null,
-        author: {
-          id: null,
-          username: null,
-        },
-        avatar: null,
-        category: null,
-        tag_list: [],
-        pv: null,
-        read_times: null,
-        read_time: null,
-        create_time: null,
-        update_time: null
-      }
-    }
+function upload_action() {
+  let res = axios_ins.post('/api/action_log/upload_action/', {
+    action: 6,
+    cost_time: 0,
+    blog_id: blog.id
+  })
+}
 
-  },
-  methods: {
-    get_blog_info() {
-      axios_ins.get(`/api/blog/${this.blog.id}/`).then(response => {
-        let data = response.data
-        this.blog = data.data
-      })
-    },
-    upload_action() {
-      let res = axios_ins.post('/api/action_log/upload_action/', {
-        action: 6,
-        cost_time: 0,
-        blog_id: this.blog.id
-      })
-    },
-    delete_blog() {
-      let res = confirm('确认删除吗?')
-      if (res) {
-        axios_ins.delete(`/api/blog/${this.blog.id}/`).then(response => {
-          let data = response.data
-          window.location.href = '/blog/'
-          Info(data['message'])
-        })
-      }
-
-    },
-    edit_blog() {
-      axios_ins.put(`/api/blog/${this.blog.id}/`).then(response => {
-        let data = response.data
-        window.location.href = '/write'
-        Info(data['message'])
-      })
-    }
-  },
-
-
-  mounted() {
-    this.get_blog_info()
-    this.upload_action()
+function delete_blog() {
+  let res = confirm('确认删除吗?')
+  if (res) {
+    axios_ins.delete(`/api/blog/${blog.id}/`).then(response => {
+      let data = response.data
+      window.location.href = '/blog/'
+      Info(data['message'])
+    })
   }
 }
 
+function edit_blog() {
+  axios_ins.put(`/api/blog/${blog.id}/`).then(response => {
+    let data = response.data
+    window.location.href = '/write'
+    Info(data['message'])
+  })
+}
+
+function get_blog_info() {
+  axios_ins.get(`/api/blog/${blog.id}/`).then(response => {
+  })
+}
+
+upload_action()
+get_blog_info()
 
 </script>
 
@@ -102,7 +80,7 @@ a {
 
 .vp-doc h2 {
   border-top: none !important;
-  margin-top: 24px!important;
+  margin-top: 24px !important;
 }
 
 .info-box .edit,
