@@ -13,17 +13,30 @@ import Vditor from "./components/Vditor.vue";
 import Write from "./components/Write.vue";
 import Nav from "./components/Nav.vue";
 import Home from "./components/Home.vue";
-import { ElPagination,ElCol,ElAutocomplete,ElRow,ElCascader,ElInput,ElUpload,ElIcon,ElDialog,ElTag,ElButton,ElAvatar } from "element-plus";
-import { Plus,Delete, ZoomIn } from '@element-plus/icons-vue'
+import {
+    ElPagination,
+    ElCol,
+    ElAutocomplete,
+    ElRow,
+    ElCascader,
+    ElInput,
+    ElUpload,
+    ElIcon,
+    ElDialog,
+    ElTag,
+    ElButton,
+    ElAvatar
+} from "element-plus";
+import {Plus, Delete, ZoomIn} from '@element-plus/icons-vue'
 // import '../../../src/assets/css/index.css'
 
 
-
 // 扩展默认的主题
+/** @type {import('vitepress').Theme} */
 export default {
     ...DefaultTheme,
-    Layout:MyLayout,
-    enhanceApp({app}) {
+    Layout: MyLayout,
+    async enhanceApp({app}) {
         app.component('Login', Login);
         app.component('Register', Register);
         app.component('ForgetPassword', ForgetPassword);
@@ -52,5 +65,10 @@ export default {
         app.component('Write', Write);
         app.component('Nav', Nav);
         app.component('Home', Home);
+        if (!import.meta.env.SSR) {
+            // 导入包含window的包
+            const plugin = await import('./assets/font/iconfont.js')
+            app.use(plugin.default)
+        }
     }
 }
