@@ -20,93 +20,80 @@
 
 </template>
 
-<script>
+<script setup>
 
 import {axios_ins} from '../assets/js/axios'
+import {useData} from 'vitepress'
+import {ref} from 'vue'
 
-export default {
-  data() {
-    return {
-      blog_id: null,
-      has_liked: false,
-      liked_count: 0,
-      has_collected: false,
-      collected_count: 0,
-      shared_count: 0
-    }
-  },
-  methods: {
-    get_blog_id() {
-      // 获取blog的id
-      this.blog_id = document.getElementsByClassName('info-box')[0].id
-    },
-    get_action_info() {
+let {params} = useData()
+const blog = params.value
+let liked_count = ref(0)
+let shared_count = ref(0)
+let collected_count = ref(0)
+let has_liked = ref(false)
+let has_collected = ref(false)
 
-      axios_ins.get('/api/blog/' + this.blog_id + '/action_info/').then(response => {
-        const data = response.data.data
-        this.has_liked = data.has_liked
-        this.liked_count = data.liked_count
-        this.has_collected = data.has_collected
-        this.collected_count = data.collected_count
-        this.shared_count = data.shared_count
+function get_action_info() {
 
-      })
-    },
-    like() {
-      //   点赞
-      axios_ins.post('/api/blog/' + this.blog_id + '/like/').then(response => {
-        this.liked_count += 1
-        this.has_liked = true
-      })
-    },
-    cancel_like() {
-      //   点赞
-      axios_ins.post('/api/blog/' + this.blog_id + '/cancel_like/').then(response => {
-        this.liked_count -= 1
-        this.has_liked = false
-      })
-    },
-    wrap_like() {
-      if (this.has_liked) {
-        this.cancel_like()
-      } else {
-        this.like()
-      }
-    },
+  axios_ins.get(`/api/blog/${blog.id}/action_info/`).then(response => {
+    const data = response.data.data
+    has_liked = data.has_liked
+    liked_count = data.liked_count
+    has_collected = data.has_collected
+    collected_count = data.collected_count
+    shared_count = data.shared_count
 
-    collect() {
-      //   收藏
-      axios_ins.post('/api/blog/' + this.blog_id + '/collect/').then(response => {
-          this.collected_count += 1
-          this.has_collected = true
-      })
-    },
-    cancel_collect() {
-      //   收藏
-      axios_ins.post('/api/blog/' + this.blog_id + '/cancel_collect/').then(response => {
-          this.collected_count -= 1
-          this.has_collected = false
-      })
-    },
-    wrap_collect() {
-      if (this.has_collected) {
-        this.cancel_collect()
-      } else {
-        this.collect()
-      }
-    },
+  })
+}
+get_action_info()
 
+function like() {
+  //   点赞
+  axios_ins.post(`/api/blog/${blog.id}/like/`).then(response => {
+    liked_count += 1
+    has_liked = true
+  })
+}
 
-  },
-  mounted() {
-    this.get_blog_id()
-    this.get_action_info()
+function cancel_like() {
+  //   点赞
+  axios_ins.post(`/api/blog/${blog.id}/cancel_like/`).then(response => {
+    liked_count -= 1
+    has_liked = false
+  })
+}
 
-  },
-  created() {
-
+function wrap_like() {
+  if (has_liked) {
+    cancel_like()
+  } else {
+    like()
   }
+}
 
+function collect() {
+  //   收藏
+  axios_ins.post(`/api/blog/${blog.id}/collect/`).then(response => {
+    collected_count += 1
+    has_collected = true
+  })
+}
+
+function cancel_collect() {
+  //   收藏
+  axios_ins.post(`/api/blog/${blog.id}/cancel_collect/`).then(response => {
+    collected_count -= 1
+    has_collected = false
+  })
+}
+
+function wrap_collect() {
+  if (has_collected) {
+    cancel_collect()
+  } else {
+    collect()
+  }
 }
 
 
