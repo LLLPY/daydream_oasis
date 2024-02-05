@@ -6,8 +6,8 @@ next: false
 ---
 
 
-
+<ClientOnly>
 <BlogList/>
-
+</ClientOnly>
 
 
