@@ -9,6 +9,6 @@ next: false
 </ClientOnly>
 
 
-<!-- @content -->
+
 
 <ActionBox/>

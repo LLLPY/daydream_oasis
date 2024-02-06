@@ -86,6 +86,7 @@ export default defineConfig({
             theme: 'github-dark-dimmed',
             lineNumbers: true,
         },
+        cleanUrls:true,
 
     }
 )

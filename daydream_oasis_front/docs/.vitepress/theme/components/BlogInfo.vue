@@ -1,8 +1,7 @@
 <template>
-
   <div class="info-box" :id="blog.id">
     <h1>{{ blog.title }}</h1>
-    <span class="author">作者:<a href="#">{{ blog.author_username }}</a></span>
+    <span class="author">作者:<a href="#">{{ blog.author.username }}</a></span>
     <span class="category">分类:<a href="#">{{ blog.category }}</a></span>
     <span id="tag-list" v-if="blog.tag_list.length">标签: <span v-for="tag in blog.tag_list" class="tag"><a href="#">{{
         tag
@@ -16,16 +15,34 @@
     <span class="delete" @click="delete_blog">删除</span>
     <hr/>
   </div>
+  <div v-html="blog.html"/>
+
 </template>
 <script setup>
 import {axios_ins} from "../assets/js/axios"
 import '../assets/font/iconfont.css'
 import {Info} from "../assets/js/MessageBox"
-import {useData} from 'vitepress'
+import markdownit from 'markdown-it'
+import {ref} from 'vue'
+import {get_url_params} from "../assets/js/tools.js";
 
-let {params} = useData()
-const blog = params.value
+const md = markdownit()
+const params = get_url_params()
 
+// 根据博客id拿到博客的完整信息
+let blog = ref({id: params.id})
+
+async function get_blog_info() {
+  let response = await axios_ins.get(`/api/blog/${blog.value.id}/`)
+  if (response.data.code === '1') {
+    window.history.back()
+  } else {
+    blog.value = response.data.data
+    blog.value.html = md.render(blog.value.content)
+  }
+
+}
+get_blog_info()
 
 function upload_action() {
   let res = axios_ins.post('/api/action_log/upload_action/', {
@@ -53,14 +70,6 @@ function edit_blog() {
     Info(data['message'])
   })
 }
-
-function get_blog_info() {
-  axios_ins.get(`/api/blog/${blog.id}/`).then(response => {
-  })
-}
-
-upload_action()
-get_blog_info()
 
 </script>
 

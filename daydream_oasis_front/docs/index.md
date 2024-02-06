@@ -34,8 +34,6 @@ features:
 
 ---
 
-<ClientOnly>
 <script setup>
   localStorage.removeItem('page')
 </script>
-</ClientOnly>

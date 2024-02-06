@@ -23,16 +23,17 @@
 <script setup>
 
 import {axios_ins} from '../assets/js/axios'
-import {useData} from 'vitepress'
 import {ref} from 'vue'
+import {get_url_params} from "../assets/js/tools.js";
 
-let {params} = useData()
-const blog = params.value
+let params = get_url_params()
+const blog = params
 let liked_count = ref(0)
 let shared_count = ref(0)
 let collected_count = ref(0)
 let has_liked = ref(false)
 let has_collected = ref(false)
+
 
 function get_action_info() {
 
@@ -46,6 +47,7 @@ function get_action_info() {
 
   })
 }
+
 get_action_info()
 
 function like() {

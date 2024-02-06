@@ -24,7 +24,7 @@ axios_ins.interceptors.response.use(function (response) {
     if (data['code'] !== '0') {
         Warning(data['message'])
         // 结果异常，直接结束
-        return Promise.reject(new Error('Response code is not 0'));
+        // return Promise.reject(new Error('Response code is not 0'));
 
     }
     return response;

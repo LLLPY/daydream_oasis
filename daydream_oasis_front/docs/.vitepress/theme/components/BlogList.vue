@@ -18,7 +18,7 @@
         </span>
         <span class="info-box category" @click="search({category:blog.category})"> {{ blog.category }} </span>
         <span class="info-box tag" v-for="tag in blog.tag_list" @click="search({tag:tag})">{{ tag }}</span>
-        <span class="info-box read"><a :href="blog.id">阅读原文>></a> </span>
+        <span class="info-box read"><a :href="'content?id='+blog.id">阅读原文>></a> </span>
         <span></span>
       </div>
     </div>

@@ -28,3 +28,14 @@ export function goBackOrRedirect(url) {
         window.history.back();
     }
 }
+
+export function get_url_params() {
+    // 获取博客id
+    let params = {}
+    let params_arr = window.location.search.replace('?', '').split('&')
+    params_arr.forEach(function (param) {
+        let kv = param.split('=')
+        params[kv[0]] = kv[1]
+    })
+    return params
+}
