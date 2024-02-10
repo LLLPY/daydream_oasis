@@ -1,30 +1,33 @@
 <template>
   <br>
   <div id="action-box">
-<span class="iconfont">
-  <svg class="icon" aria-hidden="true" :class="{active:false}"><use xlink:href="#icon-fenxiang"></use></svg>
-  <span class="counter">{{ shared_count }}</span>
-</span>
     <span class="iconfont">
-  <svg class="icon" aria-hidden="true" :class="{active:has_collected}"><use xlink:href="#icon-shoucang-shoucang"
-                                                                            @click="wrap_collect"></use></svg>
-  <span class="counter">{{ collected_count }}</span>
+      <svg class="icon" aria-hidden="true" :class="{ active: false }">
+        <use xlink:href="#icon-fenxiang"></use>
+      </svg>
+      <span class="counter">{{ shared_count }}</span>
+    </span>
+    <span class="iconfont">
+      <svg class="icon" aria-hidden="true" :class="{ active: has_collected }">
+        <use xlink:href="#icon-shoucang-shoucang" @click="wrap_collect"></use>
+      </svg>
+      <span class="counter">{{ collected_count }}</span>
 
-</span>
+    </span>
     <span class="iconfont">
-  <svg class="icon" aria-hidden="true" :class="{active:has_liked}"><use xlink:href="#icon-dianzan_kuai"
-                                                                        @click="wrap_like"></use></svg>
-  <span class="counter">{{ liked_count }}</span>
-</span>
+      <svg class="icon" aria-hidden="true" :class="{ active: has_liked }">
+        <use xlink:href="#icon-dianzan_kuai" @click="wrap_like"></use>
+      </svg>
+      <span class="counter">{{ liked_count }}</span>
+    </span>
   </div>
-
 </template>
 
 <script setup>
 
-import {axios_ins} from '../assets/js/axios'
-import {ref} from 'vue'
-import {get_url_params} from "../assets/js/tools.js";
+import { axios_ins } from '../assets/js/axios'
+import { ref } from 'vue'
+import { get_url_params } from "../assets/js/tools.js";
 
 let params = get_url_params()
 const blog = params
@@ -38,13 +41,15 @@ let has_collected = ref(false)
 function get_action_info() {
 
   axios_ins.get(`/api/blog/${blog.id}/action_info/`).then(response => {
-    const data = response.data.data
-    has_liked = data.has_liked
-    liked_count = data.liked_count
-    has_collected = data.has_collected
-    collected_count = data.collected_count
-    shared_count = data.shared_count
-
+    let data = response.data
+    if (data.code === '0') {
+      data = data.data
+      has_liked.value = data.has_liked
+      liked_count.value = data.liked_count
+      has_collected.value = data.has_collected
+      collected_count.value = data.collected_count
+      shared_count.value = data.shared_count
+    }
   })
 }
 
@@ -53,21 +58,26 @@ get_action_info()
 function like() {
   //   点赞
   axios_ins.post(`/api/blog/${blog.id}/like/`).then(response => {
-    liked_count += 1
-    has_liked = true
+    if (response.data.code === '0') {
+      liked_count.value += 1
+      has_liked.value = true
+    }
   })
 }
 
 function cancel_like() {
   //   点赞
   axios_ins.post(`/api/blog/${blog.id}/cancel_like/`).then(response => {
-    liked_count -= 1
-    has_liked = false
+    if (response.data.code === '0') {
+      liked_count.value -= 1
+      has_liked.value = false
+    }
+
   })
 }
 
 function wrap_like() {
-  if (has_liked) {
+  if (has_liked.value) {
     cancel_like()
   } else {
     like()
@@ -77,21 +87,25 @@ function wrap_like() {
 function collect() {
   //   收藏
   axios_ins.post(`/api/blog/${blog.id}/collect/`).then(response => {
-    collected_count += 1
-    has_collected = true
+    if (response.data.code === '0') {
+      collected_count.value += 1
+      has_collected.value = true
+    }
   })
 }
 
 function cancel_collect() {
   //   收藏
   axios_ins.post(`/api/blog/${blog.id}/cancel_collect/`).then(response => {
-    collected_count -= 1
-    has_collected = false
+    if (response.data.code === '0') {
+      collected_count.value -= 1
+      has_collected.value = false
+    }
   })
 }
 
 function wrap_collect() {
-  if (has_collected) {
+  if (has_collected.value) {
     cancel_collect()
   } else {
     collect()
@@ -147,6 +161,4 @@ span:hover {
   line-height: 1em;
   font-size: 0.9em;
 }
-
-
 </style>

@@ -27,12 +27,12 @@ export default defineConfig({
             nav: [
                 {text: 'Home', link: '/'},
                 {text: '首页', link: '/blog/'},
-                {text: '前端', link: '/blog/167', activeMatch: '/167'},
-                {text: '后端', link: '/blog/408', activeMatch: '/408'},
-                {text: 'AI', link: '/blog/2', activeMatch: '/2'},
+                {text: '前端', link: '/blog/content?id=167', activeMatch: '/167'},
+                {text: '后端', link: '/blog/content?id=408', activeMatch: '/408'},
+                {text: 'AI', link: '/blog/content?id=2', activeMatch: '/2'},
                 // {text: '标签🍒', link: '/blog/1389', activeMatch: '/1389'},
                 // {text: '分类🍰', link: '/blog/1390', activeMatch: '/1390'},
-                {text: '关于', link: '/blog/1053', activeMatch: '/1053'},
+                {text: '关于', link: '/blog/content?id=1053', activeMatch: '/1053'},
                 {text: '写博客', link: '/write'},
             ],
             // 侧边栏
@@ -90,7 +90,3 @@ export default defineConfig({
 
     }
 )
-
-
-
-

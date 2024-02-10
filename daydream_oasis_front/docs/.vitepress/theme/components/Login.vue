@@ -45,8 +45,10 @@ export default {
             'code': this.code,
           }).then(response => {
         const data = response.data
-        goBackOrRedirect('/blog/')
-        Info(data.message)
+        if(data.code==='0'){
+          Info(data.message)
+          goBackOrRedirect('/blog/')
+        }
 
       })
     }
@@ -68,5 +70,3 @@ export default {
   display: none;
 }
 </style>
-
-

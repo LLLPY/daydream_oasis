@@ -58,11 +58,14 @@ export default {
     get_blog_list() {
       axios_ins.get(`/api/blog/?page=${this.page}&size=${this.size}&detail=${this.detail}`).then(response => {
         let data = response.data
-        data = data.data
+        if(data.code==='0'){
+          data = data.data
         this.total = data.count
         this.pre = data.previous
         this.next = data.next
         this.blog_list = data.results
+        }
+
 
       })
     },
@@ -87,14 +90,15 @@ export default {
       for (let key in params) {
         if (params.hasOwnProperty(key) && params[key]) {
           url += `${key}=${params[key]}&`
-          console.log(key)
-          console.log(params[key])
         }
       }
       axios_ins(url).then(response => {
         let data = response.data
-        data = data.data
+        if(data.code==='0'){
+          data = data.data
         this.blog_list = data
+        }
+
       })
     }
   },

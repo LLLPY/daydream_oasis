@@ -17,7 +17,7 @@ export default {
   methods: {
     logout() {
       axios_ins.post('/api/user/logout/',).then(response => {
-        window.history.back();
+        history.go(-1);
         location.reload();
 
       })
@@ -26,11 +26,12 @@ export default {
   mounted() {
     if (!get_cookie('auth_token')) {
       Warning('请先登录!')
-      history.back()
+      history.go(-1)
     } else {
       axios_ins.get('/api/user/info/').then(response => {
-        let data = response.data.data
-        this.username = data.username
+        if(response.data.code==='0'){
+          this.username =response.data.data.username
+        }
       })
     }
   }

@@ -7,7 +7,7 @@
         tag
       }}</a></span> </span>
     <span>浏览量:{{ blog.pv }}</span>
-    <span>阅读量:{{ blog.read_times }}</span>
+    <!-- <span>阅读量:{{ blog.read_times }}</span> -->
     <span>预计阅读时长:{{ blog.read_time }}</span>
     <span>创建时间:{{ blog.create_time }}</span>
     <span>更新时间:{{ blog.update_time }}</span>
@@ -21,12 +21,21 @@
 <script setup>
 import {axios_ins} from "../assets/js/axios"
 import '../assets/font/iconfont.css'
-import {Info} from "../assets/js/MessageBox"
 import markdownit from 'markdown-it'
 import {ref} from 'vue'
 import {get_url_params} from "../assets/js/tools.js";
 
-const md = markdownit()
+import MarkdownIt from 'markdown-it'
+import Shiki from '@shikijs/markdown-it'
+
+const md = MarkdownIt()
+
+// md.use(await Shiki({
+//   themes: {
+//     light: 'vitesse-light',
+//     dark: 'vitesse-dark',
+//   }
+// }))
 const params = get_url_params()
 
 // 根据博客id拿到博客的完整信息
@@ -34,18 +43,18 @@ let blog = ref({id: params.id})
 
 async function get_blog_info() {
   let response = await axios_ins.get(`/api/blog/${blog.value.id}/`)
-  if (response.data.code === '1') {
-    window.history.back()
-  } else {
+  if (response.data.code === '0') {
     blog.value = response.data.data
     blog.value.html = md.render(blog.value.content)
+  } else {
+    window.history.back()
   }
 
 }
 get_blog_info()
 
 function upload_action() {
-  let res = axios_ins.post('/api/action_log/upload_action/', {
+  let response = axios_ins.post('/api/action_log/upload_action/', {
     action: 6,
     cost_time: 0,
     blog_id: blog.id
@@ -55,19 +64,21 @@ function upload_action() {
 function delete_blog() {
   let res = confirm('确认删除吗?')
   if (res) {
-    axios_ins.delete(`/api/blog/${blog.id}/`).then(response => {
+    axios_ins.delete(`/api/blog/${blog.value.id}/`).then(response => {
       let data = response.data
-      window.location.href = '/blog/'
-      Info(data['message'])
+      if(data.code==='0'){
+        window.location.href = '/blog/'
+      }
     })
   }
 }
 
 function edit_blog() {
-  axios_ins.put(`/api/blog/${blog.id}/`).then(response => {
+  axios_ins.put(`/api/blog/${blog.value.id}/`).then(response => {
     let data = response.data
-    window.location.href = '/write'
-    Info(data['message'])
+    if(data.code==='0'){
+      window.location.href = '/write'
+    }
   })
 }
 

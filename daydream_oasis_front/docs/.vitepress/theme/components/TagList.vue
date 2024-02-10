@@ -37,8 +37,6 @@ export default {
     fetchTags() {
       axios_ins.get('/api/tag/?format=json').then(response => {
         this.tag_list = response.data.data
-      }).catch(error => {
-        console.log('error')
       })
     }
   },
@@ -140,4 +138,3 @@ a {
 
 
 </style>
-

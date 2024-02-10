@@ -37,7 +37,7 @@ function send_code() {
         'action': props.title.toLowerCase()
       }).then(response => {
         let data = response.data
-        if (data['code'] === '0') {
+        if (data.code === '0') {
           document.getElementById('code-btn').disabled = true;
           count_down()
         }

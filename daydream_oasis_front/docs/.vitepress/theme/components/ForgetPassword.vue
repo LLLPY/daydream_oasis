@@ -1,9 +1,9 @@
 <script>
 
-import {Info, Warning} from '../assets/js/MessageBox.js'
-import {axios_ins} from "../assets/js/axios";
+import { Info, Warning } from '../assets/js/MessageBox.js'
+import { axios_ins } from "../assets/js/axios";
 import BaseLoginAndRegister from './BaseLoginAndRegister.vue'
-import {goBackOrRedirect} from "../assets/js/tools";
+import { goBackOrRedirect } from "../assets/js/tools";
 
 export default {
   components: {
@@ -42,27 +42,25 @@ export default {
         return;
       }
       axios_ins.post('/api/user/modify_password/',
-          {
-            'username': this.username,
-            'password': this.password,
-            'code': this.code
-          }).then(response => {
-        const data = response.data
-        goBackOrRedirect('/blog/')
-        Info(data.message)
-      })
+        {
+          'username': this.username,
+          'password': this.password,
+          'code': this.code
+        }).then(response => {
+          const data = response.data
+          if (data.code === '0') {
+            Info(data.message)
+            goBackOrRedirect('/blog/')
+
+          }
+        })
     }
   }
 }
 </script>
 
 <template>
-  <BaseLoginAndRegister title="Forget" sub_title1="注册" sub_link1="/register.html"
-                        sub_title2="登录" sub_link2="/login.html"
-                        needCode='true'
-                        :username="username" @updateUsername="updateUsername"
-                        :password="password" @updatePassword="updatePassword"
-                        :code="code" @updateCode="updateCode"
-                        @submit="submit"
-  ></BaseLoginAndRegister>
+  <BaseLoginAndRegister title="Forget" sub_title1="注册" sub_link1="/register.html" sub_title2="登录" sub_link2="/login.html"
+    needCode='true' :username="username" @updateUsername="updateUsername" :password="password"
+    @updatePassword="updatePassword" :code="code" @updateCode="updateCode" @submit="submit"></BaseLoginAndRegister>
 </template>

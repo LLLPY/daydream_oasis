@@ -1,5 +1,3 @@
-import os.path
-
 from blog.models import Blog, Category, Collection, Comment, Like, Share, Tag
 from blog.serializers import (BlogCreateSerializers, BlogSerializers,
                               CategorySerializers, CollectionSerializers,
