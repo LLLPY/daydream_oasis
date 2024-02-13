@@ -23,31 +23,9 @@ import { axios_ins } from "../assets/js/axios"
 import '../assets/font/iconfont.css'
 import { ref } from 'vue'
 import { get_url_params } from "../assets/js/tools.js";
+import { createMarkdownRenderer } from "../assets/js/markdown/markdown";
 
-import MarkdownIt from 'markdown-it'
-import markdownit from 'markdown-it'
-import Shiki from '@shikijs/markdown-it'
-
-const md = MarkdownIt({
-  // Enable HTML tags in source
-  html: true,
-   // Convert '\n' in paragraphs into <br>
-   breaks:true,
-   // Autoconvert URL-like text to links
-  linkify:true,
-// Enable some language-neutral replacement + quotes beautification
-  // For the full list of replacements, see https://github.com/markdown-it/markdown-it/blob/master/lib/rules_core/replacements.mjs
-  typographer:  true,
-
-
-})
-
-md.use(await Shiki({
-  themes: {
-    light: 'vitesse-light',
-    dark: 'vitesse-dark',
-  }
-}))
+const md =  await createMarkdownRenderer()
 const params = get_url_params()
 
 // 根据博客id拿到博客的完整信息
@@ -58,7 +36,8 @@ async function get_blog_info() {
   if (response.data.code === '0') {
     let data = response.data.data
     blog.value = data
-    blog.value.html = md.render(blog.value.content)
+    let html = md.render(blog.value.content)
+    blog.value.html = html
   } else {
     window.history.back()
   }
