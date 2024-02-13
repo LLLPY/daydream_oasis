@@ -4,8 +4,8 @@
     <span class="author">作者:<a href="#">{{ blog.author.username }}</a></span>
     <span class="category">分类:<a href="#">{{ blog.category }}</a></span>
     <span id="tag-list" v-if="blog.tag_list.length">标签: <span v-for="tag in blog.tag_list" class="tag"><a href="#">{{
-        tag
-      }}</a></span> </span>
+      tag
+    }}</a></span> </span>
     <span>浏览量:{{ blog.pv }}</span>
     <!-- <span>阅读量:{{ blog.read_times }}</span> -->
     <span>预计阅读时长:{{ blog.read_time }}</span>
@@ -13,38 +13,51 @@
     <span>更新时间:{{ blog.update_time }}</span>
     <span class="edit" @click="edit_blog">编辑</span>
     <span class="delete" @click="delete_blog">删除</span>
-    <hr/>
+    <hr />
   </div>
-  <div v-html="blog.html"/>
 
+  <div v-html="blog.html" />
 </template>
 <script setup>
-import {axios_ins} from "../assets/js/axios"
+import { axios_ins } from "../assets/js/axios"
 import '../assets/font/iconfont.css'
-import markdownit from 'markdown-it'
-import {ref} from 'vue'
-import {get_url_params} from "../assets/js/tools.js";
+import { ref } from 'vue'
+import { get_url_params } from "../assets/js/tools.js";
 
 import MarkdownIt from 'markdown-it'
+import markdownit from 'markdown-it'
 import Shiki from '@shikijs/markdown-it'
 
-const md = MarkdownIt()
+const md = MarkdownIt({
+  // Enable HTML tags in source
+  html: true,
+   // Convert '\n' in paragraphs into <br>
+   breaks:true,
+   // Autoconvert URL-like text to links
+  linkify:true,
+// Enable some language-neutral replacement + quotes beautification
+  // For the full list of replacements, see https://github.com/markdown-it/markdown-it/blob/master/lib/rules_core/replacements.mjs
+  typographer:  true,
 
-// md.use(await Shiki({
-//   themes: {
-//     light: 'vitesse-light',
-//     dark: 'vitesse-dark',
-//   }
-// }))
+
+})
+
+md.use(await Shiki({
+  themes: {
+    light: 'vitesse-light',
+    dark: 'vitesse-dark',
+  }
+}))
 const params = get_url_params()
 
 // 根据博客id拿到博客的完整信息
-let blog = ref({id: params.id})
+let blog = ref({ id: params.id, tag_list: [], author: {} })
 
 async function get_blog_info() {
   let response = await axios_ins.get(`/api/blog/${blog.value.id}/`)
   if (response.data.code === '0') {
-    blog.value = response.data.data
+    let data = response.data.data
+    blog.value = data
     blog.value.html = md.render(blog.value.content)
   } else {
     window.history.back()
@@ -66,7 +79,7 @@ function delete_blog() {
   if (res) {
     axios_ins.delete(`/api/blog/${blog.value.id}/`).then(response => {
       let data = response.data
-      if(data.code==='0'){
+      if (data.code === '0') {
         window.location.href = '/blog/'
       }
     })
@@ -76,7 +89,7 @@ function delete_blog() {
 function edit_blog() {
   axios_ins.put(`/api/blog/${blog.value.id}/`).then(response => {
     let data = response.data
-    if(data.code==='0'){
+    if (data.code === '0') {
       window.location.href = '/write'
     }
   })

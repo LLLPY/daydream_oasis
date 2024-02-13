@@ -5,7 +5,10 @@ next: false
 
 
 <ClientOnly>
+<Suspense>
 <BlogInfo/>
+</Suspense>
+
 </ClientOnly>
 
 

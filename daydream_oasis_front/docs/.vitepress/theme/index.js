@@ -51,7 +51,7 @@ export default {
         if (!import.meta.env.SSR) {
             // 导入包含window的包
             const plugin = await import('./assets/font/iconfont.js')
-            app.use(plugin.default)
+            // app.use(plugin.default)
         }
     }
 }
