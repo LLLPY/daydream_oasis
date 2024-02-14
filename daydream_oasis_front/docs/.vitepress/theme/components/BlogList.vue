@@ -99,7 +99,6 @@ let blog_list_obj = {
     this.get_blog_list()
   }
 }
-window.blog_list_obj = blog_list_obj
 export default blog_list_obj
 </script>
 

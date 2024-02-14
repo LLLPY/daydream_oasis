@@ -20,7 +20,7 @@ echo "2.后端服务启动成功..."
 
 # 2.启动前端服务
 echo "3.开始启动前端服务..."
-cd "$front_path" && bash "setup.sh" && tail -200 "$front_path/setup.log"
+cd "$front_path" && bash "setup.sh" && tail -2000 "$front_path/setup.log"
 wait
 echo "4.前端服务启动成功..."
 
