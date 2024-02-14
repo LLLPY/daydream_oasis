@@ -13,32 +13,29 @@
         </div>
       </div>
       <div class="item_extra">
-        <span class="info-box" @click="search({author:blog.author.id})">
+        <span class="info-box" @click="search({ author: blog.author.id })">
           <span class="iconfont">&#xe6a4;</span>{{ blog.author.username }} {{ blog.update_time }}
         </span>
-        <span class="info-box category" @click="search({category:blog.category})"> {{ blog.category }} </span>
-        <span class="info-box tag" v-for="tag in blog.tag_list" @click="search({tag:tag})">{{ tag }}</span>
-        <span class="info-box read"><a :href="'content?id='+blog.id">阅读原文>></a> </span>
+        <span class="info-box category" @click="search({ category: blog.category })"> {{ blog.category }} </span>
+        <span class="info-box tag" v-for="tag in blog.tag_list" @click="search({ tag: tag })">{{ tag }}</span>
+        <span class="info-box read"><a :href="'content?id=' + blog.id">阅读原文>></a> </span>
         <span></span>
       </div>
     </div>
   </div>
 
   <div id="pagination">
-    <el-pagination
-        background
-        :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
-        :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"/>
+    <el-pagination background :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
+      :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
+      @current-change="handleCurrentChange" />
   </div>
 </template>
 
 <script>
-import {axios_ins} from "../assets/js/axios";
-import {computed} from 'vue';
+import { axios_ins } from "../assets/js/axios";
+import { computed } from 'vue';
 
-export default {
+let blog_list_obj = {
   data() {
     return {
       page: 1,
@@ -48,25 +45,26 @@ export default {
       next: null,
       detail: 'false',
       blog_list: [],
+      params: {},
       screen_width: computed(() => {
         return window.innerWidth
       }),
-      search_url: 'http://localhost:8000/api/blog/search/'
     }
   },
   methods: {
     get_blog_list() {
-      axios_ins.get(`/api/blog/?page=${this.page}&size=${this.size}&detail=${this.detail}`).then(response => {
+      this.params.page = this.page
+      this.params.size = this.size
+      this.params.detail = this.detail
+      axios_ins.get(`/api/blog/?${this.objectToUrlParams(this.params)}`).then(response => {
         let data = response.data
-        if(data.code==='0'){
+        if (data.code === '0') {
           data = data.data
-        this.total = data.count
-        this.pre = data.previous
-        this.next = data.next
-        this.blog_list = data.results
+          this.total = data.count
+          this.pre = data.previous
+          this.next = data.next
+          this.blog_list = data.results
         }
-
-
       })
     },
     handleSizeChange(val) {
@@ -86,33 +84,27 @@ export default {
       this.get_blog_list()
     },
     search(params) {
-      let url = this.search_url + '?'
-      for (let key in params) {
-        if (params.hasOwnProperty(key) && params[key]) {
-          url += `${key}=${params[key]}&`
-        }
-      }
-      axios_ins(url).then(response => {
-        let data = response.data
-        if(data.code==='0'){
-          data = data.data
-        this.blog_list = data
-        }
-
-      })
-    }
+      // Object.assign(this.params,params)
+      this.params = params
+      this.page = 1
+      this.get_blog_list()
+    },
+    objectToUrlParams(obj) {
+      return Object.keys(obj).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`).join('&');
+    },
   },
+
   mounted() {
     this.page = +localStorage.getItem('page') || 1
     this.get_blog_list()
   }
 }
-
+window.blog_list_obj = blog_list_obj
+export default blog_list_obj
 </script>
 
 
 <style>
-
 #top-box {
   margin-top: 0;
 }
@@ -215,7 +207,7 @@ export default {
   .VPDoc {
     padding-left: 0.55rem !important;
     padding-right: 0.55rem !important;
-    padding-top: 12px!important;
+    padding-top: 12px !important;
   }
 
   .item {
@@ -257,5 +249,4 @@ export default {
 .vp-doc ul {
   padding-left: 0 !important;
 }
-
 </style>

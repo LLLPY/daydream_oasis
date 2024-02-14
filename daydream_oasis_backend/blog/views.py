@@ -23,7 +23,9 @@ class BlogViewSet(BaseViewSet):
     def get_queryset(self):
 
         if self.action == 'list':
-            return self.queryset.filter(is_draft=False, is_nav=False)
+            queryset = self.queryset.filter(is_draft=False, is_nav=False)
+            queryset = self.filter_search(queryset, self.request.query_params)
+            return queryset
 
         return self.queryset
 
@@ -60,22 +62,15 @@ class BlogViewSet(BaseViewSet):
     # 博客列表
     def list(self, request, *args, **kwargs):
         detail = self.request.query_params.get('detail', 'false')
-        is_all = self.request.query_params.get('is_all', 'false')
-        detail = True if detail.lower() == 'true' else False
-        is_all = True if is_all.lower() == 'true' else False
-        if is_all:
-            data = self.get_queryset()
-            serializer = self.get_serializer(data, many=True)
-            data = {"results": serializer.data}
-        else:
-            res = super().list(request, *args, **kwargs)
-            data = res.data['data']
-            if not detail:
-                results = data['results']
-                for blog_dict in results:
-                    del blog_dict['content']
-                    blog_dict['create_time'] = blog_dict['create_time'].split(' ')[0]
-                    blog_dict['update_time'] = blog_dict['update_time'].split(' ')[0]
+        detail = detail.lower() == 'true'
+        res = super().list(request, *args, **kwargs)
+        data = res.data['data']
+        if not detail:
+            results = data['results']
+            for blog_dict in results:
+                del blog_dict['content']
+                blog_dict['create_time'] = blog_dict['create_time'].split(' ')[0]
+                blog_dict['update_time'] = blog_dict['update_time'].split(' ')[0]
         return SucResponse(data=data)
 
     # 博客详情
@@ -230,6 +225,33 @@ class BlogViewSet(BaseViewSet):
             data = {}
         return SucResponse(data=data)
 
+    def filter_search(self, queryset, params):
+        filter_dict = {}
+        # 分类
+        category = params.get('category')
+        if category:
+            filter_dict.update(category__title=category)
+        # 标签
+        tag = params.get('tag')
+        if tag:
+            tag = Tag.objects.filter(title=tag).first()
+            filter_dict.update(tag_list=tag)
+        # 作者
+        author = params.get('author')
+        if author:
+            filter_dict.update(author=author)
+
+        queryset = queryset.filter(**filter_dict)
+
+        # 关键字
+        keyword = params.get('keyword')
+        if keyword:
+            title_query = Q(title__icontains=keyword)
+            content_query = Q(content__icontains=keyword)
+            category_query = Q(category__title__icontains=keyword)
+            queryset = queryset.filter(title_query | category_query | content_query)
+        return queryset
+
     @action(methods=['get'], detail=False)
     def search(self, request, *args, **kwargs):
         '''根据条件搜索'''
@@ -237,28 +259,8 @@ class BlogViewSet(BaseViewSet):
                                          include_fields=['category', 'tag', 'author', 'keyword'])
         serializer.is_valid(raise_exception=True)
         # 分类 标签 作者 关键字
-        filter_dict = {}
-        category = serializer.data.get('category')
-        tag = serializer.data.get('tag')
-        author = serializer.data.get('author')
-        keyword = serializer.data.get('keyword')
-
         queryset = self.get_queryset()
-
-        if category:
-            filter_dict.update(category__title=category)
-        if tag:
-            tag = Tag.objects.filter(title=tag).first()
-            filter_dict.update(tag_list=tag)
-        if author:
-            filter_dict.update(author=author)
-
-        queryset = queryset.filter(**filter_dict)
-        if keyword:
-            title_query = Q(title__icontains=keyword)
-            content_query = Q(content__icontains=keyword)
-            category_query = Q(category__title__icontains=keyword)
-            queryset = queryset.filter(title_query | category_query | content_query)
+        queryset = self.filter_search(queryset, serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
         return SucResponse(data=serializer.data)

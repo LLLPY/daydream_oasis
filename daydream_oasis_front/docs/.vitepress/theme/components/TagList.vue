@@ -11,22 +11,17 @@
         <span class="green box"></span>
       </div>
       <div class="more">
-        <span class=""><a href="/blog/1389.html">更多</a></span>
+        <span class=""><a href="/blog/content?id=1389">更多</a></span>
       </div>
     </div>
     <div class="card__content">
-
-      <span class="tag" v-for="(tag, index) in tag_list" :key="index">{{ tag.title }}</span>
-
+      <span class="tag" v-for="(tag, index) in tag_list" :key="index" @click="search({ tag: tag.title })">{{ tag.title }}</span>
     </div>
   </div>
-
-
 </template>
 
 <script>
 import {axios_ins} from '../assets/js/axios'
-
 export default {
   data() {
     return {
@@ -38,8 +33,13 @@ export default {
       axios_ins.get('/api/tag/?format=json').then(response => {
         this.tag_list = response.data.data
       })
+    },
+    search(params){
+      // console.log( window.blog_list_obj);
+      // window.blog_list_obj.search(params)
     }
   },
+
   mounted() {
     this.fetchTags();
   }
