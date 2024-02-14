@@ -19,17 +19,17 @@ features:
   - icon: 💻
     title: 前端
     details: 从html,css和js，到jQuery和bootstrap，再到vue，一步步探索ing...
-    link: /blog/167
+    link: /blog/content?id=167
     linkText: 了解更多
   - icon: 🛸️
     title: 后端
     details: 以python后端为主，包含了web，爬虫，图像处理等多个模块，同时也包含例如golang，c++等其他编程语言。
-    link: /blog/408
+    link: /blog/content?id=408
     linkText: 了解更多
   - icon: 🤖
     title: AI
     details: 从了解人工智能开始，到渐入机器学习的佳境，探索的道路还很遥远...
-    link: /blog/2
+    link: /blog/content?id=2
     linkText: 了解更多
 
 ---
