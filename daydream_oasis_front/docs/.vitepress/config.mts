@@ -11,13 +11,11 @@ export default defineConfig({
             ['link', {rel: 'icon', href: 'http://www.lll.plus/media/image/favorite.ico'}],
 
             // element-plus
-            ['link', {rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/element-plus/dist/index.css'}],
+            ['link', {rel: 'stylesheet', href: 'https://cdn.staticfile.net/element-plus/2.5.1/index.css'}],
             // ['script', { src:'//cdn.jsdelivr.net/npm/vue@3' }],
             // ['script', { src:'https://cdn.jsdelivr.net/npm/element-plus' }],
             // vditor
-            ['link', {rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/vditor@3.9.8/dist/index.css'}],
-
-
+            ['link', {rel: 'stylesheet', href: 'https://cdn.staticfile.net/vditor/3.9.8/index.css'}],
         ],
         themeConfig: {
             i18nRouting: true,
