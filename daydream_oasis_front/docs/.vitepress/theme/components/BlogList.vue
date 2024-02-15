@@ -72,8 +72,6 @@ let blog_list_obj = {
       this.get_blog_list()
     },
     handleCurrentChange(val) {
-      // 当点击分页按钮时，滚动到指定的锚点
-      let element = document.getElementById('VPContent');
       // 当点击分页按钮时，滚动到页面顶部
       window.scrollTo({
         top: 0,
@@ -88,6 +86,10 @@ let blog_list_obj = {
       this.params = params
       this.page = 1
       this.get_blog_list()
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // 可以添加平滑滚动效果
+      });
     },
     objectToUrlParams(obj) {
       return Object.keys(obj).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`).join('&');

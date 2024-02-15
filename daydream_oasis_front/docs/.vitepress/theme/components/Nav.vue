@@ -31,7 +31,6 @@ const initView = () => {
       isLogin.value = true
       user = unref(data)
     }
-
   })
 }
 

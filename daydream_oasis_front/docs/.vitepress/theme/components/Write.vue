@@ -16,8 +16,7 @@
             <el-col :span="5" class="el-input-group__prepend title-box">分类</el-col>
             <el-col :span="19">
               <el-autocomplete v-model="category" :fetch-suggestions="categoryQuerySearch" clearable
-                               class="inline-input w-full" size="large" placeholder="请输入分类"
-                               @select="handleCategorySelect"/>
+                class="inline-input w-full" size="large" placeholder="请输入分类" @select="handleCategorySelect" />
             </el-col>
           </el-row>
         </el-col>
@@ -27,20 +26,16 @@
           <el-row>
             <el-col :span="8" class="el-input-group__prepend title-box">封面</el-col>
             <el-col :span="16">
-              <el-upload v-model:file-list="fileList"
-                         :action="api_url"
-                         :with-credentials="withCredentials"
-                         list-type="picture-card" :on-preview="handlePictureCardPreview"
-                         :on-remove="handlePictureRemove"
-                         :on-success="handlePictureSucc"
-                         w-full>
+              <el-upload v-model:file-list="fileList" :action="api_url" :with-credentials="withCredentials"
+                list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handlePictureRemove"
+                :on-success="handlePictureSucc" w-full>
                 <el-icon>
-                  <Plus/>
+                  <Plus />
                 </el-icon>
               </el-upload>
 
               <el-dialog v-model="dialogVisible.value">
-                <img w-full :src="avatar.value"/>
+                <img w-full :src="avatar.value" />
               </el-dialog>
             </el-col>
           </el-row>
@@ -51,14 +46,12 @@
           <el-row>
             <el-col :span="3" class="el-input-group__prepend title-box">标签</el-col>
             <el-col :span="6">
-              <el-autocomplete v-model="tag" :fetch-suggestions="tagQuerySearch" clearable
-                               class="inline-input w-full" size="large" placeholder="请输入标签"
-                               @select="handleTagSelect"
-                               @keyup.enter="handleTagInputConfirm"/>
+              <el-autocomplete v-model="tag" :fetch-suggestions="tagQuerySearch" clearable class="inline-input w-full"
+                size="large" placeholder="请输入标签" @select="handleTagSelect" @keyup.enter="handleTagInputConfirm" />
             </el-col>
             <el-col :span="15">
-              <el-tag v-for="tag in tag_list" :key="tag.value" class="mx-1" closable
-                      :disable-transitions="false" size="large" @close="handleTagClose(tag)">
+              <el-tag v-for="tag in tag_list" :key="tag.value" class="mx-1" closable :disable-transitions="false"
+                size="large" @close="handleTagClose(tag)">
                 {{ tag.value }}
               </el-tag>
             </el-col>
@@ -73,13 +66,12 @@
 
       </el-row>
     </div>
-    <Vditor/>
+    <Vditor />
   </div>
 </template>
 <script>
-import {Warning} from '../assets/js/MessageBox.js'
-import {axios_ins,upload_api} from "../assets/js/axios";
-import {get_cookie} from "../assets/js/tools";
+import { Warning } from '../assets/js/MessageBox.js'
+import { axios_ins, upload_api } from "../assets/js/axios";
 
 var last_form_data = {};
 let blog = {
@@ -87,15 +79,15 @@ let blog = {
     return {
       blog_id: null,
       title: '',
-      avatar: {value: ''},
+      avatar: { value: '' },
       category: '',
       category_list: [],
       tag: '',
       tag_list: [],
-      dialogVisible: {value: false},
+      dialogVisible: { value: false },
       fileList: [],
       withCredentials: true,
-      api_url:upload_api
+      api_url: upload_api
     }
   },
   computed: {
@@ -113,16 +105,16 @@ let blog = {
   methods: {
     // 分类
     categoryQuerySearch(queryString, cb) {
-      axios_ins.get('api/category/', {params: {title: queryString, k: 5}})
-          .then(response => {
-            const data = response.data.data || [];
-            const processedData = data.map(({id, title, ...rest}) => ({value: title, ...rest}));
-            cb(processedData);
-          })
-          .catch(error => {
-            Warning(error)
-            cb([]);
-          });
+      axios_ins.get('api/category/', { params: { title: queryString, k: 5 } })
+        .then(response => {
+          const data = response.data.data || [];
+          const processedData = data.map(({ id, title, ...rest }) => ({ value: title, ...rest }));
+          cb(processedData);
+        })
+        .catch(error => {
+          Warning(error)
+          cb([]);
+        });
     },
 
     handleCategorySelect(item) {
@@ -154,16 +146,16 @@ let blog = {
     },
     tagQuerySearch(queryString, cb) {
       // 请求后端获取tag列表
-      axios_ins.get('api/tag/', {params: {title: queryString, k: 5}})
-          .then(response => {
-            const data = response.data.data || [];
-            const processedData = data.map(({id, title, ...rest}) => ({value: title, ...rest}));
-            cb(processedData);
-          })
-          .catch(error => {
-            Warning(error)
-            cb([]);
-          });
+      axios_ins.get('api/tag/', { params: { title: queryString, k: 5 } })
+        .then(response => {
+          const data = response.data.data || [];
+          const processedData = data.map(({ id, title, ...rest }) => ({ value: title, ...rest }));
+          cb(processedData);
+        })
+        .catch(error => {
+          Warning(error)
+          cb([]);
+        });
     },
 
     handleTagSelect(item) {
@@ -182,7 +174,7 @@ let blog = {
           Warning('最多只能选三个标签!')
           return
         } else {
-          this.tag_list.push({value: this.tag})
+          this.tag_list.push({ value: this.tag })
           this.tag = ''
         }
 
@@ -227,7 +219,7 @@ let blog = {
         data.is_draft = false
         data.content = window.vditor.getValue()
         axios_ins.post('/api/blog/?action=submit', data).then(response => {
-          window.location.href = `/blog/${this.blog_id}.html`
+          window.location.href = `/blog/content?id=${this.blog_id}`
         })
       }
     },
@@ -241,17 +233,17 @@ let blog = {
           this.title = data.title
           this.category = data.category
           this.avatar.value = data.avatar
-          this.fileList[0] = {url: data.avatar}
+          this.fileList[0] = { url: data.avatar }
           document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
           this.tag_list = data.tag_list.map(function (val) {
-            return {value: val}
+            return { value: val }
           })
           this.content = data.content
           let obj = this
           let interval = setInterval(function () {
             try {
               window.vditor.setValue(data.content)
-              last_form_data = {...obj.form_data}
+              last_form_data = { ...obj.form_data }
               last_form_data.content = window.vditor.getValue()
               clearInterval(interval)
               console.log("结束调用")
@@ -278,7 +270,7 @@ let blog = {
       data.content = window.vditor.getValue()
       let is_change = this.sortAndStringify(last_form_data) !== this.sortAndStringify(data); // 输出 true
       if (is_valid && is_change) {
-        last_form_data = {...data}
+        last_form_data = { ...data }
         data.is_draft = true
         axios_ins.post('/api/blog/?action=update_draft', data).then(response => {
           let data = response.data
@@ -296,14 +288,15 @@ let blog = {
 
   },
   mounted() {
-    console.log()
-    if (!get_cookie('auth_token')) {
-      Warning('请先登录!')
-      history.back()
-    } else {
-      this.get_draft()
-      setTimeout(this.update_draft, 5000)
-    }
+    axios_ins.get('/api/user/info/').then(response => {
+      if (response.data.code !== '0') {
+        window.history.back()
+      } else {
+        this.get_draft()
+        setTimeout(this.update_draft, 5000)
+      }
+    })
+
 
   }
 }

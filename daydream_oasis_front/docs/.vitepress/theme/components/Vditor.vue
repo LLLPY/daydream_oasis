@@ -6,7 +6,8 @@ import {Warning} from '../assets/js/MessageBox';
 import {upload_api} from '../assets/js/axios'
 
 
-const CDN = "https://cdn.jsdelivr.net/npm/vditor@3.9.8"
+// const CDN = "https://cdn.jsdelivr.net/npm/vditor@3.9.8"
+const CDN = "https://cdn.staticfile.net/vditor/3.9.8"
 
 // 3. 在组件初始化时，就创建Vditor对象，并引用
 onMounted(() => {
@@ -67,7 +68,7 @@ onMounted(() => {
     preview: {
       theme: {
         current: "light",
-        path: `${CDN}/dist/css/content-theme`,
+        // path: `${CDN}/dist/css/content-theme`,
       },
       mode: "both",
       markdown: {
@@ -99,7 +100,6 @@ onMounted(() => {
     placeholder: '开始你的创作吧！(tips:草稿会自动保存哦...)🐛🐛🐛',
     fullscreen: {
       index: 9999,
-
     },
 
     //文件上传
@@ -149,19 +149,6 @@ onMounted(() => {
                   html: '<img src="https://emoji.emojipic.cn/pic/72/apple/face-throwing-a-kiss_1f618.png"/> 好色的Kim',
                 },
               ]
-            }
-            return []
-          },
-        },
-        {
-          key: '#',
-          hint: (key) => {
-            if ('vditor'.indexOf(key.toLocaleLowerCase()) > -1) {
-              return [
-                {
-                  value: '#Vditor',
-                  html: '#Vditor ♏ 一款浏览器端的 Markdown 编辑器，支持所见即所得（富文本）、即时渲染（类似 Typora）和分屏预览模式。',
-                }]
             }
             return []
           },
@@ -412,18 +399,14 @@ onMounted(() => {
       // 是否固定工具栏
       pin: true,
     },
-    cdn:CDN
-
+    // cdn:CDN
   })
-
 })
-
 
 </script>
 
 <template>
   <!-- 指定一个容器 -->
-
   <div id="vditor"></div>
 </template>
 
@@ -431,8 +414,5 @@ onMounted(() => {
 .vditor-emojis {
   max-height: 100px;
   overflow: auto;
-
-
 }
-
 </style>
