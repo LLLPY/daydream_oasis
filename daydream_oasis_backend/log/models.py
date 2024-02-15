@@ -1,10 +1,9 @@
 from datetime import datetime, timedelta
 
-from django.db import models
-from django.db.models import Count
-
 from blog.models import Blog
 from common.models import BaseModel
+from django.db import models
+from django.db.models import Count
 from user.models import User
 
 
@@ -171,11 +170,11 @@ class Action(BaseModel):
         verbose_name = verbose_name_plural = db_table
 
     @classmethod
-    def create(cls, user, uuid, blog_id, action, cost_time):
+    def create(cls, blog_id, action, cost_time, request=None):
         _self = cls()
-        _self.user = user
-        _self.uuid = uuid
-        _self.blog = Blog.get_by_id(blog_id)
+        _self.user = request.user if request.user.is_authenticated else None
+        _self.uuid = request.COOKIES.get('uuid', '-')
+        _self.blog_id = blog_id
         _self.action = action
 
         if action == cls.READ:

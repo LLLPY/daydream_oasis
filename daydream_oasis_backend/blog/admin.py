@@ -1,10 +1,11 @@
-from django.contrib import admin
-
 from blog.models import (Blog, Category, Collection, Comment, Like, Recommend,
                          Search, Tag)
 from common.admin import MyBaseAdmin
-from daydream_oasis_backend.admin_site import my_site
+from django.contrib import admin
+from django.http import HttpRequest
 from user.models import User
+
+from daydream_oasis_backend.admin_site import my_site
 
 
 # 分类
@@ -77,6 +78,9 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
         return Comment.get_count_by_blog(obj)
 
     comments.short_description = '评论量'
+
+    def delete_model(self, request: HttpRequest, obj) -> None:
+        return super().delete_model(request, obj)
 
 
 # 评论

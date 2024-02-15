@@ -1,3 +1,5 @@
+import datetime
+
 from blog.models import Blog, Category, Collection, Comment, Like, Share, Tag
 from blog.serializers import (BlogCreateSerializers, BlogSerializers,
                               CategorySerializers, CollectionSerializers,
@@ -10,7 +12,7 @@ from common.drf.response import SucResponse
 from common.exception import exception
 from common.views import BaseViewSet
 from django.db.models import Q
-from log.views import action_log
+from log.models import Action
 from rest_framework import viewsets
 from rest_framework.decorators import action
 
@@ -92,6 +94,14 @@ class BlogViewSet(BaseViewSet):
                                              'update_time',
                                              'content'
                                          ])
+        # 一天之内一台设备只算一次浏览量
+        uuid = request.COOKIES.get('uuid', '-')
+        if self.redis_conn.setnx(f'view:{uuid}', 'viewed'):
+            Action.create(blog.id, Action.CLICK, 0, request)
+            now = datetime.datetime.now()
+            expired = (datetime.timedelta(hours=24, minutes=0, seconds=0) - datetime.timedelta(hours=now.hour, minutes=now.minute,
+                                                                                               seconds=now.second)).seconds
+            self.redis_conn.expire(uuid, expired)
 
         return SucResponse(data=serializer.data)
 
@@ -121,10 +131,6 @@ class BlogViewSet(BaseViewSet):
         obj.delete()
         obj.delete_md()
         return SucResponse('删除成功!')
-
-    @action(methods=['get'], detail=False)
-    def top_list(self, request, *args, **kwargs):
-        '''排行榜'''
 
     @action(methods=['get'], detail=True)
     def action_info(self, request, *args, **kwargs):
@@ -302,7 +308,6 @@ class SectionViewSet(viewsets.ModelViewSet):
 
 
 # 评论
-@action_log()
 class CommentViewSet(viewsets.ModelViewSet, InstanceMixin):
     serializer_class = CommentSerializers
     queryset = Comment.objects.all()
@@ -331,14 +336,12 @@ class CommentViewSet(viewsets.ModelViewSet, InstanceMixin):
 
 
 # 收藏
-@action_log()
 class CollectionViewSet(viewsets.ModelViewSet):
     serializer_class = CollectionSerializers
     queryset = Collection.objects.all()
 
 
 # 点赞
-@action_log()
 class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializers
     queryset = Like.objects.all()
