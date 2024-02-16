@@ -171,6 +171,8 @@ class BlogViewSet(BaseViewSet):
         if has_liked:
             raise exception.CustomValidationError('已经点过赞啦!')
         Like.create(blog, user)
+        # 行为记录
+        Action.create(blog.id, Action.DOCALL, 0, request)
         return SucResponse('点赞成功!')
 
     @action(methods=['post'], detail=True)
@@ -186,6 +188,8 @@ class BlogViewSet(BaseViewSet):
             like_obj.delete()
         else:
             raise exception.CustomValidationError('还未点赞!')
+        # 行为记录
+        Action.create(blog.id, Action.CANCEL_DOCALL, 0, request)
         return SucResponse('取消点赞成功!')
 
     @action(methods=['post'], detail=True)
@@ -198,8 +202,9 @@ class BlogViewSet(BaseViewSet):
         _, has_collected = Collection.status(blog=blog, user=user)
         if has_collected:
             raise exception.CustomValidationError('已经收藏啦!')
-
         Collection.create(blog, user)
+        # 行为记录
+        Action.create(blog.id, Action.COLLECT, 0, request)
         return SucResponse('收藏成功!')
 
     @action(methods=['post'], detail=True)
@@ -215,6 +220,8 @@ class BlogViewSet(BaseViewSet):
             collect_obj.delete()
         else:
             raise exception.CustomValidationError('还未收藏!')
+        # 行为记录
+        Action.create(blog.id, Action.CANCEL_COLLECT, 0, request)
         return SucResponse('取消收藏成功!')
 
     @action(methods=['get'], detail=False)
