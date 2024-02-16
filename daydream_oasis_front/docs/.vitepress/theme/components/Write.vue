@@ -136,9 +136,14 @@ let blog = {
     },
     handlePictureSucc(response, uploadFile, uploadFiles) {
       // 图片上传成功
-      this.fileList[0] = uploadFile
-      document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
-      this.avatar.value = response['data']['url']
+      if (response.code === '0') {
+        this.fileList[0] = uploadFile
+        document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
+        this.avatar.value = response.data.url
+      } else {
+        this.handlePictureRemove(uploadFile,uploadFiles)
+        Warning(response.message)
+      }
     },
     //标签
     handleTagClose(tag) {
