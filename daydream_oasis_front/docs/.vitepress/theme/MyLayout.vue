@@ -3,7 +3,7 @@
 import {useData} from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import {nextTick, provide} from 'vue'
-import TagList from './components/TagList.vue'
+// import Discuss from './components/Discuss.vue'
 import TopList from './components/TopList.vue'
 import Logo from './components/Logo.vue'
 import Nav from './components/Nav.vue'
@@ -61,6 +61,7 @@ provide('toggle-appearance', async ({clientX: x, clientY: y}: MouseEvent) => {
       <!-- <TagList/> -->
     </template>
     <template #doc-after>
+      <!-- <Discuss/> -->
     </template>
   </Layout>
 </template>

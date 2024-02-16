@@ -13,6 +13,7 @@ import Vditor from "./components/Vditor.vue";
 import Write from "./components/Write.vue";
 import Nav from "./components/Nav.vue";
 import Home from "./components/Home.vue";
+// import Discuss from "./components/Discuss.vue";
 import {
     ElPagination, ElCol, ElAutocomplete, ElRow, ElInput, ElUpload, ElIcon, ElDialog, ElTag, ElButton, ElAvatar
 } from "element-plus";
@@ -48,9 +49,10 @@ export default {
         app.component('Write', Write);
         app.component('Nav', Nav);
         app.component('Home', Home);
+        // app.component('Discuss', Discuss);
         if (!import.meta.env.SSR) {
             // 导入包含window的包
-            const plugin = await import('./assets/font/iconfont.js')
+            let plugin = await import('./assets/font/iconfont.js')
             // app.use(plugin.default)
         }
     }
