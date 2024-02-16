@@ -58,7 +58,7 @@ provide('toggle-appearance', async ({clientX: x, clientY: y}: MouseEvent) => {
     <template #aside-outline-after>
 
       <TopList/>
-      <TagList/>
+      <!-- <TagList/> -->
     </template>
     <template #doc-after>
     </template>
@@ -100,4 +100,3 @@ span:hover{
   cursor: pointer;
 }
 </style>
-

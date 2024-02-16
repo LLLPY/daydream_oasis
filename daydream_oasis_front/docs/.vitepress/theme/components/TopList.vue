@@ -7,7 +7,7 @@
 
         <li v-for="(top,index) in top_list" :key="index" class="top">
             <span class="number" :style="{ fontSize: 20-index+'px' }">{{ index+1 }}</span>
-            <span class="title"> <a :href="top.id">{{ top.title }}</a> </span>
+            <span class="title"> <a :href="'content?id='+top.id">{{ top.title }}</a> </span>
             <span class="pv">{{ top.pv }}</span>
         </li>
 
