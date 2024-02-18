@@ -4,8 +4,8 @@
     <span class="author">作者:<a href="#">{{ blog.author.username }}</a></span>
     <span class="category">分类:<a href="#">{{ blog.category }}</a></span>
     <span id="tag-list" v-if="blog.tag_list.length">标签: <span v-for="tag in blog.tag_list" class="tag"><a href="#">{{
-      tag
-    }}</a></span> </span>
+        tag
+      }}</a></span> </span>
     <span>浏览量:{{ blog.pv }}</span>
     <!-- <span>阅读量:{{ blog.read_times }}</span> -->
     <span>预计阅读时长:{{ blog.read_time }}</span>
@@ -13,23 +13,23 @@
     <span>更新时间:{{ blog.update_time }}</span>
     <span class="edit" @click="edit_blog">编辑</span>
     <span class="delete" @click="delete_blog">删除</span>
-    <hr />
+    <hr/>
   </div>
 
-  <div v-html="blog.html" />
+  <div v-html="blog.html"/>
 </template>
 <script setup>
-import { axios_ins } from "../assets/js/axios"
+import {axios_ins} from "../assets/js/axios"
 import '../assets/font/iconfont.css'
-import { ref } from 'vue'
-import { get_url_params } from "../assets/js/tools.js";
-import { createMarkdownRenderer } from "../assets/js/markdown/markdown";
+import {ref} from 'vue'
+import {get_url_params} from "../assets/js/tools.js";
+import {createMarkdownRenderer} from "../assets/js/markdown/markdown";
 
-const md =  await createMarkdownRenderer()
+const md = await createMarkdownRenderer()
 const params = get_url_params()
 
 // 根据博客id拿到博客的完整信息
-let blog = ref({ id: params.id, tag_list: [], author: {} })
+let blog = ref({id: params.id, tag_list: [], author: {}})
 
 async function get_blog_info() {
   let response = await axios_ins.get(`/api/blog/${blog.value.id}/`)
@@ -43,15 +43,8 @@ async function get_blog_info() {
   }
 
 }
-get_blog_info()
 
-function upload_action() {
-  let response = axios_ins.post('/api/action_log/upload_action/', {
-    action: 6,
-    cost_time: 0,
-    blog_id: blog.id
-  })
-}
+get_blog_info()
 
 function delete_blog() {
   let res = confirm('确认删除吗?')
