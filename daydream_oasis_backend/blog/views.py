@@ -122,7 +122,6 @@ class BlogViewSet(BaseViewSet):
         return SucResponse()
 
     # 删除博客
-
     @login_required
     def destroy(self, request, *args, **kwargs):
         obj = self.get_object()

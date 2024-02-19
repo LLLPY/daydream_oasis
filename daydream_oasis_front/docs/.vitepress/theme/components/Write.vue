@@ -1,89 +1,93 @@
 <template>
   <div id="container">
     <div id="info-form" style="box-shadow: var(--el-box-shadow-light);">
-      <el-row :gutter="20" justify="left">
+      <el-row :gutter="20">
 
         <!-- 标题 -->
         <el-col :span="20">
-          <el-input v-model="title" class="w-50 m-2" placeholder="请输入标题" clearable size="large">
+          <el-input v-model="title" class="w-50 m-2" placeholder="请输入标题" clearable size="large" maxlength="30"
+            show-word-limit>
           </el-input>
         </el-col>
-
-        <!--        &lt;!&ndash; 分类 &ndash;&gt;-->
-        <!--        <el-col :span="5">-->
-        <!--          <el-row>-->
-        <!--            <el-col :span="19">-->
-        <!--              <el-autocomplete v-model="category" :fetch-suggestions="categoryQuerySearch" clearable-->
-        <!--                class="inline-input w-full" size="large" placeholder="请输入分类" @select="handleCategorySelect" />-->
-        <!--            </el-col>-->
-        <!--          </el-row>-->
-        <!--        </el-col>-->
-
-        <!--        &lt;!&ndash; avatar &ndash;&gt;-->
-        <!--        <el-col :span="3">-->
-        <!--          <el-row>-->
-        <!--            <el-col :span="16">-->
-        <!--              <el-upload v-model:file-list="fileList" :action="api_url" :with-credentials="withCredentials"-->
-        <!--                list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handlePictureRemove"-->
-        <!--                :on-success="handlePictureSucc" w-full>-->
-        <!--                <el-icon>-->
-        <!--                  <Plus />-->
-        <!--                </el-icon>-->
-        <!--              </el-upload>-->
-
-        <!--              <el-dialog v-model="dialogVisible.value">-->
-        <!--                <img w-full :src="avatar.value" />-->
-        <!--              </el-dialog>-->
-        <!--            </el-col>-->
-        <!--          </el-row>-->
-        <!--        </el-col>-->
-
-        <!--        &lt;!&ndash; 标签 &ndash;&gt;-->
-        <!--        <el-col :span="8">-->
-        <!--          <el-row>-->
-        <!--            <el-col :span="6">-->
-        <!--              <el-autocomplete v-model="tag" :fetch-suggestions="tagQuerySearch" clearable class="inline-input w-full"-->
-        <!--                size="large" placeholder="请输入标签" @select="handleTagSelect" @keyup.enter="handleTagInputConfirm" />-->
-        <!--            </el-col>-->
-        <!--            <el-col :span="15">-->
-        <!--              <el-tag v-for="tag in tag_list" :key="tag.value" class="mx-1" closable :disable-transitions="false"-->
-        <!--                size="large" @close="handleTagClose(tag)">-->
-        <!--                {{ tag.value }}-->
-        <!--              </el-tag>-->
-        <!--            </el-col>-->
-        <!--          </el-row>-->
-        <!--        </el-col>-->
-
-
         <el-col :span="4" style="text-align: right;">
-          <el-button type="primary" size="large" @click="submit">保存草稿</el-button>
-          <el-button type="primary" size="large" @click="submit">发&nbsp;&nbsp;布</el-button>
+          <el-button type="primary" size="large" @click="submit(true)">保存草稿</el-button>
+          <el-button type="primary" size="large" @click="submit(false)">发&nbsp;&nbsp;布</el-button>
         </el-col>
 
       </el-row>
     </div>
-    <Vditor/>
+    <!-- 弹窗 -->
+    <el-dialog v-model="dialogFormVisible" title="发&nbsp;布" width="500">
+
+      <!-- 分类  -->
+      <el-autocomplete v-model="category" :fetch-suggestions="categoryQuerySearch" clearable size="large"
+        placeholder="请输入分类" @select="handleCategorySelect" class="input-item" />
+
+      <!-- 专栏  -->
+      <el-autocomplete v-model="category" :fetch-suggestions="categoryQuerySearch" clearable class="input-item"
+        size="large" placeholder="请输入专栏" @select="handleCategorySelect" />
+
+      <!-- avatar -->
+      <el-row class="input-item">
+        <el-col :span="16">
+          <el-upload v-model:file-list="fileList" :action="api_url" :with-credentials="withCredentials"
+            list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handlePictureRemove"
+            :on-success="handlePictureSucc" w-full>
+            <el-icon>
+              <Plus />
+            </el-icon>
+          </el-upload>
+
+          <el-dialog v-model="dialogVisible.value">
+            <img w-full :src="avatar.value" />
+          </el-dialog>
+        </el-col>
+      </el-row>
+
+      <!-- 标签 -->
+      <el-autocomplete v-model="tag" :fetch-suggestions="tagQuerySearch" clearable class="input-item" size="large"
+        placeholder="请输入标签" @select="handleTagSelect" @keyup.enter="handleTagInputConfirm" />
+      <el-row class="input-item">
+        <el-tag v-for="tag in tag_list" :key="tag.value" class="mx-1" closable :disable-transitions="false" size="large"
+          @close="handleTagClose(tag)">
+          {{ tag.value }}
+        </el-tag>
+      </el-row>
+
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button @click="dialogFormVisible = false">保存草稿</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false">
+            发&nbsp;布
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <Vditor />
   </div>
 </template>
 <script>
-import {Warning} from '../assets/js/MessageBox.js'
-import {axios_ins, upload_api} from "../assets/js/axios";
-
+import { Warning } from '../assets/js/MessageBox.js'
+import { axios_ins, upload_api } from "../assets/js/axios";
+import {goBackOrRedirect} from '../assets/js/tools'
 var last_form_data = {};
 let blog = {
   data() {
     return {
       blog_id: null,
       title: '',
-      avatar: {value: ''},
+      avatar: { value: '' },
       category: '',
       category_list: [],
       tag: '',
       tag_list: [],
-      dialogVisible: {value: false},
+      dialogVisible: { value: false },
       fileList: [],
       withCredentials: true,
-      api_url: upload_api
+      api_url: upload_api,
+      dialogFormVisible: false
     }
   },
   computed: {
@@ -101,16 +105,16 @@ let blog = {
   methods: {
     // 分类
     categoryQuerySearch(queryString, cb) {
-      axios_ins.get('api/category/', {params: {title: queryString, k: 5}})
-          .then(response => {
-            const data = response.data.data || [];
-            const processedData = data.map(({id, title, ...rest}) => ({value: title, ...rest}));
-            cb(processedData);
-          })
-          .catch(error => {
-            Warning(error)
-            cb([]);
-          });
+      axios_ins.get('api/category/', { params: { title: queryString, k: 5 } })
+        .then(response => {
+          const data = response.data.data || [];
+          const processedData = data.map(({ id, title, ...rest }) => ({ value: title, ...rest }));
+          cb(processedData);
+        })
+        .catch(error => {
+          Warning(error)
+          cb([]);
+        });
     },
 
     handleCategorySelect(item) {
@@ -147,16 +151,16 @@ let blog = {
     },
     tagQuerySearch(queryString, cb) {
       // 请求后端获取tag列表
-      axios_ins.get('api/tag/', {params: {title: queryString, k: 5}})
-          .then(response => {
-            const data = response.data.data || [];
-            const processedData = data.map(({id, title, ...rest}) => ({value: title, ...rest}));
-            cb(processedData);
-          })
-          .catch(error => {
-            Warning(error)
-            cb([]);
-          });
+      axios_ins.get('api/tag/', { params: { title: queryString, k: 5 } })
+        .then(response => {
+          const data = response.data.data || [];
+          const processedData = data.map(({ id, title, ...rest }) => ({ value: title, ...rest }));
+          cb(processedData);
+        })
+        .catch(error => {
+          Warning(error)
+          cb([]);
+        });
     },
 
     handleTagSelect(item) {
@@ -175,10 +179,20 @@ let blog = {
           Warning('最多只能选三个标签!')
           return
         } else {
-          this.tag_list.push({value: this.tag})
+          this.tag_list.push({ value: this.tag })
           this.tag = ''
         }
 
+      }
+    },
+    title_check(warn=true) {
+      if (this.title.length === 0 || this.title.length > 30) {
+        if (warn) {
+          Warning('标题的长度范围是0~30!')
+        }
+        return false;
+      } else {
+        return true;
       }
     },
     form_check(warn = true) {
@@ -186,7 +200,6 @@ let blog = {
         if (warn) {
           Warning('标题的长度范围是0~30!')
         }
-
         return false;
       }
       if (this.category.length === 0 || this.category.length > 8) {
@@ -211,17 +224,33 @@ let blog = {
       }
       return true;
     },
-    submit() {
-      let is_valid = this.form_check()
-      if (is_valid) {
+    submit(is_draft = false) {
+
+      if (is_draft) {
+        this.dialogFormVisible = true
         // 提交前关闭自动更新，否则可能会导致提交在更新之后
         clearInterval(this.interval)
         let data = this.form_data
-        data.is_draft = false
+        data.is_draft = is_draft
         data.content = window.vditor.getValue()
         axios_ins.post('/api/blog/?action=submit', data).then(response => {
-          window.location.href = `/blog/content?id=${this.blog_id}`
+          goBackOrRedirect('/blog/')
         })
+      } else {
+        if (this.title_check()) {
+          this.dialogFormVisible = true
+          if (this.form_check()) {
+            // 提交前关闭自动更新，否则可能会导致提交在更新之后
+            clearInterval(this.interval)
+            let data = this.form_data
+            data.is_draft = is_draft
+            data.content = window.vditor.getValue()
+            axios_ins.post('/api/blog/?action=submit', data).then(response => {
+              window.location.href = `/blog/content?id=${this.blog_id}`
+            })
+          }
+
+        }
       }
     },
     get_draft() {
@@ -234,17 +263,17 @@ let blog = {
           this.title = data.title
           this.category = data.category
           this.avatar.value = data.avatar
-          this.fileList[0] = {url: data.avatar}
+          this.fileList[0] = { url: data.avatar }
           document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
           this.tag_list = data.tag_list.map(function (val) {
-            return {value: val}
+            return { value: val }
           })
           this.content = data.content
           let obj = this
           let interval = setInterval(function () {
             try {
               window.vditor.setValue(data.content)
-              last_form_data = {...obj.form_data}
+              last_form_data = { ...obj.form_data }
               last_form_data.content = window.vditor.getValue()
               clearInterval(interval)
               console.log("结束调用")
@@ -271,7 +300,7 @@ let blog = {
       data.content = window.vditor.getValue()
       let is_change = this.sortAndStringify(last_form_data) !== this.sortAndStringify(data); // 输出 true
       if (is_valid && is_change) {
-        last_form_data = {...data}
+        last_form_data = { ...data }
         data.is_draft = true
         axios_ins.post('/api/blog/?action=update_draft', data).then(response => {
           let data = response.data
@@ -310,7 +339,6 @@ export default blog
   padding-left: 5%;
   padding-right: 5%;
   min-width: 1200px;
-
 }
 
 #info-form {
@@ -345,6 +373,10 @@ export default blog
 #info-form .el-input__wrapper {
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
+}
 
+.input-item {
+  width: 100%;
+  margin-bottom: 8px;
 }
 </style>
