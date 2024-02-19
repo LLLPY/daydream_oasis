@@ -259,37 +259,6 @@ class Blog(BaseModel):
     def get_draft(cls, author_id):
         return cls.objects.filter(author_id=author_id, is_draft=True).first()
 
-    def get_md_path(self):
-        blog_dir = os.path.join(BASE_DIR, "..", "daydream_oasis_front", "docs", "blog")
-        path = os.path.join(blog_dir, str(self.id) + ".md")
-        return path
-
-    def save_md(self):
-
-        md_content = """---
-sidebar: false
-next: false
----
-<BlogInfo/>
-
-{}
-
-<ActionBox />
-        """
-        style = """<style>#top-box {margin-top:0.5rem!important;}</style>"""
-
-        md_content = md_content.format(self.content)
-        md_content += f"\n{style}"
-        path = self.get_md_path()
-        if not self.is_draft:
-            with open(path, 'w+', encoding='utf8') as f:
-                f.write(md_content)
-
-    def delete_md(self):
-        path = self.get_md_path()
-        if os.path.isfile(path):
-            os.remove(path)
-
 
 class BlogTagRelease(models.Model):
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='博客', help_text='博客')
