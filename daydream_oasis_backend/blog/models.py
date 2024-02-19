@@ -260,15 +260,6 @@ class Blog(BaseModel):
         return cls.objects.filter(author_id=author_id, is_draft=True).first()
 
 
-class BlogTagRelease(models.Model):
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, verbose_name='博客', help_text='博客')
-    tag = models.ForeignKey(Tag, on_delete=models.CASCADE, verbose_name='标签', help_text='标签')
-
-    class Meta:
-        db_table = '博客_标签关系表'
-        verbose_name = verbose_name_plural = db_table
-
-
 # 用户评论表
 class Comment(BaseModel):
     # 评论人
