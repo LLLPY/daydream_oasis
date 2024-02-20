@@ -8,7 +8,7 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
 from blog.views import (BlogViewSet, CategoryViewSet, CollectionViewSet,
-                        CommentViewSet, LikeViewSet, TagViewSet)
+                        CommentViewSet, LikeViewSet, TagViewSet, SectionViewSet)
 from daydream_oasis_backend.admin_site import my_site
 from daydream_oasis_backend.rss import LatestBlogFeed
 from daydream_oasis_backend.settings.base import MEDIA_ROOT
@@ -21,6 +21,7 @@ from user.views import UserViewSet
 # 路由注册
 router = DefaultRouter()
 router.register(r'category', CategoryViewSet, basename='category')
+router.register(r'section', SectionViewSet, basename='section')
 router.register(r'blog', BlogViewSet, basename='blog')
 router.register(r'tag', TagViewSet, basename='tag')
 router.register(r'comment', CommentViewSet, basename='comment')

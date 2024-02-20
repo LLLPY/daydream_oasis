@@ -24,8 +24,8 @@
                        placeholder="请输入分类" @select="handleCategorySelect" class="input-item"/>
 
       <!-- 专栏  -->
-      <el-autocomplete v-model="category" :fetch-suggestions="categoryQuerySearch" clearable class="input-item"
-                       size="large" placeholder="请输入专栏" @select="handleCategorySelect"/>
+      <el-autocomplete v-model="section" :fetch-suggestions="sectionQuerySearch" clearable class="input-item"
+                       size="large" placeholder="请输入专栏" @select="handleSectionSelect"/>
 
       <!-- avatar -->
       <el-row class="input-item">
@@ -49,6 +49,7 @@
                        placeholder="请输入标签" @select="handleTagSelect" @keyup.enter="handleTagInputConfirm"/>
       <el-row class="input-item">
         <el-tag v-for="tag in tag_list" :key="tag.value" class="mx-1" closable :disable-transitions="false" size="large"
+                :style="{ marginRight: '5px' }"
                 @close="handleTagClose(tag)">
           {{ tag.value }}
         </el-tag>
@@ -81,6 +82,7 @@ let blog = {
       title: '',
       avatar: {value: ''},
       category: '',
+      section: '',
       category_list: [],
       tag: '',
       tag_list: [],
@@ -117,11 +119,26 @@ let blog = {
             cb([]);
           });
     },
+    // 专栏
+    sectionQuerySearch(queryString, cb) {
+      axios_ins.get('api/section/', {params: {title: queryString, k: 5}})
+          .then(response => {
+            const data = response.data.data || [];
+            const processedData = data.map(({id, title, ...rest}) => ({value: title, ...rest}));
+            cb(processedData);
+          })
+          .catch(error => {
+            Warning(error)
+            cb([]);
+          });
+    },
 
     handleCategorySelect(item) {
       this.category = item.value
     },
-
+    handleSectionSelect(item) {
+      this.selection = item.value
+    },
     //图片上传
     handlePictureRemove(uploadFile, uploadFiles) {
       // 移除图片

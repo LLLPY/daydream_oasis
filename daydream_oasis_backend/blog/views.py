@@ -1,10 +1,10 @@
 import datetime
 
-from blog.models import Blog, Category, Collection, Comment, Like, Share, Tag
+from blog.models import Blog, Category, Collection, Comment, Like, Share, Tag, Section
 from blog.serializers import (BlogCreateSerializers, BlogSerializers,
                               CategorySerializers, CollectionSerializers,
                               CommentSerializers, LikeSerializers,
-                              SearchSerializers, TagSerializers)
+                              SearchSerializers, TagSerializers, SectionSerializers)
 from common.drf.decorators import login_required, rate_lock
 from common.drf.mixin import InstanceMixin
 from common.drf.pagination import CustomPagination
@@ -308,9 +308,15 @@ class TagViewSet(CategoryViewSet):
     queryset = Tag.objects.all()
 
 
-class SectionViewSet(viewsets.ModelViewSet):
-    serializer_class = TagSerializers
-    queryset = Tag.objects.all()
+class SectionViewSet(CategoryViewSet):
+    serializer_class = SectionSerializers
+    queryset = Section.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # 只能选择自己的专栏
+        queryset = queryset.filter(creator=self.request.user)
+        return queryset
 
 
 # 评论
