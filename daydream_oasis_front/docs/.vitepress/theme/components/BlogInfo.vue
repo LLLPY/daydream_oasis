@@ -1,11 +1,18 @@
 <template>
   <div class="info-box" :id="blog.id">
     <h1>{{ blog.title }}</h1>
-    <span class="author">作者:<a href="#">{{ blog.author.username }}</a></span>
-    <span class="category">分类:<a href="#">{{ blog.category }}</a></span>
-    <span id="tag-list" v-if="blog.tag_list.length">标签: <span v-for="tag in blog.tag_list" class="tag"><a href="#">{{
-        tag
-      }}</a></span> </span>
+    <span class="author"
+      >作者:<a href="#">{{ blog.author.username }}</a></span
+    >
+    <span class="category"
+      >分类:<a href="#">{{ blog.category }}</a></span
+    >
+    <span id="tag-list" v-if="blog.tag_list.length"
+      >标签:
+      <span v-for="tag in blog.tag_list" class="tag"
+        ><a href="#">{{ tag }}</a></span
+      >
+    </span>
     <span>浏览量:{{ blog.pv }}</span>
     <!-- <span>阅读量:{{ blog.read_times }}</span> -->
     <span>预计阅读时长:{{ blog.read_time }}</span>
@@ -13,60 +20,58 @@
     <span>更新时间:{{ blog.update_time }}</span>
     <span class="edit" @click="edit_blog">编辑</span>
     <span class="delete" @click="delete_blog">删除</span>
-    <hr/>
+    <hr />
   </div>
 
-  <div v-html="blog.html"/>
+  <div v-html="blog.html" />
 </template>
 <script setup>
-import {axios_ins} from "../assets/js/axios"
-import '../assets/font/iconfont.css'
-import {ref} from 'vue'
-import {get_url_params} from "../assets/js/tools.js";
-import {createMarkdownRenderer} from "../assets/js/markdown/markdown";
+import { axios_ins } from "../assets/js/axios";
+import "../assets/font/iconfont.css";
+import { ref } from "vue";
+import { get_url_params } from "../assets/js/tools.js";
+import { createMarkdownRenderer } from "../assets/js/markdown/markdown";
 
-const md = await createMarkdownRenderer()
-const params = get_url_params()
+const md = await createMarkdownRenderer();
+const params = get_url_params();
 
 // 根据博客id拿到博客的完整信息
-let blog = ref({id: params.id, tag_list: [], author: {}})
+let blog = ref({ id: params.id, tag_list: [], author: {} });
 
 async function get_blog_info() {
-  let response = await axios_ins.get(`/api/blog/${blog.value.id}/`)
-  if (response.data.code === '0') {
-    let data = response.data.data
-    blog.value = data
-    let html = md.render(blog.value.content)
-    blog.value.html = html
+  let response = await axios_ins.get(`/api/blog/${blog.value.id}/`);
+  if (response.data.code === "0") {
+    let data = response.data.data;
+    blog.value = data;
+    let html = md.render(blog.value.content);
+    blog.value.html = html;
   } else {
-    window.history.back()
+    window.history.back();
   }
-
 }
 
-get_blog_info()
+get_blog_info();
 
 function delete_blog() {
-  let res = confirm('确认删除吗?')
+  let res = confirm("确认删除吗?");
   if (res) {
-    axios_ins.delete(`/api/blog/${blog.value.id}/`).then(response => {
-      let data = response.data
-      if (data.code === '0') {
-        window.location.href = '/blog/'
+    axios_ins.delete(`/api/blog/${blog.value.id}/`).then((response) => {
+      let data = response.data;
+      if (data.code === "0") {
+        window.location.href = "/blog/";
       }
-    })
+    });
   }
 }
 
 function edit_blog() {
-  axios_ins.put(`/api/blog/${blog.value.id}/`).then(response => {
-    let data = response.data
-    if (data.code === '0') {
-      window.location.href = '/write'
+  axios_ins.put(`/api/blog/${blog.value.id}/`).then((response) => {
+    let data = response.data;
+    if (data.code === "0") {
+      window.location.href = "/write";
     }
-  })
+  });
 }
-
 </script>
 
 <style>

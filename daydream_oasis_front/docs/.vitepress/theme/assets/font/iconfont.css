@@ -1,8 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4272495 */
-  src: url('iconfont.woff2?t=1699781113546') format('woff2'),
-       url('iconfont.woff?t=1699781113546') format('woff'),
-       url('iconfont.ttf?t=1699781113546') format('truetype');
+  src:
+    url("iconfont.woff2?t=1699781113546") format("woff2"),
+    url("iconfont.woff?t=1699781113546") format("woff"),
+    url("iconfont.ttf?t=1699781113546") format("truetype");
 }
 
 .iconfont {
@@ -56,4 +57,3 @@
 .icon-fenxiang:before {
   content: "\e601";
 }
-

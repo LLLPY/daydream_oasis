@@ -1,5 +1,5 @@
 <template>
-  <br>
+  <br />
   <div id="action-box">
     <span class="iconfont">
       <svg class="icon" aria-hidden="true" :class="{ active: false }">
@@ -12,7 +12,6 @@
         <use xlink:href="#icon-shoucang-shoucang" @click="wrap_collect"></use>
       </svg>
       <span class="counter">{{ collected_count }}</span>
-
     </span>
     <span class="iconfont">
       <svg class="icon" aria-hidden="true" :class="{ active: has_liked }">
@@ -24,95 +23,89 @@
 </template>
 
 <script setup>
-
-import { axios_ins } from '../assets/js/axios'
-import { ref } from 'vue'
+import { axios_ins } from "../assets/js/axios";
+import { ref } from "vue";
 import { get_url_params } from "../assets/js/tools.js";
 
-let params = get_url_params()
-const blog = params
-let liked_count = ref(0)
-let shared_count = ref(0)
-let collected_count = ref(0)
-let has_liked = ref(false)
-let has_collected = ref(false)
-
+let params = get_url_params();
+const blog = params;
+let liked_count = ref(0);
+let shared_count = ref(0);
+let collected_count = ref(0);
+let has_liked = ref(false);
+let has_collected = ref(false);
 
 function get_action_info() {
-
-  axios_ins.get(`/api/blog/${blog.id}/action_info/`).then(response => {
-    let data = response.data
-    if (data.code === '0') {
-      data = data.data
-      has_liked.value = data.has_liked
-      liked_count.value = data.liked_count
-      has_collected.value = data.has_collected
-      collected_count.value = data.collected_count
-      shared_count.value = data.shared_count
+  axios_ins.get(`/api/blog/${blog.id}/action_info/`).then((response) => {
+    let data = response.data;
+    if (data.code === "0") {
+      data = data.data;
+      has_liked.value = data.has_liked;
+      liked_count.value = data.liked_count;
+      has_collected.value = data.has_collected;
+      collected_count.value = data.collected_count;
+      shared_count.value = data.shared_count;
     }
-  })
+  });
 }
 
-get_action_info()
+get_action_info();
 
 function like() {
   //   点赞
-  axios_ins.post(`/api/blog/${blog.id}/like/`).then(response => {
-    if (response.data.code === '0') {
-      liked_count.value += 1
-      has_liked.value = true
+  axios_ins.post(`/api/blog/${blog.id}/like/`).then((response) => {
+    if (response.data.code === "0") {
+      liked_count.value += 1;
+      has_liked.value = true;
     }
-  })
+  });
 }
 
 function cancel_like() {
   //   点赞
-  axios_ins.post(`/api/blog/${blog.id}/cancel_like/`).then(response => {
-    if (response.data.code === '0') {
-      liked_count.value -= 1
-      has_liked.value = false
+  axios_ins.post(`/api/blog/${blog.id}/cancel_like/`).then((response) => {
+    if (response.data.code === "0") {
+      liked_count.value -= 1;
+      has_liked.value = false;
     }
-
-  })
+  });
 }
 
 function wrap_like() {
   if (has_liked.value) {
-    cancel_like()
+    cancel_like();
   } else {
-    like()
+    like();
   }
 }
 
 function collect() {
   //   收藏
-  axios_ins.post(`/api/blog/${blog.id}/collect/`).then(response => {
-    if (response.data.code === '0') {
-      collected_count.value += 1
-      has_collected.value = true
+  axios_ins.post(`/api/blog/${blog.id}/collect/`).then((response) => {
+    if (response.data.code === "0") {
+      collected_count.value += 1;
+      has_collected.value = true;
     }
-  })
+  });
 }
 
 function cancel_collect() {
   //   收藏
-  axios_ins.post(`/api/blog/${blog.id}/cancel_collect/`).then(response => {
-    if (response.data.code === '0') {
-      collected_count.value -= 1
-      has_collected.value = false
+  axios_ins.post(`/api/blog/${blog.id}/cancel_collect/`).then((response) => {
+    if (response.data.code === "0") {
+      collected_count.value -= 1;
+      has_collected.value = false;
     }
-  })
+  });
 }
 
 function wrap_collect() {
   if (has_collected.value) {
-    cancel_collect()
+    cancel_collect();
   } else {
-    collect()
+    collect();
   }
 }
-
-
 </script>
 
 <style scoped>
@@ -121,7 +114,6 @@ function wrap_collect() {
   overflow: hidden;
   padding: 0.2em;
 }
-
 
 #action-box .iconfont {
   font-size: 1em;

@@ -2,7 +2,6 @@
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
-
 hero:
   name: "🏝️白日梦想园🏡"
   text: "欢迎来到Daydream Oasis！"
@@ -31,7 +30,6 @@ features:
     details: 从了解人工智能开始，到渐入机器学习的佳境，探索的道路还很遥远...
     link: /blog/content?id=2
     linkText: 了解更多
-
 ---
 
 <script setup>

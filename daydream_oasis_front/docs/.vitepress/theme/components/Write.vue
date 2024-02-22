@@ -1,56 +1,100 @@
 <template>
   <div id="container">
-    <div id="info-form" style="box-shadow: var(--el-box-shadow-light);">
+    <div id="info-form" style="box-shadow: var(--el-box-shadow-light)">
       <el-row :gutter="20">
-
         <!-- 标题 -->
         <el-col :span="20">
-          <el-input v-model="title" class="w-50 m-2" placeholder="请输入标题" clearable size="large" maxlength="30"
-                    show-word-limit>
+          <el-input
+            v-model="title"
+            class="w-50 m-2"
+            placeholder="请输入标题"
+            clearable
+            size="large"
+            maxlength="30"
+            show-word-limit
+          >
           </el-input>
         </el-col>
-        <el-col :span="4" style="text-align: right;">
-          <el-button type="primary" size="large" @click="pre_submit">保存草稿</el-button>
-          <el-button type="primary" size="large" @click="pre_submit">发&nbsp;&nbsp;布</el-button>
+        <el-col :span="4" style="text-align: right">
+          <el-button type="primary" size="large" @click="pre_submit"
+            >保存草稿</el-button
+          >
+          <el-button type="primary" size="large" @click="pre_submit"
+            >发&nbsp;&nbsp;布</el-button
+          >
         </el-col>
-
       </el-row>
     </div>
     <!-- 弹窗 -->
     <el-dialog v-model="dialogFormVisible" title="发&nbsp;布" width="500">
-
       <!-- 分类  -->
-      <el-autocomplete v-model="category" :fetch-suggestions="categoryQuerySearch" clearable size="large"
-                       placeholder="请输入分类" @select="handleCategorySelect" class="input-item"/>
+      <el-autocomplete
+        v-model="category"
+        :fetch-suggestions="categoryQuerySearch"
+        clearable
+        size="large"
+        placeholder="请输入分类"
+        @select="handleCategorySelect"
+        class="input-item"
+      />
 
       <!-- 专栏  -->
-      <el-autocomplete v-model="section" :fetch-suggestions="sectionQuerySearch" clearable class="input-item"
-                       size="large" placeholder="请输入专栏" @select="handleSectionSelect"/>
+      <el-autocomplete
+        v-model="section"
+        :fetch-suggestions="sectionQuerySearch"
+        clearable
+        class="input-item"
+        size="large"
+        placeholder="请输入专栏"
+        @select="handleSectionSelect"
+      />
 
       <!-- avatar -->
       <el-row class="input-item">
         <el-col :span="16">
-          <el-upload v-model:file-list="fileList" :action="api_url" :with-credentials="withCredentials"
-                     list-type="picture-card" :on-preview="handlePictureCardPreview" :on-remove="handlePictureRemove"
-                     :on-success="handlePictureSucc" w-full>
+          <el-upload
+            v-model:file-list="fileList"
+            :action="api_url"
+            :with-credentials="withCredentials"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handlePictureRemove"
+            :on-success="handlePictureSucc"
+            w-full
+          >
             <el-icon>
-              <Plus/>
+              <Plus />
             </el-icon>
           </el-upload>
 
           <el-dialog v-model="dialogVisible.value">
-            <img w-full :src="avatar.value"/>
+            <img w-full :src="avatar.value" />
           </el-dialog>
         </el-col>
       </el-row>
 
       <!-- 标签 -->
-      <el-autocomplete v-model="tag" :fetch-suggestions="tagQuerySearch" clearable class="input-item" size="large"
-                       placeholder="请输入标签" @select="handleTagSelect" @keyup.enter="handleTagInputConfirm"/>
+      <el-autocomplete
+        v-model="tag"
+        :fetch-suggestions="tagQuerySearch"
+        clearable
+        class="input-item"
+        size="large"
+        placeholder="请输入标签"
+        @select="handleTagSelect"
+        @keyup.enter="handleTagInputConfirm"
+      />
       <el-row class="input-item">
-        <el-tag v-for="tag in tag_list" :key="tag.value" class="mx-1" closable :disable-transitions="false" size="large"
-                :style="{ marginRight: '5px' }"
-                @close="handleTagClose(tag)">
+        <el-tag
+          v-for="tag in tag_list"
+          :key="tag.value"
+          class="mx-1"
+          closable
+          :disable-transitions="false"
+          size="large"
+          :style="{ marginRight: '5px' }"
+          @close="handleTagClose(tag)"
+        >
           {{ tag.value }}
         </el-tag>
       </el-row>
@@ -66,147 +110,161 @@
       </template>
     </el-dialog>
 
-    <Vditor/>
+    <Vditor />
   </div>
 </template>
 <script>
-import {Warning} from '../assets/js/MessageBox.js'
-import {axios_ins, upload_api} from "../assets/js/axios";
-import {goBackOrRedirect} from '../assets/js/tools'
+import { Warning } from "../assets/js/MessageBox.js";
+import { axios_ins, upload_api } from "../assets/js/axios";
+import { goBackOrRedirect } from "../assets/js/tools";
 
 var last_form_data = {};
 let blog = {
   data() {
     return {
       blog_id: null,
-      title: '',
-      avatar: {value: ''},
-      category: '',
-      section: '',
+      title: "",
+      avatar: { value: "" },
+      category: "",
+      section: "",
       category_list: [],
-      tag: '',
+      tag: "",
       tag_list: [],
-      dialogVisible: {value: false},
+      dialogVisible: { value: false },
       fileList: [],
       withCredentials: true,
       api_url: upload_api,
-      dialogFormVisible: false
-    }
+      dialogFormVisible: false,
+    };
   },
   computed: {
     form_data: function () {
       return {
-        'id': this.blog_id,
-        'title': this.title,
-        'category': this.category,
-        'avatar': this.avatar.value,
-        'tag_list': this.tag_list,
-        'content': null,
-      }
-    }
+        id: this.blog_id,
+        title: this.title,
+        category: this.category,
+        avatar: this.avatar.value,
+        tag_list: this.tag_list,
+        content: null,
+      };
+    },
   },
   methods: {
     // 分类
     categoryQuerySearch(queryString, cb) {
-      axios_ins.get('api/category/', {params: {title: queryString, k: 5}})
-          .then(response => {
-            const data = response.data.data || [];
-            const processedData = data.map(({id, title, ...rest}) => ({value: title, ...rest}));
-            cb(processedData);
-          })
-          .catch(error => {
-            Warning(error)
-            cb([]);
-          });
+      axios_ins
+        .get("api/category/", { params: { title: queryString, k: 5 } })
+        .then((response) => {
+          const data = response.data.data || [];
+          const processedData = data.map(({ id, title, ...rest }) => ({
+            value: title,
+            ...rest,
+          }));
+          cb(processedData);
+        })
+        .catch((error) => {
+          Warning(error);
+          cb([]);
+        });
     },
     // 专栏
     sectionQuerySearch(queryString, cb) {
-      axios_ins.get('api/section/', {params: {title: queryString, k: 5}})
-          .then(response => {
-            const data = response.data.data || [];
-            const processedData = data.map(({id, title, ...rest}) => ({value: title, ...rest}));
-            cb(processedData);
-          })
-          .catch(error => {
-            Warning(error)
-            cb([]);
-          });
+      axios_ins
+        .get("api/section/", { params: { title: queryString, k: 5 } })
+        .then((response) => {
+          const data = response.data.data || [];
+          const processedData = data.map(({ id, title, ...rest }) => ({
+            value: title,
+            ...rest,
+          }));
+          cb(processedData);
+        })
+        .catch((error) => {
+          Warning(error);
+          cb([]);
+        });
     },
 
     handleCategorySelect(item) {
-      this.category = item.value
+      this.category = item.value;
     },
     handleSectionSelect(item) {
-      this.selection = item.value
+      this.selection = item.value;
     },
     //图片上传
     handlePictureRemove(uploadFile, uploadFiles) {
       // 移除图片
-      this.avatar.value = ''
-      this.dialogVisible.value = false
-      this.fileList.pop()
-      document.getElementsByClassName('el-upload--picture-card')[0].classList.remove('hidden');
+      this.avatar.value = "";
+      this.dialogVisible.value = false;
+      this.fileList.pop();
+      document
+        .getElementsByClassName("el-upload--picture-card")[0]
+        .classList.remove("hidden");
     },
     handlePictureCardPreview(file) {
       // 大图预览
-      this.avatar.value = file.url
-      this.dialogVisible.value = true
+      this.avatar.value = file.url;
+      this.dialogVisible.value = true;
     },
     handlePictureSucc(response, uploadFile, uploadFiles) {
       // 图片上传成功
-      if (response.code === '0') {
-        this.fileList[0] = uploadFile
-        document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
-        this.avatar.value = response.data.url
+      if (response.code === "0") {
+        this.fileList[0] = uploadFile;
+        document
+          .getElementsByClassName("el-upload--picture-card")[0]
+          .classList.add("hidden");
+        this.avatar.value = response.data.url;
       } else {
-        this.handlePictureRemove(uploadFile, uploadFiles)
-        Warning(response.message)
+        this.handlePictureRemove(uploadFile, uploadFiles);
+        Warning(response.message);
       }
     },
     //标签
     handleTagClose(tag) {
-      this.tag_list.splice(this.tag_list.indexOf(tag), 1)
+      this.tag_list.splice(this.tag_list.indexOf(tag), 1);
     },
     tagQuerySearch(queryString, cb) {
       // 请求后端获取tag列表
-      axios_ins.get('api/tag/', {params: {title: queryString, k: 5}})
-          .then(response => {
-            const data = response.data.data || [];
-            const processedData = data.map(({id, title, ...rest}) => ({value: title, ...rest}));
-            cb(processedData);
-          })
-          .catch(error => {
-            Warning(error)
-            cb([]);
-          });
+      axios_ins
+        .get("api/tag/", { params: { title: queryString, k: 5 } })
+        .then((response) => {
+          const data = response.data.data || [];
+          const processedData = data.map(({ id, title, ...rest }) => ({
+            value: title,
+            ...rest,
+          }));
+          cb(processedData);
+        })
+        .catch((error) => {
+          Warning(error);
+          cb([]);
+        });
     },
 
     handleTagSelect(item) {
       if (this.tag_list.length >= 3) {
-        Warning('最多只能选三个标签!')
-        return
+        Warning("最多只能选三个标签!");
+        return;
       } else {
-        this.tag_list.push(item)
-        this.tag = ''
+        this.tag_list.push(item);
+        this.tag = "";
       }
-
     },
     handleTagInputConfirm() {
       if (this.tag) {
         if (this.tag_list.length >= 3) {
-          Warning('最多只能选三个标签!')
-          return
+          Warning("最多只能选三个标签!");
+          return;
         } else {
-          this.tag_list.push({value: this.tag})
-          this.tag = ''
+          this.tag_list.push({ value: this.tag });
+          this.tag = "";
         }
-
       }
     },
     title_check(warn = true) {
       if (this.title.length === 0 || this.title.length > 30) {
         if (warn) {
-          Warning('标题的长度范围是0~30!')
+          Warning("标题的长度范围是0~30!");
         }
         return false;
       } else {
@@ -214,10 +272,10 @@ let blog = {
       }
     },
     content_check(warn = true) {
-      let content = window.vditor.getValue()
+      let content = window.vditor.getValue();
       if (content.length <= 5) {
         if (warn) {
-          Warning('内容太短辣!')
+          Warning("内容太短辣!");
         }
         return false;
       } else {
@@ -225,21 +283,20 @@ let blog = {
       }
     },
     form_check(warn = true) {
-
       if (!this.title_check(warn)) {
         return false;
       }
 
       if (this.category.length === 0 || this.category.length > 8) {
         if (warn) {
-          Warning('分类的长度范围是0~8!')
+          Warning("分类的长度范围是0~8!");
         }
         return false;
       }
 
       if (this.tag_list.length === 0) {
         if (warn) {
-          Warning('请至少选择一个标签叭!')
+          Warning("请至少选择一个标签叭!");
         }
         return false;
       }
@@ -247,106 +304,109 @@ let blog = {
     },
     pre_submit() {
       if (this.title_check() && this.content_check()) {
-        this.dialogFormVisible = true
+        this.dialogFormVisible = true;
       }
     },
     submit(is_draft = false) {
       // 提交前关闭自动更新，否则可能会导致提交在更新之后
-      clearInterval(this.interval)
-      let data = this.form_data
-      data.is_draft = is_draft
-      data.content = window.vditor.getValue()
+      clearInterval(this.interval);
+      let data = this.form_data;
+      data.is_draft = is_draft;
+      data.content = window.vditor.getValue();
 
       if (is_draft || this.form_check()) {
-        axios_ins.post('/api/blog/?action=submit', data).then(response => {
+        axios_ins.post("/api/blog/?action=submit", data).then((response) => {
           if (is_draft) {
-            goBackOrRedirect('/blog/');
+            goBackOrRedirect("/blog/");
           } else {
             window.location.href = `/blog/content?id=${this.blog_id}`;
           }
-          this.dialogFormVisible = false
+          this.dialogFormVisible = false;
         });
       }
     },
     get_draft() {
       // 获取最近的一次草稿
-      axios_ins("/api/blog/get_draft/").then(response => {
-        let data = response.data
+      axios_ins("/api/blog/get_draft/").then((response) => {
+        let data = response.data;
         if (Object.keys(data.data).length) {
-          data = data.data
-          this.blog_id = data.id
-          this.title = data.title
-          this.category = data.category
-          this.avatar.value = data.avatar
-          this.fileList[0] = {url: data.avatar}
-          document.getElementsByClassName('el-upload--picture-card')[0].classList.add('hidden');
+          data = data.data;
+          this.blog_id = data.id;
+          this.title = data.title;
+          this.category = data.category;
+          this.avatar.value = data.avatar;
+          this.fileList[0] = { url: data.avatar };
+          document
+            .getElementsByClassName("el-upload--picture-card")[0]
+            .classList.add("hidden");
           this.tag_list = data.tag_list.map(function (val) {
-            return {value: val}
-          })
-          this.content = data.content
-          let obj = this
+            return { value: val };
+          });
+          this.content = data.content;
+          let obj = this;
           let interval = setInterval(function () {
             try {
-              window.vditor.setValue(data.content)
-              last_form_data = {...obj.form_data}
-              last_form_data.content = window.vditor.getValue()
-              clearInterval(interval)
-              console.log("结束调用")
+              window.vditor.setValue(data.content);
+              last_form_data = { ...obj.form_data };
+              last_form_data.content = window.vditor.getValue();
+              clearInterval(interval);
+              console.log("结束调用");
             } catch (e) {
-              console.log("继续调用")
+              console.log("继续调用");
             }
-          }, 500)
-          Warning("接着上次继续编辑...")
+          }, 500);
+          Warning("接着上次继续编辑...");
         }
-      })
+      });
     },
     sortAndStringify(obj) {
       // 将对象的属性名按照字母顺序排序
       let sortedObj = {};
-      Object.keys(obj).sort().forEach(key => {
-        sortedObj[key] = obj[key];
-      });
+      Object.keys(obj)
+        .sort()
+        .forEach((key) => {
+          sortedObj[key] = obj[key];
+        });
       // 将排序后的对象转换为字符串
       return JSON.stringify(sortedObj);
     },
     _update_draft() {
-      let is_valid = this.form_check(false)
-      let data = this.form_data
-      data.content = window.vditor.getValue()
-      let is_change = this.sortAndStringify(last_form_data) !== this.sortAndStringify(data); // 输出 true
+      let is_valid = this.form_check(false);
+      let data = this.form_data;
+      data.content = window.vditor.getValue();
+      let is_change =
+        this.sortAndStringify(last_form_data) !== this.sortAndStringify(data); // 输出 true
       if (is_valid && is_change) {
-        last_form_data = {...data}
-        data.is_draft = true
-        axios_ins.post('/api/blog/?action=update_draft', data).then(response => {
-          let data = response.data
-          let new_blog_id = data.data.blog_id
-          if (new_blog_id) {
-            this.blog_id = new_blog_id
-          }
-        })
+        last_form_data = { ...data };
+        data.is_draft = true;
+        axios_ins
+          .post("/api/blog/?action=update_draft", data)
+          .then((response) => {
+            let data = response.data;
+            let new_blog_id = data.data.blog_id;
+            if (new_blog_id) {
+              this.blog_id = new_blog_id;
+            }
+          });
       }
     },
     update_draft() {
       //   更新草稿
-      this.interval = setInterval(this._update_draft, 3000)
+      this.interval = setInterval(this._update_draft, 3000);
     },
-
   },
   mounted() {
-    axios_ins.get('/api/user/info/').then(response => {
-      if (response.data.code !== '0') {
-        window.history.back()
+    axios_ins.get("/api/user/info/").then((response) => {
+      if (response.data.code !== "0") {
+        window.history.back();
       } else {
-        this.get_draft()
-        setTimeout(this.update_draft, 5000)
+        this.get_draft();
+        setTimeout(this.update_draft, 5000);
       }
-    })
-
-
-  }
-}
-export default blog
-
+    });
+  },
+};
+export default blog;
 </script>
 
 <style>
@@ -382,7 +442,6 @@ export default blog
   margin: 6px auto;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-
 }
 
 #info-form .el-input__wrapper {

@@ -6,7 +6,7 @@
       </div>
       <div class="item_content">
         <div class="item_img">
-          <img :src="blog.avatar" alt="">
+          <img :src="blog.avatar" alt="" />
         </div>
         <div class="item_abstract">
           {{ blog.abstract }}
@@ -14,26 +14,48 @@
       </div>
       <div class="item_extra">
         <span class="info-box" @click="search({ author: blog.author.id })">
-          <span class="iconfont">&#xe6a4;</span>{{ blog.author.username }} {{ blog.update_time }}
+          <span class="iconfont">&#xe6a4;</span>{{ blog.author.username }}
+          {{ blog.update_time }}
         </span>
-        <span class="info-box category" @click="search({ category: blog.category })"> {{ blog.category }} </span>
-        <span class="info-box tag" v-for="tag in blog.tag_list" @click="search({ tag: tag })">{{ tag }}</span>
-        <span class="info-box read"><a :href="'content?id=' + blog.id">阅读原文>></a> </span>
+        <span
+          class="info-box category"
+          @click="search({ category: blog.category })"
+        >
+          {{ blog.category }}
+        </span>
+        <span
+          class="info-box tag"
+          v-for="tag in blog.tag_list"
+          @click="search({ tag: tag })"
+          >{{ tag }}</span
+        >
+        <span class="info-box read"
+          ><a :href="'content?id=' + blog.id">阅读原文>></a>
+        </span>
         <span></span>
       </div>
     </div>
   </div>
 
   <div id="pagination">
-    <el-pagination background :pager-count="5" layout="prev, pager, next, sizes, jumper" :total="total" :size="size"
-      :hide-on-single-page="true" :current-page="page" :page-sizes="[10, 20, 30, 50]" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" />
+    <el-pagination
+      background
+      :pager-count="5"
+      layout="prev, pager, next, sizes, jumper"
+      :total="total"
+      :size="size"
+      :hide-on-single-page="true"
+      :current-page="page"
+      :page-sizes="[10, 20, 30, 50]"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
 <script>
 import { axios_ins } from "../assets/js/axios";
-import { computed } from 'vue';
+import { computed } from "vue";
 
 let blog_list_obj = {
   data() {
@@ -43,67 +65,72 @@ let blog_list_obj = {
       total: 0,
       pre: null,
       next: null,
-      detail: 'false',
+      detail: "false",
       blog_list: [],
       params: {},
       screen_width: computed(() => {
-        return window.innerWidth
+        return window.innerWidth;
       }),
-    }
+    };
   },
   methods: {
     get_blog_list() {
-      this.params.page = this.page
-      this.params.size = this.size
-      this.params.detail = this.detail
-      axios_ins.get(`/api/blog/?${this.objectToUrlParams(this.params)}`).then(response => {
-        let data = response.data
-        if (data.code === '0') {
-          data = data.data
-          this.total = data.count
-          this.pre = data.previous
-          this.next = data.next
-          this.blog_list = data.results
-        }
-      })
+      this.params.page = this.page;
+      this.params.size = this.size;
+      this.params.detail = this.detail;
+      axios_ins
+        .get(`/api/blog/?${this.objectToUrlParams(this.params)}`)
+        .then((response) => {
+          let data = response.data;
+          if (data.code === "0") {
+            data = data.data;
+            this.total = data.count;
+            this.pre = data.previous;
+            this.next = data.next;
+            this.blog_list = data.results;
+          }
+        });
     },
     handleSizeChange(val) {
-      this.size = val
-      this.get_blog_list()
+      this.size = val;
+      this.get_blog_list();
     },
     handleCurrentChange(val) {
       // 当点击分页按钮时，滚动到页面顶部
       window.scrollTo({
         top: 0,
-        behavior: 'smooth' // 可以添加平滑滚动效果
+        behavior: "smooth", // 可以添加平滑滚动效果
       });
-      this.page = val
-      localStorage.setItem('page', val)
-      this.get_blog_list()
+      this.page = val;
+      localStorage.setItem("page", val);
+      this.get_blog_list();
     },
     search(params) {
       // Object.assign(this.params,params)
-      this.params = params
-      this.page = 1
-      this.get_blog_list()
+      this.params = params;
+      this.page = 1;
+      this.get_blog_list();
       window.scrollTo({
         top: 0,
-        behavior: 'smooth' // 可以添加平滑滚动效果
+        behavior: "smooth", // 可以添加平滑滚动效果
       });
     },
     objectToUrlParams(obj) {
-      return Object.keys(obj).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`).join('&');
+      return Object.keys(obj)
+        .map(
+          (key) => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`,
+        )
+        .join("&");
     },
   },
 
   mounted() {
-    this.page = +localStorage.getItem('page') || 1
-    this.get_blog_list()
-  }
-}
-export default blog_list_obj
+    this.page = +localStorage.getItem("page") || 1;
+    this.get_blog_list();
+  },
+};
+export default blog_list_obj;
 </script>
-
 
 <style>
 #top-box {
@@ -115,10 +142,10 @@ export default blog_list_obj
 
   .item {
     padding: 12px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     margin-bottom: 24px;
-    transition: all linear .5s;
+    transition: all linear 0.5s;
 
     .item_title {
       padding: 10px 0;
@@ -132,7 +159,6 @@ export default blog_list_obj
       display: flex;
       height: 152px;
       margin-bottom: 10px;
-
 
       .item_img {
         width: 40%;
@@ -193,18 +219,14 @@ export default blog_list_obj
         text-decoration: none;
       }
     }
-
   }
 
   /* .item:hover {
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, .3);
   } */
-
-
 }
 
 @media (max-width: 450px) {
-
   .VPDoc {
     padding-left: 0.55rem !important;
     padding-right: 0.55rem !important;
@@ -225,7 +247,6 @@ export default blog_list_obj
         img {
           width: 100% !important;
           max-height: 250px;
-
         }
       }
 

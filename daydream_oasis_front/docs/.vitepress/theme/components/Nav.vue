@@ -2,7 +2,12 @@
   <div class="nav">
     <div class="login">
       <div v-if="isLogin" @click="goLogin" class="block">
-        <el-avatar :size="25" :src="user.avatar" :alt="user.username" :title="user.username" />
+        <el-avatar
+          :size="25"
+          :src="user.avatar"
+          :alt="user.username"
+          :title="user.username"
+        />
       </div>
       <div v-else @click="goLogin">登录</div>
     </div>
@@ -10,35 +15,33 @@
 </template>
 
 <script setup>
-import { ref, unref } from 'vue'
+import { ref, unref } from "vue";
 import { axios_ins } from "../assets/js/axios";
 
 const goLogin = () => {
-
   if (isLogin.value) {
     // 跳转到个人中心
-    location.href = '/home'
+    location.href = "/home";
   } else {
     // 跳转到登录页面
-    location.href = '/login'
+    location.href = "/login";
   }
-}
+};
 
 const initView = () => {
-  axios_ins.get('/api/user/info/').then(response => {
-    if (response.data.code === '0') {
-      let data = response.data.data
-      isLogin.value = true
-      user = unref(data)
+  axios_ins.get("/api/user/info/").then((response) => {
+    if (response.data.code === "0") {
+      let data = response.data.data;
+      isLogin.value = true;
+      user = unref(data);
     }
-  })
-}
+  });
+};
 
-let isLogin = ref(false)
-let user = ref()
+let isLogin = ref(false);
+let user = ref();
 
-initView()
-
+initView();
 </script>
 
 <style scoped>
@@ -53,7 +56,6 @@ initView()
   align-items: center;
 }
 
-
 .login:hover {
   cursor: pointer;
 }
@@ -67,7 +69,7 @@ initView()
     }
 
     &::before {
-      content: '';
+      content: "";
       display: block;
       clear: both;
       width: 1px;

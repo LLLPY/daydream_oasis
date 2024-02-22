@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="progress" :style="{width: `${progress}%`}"></div>
-    <Content/>
+    <div id="progress" :style="{ width: `${progress}%` }"></div>
+    <Content />
   </div>
 </template>
 
@@ -9,10 +9,10 @@
 export default {
   computed: {
     progress() {
-      return this.$page.progress
-    }
-  }
-}
+      return this.$page.progress;
+    },
+  },
+};
 </script>
 
 <style>

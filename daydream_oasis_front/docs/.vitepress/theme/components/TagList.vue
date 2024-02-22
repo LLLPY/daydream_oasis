@@ -15,34 +15,40 @@
       </div>
     </div>
     <div class="card__content">
-      <span class="tag" v-for="(tag, index) in tag_list" :key="index" @click="search({ tag: tag.title })">{{ tag.title }}</span>
+      <span
+        class="tag"
+        v-for="(tag, index) in tag_list"
+        :key="index"
+        @click="search({ tag: tag.title })"
+        >{{ tag.title }}</span
+      >
     </div>
   </div>
 </template>
 
 <script>
-import {axios_ins} from '../assets/js/axios'
+import { axios_ins } from "../assets/js/axios";
 export default {
   data() {
     return {
-      tag_list: []
+      tag_list: [],
     };
   },
   methods: {
     fetchTags() {
-      axios_ins.get('/api/tag/?format=json').then(response => {
-        this.tag_list = response.data.data
-      })
+      axios_ins.get("/api/tag/?format=json").then((response) => {
+        this.tag_list = response.data.data;
+      });
     },
-    search(params){
+    search(params) {
       // console.log( window.blog_list_obj);
       // window.blog_list_obj.search(params)
-    }
+    },
   },
 
   mounted() {
     this.fetchTags();
-  }
+  },
 };
 </script>
 
@@ -62,7 +68,6 @@ export default {
   align-items: center;
   padding: 9px;
   padding-bottom: 0;
-
 }
 
 .circle {
@@ -110,7 +115,6 @@ export default {
   }
 }
 
-
 .card__content .tag:hover {
   cursor: pointer;
   background-color: skyblue !important;
@@ -128,13 +132,10 @@ export default {
 .VPDocAside #tag-box {
   max-height: 318px;
   overflow: hidden;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, .1);
-
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 a {
   text-decoration: none !important;
 }
-
-
 </style>
