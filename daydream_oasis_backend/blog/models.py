@@ -34,7 +34,7 @@ class Category(BaseModel):
 
     class Meta:
         db_table = 'category'  # 修改表名
-        verbose_name_plural = verbose_name = db_table
+        verbose_name_plural = verbose_name = '分类'
 
     @classmethod
     def get_by_name(cls, name):
@@ -63,7 +63,7 @@ class Tag(BaseModel):
 
     class Meta:
         db_table = 'tag'
-        verbose_name_plural = verbose_name = db_table
+        verbose_name_plural = verbose_name = '标签'
 
 
 # 专栏
@@ -82,7 +82,7 @@ class Section(BaseModel):
 
     class Meta:
         db_table = 'section'
-        verbose_name_plural = verbose_name = db_table
+        verbose_name_plural = verbose_name = '专栏'
 
 # 博客
 
@@ -99,11 +99,11 @@ class Blog(BaseModel):
                              help_text='封面')
 
     # 专栏
-    section = models.ForeignKey(Section, on_delete=models.CASCADE,
+    section = models.ForeignKey(Section, on_delete=models.SET_NULL,
                                 null=True, verbose_name='专栏', help_text='专栏')
 
     # 分类
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,  null=True,
                                  verbose_name='分类', help_text='分类')
 
     # 标签
@@ -156,7 +156,7 @@ class Blog(BaseModel):
 
     class Meta:
         db_table = 'blog'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '博客'
         ordering = ['-is_top', '-update_time']
 
     @classmethod
@@ -230,29 +230,34 @@ class Blog(BaseModel):
     @classmethod
     @transaction.atomic()
     def create_or_update(cls, blog_id, title, avatar, user, category, tag_list, content, section, is_draft):
-        if blog_id:
-            blog = cls.get_by_id(blog_id)
-        else:
-            blog = cls()
+        blog = cls.get_by_id(blog_id) or cls()
+        blog.is_draft = is_draft
         blog.title = title
         if avatar:
             blog.avatar = avatar
         blog.author = user
-        category = Category.get_or_create(category)
+        # 分类
+        category = Category.get_or_create(category, creator=user)
         blog.category = category
+        # 专栏
+        if section:
+            section = Section.get_or_create(section, creator=user)
+            blog.section = section
+        else:
+            blog.section = None
         blog.content = content
         blog.abstract = blog.get_abstract()
-        blog.section = section
-        blog.is_draft = is_draft
         blog.read_time = blog.get_read_time()
+
         blog.save()
+        # 更新标签
+        blog.tag_list.clear()
         for tag in tag_list:
             tag = Tag.get_or_create(tag['value'], creator=user)
             blog.tag_list.add(tag)
         blog.save()
 
         # 更新md文件
-        # blog.save_md()
         return blog.id
 
     @classmethod
@@ -281,7 +286,7 @@ class Comment(BaseModel):
 
     class Meta:
         db_table = 'comment'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '评论'
 
     # 根据博客id获取该博客下的评论量
     @classmethod
@@ -323,7 +328,7 @@ class Like(BaseModel, LikeMixin):
 
     class Meta:
         db_table = 'like'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '点赞'
 
 
 # 收藏记录表
@@ -337,7 +342,7 @@ class Collection(BaseModel, LikeMixin):
 
     class Meta:
         db_table = 'collect'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '收藏'
 
 
 # 分享记录表
@@ -351,7 +356,7 @@ class Share(BaseModel, LikeMixin):
 
     class Meta:
         db_table = 'share'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '分享'
 
 
 # 搜索记录表
@@ -367,7 +372,7 @@ class Search(BaseModel):
 
     class Meta:
         db_table = 'search'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '搜索记录'
 
     @classmethod
     def create(cls, keyword: str, user: User) -> 'Search':
@@ -387,7 +392,7 @@ class Recommend(BaseModel):
 
     class Meta:
         db_table = 'recommend'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '推荐'
 
     @classmethod
     def get_by_user(cls, user: User):

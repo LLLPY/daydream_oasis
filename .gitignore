@@ -38,3 +38,4 @@ coverage
 *.sln
 *.sw?
 package-lock.json
+*.session.sql

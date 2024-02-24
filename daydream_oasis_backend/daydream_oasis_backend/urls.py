@@ -1,22 +1,22 @@
+from blog.views import (BlogViewSet, CategoryViewSet, CollectionViewSet,
+                        CommentViewSet, LikeViewSet, SectionViewSet,
+                        TagViewSet)
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps import views as sitemap_views
 from django.urls import include, re_path
 from django.views.decorators.cache import cache_page
 from django.views.static import serve
-from rest_framework.documentation import include_docs_urls
+from file.views import FileViewSet
+from frontconfig.views import FrontConfigViewSet
+from log.views import ActionViewSet
 from rest_framework.routers import DefaultRouter
+from user.views import UserViewSet
 
-from blog.views import (BlogViewSet, CategoryViewSet, CollectionViewSet,
-                        CommentViewSet, LikeViewSet, TagViewSet, SectionViewSet)
 from daydream_oasis_backend.admin_site import my_site
 from daydream_oasis_backend.rss import LatestBlogFeed
 from daydream_oasis_backend.settings.base import MEDIA_ROOT
 from daydream_oasis_backend.sitemap import BlogSitemap
-from file.views import FileViewSet
-from frontconfig.views import FrontConfigViewSet
-from log.views import ActionViewSet
-from user.views import UserViewSet
 
 # 路由注册
 router = DefaultRouter()

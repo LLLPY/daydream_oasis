@@ -39,7 +39,7 @@ class RequestRecord(BaseModel):
 
     class Meta:
         db_table = 'request_log'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '请求记录'
 
     def __str__(self):
         return self.path
@@ -167,7 +167,7 @@ class Action(BaseModel):
 
     class Meta:
         db_table = 'action_log'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '行为记录'
 
     @classmethod
     def create(cls, blog_id, action, cost_time, request=None):
@@ -231,4 +231,4 @@ class Error(BaseModel):
 
     class Meta:
         db_table = 'error_log'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '错误记录'

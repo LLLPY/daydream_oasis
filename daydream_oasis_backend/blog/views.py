@@ -1,10 +1,12 @@
 import datetime
 
-from blog.models import Blog, Category, Collection, Comment, Like, Share, Tag, Section
+from blog.models import (Blog, Category, Collection, Comment, Like, Section,
+                         Share, Tag)
 from blog.serializers import (BlogCreateSerializers, BlogSerializers,
                               CategorySerializers, CollectionSerializers,
                               CommentSerializers, LikeSerializers,
-                              SearchSerializers, TagSerializers, SectionSerializers)
+                              SearchSerializers, SectionSerializers,
+                              TagSerializers)
 from common.drf.decorators import login_required, rate_lock
 from common.drf.mixin import InstanceMixin
 from common.drf.pagination import CustomPagination
@@ -28,7 +30,9 @@ class BlogViewSet(BaseViewSet):
             queryset = self.queryset.filter(is_draft=False, is_nav=False)
             queryset = self.filter_search(queryset, self.request.query_params)
             return queryset
-
+        elif self.action == 'get_draft_list':
+            queryset = self.queryset.filter(is_draft=True, is_nav=False, author=self.request.user)
+            return queryset
         return self.queryset
 
     def get_serializer_class(self):
@@ -75,6 +79,12 @@ class BlogViewSet(BaseViewSet):
                 blog_dict['update_time'] = blog_dict['update_time'].split(' ')[0]
         return SucResponse(data=data)
 
+    @action(methods=['get'], detail=False)
+    @login_required
+    def get_draft_list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(self.get_queryset(), include_fields=['id', 'title'], many=True)
+        return SucResponse(data=serializer.data)
+
     # 博客详情
     def retrieve(self, request, *args, **kwargs):
 
@@ -86,6 +96,7 @@ class BlogViewSet(BaseViewSet):
                                              'author',
                                              'avatar',
                                              'category',
+                                             'section',
                                              'tag_list',
                                              'pv',
                                              'read_times',
@@ -110,15 +121,10 @@ class BlogViewSet(BaseViewSet):
     def update(self, request, *args, **kwargs):
         obj = self.get_object()
         user = self.request.user
-        has_draft = Blog.objects.filter(author_id=user.id, is_draft=True).exists()
-        if has_draft:
-            raise exception.CustomValidationError('您有未编辑完的草稿...')
         if obj.author_id != user.id:
             raise exception.CustomValidationError('无权限编辑!')
-
         obj.is_draft = True
         obj.save()
-
         return SucResponse()
 
     # 删除博客
@@ -128,7 +134,6 @@ class BlogViewSet(BaseViewSet):
         if obj.author_id != request.user.id:
             raise exception.CustomValidationError('无权限编辑!')
         obj.delete()
-        obj.delete_md()
         return SucResponse('删除成功!')
 
     @action(methods=['get'], detail=True)
@@ -226,11 +231,12 @@ class BlogViewSet(BaseViewSet):
     @action(methods=['get'], detail=False)
     @login_required
     def get_draft(self, request, *args, **kwargs):
-        '''获取最后一次编辑但为提交的草稿'''
+        '''获取最后一次编辑但未提交的草稿'''
         user = self.request.user
-        draft = Blog.get_draft(user.id)
+        blog_id = self.request.query_params.get('id')
+        draft = self.queryset.filter(id=blog_id, author_id=user.id).first()
         if draft:
-            serializer = self.get_serializer(draft, include_fields=['id', 'title', 'avatar', 'category', 'tag_list',
+            serializer = self.get_serializer(draft, include_fields=['id', 'title', 'avatar', 'category', 'section', 'tag_list',
                                                                     'content'])
             data = serializer.data
         else:
@@ -286,12 +292,14 @@ class CategoryViewSet(BaseViewSet):
         if self.action in ['list']:
             title = self.request.query_params.get('title')
             k = self.request.query_params.get('k')
+            queryset = self.queryset
             if title:
-                self.queryset = self.queryset.filter(title__contains=title)
+                queryset = self.queryset.filter(title__contains=title)
             # 限制数量
             if k and k.isnumeric():
                 k = int(k)
-                self.queryset = self.queryset[:k]
+                queryset = queryset[:k]
+            return queryset
         return self.queryset
 
     def list(self, request, *args, **kwargs):
@@ -313,10 +321,19 @@ class SectionViewSet(CategoryViewSet):
     queryset = Section.objects.all()
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        # 只能选择自己的专栏
-        queryset = queryset.filter(creator=self.request.user)
-        return queryset
+        if self.action in ['list']:
+            # 只能选择自己的专栏
+            queryset = self.queryset.filter(creator=self.request.user)
+            title = self.request.query_params.get('title')
+            k = self.request.query_params.get('k')
+            if title:
+                queryset = self.queryset.filter(title__contains=title)
+            # 限制数量
+            if k and k.isnumeric():
+                k = int(k)
+                queryset = queryset[:k]
+            return queryset
+        return self.queryset
 
 
 # 评论

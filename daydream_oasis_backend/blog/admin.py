@@ -1,5 +1,5 @@
 from blog.models import (Blog, Category, Collection, Comment, Like, Recommend,
-                         Search, Tag)
+                         Search, Section, Tag)
 from common.admin import MyBaseAdmin
 from django.contrib import admin
 from django.http import HttpRequest
@@ -22,6 +22,15 @@ class CategoryAdmin(admin.ModelAdmin, MyBaseAdmin):
 
     used_count.short_description = '文章数量'
 
+# 分类
+
+
+@admin.register(Section, site=my_site)
+class SectionAdmin(admin.ModelAdmin, MyBaseAdmin):
+    list_display = ['id', 'title', 'create_time', 'creator']
+    search_fields = ['title', 'creator__username']  # 搜索的字段同list_display
+    list_filter = ['title', 'creator__username', 'create_time']  # 过滤字段为前3个字段
+
 
 # 标签
 @admin.register(Tag, site=my_site)
@@ -34,13 +43,13 @@ class TagAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 文章
 @admin.register(Blog, site=my_site)
 class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'title', 'author', 'category', 'dpv', 'duv', 'pv', 'uv', 'likes',
+    list_display = ['id', 'title', 'author', 'category', 'section', 'dpv', 'duv', 'pv', 'uv', 'likes',
                     'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top']
     search_fields = ['title', 'author__username', 'category__title', 'abstract']
-    list_filter = ['author__username', 'category__title', 'update_time', 'has_deleted']
+    list_filter = ['author__username', 'category__title', 'section__title', 'update_time', 'has_deleted']
     fieldsets = [
         ('基本信息', {
-            'fields': ['title', 'avatar', 'author', 'category', 'tag_list'],
+            'fields': ['title', 'avatar', 'author', 'category', 'section', 'tag_list'],
         }),
         ('数据', {
             'fields': ['dpv', 'duv', 'pv', 'uv'],

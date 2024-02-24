@@ -51,7 +51,7 @@ class File(BaseModel):
 
     class Meta:
         db_table = 'file'
-        verbose_name_plural = verbose_name = db_table
+        verbose_name_plural = verbose_name = '文件'
 
     @classmethod
     def create(cls, user, _type, path):

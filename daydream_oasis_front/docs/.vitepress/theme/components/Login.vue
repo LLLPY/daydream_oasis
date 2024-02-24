@@ -23,9 +23,6 @@ export default {
       this.password = value;
     },
     submit() {
-      console.log("login中的方法...");
-      console.log(this.username);
-
       if (this.username.length === 0) {
         Warning("用户名不能为空!");
         return;

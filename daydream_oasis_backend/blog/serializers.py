@@ -3,10 +3,9 @@
 # @Date    ：2023/1/18 10:36
 import re
 
-from rest_framework import serializers
-
 from common.drf.serializers import DynamicFieldsSerializer
 from log.models import Action
+from rest_framework import serializers
 
 
 # 博客分类
@@ -34,9 +33,9 @@ class BlogSerializers(DynamicFieldsSerializer):
     # author = serializers.CharField()
     avatar = serializers.CharField(required=False, help_text='封面', allow_null=True)
     category = serializers.CharField(required=True, help_text='分类')
+    section = serializers.CharField(required=False, allow_null=True, help_text='专栏')
     tag_list = serializers.SerializerMethodField(help_text='标签列表')
     content = serializers.CharField(required=True,
-                                    min_length=5,
                                     help_text='内容')
     abstract = serializers.SerializerMethodField()
     pv = serializers.SerializerMethodField()
@@ -68,10 +67,10 @@ class BlogCreateSerializers(DynamicFieldsSerializer):
     title = serializers.CharField(required=True, max_length=30, help_text='标题')
     avatar = serializers.CharField(required=False, allow_null=True,
                                    allow_blank=True, help_text='封面')
-    category = serializers.CharField(required=True, help_text='分类')
+    category = serializers.CharField(required=True, allow_blank=True, allow_null=True, help_text='分类')
+    section = serializers.CharField(required=False, allow_null=True, allow_blank=True, help_text='专栏')
     tag_list = serializers.ListField(help_text='标签列表')
     content = serializers.CharField(required=True,
-                                    min_length=5,
                                     help_text='内容')
     is_draft = serializers.BooleanField()
 

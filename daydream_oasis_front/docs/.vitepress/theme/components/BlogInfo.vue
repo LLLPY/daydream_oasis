@@ -4,8 +4,11 @@
     <span class="author"
       >作者:<a href="#">{{ blog.author.username }}</a></span
     >
-    <span class="category"
+    <span v-if="blog.category" class="category"
       >分类:<a href="#">{{ blog.category }}</a></span
+    >
+    <span v-if="blog.section" class="section"
+      >专栏:<a href="#">{{ blog.section }}</a></span
     >
     <span id="tag-list" v-if="blog.tag_list.length"
       >标签:
@@ -22,7 +25,7 @@
     <span class="delete" @click="delete_blog">删除</span>
     <hr />
   </div>
-
+  <img :src="blog.avatar" :alt="blog.title" />
   <div v-html="blog.html" />
 </template>
 <script setup>

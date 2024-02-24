@@ -3,7 +3,7 @@
     <div id="info-form" style="box-shadow: var(--el-box-shadow-light)">
       <el-row :gutter="20">
         <!-- 标题 -->
-        <el-col :span="20">
+        <el-col :span="16">
           <el-input
             v-model="title"
             class="w-50 m-2"
@@ -15,6 +15,24 @@
           >
           </el-input>
         </el-col>
+        <!-- 草稿列表 -->
+        <el-col :span="4">
+          <el-select
+            v-model="blog_id"
+            clearable
+            placeholder="草稿箱"
+            style="width: 100%"
+            @change="handleDraftSelect"
+          >
+            <el-option
+              v-for="item in draft_list"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+        <!-- 按钮 -->
         <el-col :span="4" style="text-align: right">
           <el-button type="primary" size="large" @click="pre_submit"
             >保存草稿</el-button
@@ -45,7 +63,7 @@
         clearable
         class="input-item"
         size="large"
-        placeholder="请输入专栏"
+        placeholder="请输入专栏(可选)"
         @select="handleSectionSelect"
       />
 
@@ -135,6 +153,7 @@ let blog = {
       withCredentials: true,
       api_url: upload_api,
       dialogFormVisible: false,
+      draft_list: [],
     };
   },
   computed: {
@@ -143,6 +162,7 @@ let blog = {
         id: this.blog_id,
         title: this.title,
         category: this.category,
+        section: this.section,
         avatar: this.avatar.value,
         tag_list: this.tag_list,
         content: null,
@@ -246,7 +266,12 @@ let blog = {
         Warning("最多只能选三个标签!");
         return;
       } else {
-        this.tag_list.push(item);
+        let has_exist = this.tag_list.some((obj) => obj.value === item.value);
+        if (!has_exist) {
+          this.tag_list.push(item);
+        } else {
+          Warning(`标签[${item.value}]已存在.`);
+        }
         this.tag = "";
       }
     },
@@ -272,10 +297,10 @@ let blog = {
       }
     },
     content_check(warn = true) {
-      let content = window.vditor.getValue();
-      if (content.length <= 5) {
+      let content = window.vditor.getValue().replace(/\s/g, "");
+      if (content.length <= 0) {
         if (warn) {
-          Warning("内容太短辣!");
+          Warning("内容不能为空!");
         }
         return false;
       } else {
@@ -308,14 +333,16 @@ let blog = {
       }
     },
     submit(is_draft = false) {
+      // 内容合法检查
+
       // 提交前关闭自动更新，否则可能会导致提交在更新之后
       clearInterval(this.interval);
       let data = this.form_data;
       data.is_draft = is_draft;
       data.content = window.vditor.getValue();
-
+      console.log(is_draft);
       if (is_draft || this.form_check()) {
-        axios_ins.post("/api/blog/?action=submit", data).then((response) => {
+        axios_ins.post("/api/blog/", data).then((response) => {
           if (is_draft) {
             goBackOrRedirect("/blog/");
           } else {
@@ -326,38 +353,50 @@ let blog = {
       }
     },
     get_draft() {
-      // 获取最近的一次草稿
-      axios_ins("/api/blog/get_draft/").then((response) => {
-        let data = response.data;
-        if (Object.keys(data.data).length) {
-          data = data.data;
-          this.blog_id = data.id;
-          this.title = data.title;
-          this.category = data.category;
-          this.avatar.value = data.avatar;
-          this.fileList[0] = { url: data.avatar };
-          document
-            .getElementsByClassName("el-upload--picture-card")[0]
-            .classList.add("hidden");
-          this.tag_list = data.tag_list.map(function (val) {
-            return { value: val };
-          });
-          this.content = data.content;
-          let obj = this;
-          let interval = setInterval(function () {
-            try {
-              window.vditor.setValue(data.content);
-              last_form_data = { ...obj.form_data };
-              last_form_data.content = window.vditor.getValue();
-              clearInterval(interval);
-              console.log("结束调用");
-            } catch (e) {
-              console.log("继续调用");
+      if (this.blog_id) {
+        // 获取最近的一次草稿
+        axios_ins
+          .get(`/api/blog/get_draft/?id=${this.blog_id}`)
+          .then((response) => {
+            let data = response.data;
+            if (Object.keys(data.data).length) {
+              data = data.data;
+              this.blog_id = data.id;
+              this.title = data.title;
+              this.category = data.category;
+              this.section = data.section;
+              this.avatar.value = data.avatar;
+              this.fileList[0] = { url: data.avatar };
+
+              this.tag_list = data.tag_list.map(function (val) {
+                return { value: val };
+              });
+              this.content = data.content;
+              let obj = this;
+              let interval = setInterval(function () {
+                try {
+                  window.vditor.setValue(data.content);
+                  last_form_data = { ...obj.form_data };
+                  last_form_data.content = window.vditor.getValue();
+                  clearInterval(interval);
+                  console.log("结束调用");
+                } catch (e) {
+                  console.log("继续调用");
+                }
+              }, 500);
+              Warning("接着上次继续编辑...");
             }
-          }, 500);
-          Warning("接着上次继续编辑...");
-        }
-      });
+          });
+      } else {
+        this.title = "";
+        this.category = "";
+        this.section = "";
+        this.tag_list = [];
+        this.tag = "";
+        this.avatar.value = "";
+        this.fileList = [];
+        (this.blog_id = null), window.vditor.setValue("");
+      }
     },
     sortAndStringify(obj) {
       // 将对象的属性名按照字母顺序排序
@@ -379,29 +418,52 @@ let blog = {
       if (is_valid && is_change) {
         last_form_data = { ...data };
         data.is_draft = true;
-        axios_ins
-          .post("/api/blog/?action=update_draft", data)
-          .then((response) => {
-            let data = response.data;
-            let new_blog_id = data.data.blog_id;
-            if (new_blog_id) {
-              this.blog_id = new_blog_id;
-            }
-          });
+        axios_ins.post("/api/blog/", data).then((response) => {
+          let data = response.data;
+          let new_blog_id = data.data.blog_id;
+          if (new_blog_id) {
+            this.blog_id = new_blog_id;
+          }
+        });
       }
     },
     update_draft() {
       //   更新草稿
       this.interval = setInterval(this._update_draft, 3000);
     },
+    get_draft_list() {
+      axios_ins.get("/api/blog/get_draft_list/").then((response) => {
+        if (response.data.code === "0") {
+          let data = response.data;
+          this.draft_list = data.data;
+          // 获取第一篇草稿
+          if (this.draft_list.length > 0) {
+            this.blog_id = this.draft_list[0].id;
+            // 获取最新的草稿
+            this.get_draft();
+            setTimeout(this.update_draft, 5000);
+          }
+        }
+      });
+    },
+    handleDraftSelect(item) {
+      this.blog_id = item;
+      console.log(this.blog_id);
+      // 停止更新
+      clearInterval(this.interval);
+      this.get_draft();
+      // 新的更新
+      this.update_draft();
+    },
   },
   mounted() {
+    // 判断是否登录
     axios_ins.get("/api/user/info/").then((response) => {
       if (response.data.code !== "0") {
         window.history.back();
       } else {
-        this.get_draft();
-        setTimeout(this.update_draft, 5000);
+        // 获取草稿列表
+        this.get_draft_list();
       }
     });
   },

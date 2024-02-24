@@ -1,9 +1,8 @@
+from common.models import BaseModel
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Q
-
-from common.models import BaseModel
 
 
 # 定义用户模型
@@ -25,7 +24,7 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
 
     class Meta:
         db_table = 'user'  # 修改表名
-        verbose_name_plural = verbose_name = db_table  # admin 后台显示
+        verbose_name_plural = verbose_name = '用户'  # admin 后台显示
 
     def __str__(self):
         return self.username
@@ -73,7 +72,7 @@ class ChatRecord(BaseModel):
 
     class Meta:
         db_table = 'chat_record'
-        verbose_name = verbose_name_plural = db_table
+        verbose_name = verbose_name_plural = '聊天记录'
         ordering = ['create_time']
 
     @classmethod
@@ -99,7 +98,7 @@ class Message(BaseModel):
 
     class Meta:
         db_table = 'message'
-        verbose_name_plural = verbose_name = db_table
+        verbose_name_plural = verbose_name = '留言'
         ordering = ['-weight', '-create_time']
 
     @classmethod
