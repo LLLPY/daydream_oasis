@@ -31,7 +31,7 @@ class BlogViewSet(BaseViewSet):
             queryset = self.filter_search(queryset, self.request.query_params)
             return queryset
         elif self.action == 'get_draft_list':
-            queryset = self.queryset.filter(is_draft=True, is_nav=False, author=self.request.user)
+            queryset = self.queryset.filter(is_draft=True, author=self.request.user)
             return queryset
         return self.queryset
 
