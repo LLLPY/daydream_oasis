@@ -1,14 +1,13 @@
 from datetime import datetime, timedelta
 from random import choices
 
-from django.contrib.auth import logout as default_logout
-from django.contrib.auth.hashers import check_password
-from rest_framework.decorators import action
-
 from common.drf.decorators import login_required
 from common.drf.response import SucResponse
 from common.exception import exception
 from common.views import BaseViewSet
+from django.contrib.auth import logout as default_logout
+from django.contrib.auth.hashers import check_password
+from rest_framework.decorators import action
 from user.models import User
 from user.serializers import UserSerializers
 from utils import tools
@@ -95,7 +94,8 @@ class UserViewSet(BaseViewSet):
         if not check_password(password, tmp_user.password):  # 参数顺序:明文 密文
             raise exception.CustomValidationError('密码错误!')
 
-        res = SucResponse('登录成功!')
+        serializer = self.get_serializer(tmp_user, include_fields=['id', 'username', 'email', 'avatar'])
+        res = SucResponse('登录成功!', data=serializer.data)
         auth_token = tools.md5(f'{tmp_user.id}_daydream_oasis')
         res.set_signed_cookie('auth_token', auth_token, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7,
                               samesite='', secure='', httponly='')

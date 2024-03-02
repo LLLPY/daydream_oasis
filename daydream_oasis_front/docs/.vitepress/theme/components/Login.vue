@@ -42,6 +42,13 @@ export default {
           const data = response.data;
           if (data.code === "0") {
             Info(data.message);
+            // 用户信息写入local storage，用于discuss的评论
+            let discuss_data =
+              JSON.parse(localStorage.getItem("discuss")) || {};
+            discuss_data.nick = data.data.username;
+            discuss_data.mail = data.data.email;
+            console.log(discuss_data);
+            localStorage.setItem("discuss", JSON.stringify(discuss_data));
             goBackOrRedirect("/blog/");
           }
         });

@@ -1,9 +1,8 @@
 import re
 
-from rest_framework import serializers
-
 from common.drf.serializers import DynamicFieldsSerializer
 from common.exception import exception
+from rest_framework import serializers
 from utils import tools
 
 
@@ -16,6 +15,7 @@ class UserSerializers(DynamicFieldsSerializer):
     password = serializers.CharField(required=True, help_text='密码')
     action = serializers.CharField(allow_null=True, help_text='操作')
     avatar = serializers.SerializerMethodField(help_text='头像')
+    email = serializers.CharField(help_text='邮箱')
     id = serializers.CharField(allow_blank=True, allow_null=True, help_text='')
 
     def validate_mobile(self, value):
