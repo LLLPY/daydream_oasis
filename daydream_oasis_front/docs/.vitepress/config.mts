@@ -4,7 +4,7 @@ export default defineConfig({
   lang: "en-US", //zh-CN|en-US
   title: "白日梦想园",
   description:
-    "Daydream Oasis是一个致力于启发和创造的博客系统，为您提供了一个欣赏、分享和沉浸在各种幻想和梦想中的机会。Daydream Oasis将成为您的梦想之家。",
+    "Daydream Oasis是一个致力于启发和创造的个人博客系统，主要用于编程知识包括但不限于前端，后端和AI领域的分享。希望Daydream Oasis能够给您带来一定的启发和成才。",
   base: "/",
   // 忽略死链
   ignoreDeadLinks: true,

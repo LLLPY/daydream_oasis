@@ -48,6 +48,8 @@ async function get_blog_info() {
     blog.value = data;
     let html = md.render(blog.value.content);
     blog.value.html = html;
+    let keywords = `${blog.value.title} ${blog.value.category} ${blog.value.section} ${blog.value.tag_list} ${blog.value.author.username}`;
+    add_meta_info(keywords);
   } else {
     window.history.back();
   }
@@ -74,6 +76,13 @@ function edit_blog() {
       window.location.href = "/write";
     }
   });
+}
+
+function add_meta_info(data) {
+  let meta = document.createElement("meta");
+  meta.name = "keywords";
+  meta.content = data;
+  document.head.appendChild(meta);
 }
 </script>
 

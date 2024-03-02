@@ -29,6 +29,7 @@ export function goBackOrRedirect(url) {
   } else {
     // 如果有上一页，则返回上一页
     window.history.back();
+    window.location.reload();
   }
 }
 
