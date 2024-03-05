@@ -10,7 +10,7 @@
         index + 1
       }}</span>
       <span class="title">
-        <a :href="'content?id=' + top.id">{{ top.title }}</a>
+        <a :href="'content?id=' + top.id" target="_top">{{ top.title }}</a>
       </span>
       <span class="pv">{{ top.pv }}</span>
     </li>
@@ -19,11 +19,6 @@
 
 <script>
 import { axios_ins } from "../assets/js/axios";
-// 监听URL参数的变化
-window.addEventListener('popstate', function() {
-    // URL参数发生变化时重新加载页面
-    window.location.reload();
-});
 export default {
   data() {
     return {

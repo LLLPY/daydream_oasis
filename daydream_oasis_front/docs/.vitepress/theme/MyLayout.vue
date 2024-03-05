@@ -54,7 +54,7 @@ provide("toggle-appearance", async ({ clientX: x, clientY: y }: MouseEvent) => {
       <Nav />
     </template>
     <template #aside-outline-after>
-      <TopList />
+        <TopList/>
       <!-- <TagList/> -->
     </template>
     <template #doc-after>
