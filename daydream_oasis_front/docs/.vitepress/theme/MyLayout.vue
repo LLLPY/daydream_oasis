@@ -1,9 +1,7 @@
-<!-- .vitepress/theme/Layout.vue -->
 <script setup lang="ts">
 import { useData } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 import { nextTick, provide } from "vue";
-// import Discuss from './components/Discuss.vue'
 import TopList from "./components/TopList.vue";
 import Logo from "./components/Logo.vue";
 import Nav from "./components/Nav.vue";
@@ -44,6 +42,15 @@ provide("toggle-appearance", async ({ clientX: x, clientY: y }: MouseEvent) => {
     },
   );
 });
+
+
+// 监听URL参数的变化
+window.addEventListener('popstate', function() {
+    // URL参数发生变化时重新加载页面
+    window.location.reload();
+});
+
+
 </script>
 
 <template>
@@ -59,7 +66,6 @@ provide("toggle-appearance", async ({ clientX: x, clientY: y }: MouseEvent) => {
       <!-- <TagList/> -->
     </template>
     <template #doc-after>
-      <!-- <Discuss/> -->
     </template>
   </Layout>
 </template>
