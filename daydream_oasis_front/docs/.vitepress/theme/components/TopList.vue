@@ -19,7 +19,11 @@
 
 <script>
 import { axios_ins } from "../assets/js/axios";
-
+// 监听URL参数的变化
+window.addEventListener('popstate', function() {
+    // URL参数发生变化时重新加载页面
+    window.location.reload();
+});
 export default {
   data() {
     return {
