@@ -14,6 +14,8 @@ from common.drf.response import SucResponse
 from common.exception import exception
 from common.views import BaseViewSet
 from django.db.models import Q
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from log.models import Action
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -265,11 +267,12 @@ class BlogViewSet(BaseViewSet):
         keyword = params.get('keyword')
         if keyword:
             title_query = Q(title__icontains=keyword)
-            content_query = Q(content__icontains=keyword)
             category_query = Q(category__title__icontains=keyword)
+            content_query = Q(content__icontains=keyword)
             queryset = queryset.filter(title_query | category_query | content_query)
         return queryset
 
+    @method_decorator(cache_page(timeout=60, key_prefix='daydream_oasis:search'))
     @action(methods=['get'], detail=False)
     def search(self, request, *args, **kwargs):
         '''根据条件搜索'''
@@ -280,7 +283,7 @@ class BlogViewSet(BaseViewSet):
         queryset = self.get_queryset()
         queryset = self.filter_search(queryset, serializer.data)
 
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = BlogSerializers(queryset, many=True, exclude_fields=['content'])
         return SucResponse(data=serializer.data)
 
 

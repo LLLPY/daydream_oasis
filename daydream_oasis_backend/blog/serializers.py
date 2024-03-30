@@ -91,20 +91,8 @@ class LikeSerializers(DynamicFieldsSerializer):
 
 
 # 搜索
-class SearchSerializers(BlogSerializers):
+class SearchSerializers(DynamicFieldsSerializer):
     keyword = serializers.CharField(required=False, allow_null=True, max_length=20, help_text='标题')
     author = serializers.CharField(required=False, allow_null=True, )
     category = serializers.CharField(required=False, allow_null=True, help_text='分类')
     tag = serializers.CharField(required=False, allow_null=True, help_text='标签')
-    content = None
-    # id = serializers.IntegerField(help_text='id')
-    # title = serializers.CharField(required=True, max_length=20, help_text='标题')
-    # avatar = serializers.URLField(required=True, help_text='封面')
-    # tag_list = serializers.SerializerMethodField(help_text='标签列表')
-    # abstract = serializers.SerializerMethodField()
-    # pv = serializers.SerializerMethodField()
-    # read_times = serializers.IntegerField()
-    # read_time = serializers.SerializerMethodField()
-    # create_time = serializers.DateTimeField(format='%Y.%m.%d %H:%M:%S')
-    # update_time = serializers.DateTimeField(format='%Y.%m.%d %H:%M:%S')
-    # category_parent_list = serializers.SerializerMethodField()
