@@ -30,4 +30,14 @@ wait
 
 #重载nginx
 cp daydream_oasis.conf /etc/nginx/conf.d/daydream_oasis.conf
-nginx -s reload
+# 检查nginx进程是否存在
+if pgrep nginx > /dev/null
+then
+    # nginx进程存在，直接reload配置文件
+    nginx -s reload
+    echo "Nginx configuration reloaded"
+else
+    # nginx进程不存在，启动nginx
+    nginx
+    echo "Nginx started"
+fi
