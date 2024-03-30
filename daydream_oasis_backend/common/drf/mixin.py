@@ -1,8 +1,6 @@
 from common.exception import exception
 
 
-
-
 class InstanceMixin(object):
     def get_object(self, raise_on_not_found=True):
         """
@@ -26,6 +24,9 @@ class InstanceMixin(object):
         )
 
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        pk = filter_kwargs.get('pk')
+        if 'pk' in filter_kwargs and not str(pk).isnumeric():
+            raise exception.CustomValidationError('pk类型错误')
         obj = queryset.filter(**filter_kwargs).first()
         if not obj and raise_on_not_found:
             raise exception.ObjectNotFound()

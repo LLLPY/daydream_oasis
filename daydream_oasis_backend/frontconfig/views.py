@@ -1,11 +1,15 @@
-from rest_framework.decorators import action
-from daydream_oasis_backend.settings.base import BASE_DIR
 import os
-from rest_framework import viewsets, mixins
-from .serializers import FrontConfigSerializers
-from common.drf.response import SucResponse
 import re
+
+from rest_framework import mixins, viewsets
+from rest_framework.decorators import action
+
+from common.drf.response import SucResponse
+from daydream_oasis_backend.settings.base import BASE_DIR
 from utils.cache import my_cache
+
+from .serializers import FrontConfigSerializers
+
 
 # @tools.action_log()
 class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
@@ -30,7 +34,8 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
     @classmethod
     def tree(cls, dir, start_depth=1, max_depth=5, include_files=['.md', ], exclude_files=['index.md']):
 
-        res = {'text': cls.clear_preffix(dir).split('/')[-1], 'collapsible': True, 'collapsed': False, 'items': []}
+        res = {'text': cls.clear_preffix(dir).split(
+            '/')[-1], 'collapsible': True, 'collapsed': False, 'items': []}
         # start_depth += 1
         # if start_depth > max_depth: return res
         # 根据文件的创建时间排序后再获取文件列表
@@ -41,12 +46,14 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
             # 判断当前路径是不是目录
             is_dir = os.path.isdir(cur_path)
             if is_dir:
-                res['items'].append(cls.tree(cur_path, start_depth, max_depth, include_files, exclude_files))
+                res['items'].append(cls.tree(cur_path, start_depth,
+                                    max_depth, include_files, exclude_files))
             else:
                 for suffix in include_files:
                     # 只添加指定类型的文件
                     if cur_path.endswith(suffix) and path.strip('/') not in exclude_files:
-                        res['items'].append({'text': path.replace('.md', ''), 'link': cls.clear_preffix(cur_path)})
+                        res['items'].append({'text': path.replace('.md', ''),
+                                            'link': cls.clear_preffix(cur_path)})
                         break
         return res
 
@@ -57,7 +64,8 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
     @classmethod
     def sorted_list(cls, data):
         '''对文件名进行排序'''
-        data.sort(key=lambda item: chr(int(re.match(r'\d+', item['text']).group())) if re.match(r'\d+', item['text']) else item['text'])
+        data.sort(key=lambda item: chr(
+            int(re.match(r'\d+', item['text']).group())) if re.match(r'\d+', item['text']) else item['text'])
         for item in data:
             if item.get('items'):
                 cls.sorted_list(item.get('items'))
@@ -70,7 +78,6 @@ class FrontConfigViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin):
         res = self.tree(self.blog_dir)['items']
         res = self.sorted_list(res)
         return SucResponse(data=res)
-
 
 
 if __name__ == '__main__':

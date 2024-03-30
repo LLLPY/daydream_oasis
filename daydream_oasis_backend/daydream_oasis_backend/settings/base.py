@@ -1,10 +1,9 @@
 # -*- coding: UTF-8 -*-                            
 # @Author  ：LLL                         
-# @Date    ：2023/1/10 0:39  
-
+# @Date    ：2023/1/10 0:39
+import logging
 import os
 from pathlib import Path
-import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -22,8 +21,6 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'simpleui',  # 后台美化
-    'ckeditor',  # 富文本编辑器
-    'ckeditor_uploader',  # 富文本中图片的上传,
     'rest_framework',  # restful api
     'django.contrib.admin',
     'django.contrib.auth',
@@ -36,64 +33,31 @@ INSTALLED_APPS = [
     'log',  # 访问日志
     'file',  # 文件
     'common',  # 公共部分
-    'task',  # 任务
+    # 'task',  # 任务
     'frontconfig',  # 前端配置
     'corsheaders',  # CORS跨域问题
+    'mdeditor'
 
 ]
 
 MIDDLEWARE = [
-    'common.middleware.rate_limit.RateLimitMixin',  # 限流
-    'common.middleware.response_process.ResponseMiddleware',  # 响应中间件
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # 跨域请求
-    'common.middleware.exception_process.ExceptionMiddleware'  # 异常处理
+    'common.middleware.response_process.ResponseMiddleware',  # 响应中间件
+    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
+    'common.middleware.rate_limit.RateLimitMixin',  # 限流
 
 ]
 
 # 解决跨域
 CORS_ALLOW_CREDENTIALS = True  # 允许携带Cookie
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    '*'
-)
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173'
-]
-
-CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
-
-CORS_ALLOW_HEADERS = (
-    'XMLHttpRequest',
-    'X_FILENAME',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    'Pragma',
-    '*'
-)
-
-CORS_ALLOW_METHODS = (
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-    'VIEW',
-)
 
 ROOT_URLCONF = 'daydream_oasis_backend.urls'
 
@@ -167,45 +131,76 @@ AUTH_USER_MODEL = 'user.User'  # 子应用名.模型类名
 # 修改上传文件的最大值
 DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000  # 默认设置为500M
 
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 800,
-        'width': '100%',
-        'tabSpaces': 4,
-        'extraPlugins': 'codesnippet',  # 配置代码插件
-    }
-}
+# 指定现有的静态文件的目录 参考：https://www.qikqiak.com/post/django-staticroot-staticfilesdirs-function/
+STATICFILES_DIRS = []
 
-# 静态文件的目录
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# 共享文件的目录（媒体文件）
+SHARE_DIR = '/share/daydream_oasis'
 
+# 静态文件收集后存放的目录
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'  # 指定静态文件的路由
 
 # 媒体文件的存放
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 存储路径
+MEDIA_ROOT = os.path.join(SHARE_DIR, 'media')  # 存储路径
 MEDIA_URL = '/media/'
-
-# 富文本编辑器中图片的上传路径
-CKEDITOR_UPLOAD_PATH = os.path.join(BASE_DIR, 'media', 'image')
 
 # 修改默认的文件存储为自定义的
 DEFAULT_FILE_STORAGE = 'daydream_oasis_backend.storage.WatermarkStorage'
-
-# 后台的logo
-SIMPLEUI_LOGO = f'../../static/image/favorite.png'
 
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False
 SIMPLEUI_ANALYSIS = False
 
-REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    # 自定义异常捕获
-    'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler'
-}
-
 # 解决警告
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+REST_FRAMEWORK = {
+    # 自定义异常捕获
+    'EXCEPTION_HANDLER': 'common.exception.handler.custom_exception_handler',
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
+
+# host
+HOST = 'http://www.lll.plus/'
+
+# 后台的logo
+SIMPLEUI_LOGO = f'{HOST}media/image/default_blog_avatar.jpg'
+
+# 日志的配置
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'formatters': {
+        'daydream_oasis': {
+            'format': '{name} {levelname} {asctime} {message}; pid:{process:d} tid:{thread:d} {pathname}:{lineno}',
+            'style': '{',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': [],
+            'class': 'logging.StreamHandler',
+            'formatter': 'daydream_oasis',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': [],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'daydream_oasis',
+        }
+    },
+    'loggers': {
+        'daydream_oasis': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        }
+    }
+}
+
+logger = logging.getLogger('daydream_oasis')

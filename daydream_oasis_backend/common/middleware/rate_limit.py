@@ -1,11 +1,13 @@
 # -*- coding: UTF-8 -*-                            
 # @Author  ：LLL                         
 # @Date    ：2023/10/10 23:49
-from django.core.cache import cache
 import time
-from log.logger import logger
-from common.drf.response import SucResponse
+
+from django.core.cache import cache
 from django.utils.deprecation import MiddlewareMixin
+
+from common.drf.response import SucResponse
+from log.logger import logger
 
 
 class RateLimitMixin(MiddlewareMixin):
@@ -47,5 +49,4 @@ class RateLimitMixin(MiddlewareMixin):
             cache.set(ip, ip_list)  # 永久封禁
             msg = '对不起,是我们缘分不够!'
             logger.warning(f'{request.user}[{request.META.get("REMOTE_ADDR")}] was forbidden forever...')
-
-        return SucResponse(msg) if msg else None
+        return SucResponse(message=msg) if msg else None

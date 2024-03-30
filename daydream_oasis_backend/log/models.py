@@ -1,12 +1,10 @@
-import re
 from datetime import datetime, timedelta
-from typing import List
-from django.db import models
-from django.db.models import Q
-from common.models import BaseModel
+
 from blog.models import Blog
-from user.models import User
+from common.models import BaseModel
+from django.db import models
 from django.db.models import Count
+from user.models import User
 
 
 # 请求记录表
@@ -23,7 +21,8 @@ class RequestRecord(BaseModel):
         (OTHER, '其他'),
 
     ]
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, verbose_name='博客', help_text='博客')
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True,
+                             verbose_name='博客', help_text='博客')
     path = models.TextField(max_length=1000, default='/', verbose_name='请求路径', help_text='请求路径')
     path_type = models.PositiveIntegerField(default=PAGE, choices=PATH_TYPE_CHOICES, verbose_name='请求路径类型',
                                             help_text='请求路径类型')
@@ -34,27 +33,27 @@ class RequestRecord(BaseModel):
     country = models.CharField(max_length=50, default='', verbose_name='国家', help_text='国家')
     province = models.CharField(max_length=50, default='', verbose_name='省份', help_text='省份')
     city = models.CharField(max_length=50, default='', verbose_name='城市', help_text='城市')
-    computer_name = models.CharField(max_length=50, default='', verbose_name='计算机名', help_text='计算机名')
+    computer_name = models.CharField(max_length=50, default='',
+                                     verbose_name='计算机名', help_text='计算机名')
     username = models.CharField(max_length=50, default='', verbose_name='用户名', help_text='用户名')
 
     class Meta:
-        db_table = '请求日志'
-        verbose_name = verbose_name_plural = db_table
+        db_table = 'request_log'
+        verbose_name = verbose_name_plural = '请求记录'
 
     def __str__(self):
         return self.path
-
-    @classmethod
-    def get_all(cls):
-        return cls.objects.all()
 
     # 获取某天或某月或某年的访问量
     @classmethod
     def get_pv(cls, year=None, moth=None, day=None):
         request_li = cls.objects.filter(path_type=cls.PAGE)
-        if year: request_li = request_li.filter(time__year=year)
-        if moth: request_li = request_li.filter(time__month=moth)
-        if day: request_li = request_li.filter(time__day=day)
+        if year:
+            request_li = request_li.filter(time__year=year)
+        if moth:
+            request_li = request_li.filter(time__month=moth)
+        if day:
+            request_li = request_li.filter(time__day=day)
         # request_li = request_li.values_list('ip').distinct()
         return request_li.count()
 
@@ -147,7 +146,8 @@ class Action(BaseModel):
     }
 
     # 用户
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, verbose_name='用户', help_text='用户')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True,
+                             verbose_name='用户', help_text='用户')
 
     # uuid
     uuid = models.CharField(max_length=200, null=False, verbose_name='uuid',
@@ -166,21 +166,22 @@ class Action(BaseModel):
     score = models.IntegerField(default=0, verbose_name='分值', help_text='分值')
 
     class Meta:
-        db_table = '操作日志'
-        verbose_name = verbose_name_plural = db_table
+        db_table = 'action_log'
+        verbose_name = verbose_name_plural = '行为记录'
 
     @classmethod
-    def create(cls, user, uuid, blog_id, action, cost_time):
+    def create(cls, blog_id, action, cost_time, request=None):
         _self = cls()
-        _self.user = user
-        _self.uuid = uuid
-        _self.blog = Blog.get_by_id(blog_id)
+        _self.user = request.user if request.user.is_authenticated else None
+        _self.uuid = request.COOKIES.get('uuid', '-')
+        _self.blog_id = blog_id
         _self.action = action
 
         if action == cls.READ:
             # 按阅读时间比例给分
             rate = cost_time / _self.blog.read_time
-            score = min(float('%.2f' % (rate * cls.ACTION_SCORE_MAPPING[action])), cls.ACTION_SCORE_MAPPING[cls.READ])
+            score = min(
+                float('%.2f' % (rate * cls.ACTION_SCORE_MAPPING[action])), cls.ACTION_SCORE_MAPPING[cls.READ])
         else:
 
             score = cls.ACTION_SCORE_MAPPING[action]
@@ -229,5 +230,5 @@ class Error(BaseModel):
     time = models.DateTimeField(default=datetime.now, verbose_name='时间', help_text='时间')
 
     class Meta:
-        db_table = '错误日志'
-        verbose_name = verbose_name_plural = db_table
+        db_table = 'error_log'
+        verbose_name = verbose_name_plural = '错误记录'

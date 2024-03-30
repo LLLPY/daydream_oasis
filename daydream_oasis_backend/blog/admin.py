@@ -1,15 +1,17 @@
-from django.contrib import admin
-from daydream_oasis_backend.admin_site import my_site
+from blog.models import (Blog, Category, Collection, Comment, Like, Recommend,
+                         Search, Section, Tag)
 from common.admin import MyBaseAdmin
-from blog.adminforms import BlogAdminForm
-from blog.models import Comment, Collection, Tag, Blog, Category, Search, Recommend, Like
+from django.contrib import admin
+from django.http import HttpRequest
 from user.models import User
+
+from daydream_oasis_backend.admin_site import my_site
 
 
 # 分类
 @admin.register(Category, site=my_site)
 class CategoryAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'title', 'create_time', 'creator']
+    list_display = ['id', 'title', 'parent', 'depth', 'create_time', 'creator']
     search_fields = ['title', 'creator__username']  # 搜索的字段同list_display
     list_filter = ['title', 'creator__username', 'create_time']  # 过滤字段为前3个字段
 
@@ -19,6 +21,15 @@ class CategoryAdmin(admin.ModelAdmin, MyBaseAdmin):
         return f'{count}'
 
     used_count.short_description = '文章数量'
+
+# 分类
+
+
+@admin.register(Section, site=my_site)
+class SectionAdmin(admin.ModelAdmin, MyBaseAdmin):
+    list_display = ['id', 'title', 'create_time', 'creator']
+    search_fields = ['title', 'creator__username']  # 搜索的字段同list_display
+    list_filter = ['title', 'creator__username', 'create_time']  # 过滤字段为前3个字段
 
 
 # 标签
@@ -32,25 +43,27 @@ class TagAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 文章
 @admin.register(Blog, site=my_site)
 class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
-    form = BlogAdminForm
-    list_display = ['id','title', 'author', 'category', 'dpv', 'duv', 'pv', 'uv', 'likes',
-                    'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top', 'abstract']
+    list_display = ['id', 'title', 'author', 'category', 'section', 'dpv', 'duv', 'pv', 'uv', 'likes',
+                    'collections', 'comments', 'create_time', 'update_time', 'has_deleted', 'is_top']
     search_fields = ['title', 'author__username', 'category__title', 'abstract']
-    list_filter = ['author__username', 'category__title', 'update_time', 'has_deleted']
+    list_filter = ['author__username', 'category__title', 'section__title', 'update_time', 'has_deleted']
     fieldsets = [
         ('基本信息', {
-            'fields': ['title', 'avatar', 'author', 'category', 'tag_list'],
+            'fields': ['title', 'avatar', 'author', 'category', 'section', 'tag_list'],
         }),
         ('数据', {
-            'fields': ['create_time', 'update_time', 'dpv', 'duv', 'pv', 'uv'],
+            'fields': ['dpv', 'duv', 'pv', 'uv'],
         }),
         ('状态', {
-            'fields': ['has_deleted', 'is_top'],
+            'fields': ['has_deleted', 'is_top', 'is_draft', 'is_nav'],
         }),
         ('内容', {
             'fields': ['abstract', 'content'],
         }),
     ]
+
+    # def save_model(self, request, obj, form, change):
+    #     print(form,change)
 
     # custom
     def get_queryset(self, request):
@@ -74,6 +87,9 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
         return Comment.get_count_by_blog(obj)
 
     comments.short_description = '评论量'
+
+    def delete_model(self, request: HttpRequest, obj) -> None:
+        return super().delete_model(request, obj)
 
 
 # 评论

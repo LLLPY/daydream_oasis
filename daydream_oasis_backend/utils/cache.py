@@ -1,11 +1,13 @@
-# -*- coding: UTF-8 -*-                            
-# @Author  ：LLL                         
-# @Date    ：2023/3/15 11:54  
+# -*- coding: UTF-8 -*-
+# @Author  ：LLL
+# @Date    ：2023/3/15 11:54
 
-from functools import wraps
-from django_redis import get_redis_connection
-from utils import tools
 import pickle
+from functools import wraps
+
+from django_redis import get_redis_connection
+
+from utils import tools
 
 redis_conn = get_redis_connection('default')
 
@@ -33,8 +35,7 @@ def my_cache(timeout=60 * 60):
             # 否者执行函数获取返回值
             else:
                 res = func(*args, **kwargs)
-                redis_conn.set(key, pickle.dumps(res))
-                redis_conn.expire(key, timeout)
+                redis_conn.set(key, pickle.dumps(res), timeout)
                 return res
 
         return inner

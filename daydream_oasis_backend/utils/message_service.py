@@ -1,12 +1,18 @@
 # coding=utf-8
+import os
 import re
+
 from aliyunsdkcore.client import AcsClient
 from aliyunsdkcore.request import CommonRequest
 
+from common.exception import exception
 
-def send_message(phoneNumber, code):
-    ACCESSKEYID = 'LTAI5tKziR22m9SD9enPTLR6'
-    ACCESSSECRET = 'l6rEqIDfSNeYYRNgM3q8YZtnmxD99m'
+
+def send_message(phone_number, code):
+    ACCESSKEYID = os.environ.get('ACCESSKEYID')
+    ACCESSSECRET = os.environ.get('ACCESSSECRET')
+    if not all([ACCESSKEYID, ACCESSSECRET]):
+        raise exception.CustomValidationError('Access Key未配置.')
     # 这三个参数即 AccessKey ID， AccessKey Secret， 地区的id，关于地区id怎么获得我会贴在文章最下方
     client = AcsClient(ACCESSKEYID, ACCESSSECRET, "cn-shanghai")
     # 下面就是一些规定的配置，复制即可
@@ -21,7 +27,7 @@ def send_message(phoneNumber, code):
     # 配置地区id  地区id即为 cn_%s % (所在的地区名，应该是可以细分到市级的，如cn_hangzhou)
     request.add_query_param("RegionId", "cn-shanghai")
     # 配置要发送的手机号码
-    request.add_query_param("PhoneNumbers", phoneNumber)
+    request.add_query_param("PhoneNumbers", phone_number)
     # 配置你所设置的信息模板code,文章下方我会贴出来在哪边可以设置信息模板
     request.add_query_param("TemplateCode", "SMS_218285754")
     # 这个TemplateParam参数是给信息模板中的变量传值的，正常使用应该是后端获取验证码然后塞到这个参数中的
@@ -41,3 +47,7 @@ def send_message(phoneNumber, code):
         # print('短信发送失败!')
         return False
     return False
+
+
+if __name__ == '__main__':
+    send_message(1111, 'aaa')

@@ -4,9 +4,7 @@ __pycache__
 *.pid
 *.pyc
 venv
-static/admin
-static/ckeditor
-static/rest_framework
+static
 *.db
 migrations
 cache
@@ -31,7 +29,7 @@ coverage
 /cypress/screenshots/
 
 # Editor directories and files
-.vscode/*
+.vscode
 !.vscode/extensions.json
 .idea
 *.suo
@@ -39,3 +37,5 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+package-lock.json
+*.session.sql

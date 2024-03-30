@@ -1,68 +1,66 @@
-<!-- .vitepress/theme/Layout.vue -->
 <script setup lang="ts">
-import {useData} from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import {nextTick, provide} from 'vue'
-import TagList from '../../../src/components/TagList.vue'
-import TopList from '../../../src/components/TopList.vue'
-import Logo from '../../../src/components/Logo.vue'
-import ActionBox from "../../../src/components/ActionBox.vue";
-// import AsideOutlineAfter from "./AsideOutlineAfter.vue";
+import { useData } from "vitepress";
+import DefaultTheme from "vitepress/theme";
+import { nextTick, provide } from "vue";
+import TopList from "./components/TopList.vue";
+import Logo from "./components/Logo.vue";
+import Nav from "./components/Nav.vue";
 
-const {Layout} = DefaultTheme
+const { Layout } = DefaultTheme;
 
-
-const {isDark} = useData()
+const { isDark } = useData();
 
 const enableTransitions = () =>
-    'startViewTransition' in document &&
-    window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+  "startViewTransition" in document &&
+  window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
 
-provide('toggle-appearance', async ({clientX: x, clientY: y}: MouseEvent) => {
+provide("toggle-appearance", async ({ clientX: x, clientY: y }: MouseEvent) => {
   if (!enableTransitions()) {
-    isDark.value = !isDark.value
-    return
+    isDark.value = !isDark.value;
+    return;
   }
 
   const clipPath = [
     `circle(0px at ${x}px ${y}px)`,
     `circle(${Math.hypot(
-        Math.max(x, innerWidth - x),
-        Math.max(y, innerHeight - y)
-    )}px at ${x}px ${y}px)`
-  ]
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y),
+    )}px at ${x}px ${y}px)`,
+  ];
 
   await document.startViewTransition(async () => {
-    isDark.value = !isDark.value
-    await nextTick()
-  }).ready
+    isDark.value = !isDark.value;
+    await nextTick();
+  }).ready;
 
   document.documentElement.animate(
-      {clipPath: isDark.value ? clipPath.reverse() : clipPath},
-      {
-        duration: 300,
-        easing: 'ease-in',
-        pseudoElement: `::view-transition-${isDark.value ? 'old' : 'new'}(root)`
-      }
-  )
-})
+    { clipPath: isDark.value ? clipPath.reverse() : clipPath },
+    {
+      duration: 300,
+      easing: "ease-in",
+      pseudoElement: `::view-transition-${isDark.value ? "old" : "new"}(root)`,
+    },
+  );
+});
+
 </script>
 
 <template>
   <Layout>
     <template #home-hero-image>
-      <Logo/>
+      <Logo />
+    </template>
+    <template #nav-bar-content-after>
+      <Nav />
     </template>
     <template #aside-outline-after>
-      <TopList/>
-      <TagList/>
+        <TopList/>
+      <!-- <TagList/> -->
     </template>
     <template #doc-after>
-      <ActionBox/>
     </template>
   </Layout>
 </template>
-
 
 <style>
 ::view-transition-old(root),
@@ -89,11 +87,11 @@ provide('toggle-appearance', async ({clientX: x, clientY: y}: MouseEvent) => {
   transform: none !important;
 }
 
-
 div.item a article {
   width: 100%;
 }
 
-
+span:hover {
+  cursor: pointer;
+}
 </style>
-

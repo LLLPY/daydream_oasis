@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.hashers import make_password
-from daydream_oasis_backend.admin_site import my_site
+
 from common.admin import MyBaseAdmin
-from user.models import (User, ChatRecord, Message)
+from daydream_oasis_backend.admin_site import my_site
+from user.models import ChatRecord, Message, User
 
 
 @admin.register(User, site=my_site)
@@ -16,7 +17,7 @@ class UserAdmin(admin.ModelAdmin, MyBaseAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         obj.password = make_password(obj.password)
-        obj.resize(obj.avatar.path, 50, 50)
+        # obj.resize(obj.avatar.path, 50, 50)
         super().save_model(request, obj, form, change)
 
 

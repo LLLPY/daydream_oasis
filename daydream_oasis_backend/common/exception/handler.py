@@ -1,23 +1,14 @@
-# -*- coding: UTF-8 -*-                            
-# @Author  ：LLL                         
-# @Date    ：2023/9/8 23:02  
-import logging
-import re
+# -*- coding: UTF-8 -*-
+# @Author  ：LLL
+# @Date    ：2023/9/8 23:02
 import common.exception.exception as exceptions
-import common.exception.service_code as service_code
-import orjson
 from common.drf.response import ErrResponse
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.utils import ProgrammingError
-from rest_framework import exceptions as rest_exceptions
-from rest_framework import status
-from rest_framework.exceptions import MethodNotAllowed
-from rest_framework.views import exception_handler
+from rest_framework.exceptions import APIException
 
-logger = logging.getLogger(__name__)
+from daydream_oasis_backend.settings.base import logger
 
 
-def custom_exception_handler(exc, context):
+def custom_exception_handler(exc, context=None):
     """
         Returns the response that should be used for any given exception.
 
@@ -30,42 +21,10 @@ def custom_exception_handler(exc, context):
 
     # 这里统一打印异常的详细信息
     logger.error(exc, exc_info=True)
-
     # 自定义的异常
     if isinstance(exc, exceptions.CustomValidationError):
         return exc.response
-    elif isinstance(exc, rest_exceptions.AuthenticationFailed):
-        _, data = exceptions.error_message(
-            error_code=service_code.AUTHENTICATION_ERROR,
-            msg=str(exc.detail),
-        )
-        return ErrResponse(**data, status=status.HTTP_401_UNAUTHORIZED)
-    elif isinstance(exc, NameError):
-        _, data = exceptions.error_message(
-            error_code=service_code.VERIFICATION_ERROR,
-            msg=exc.__str__(),
-        )
-        return ErrResponse(**data)
-    elif isinstance(exc, MethodNotAllowed):
-        _, data = exceptions.error_message(
-            error_code=service_code.THIRD_PARTY_API_ERROR,
-            msg=str(exc.detail),
-        )
-        return ErrResponse(**data)
-    elif isinstance(exc, exceptions.CallApiError):
-        _, data = exceptions.error_message(
-            error_code=service_code.THIRD_PARTY_API_ERROR,
-            msg=str(exc.message.get("msg")),
-        )
-        return ErrResponse(**data)
-    elif isinstance(exc, ProgrammingError):
-        rst = re.search(r"^.*Table '(.*)' doesn't exist", str(exc))
-        if rst:
-            _, data = exceptions.error_message(error_code=service_code.MYSQL_OPERATE_ERROR, msg="未找到数据")
-            return ErrResponse(**data)
-    elif isinstance(exc, ObjectDoesNotExist):
-        _, data = exceptions.error_message(error_code=service_code.OBJ_NOT_EXIST, msg="未找到数据")
-        return ErrResponse(**data)
+    elif isinstance(exc, APIException):
+        return ErrResponse(message=str(exc.detail))
     else:
-        res = exception_handler(exc, context)
-        return ErrResponse('服务异常，请联系管理员')
+        return ErrResponse(message='服务异常，请联系管理员')

@@ -1,7 +1,9 @@
-from rest_framework import serializers
-from common.drf.serializers import DynamicFieldsSerializer
 import re
+
+from common.drf.serializers import DynamicFieldsSerializer
 from common.exception import exception
+from rest_framework import serializers
+from utils import tools
 
 
 # 用户
@@ -12,12 +14,15 @@ class UserSerializers(DynamicFieldsSerializer):
     code = serializers.CharField(required=True, help_text='验证码')
     password = serializers.CharField(required=True, help_text='密码')
     action = serializers.CharField(allow_null=True, help_text='操作')
+    avatar = serializers.SerializerMethodField(help_text='头像')
+    email = serializers.CharField(help_text='邮箱')
+    id = serializers.CharField(allow_blank=True, allow_null=True, help_text='')
 
     def validate_mobile(self, value):
-        ...
+        # 监测手机号是否合法
         if not self.is_valid_mobile(value):
             raise exception.CustomValidationError('手机号码格式不正确!')
-        # 监测手机号是否合法
+        return value
 
     @classmethod
     def is_valid_mobile(cls, mobile: str) -> bool:
@@ -34,7 +39,9 @@ class UserSerializers(DynamicFieldsSerializer):
         return bool(
             6 <= len(password) <= 20 and re.match(r'.*\d+.*', password) and re.match(r'.*[a-zA-Z]+.*', password))
 
-    # 更新
+    def get_avatar(self, obj):
+        avatar = tools.get_full_media_url(obj.avatar)
+        return avatar
 
 
 # 留言

@@ -1,7 +1,8 @@
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageFont
+
 from django.core.files.storage import FileSystemStorage
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from PIL import Image, ImageDraw, ImageFont
 
 
 # 添加水印
@@ -9,7 +10,8 @@ class WatermarkStorage(FileSystemStorage):
 
     # 处理逻辑
     def save(self, name, content, max_length=None):
-        if 'image' in content.content_type and not str(name).endswith('gif'):  # 如果是图片且不是gif动图才进行加水印操作
+        # 如果是图片且不是gif动图才进行加水印操作
+        if 'image' in content.content_type and not str(name).endswith('gif'):
 
             # 加水印
             image = self.watermark_with_text(content, 'www.lll.plus', 'skyblue')
@@ -31,13 +33,12 @@ class WatermarkStorage(FileSystemStorage):
         margin = 10
         if fontfamily:
             font = ImageFont.truetype(fontfamily, int(height / 10))
-
         else:
             font = None
 
-        textWidth, textHeight = draw.textsize(text, font)
+        textWidth = draw.textlength(text, font)
         x = (width - textWidth - margin)  # 计算横轴位置
-        y = (height - textHeight - margin)  # 计算纵轴位置
+        y = (height - margin)  # 计算纵轴位置
 
         draw.text((x, y), text, color, font)
         return image
