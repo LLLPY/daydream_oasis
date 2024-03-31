@@ -25,7 +25,7 @@ DISCUSS_AUDIT=false
 ## 可选数据库 [mongodb, mysql, postgresql, sqlite, cloudbase]
 DISCUSS_DB_TYPE=mysql
 # ------ MySQL ------
-D_MYSQL_URL=mysql://$db_USER:$db_PASSWORD@db_HOST:$db_PORT/$db_NAME
+D_MYSQL_URL=mysql://$db_USER:$db_PASSWORD@$db_HOST:$db_PORT/$db_NAME
 # 例子: mysql://username:password@host:port/database
 " > .env
 nohup node docs/discuss/index.cjs > setup.log &
