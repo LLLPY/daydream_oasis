@@ -24,7 +24,7 @@ dist-ssr
 coverage
 *.local
 *.out
-
+.env
 /cypress/videos/
 /cypress/screenshots/
 
