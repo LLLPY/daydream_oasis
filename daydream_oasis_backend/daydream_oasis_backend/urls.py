@@ -37,9 +37,9 @@ urlpatterns = [
 
     re_path(r'^api/admin/', my_site.urls),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),  # 访问media文件
-    re_path(r'^rss|feed$', cache_page(60 * 60, key_prefix='rss_cache')
+    re_path(r'^api/rss|feed$', cache_page(60 * 60, key_prefix='rss_cache')
             (LatestBlogFeed()), name='rss'),  # rss
-    re_path(r'^sitemap$', cache_page(60 * 60, key_prefix='sitemap_cache')(sitemap_views.sitemap),
+    re_path(r'^api/sitemap$', cache_page(60 * 60, key_prefix='sitemap_cache')(sitemap_views.sitemap),
             {'sitemaps': {'posts': BlogSitemap}}),  # sitemap 使用缓存
     # re_path(r'^api/docs/', include_docs_urls(title='blog apis')),  # restful api接口文档
 
