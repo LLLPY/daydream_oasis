@@ -1,5 +1,5 @@
 import { defineConfig } from "vitepress";
-
+import { API_URL } from "./theme/assets/js/axios";
 export default defineConfig({
   lang: "en-US", //zh-CN|en-US
   title: "白日梦想园",
@@ -43,6 +43,7 @@ export default defineConfig({
       { text: "首页", link: "/blog/" },
       { text: "关于", link: "/blog/content?id=1053", activeMatch: "/1053" },
       { text: "写博客", link: "/write" },
+      { text: "订阅", link: `${API_URL}/api/rss` },
     ],
     // 侧边栏
     // sidebar: [],

@@ -16,7 +16,6 @@ from user.views import UserViewSet
 from daydream_oasis_backend.admin_site import my_site
 from daydream_oasis_backend.rss import LatestBlogFeed
 from daydream_oasis_backend.settings.base import MEDIA_ROOT
-from daydream_oasis_backend.sitemap import BlogSitemap
 
 # 路由注册
 router = DefaultRouter()
@@ -39,8 +38,6 @@ urlpatterns = [
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),  # 访问media文件
     re_path(r'^api/rss|feed$', cache_page(60 * 60, key_prefix='rss_cache')
             (LatestBlogFeed()), name='rss'),  # rss
-    re_path(r'^api/sitemap$', cache_page(60 * 60, key_prefix='sitemap_cache')(sitemap_views.sitemap),
-            {'sitemaps': {'posts': BlogSitemap}}),  # sitemap 使用缓存
     # re_path(r'^api/docs/', include_docs_urls(title='blog apis')),  # restful api接口文档
 
 ]
