@@ -57,10 +57,11 @@ class RequestMiddleWare(MiddlewareMixin):
         computer_name = request.META.get('COMPUTERNAME', '')
         _username = request.META.get('USERNAME', '')
 
-        # 获取ip的位置信息 TODO先将ip的基本信息写入，后期再启动定时任务对ip的地址进行更新
-        request_record = RequestRecord.create_request_record(path, method, ip, user_agent, http_refer, os,
-                                                             computer_name, _username)
-        setattr(request, 'request_record', request_record)
+        # 后台管理的请求不记录
+        if not path.startswith('/api/admin'):
+            request_record = RequestRecord.create_request_record(path, method, ip, user_agent, http_refer, os,
+                                                                 computer_name, _username)
+            setattr(request, 'request_record', request_record)
         # 个性推荐
         user_id = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
         if not cache.has_key(f'{user_id}_recommend_list'):
