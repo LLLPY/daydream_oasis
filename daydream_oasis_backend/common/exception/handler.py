@@ -3,10 +3,9 @@
 # @Date    ：2023/9/8 23:02
 import common.exception.exception as exceptions
 from common.drf.response import ErrResponse
-from rest_framework.exceptions import APIException
 
 from daydream_oasis_backend.settings.base import logger
-
+import traceback
 
 def custom_exception_handler(exc, context=None):
     """
@@ -21,10 +20,11 @@ def custom_exception_handler(exc, context=None):
 
     # 这里统一打印异常的详细信息
     logger.error(exc, exc_info=True)
+
     # 自定义的异常
     if isinstance(exc, exceptions.CustomValidationError):
-        return exc.response
-    elif isinstance(exc, APIException):
-        return ErrResponse(message=str(exc.detail))
+        response = exc.response
     else:
-        return ErrResponse(message='服务异常，请联系管理员')
+        response = ErrResponse(message='服务异常，请联系管理员', fail_detail=traceback.format_exc())
+
+    return response

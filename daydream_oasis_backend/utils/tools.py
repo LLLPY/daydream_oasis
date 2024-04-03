@@ -6,39 +6,15 @@ from urllib.parse import urlparse
 import orjson
 
 from daydream_oasis_backend.settings.base import HOST
+import requests
 
 
-# 获取ip相关的信息,
-def get_ip_info(ip: str):
-    # r = get(url=f'http://ip-api.com/json/{ip}?lang=zh-CN')
-    country, region, city, latitude, longitude, timezone, isp = 'None', 'None', 'None', 'None', 'None', 'None', 'None'
-    # try:
-    #     r_json = r.json()
-    #     country = r_json.get('country', 'None')
-    #     region = r_json.get('regionName', 'None')
-    #     city = r_json.get('city', 'None')
-    #     latitude = r_json.get('latitude', 'None')
-    #     longitude = r_json.get('longitude', 'None')
-    #     timezone = r_json.get('timezone', 'None')
-    #     isp = r_json.get('isp', 'None')
-    # except:
-    #     pass
-    return (country, region, city, latitude, longitude, timezone, isp)
-
-
-# def get_address(ip):
-#     api_url = f'https://freeapi.ipip.net/{ip}'
-#     try:
-#         # 先从缓存中获取，如果没有就再请求接口
-#         location = cache.get(f'{ip}-address', None)
-#         if not location:
-#             res = requests.get(api_url)
-#             location = res.json()[:3]
-#             cache.set(f'{ip}-address', location, 60 *
-#                       60 * 24 * 7)  # 假设一个用户7天之内不会更换位置
-#         return location
-#     except Exception as e:
-#         return ['', '', '']
+def get_address(ip):
+    api_url = 'https://api.ip2location.io'
+    try:
+        return requests.get(api_url, data={'ip': ip}).json()
+    except Exception as e:
+        return {}
 # 信息摘要
 def md5(content: Union[str, bytes, dict]):
     # 字符串

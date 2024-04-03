@@ -3,7 +3,6 @@ from blog.views import (BlogViewSet, CategoryViewSet, CollectionViewSet,
                         TagViewSet)
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.sitemaps import views as sitemap_views
 from django.urls import include, re_path
 from django.views.decorators.cache import cache_page
 from django.views.static import serve

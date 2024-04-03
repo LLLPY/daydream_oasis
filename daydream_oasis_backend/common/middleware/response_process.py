@@ -29,4 +29,18 @@ class ResponseMiddleware(MiddlewareMixin):
             # 缓存过期时间更新
             redis_conn.expire(auth_token, 3600 * 24 * 7)
 
+        # 更新请求的状态
+        request_record = getattr(request, 'request_record', None)
+        if request_record:
+            # 失败的请求
+            if getattr(response, 'CODE', '0') != '0':
+                fail_detail = response.data.get('fail_detail') or response.data.get('message')
+                extra = request_record.extra
+                extra['fail_detail'] = fail_detail
+                status = request_record.FAIL
+            else:
+                status = request_record.SUCCESS
+            request_record.status = status
+            request_record.save()
+
         return response

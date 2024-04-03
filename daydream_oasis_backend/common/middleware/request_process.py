@@ -7,6 +7,7 @@ from django.utils.deprecation import MiddlewareMixin
 from django_redis import get_redis_connection
 
 from daydream_oasis_backend.settings.base import logger
+from log.models import RequestRecord
 from user.models import User
 from utils import tools
 
@@ -57,23 +58,9 @@ class RequestMiddleWare(MiddlewareMixin):
         _username = request.META.get('USERNAME', '')
 
         # 获取ip的位置信息 TODO先将ip的基本信息写入，后期再启动定时任务对ip的地址进行更新
-        # country, province, city = RequestRecord.get_address(ip)
-        request_log = {
-            'path': path,
-            'method': method,
-            'ip': ip,
-            'user_agent': user_agent,
-            'http_refer': http_refer,
-            'os': os,
-            'country': '',
-            'province': '',
-            'city': '',
-            'computer_name': computer_name,
-            'username': _username
-
-        }
-
-        request.request_log = request_log
+        request_record = RequestRecord.create_request_record(path, method, ip, user_agent, http_refer, os,
+                                                             computer_name, _username)
+        setattr(request, 'request_record', request_record)
         # 个性推荐
         user_id = request.user.id if request.user.is_authenticated else request.COOKIES.get('uuid', '-')
         if not cache.has_key(f'{user_id}_recommend_list'):

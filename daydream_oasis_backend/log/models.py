@@ -9,34 +9,27 @@ from user.models import User
 
 # 请求记录表
 class RequestRecord(BaseModel):
-    PAGE = 0
-    MEDIA = 1
-    API = 2
-    OTHER = 3
 
-    PATH_TYPE_CHOICES = [
-        (PAGE, '页面'),
-        (MEDIA, '媒体文件'),
-        (API, 'API接口'),
-        (OTHER, '其他'),
+    # 请求响应的状态
+    PENDING = 0
+    SUCCESS = 1
+    FAIL = 2
 
-    ]
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True,
-                             verbose_name='博客', help_text='博客')
+    STATUS_CHOICES = (
+        (PENDING, '响应中'),
+        (SUCCESS, '成功'),
+        (FAIL, '失败'),
+    )
+
     path = models.TextField(max_length=1000, default='/', verbose_name='请求路径', help_text='请求路径')
-    path_type = models.PositiveIntegerField(default=PAGE, choices=PATH_TYPE_CHOICES, verbose_name='请求路径类型',
-                                            help_text='请求路径类型')
     method = models.CharField(max_length=100, default='GET', verbose_name='请求方式', help_text='请求方式')
     user_agent = models.CharField(max_length=500, verbose_name='请求头', help_text='请求头')
     http_refer = models.URLField(verbose_name='跳转的网页', help_text='跳转的网页')
     os = models.CharField(default='', max_length=100, verbose_name='操作系统', help_text='操作系统')
-    country = models.CharField(max_length=50, default='', verbose_name='国家', help_text='国家')
-    province = models.CharField(max_length=50, default='', verbose_name='省份', help_text='省份')
-    city = models.CharField(max_length=50, default='', verbose_name='城市', help_text='城市')
-    computer_name = models.CharField(max_length=50, default='',
-                                     verbose_name='计算机名', help_text='计算机名')
+    computer_name = models.CharField(max_length=50, default='', verbose_name='计算机名', help_text='计算机名')
     username = models.CharField(max_length=50, default='', verbose_name='用户名', help_text='用户名')
-
+    status = models.PositiveIntegerField(default=PENDING, choices=STATUS_CHOICES, verbose_name='响应状态', help_text='响应状态')
+    extra = models.JSONField(default=dict, verbose_name='其他信息', help_text='其他信息')
     class Meta:
         db_table = 'request_log'
         verbose_name = verbose_name_plural = '请求记录'
@@ -47,7 +40,7 @@ class RequestRecord(BaseModel):
     # 获取某天或某月或某年的访问量
     @classmethod
     def get_pv(cls, year=None, moth=None, day=None):
-        request_li = cls.objects.filter(path_type=cls.PAGE)
+        request_li = cls.objects
         if year:
             request_li = request_li.filter(time__year=year)
         if moth:
@@ -58,27 +51,14 @@ class RequestRecord(BaseModel):
         return request_li.count()
 
     @classmethod
-    def create_request_record(cls, path, method, ip, user_agent, http_refer, os, country, province, city, computer_name,
-                              username):
+    def create_request_record(cls, path, method, ip, user_agent, http_refer, os, computer_name, username):
         request_record = cls()
         request_record.path = path
-        if path.startswith('/user/api') or path.startswith('/blog/api'):
-            request_record.path_type = cls.API
-        elif path.startswith('/media'):
-            request_record.path_type = cls.MEDIA
-        elif path.startswith('/blog') or path.startswith('/login') or path.startswith(
-                '/user/register') or path.startswith('/user/forgetPassword') or path == '/':
-            request_record.path_type = cls.PAGE
-        else:
-            request_record.path_type = cls.OTHER
         request_record.method = method
         request_record.ip = ip
         request_record.user_agent = user_agent
         request_record.http_refer = http_refer
         request_record.os = os
-        request_record.country = country
-        request_record.province = province
-        request_record.city = city
         request_record.computer_name = computer_name
         request_record.username = username
         request_record.save()
@@ -218,17 +198,3 @@ class Action(BaseModel):
         return data
 
 
-# 错误
-class Error(BaseModel):
-    # 请求的ip
-    request_log = models.ForeignKey(RequestRecord, on_delete=models.CASCADE, verbose_name='请求对象',
-                                    help_text='请求对象')
-
-    # 错误原因
-    reason = models.CharField(max_length=500, verbose_name='错误原因', help_text='错误原因')
-    # 时间
-    time = models.DateTimeField(default=datetime.now, verbose_name='时间', help_text='时间')
-
-    class Meta:
-        db_table = 'error_log'
-        verbose_name = verbose_name_plural = '错误记录'
