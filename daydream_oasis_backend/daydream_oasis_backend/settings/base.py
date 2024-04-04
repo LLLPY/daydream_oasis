@@ -1,5 +1,5 @@
-# -*- coding: UTF-8 -*-                            
-# @Author  ：LLL                         
+# -*- coding: UTF-8 -*-
+# @Author  ：LLL
 # @Date    ：2023/1/10 0:39
 import logging
 import os
@@ -164,7 +164,7 @@ REST_FRAMEWORK = {
 HOST = 'http://www.lll.plus/'
 
 # 后台的logo
-SIMPLEUI_LOGO = f'{HOST}media/image/default_blog_avatar.jpg'
+# SIMPLEUI_LOGO = f'{HOST}media/image/default_blog_avatar.jpg'
 
 # 日志的配置
 LOGGING = {
