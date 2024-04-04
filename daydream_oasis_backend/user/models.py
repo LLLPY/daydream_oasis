@@ -83,29 +83,3 @@ class ChatRecord(BaseModel):
         tmp_record.content = content
         tmp_record.save()
         return tmp_record
-
-
-# 留言(相对于整站的留言)
-class Message(BaseModel):
-    # 留言人
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='留言人', help_text='留言人')
-
-    # 留言内容
-    content = models.CharField(max_length=200, verbose_name='内容', help_text='内容')
-
-    # 权重
-    weight = models.PositiveIntegerField(default=0, verbose_name='权重', help_text='权重')
-
-    class Meta:
-        db_table = 'message'
-        verbose_name_plural = verbose_name = '留言'
-        ordering = ['-weight', '-create_time']
-
-    @classmethod
-    def get_all(cls):
-        data_list = []
-        for message in cls.objects.all():
-            data_list.append(
-                message.to_dict()
-            )
-        return data_list

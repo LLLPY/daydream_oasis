@@ -1,10 +1,10 @@
+from common.admin import MyBaseAdmin
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry
 from django.contrib.auth.hashers import make_password
+from user.models import ChatRecord, User
 
-from common.admin import MyBaseAdmin
 from daydream_oasis_backend.admin_site import my_site
-from user.models import ChatRecord, Message, User
 
 
 @admin.register(User, site=my_site)
@@ -36,11 +36,3 @@ class LogEntryAdmin(admin.ModelAdmin, MyBaseAdmin):
     list_display_links = list_display[:1]  # 默认的链接是id
     search_fields = list_display  # 搜索的字段同list_display
     list_filter = list_display[1:3]  # 过滤字段为前3个字段
-
-
-# 留言(对整个站点的留言)
-@admin.register(Message, site=my_site)
-class MessageAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'user', 'content', 'create_time', 'weight']
-    search_fields = ['user', 'content']
-    list_filter = ['user', 'weight', 'create_time']

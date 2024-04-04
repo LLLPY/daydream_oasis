@@ -1,15 +1,16 @@
-from django.contrib import admin
-
 from common.admin import MyBaseAdmin
-from daydream_oasis_backend.admin_site import my_site
+from django.contrib import admin
 from log.models import Action, RequestRecord
+
+from daydream_oasis_backend.admin_site import my_site
 
 
 # 请求记录
 @admin.register(RequestRecord, site=my_site)
 class RequestRecordAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'path', 'ip', 'user_agent', 'http_refer', 'create_time', 'status']
-    search_fields = ['path', 'ip']
+    list_display = ['id', 'path', 'method', 'ip', 'status', 'create_time',
+                    'os', 'computer_name', 'username', 'user_agent', 'http_refer', 'extra']
+    search_fields = ['path', 'method', 'ip']
     list_filter = ['path', 'create_time', 'status']
 
 

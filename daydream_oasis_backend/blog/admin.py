@@ -22,9 +22,8 @@ class CategoryAdmin(admin.ModelAdmin, MyBaseAdmin):
 
     used_count.short_description = '文章数量'
 
+
 # 分类
-
-
 @admin.register(Section, site=my_site)
 class SectionAdmin(admin.ModelAdmin, MyBaseAdmin):
     list_display = ['id', 'title', 'create_time', 'creator']
