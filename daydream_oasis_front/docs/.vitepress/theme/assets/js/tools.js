@@ -61,9 +61,6 @@ export function get_user_info() {
   let user_id = get_cookie("user_id");
   let username = get_cookie("username");
   let avatar = get_cookie("avatar");
-  console.log(user_id);
-  console.log(username);
-  console.log(avatar);
   if (user_id && username && avatar) {
     return {
       user_id: user_id,
