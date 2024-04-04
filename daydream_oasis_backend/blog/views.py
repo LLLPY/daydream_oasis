@@ -109,12 +109,13 @@ class BlogViewSet(BaseViewSet):
                                          ])
         # 一天之内一台设备只算一次浏览量
         uuid = request.COOKIES.get('uuid', '-')
-        if self.redis_conn.setnx(f'view:{uuid}', 'viewed'):
+        key = f'view:{uuid}:{blog.id}'
+        if self.redis_conn.setnx(key, 'viewed'):
             Action.create(blog.id, Action.CLICK, 0, request)
             now = datetime.datetime.now()
             expired = (datetime.timedelta(hours=24, minutes=0, seconds=0) - datetime.timedelta(hours=now.hour, minutes=now.minute,
                                                                                                seconds=now.second)).seconds
-            self.redis_conn.expire(uuid, expired)
+            self.redis_conn.expire(key, expired)
 
         return SucResponse(data=serializer.data)
 
