@@ -4,9 +4,9 @@ from typing import Union
 from urllib.parse import urlparse
 
 import orjson
+import requests
 
 from daydream_oasis_backend.settings.base import HOST
-import requests
 
 
 def get_address(ip):
@@ -16,6 +16,8 @@ def get_address(ip):
     except Exception as e:
         return {}
 # 信息摘要
+
+
 def md5(content: Union[str, bytes, dict]):
     # 字符串
     if isinstance(content, str):
@@ -48,7 +50,7 @@ def limit_str(s: str, max_len=9, suffix='...'):
 
 def delete_cookie(response, delete_cookie_list=[]):
     '''删除cookie'''
-    delete_cookie_list = delete_cookie_list or ['auth_token', 'username']
+    delete_cookie_list = delete_cookie_list or ['auth_token', 'username', 'user_id', 'avatar']
     for delete_cookie_key in delete_cookie_list:
         response.delete_cookie(delete_cookie_key)
 
@@ -61,6 +63,14 @@ def get_full_media_url(media_url):
         media_url = media_url.strip('/')
         media_url = f'{HOST}media/{media_url}'
     return media_url
+
+
+def char2ord(s):
+    """字符转成对应的字码，方便前端解析"""
+    res = ''
+    for c in str(s):
+        res += f'{ord(c)} '
+    return res.strip()
 
 
 if __name__ == '__main__':

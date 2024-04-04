@@ -99,6 +99,10 @@ class UserViewSet(BaseViewSet):
         auth_token = tools.md5(f'{tmp_user.id}_daydream_oasis')
         res.set_signed_cookie('auth_token', auth_token, salt=tools.md5('daydream_oasis'), max_age=3600 * 24 * 7,
                               samesite='', secure='', httponly='')
+        res.set_cookie('user_id', tmp_user.id, samesite='', secure='', httponly='')
+        res.set_cookie('username', tools.char2ord(tmp_user.username), samesite='', secure='', httponly='')
+        res.set_cookie('avatar', tools.char2ord(tools.get_full_media_url(
+            tmp_user.avatar)), samesite='', secure='', httponly='')
         # 登录信息写入缓存
         self.redis_conn.set(auth_token, tmp_user.id, 3600 * 24 * 7)
 

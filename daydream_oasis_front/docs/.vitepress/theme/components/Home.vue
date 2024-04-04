@@ -4,7 +4,7 @@
 </template>
 <script>
 import { axios_ins } from "../assets/js/axios";
-import { get_cookie } from "../assets/js/tools";
+import { get_cookie, ord2char } from "../assets/js/tools";
 import { Warning } from "../assets/js/MessageBox";
 
 export default {
@@ -26,11 +26,7 @@ export default {
       Warning("请先登录!");
       history.go(-1);
     } else {
-      axios_ins.get("/api/user/info/").then((response) => {
-        if (response.data.code === "0") {
-          this.username = response.data.data.username;
-        }
-      });
+      this.username = ord2char(get_cookie("username"));
     }
   },
 };

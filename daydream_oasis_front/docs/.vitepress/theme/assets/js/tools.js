@@ -16,6 +16,10 @@ export function get_cookie(key) {
     let item = cookie_arr[i].split("=");
     if (item[0].trim() === key) {
       val = item[1];
+      // 判断是否是字符串
+      if (val.startsWith('"') && val.endsWith('"')) {
+        val = val.slice(1, item[1].length - 1);
+      }
       break;
     }
   }
@@ -42,4 +46,31 @@ export function get_url_params() {
     params[kv[0]] = kv[1];
   });
   return params;
+}
+
+export function ord2char(ord) {
+  let ord_list = ord.split(" ");
+  let res = "";
+  ord_list.forEach(function (o) {
+    res += String.fromCharCode(parseInt(o));
+  });
+  return res;
+}
+
+export function get_user_info() {
+  let user_id = get_cookie("user_id");
+  let username = get_cookie("username");
+  let avatar = get_cookie("avatar");
+  console.log(user_id);
+  console.log(username);
+  console.log(avatar);
+  if (user_id && username && avatar) {
+    return {
+      user_id: user_id,
+      username: ord2char(username),
+      avatar: ord2char(avatar),
+    };
+  } else {
+    return {};
+  }
 }

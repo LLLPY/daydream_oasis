@@ -16,7 +16,7 @@
 
 <script setup>
 import { ref, unref } from "vue";
-import { axios_ins } from "../assets/js/axios";
+import { get_user_info } from "../assets/js/tools";
 
 const goLogin = () => {
   if (isLogin.value) {
@@ -29,13 +29,12 @@ const goLogin = () => {
 };
 
 const initView = () => {
-  axios_ins.get("/api/user/info/").then((response) => {
-    if (response.data.code === "0") {
-      let data = response.data.data;
-      isLogin.value = true;
-      user = unref(data);
-    }
-  });
+  let data = get_user_info();
+  console.log(data);
+  if (Object.keys(data).length) {
+    isLogin.value = true;
+  }
+  user = unref(data);
 };
 
 let isLogin = ref(false);
