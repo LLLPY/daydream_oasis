@@ -5,11 +5,11 @@ from django.core.cache import cache
 from django.http import HttpResponseBadRequest
 from django.utils.deprecation import MiddlewareMixin
 from django_redis import get_redis_connection
-
-from daydream_oasis_backend.settings.base import logger
 from log.models import RequestRecord
 from user.models import User
 from utils import tools
+
+from daydream_oasis_backend.settings.base import logger
 
 redis_conn = get_redis_connection('default')
 
@@ -34,7 +34,7 @@ class RequestMiddleWare(MiddlewareMixin):
 
         user_id = redis_conn.get(auth_token)
         _uuid = request.COOKIES.get('uuid')
-        
+
         # 如果没有user或者是匿名用户，尝试去获取用户
         if not hasattr(request, 'user') or not request.user or isinstance(request.user, AnonymousUser):
             request.user = User.get_by_id(user_id) or AnonymousUser()
@@ -57,8 +57,8 @@ class RequestMiddleWare(MiddlewareMixin):
         computer_name = request.META.get('COMPUTERNAME', '')
         _username = request.META.get('USERNAME', '')
 
-        # 后台管理的请求不记录
-        if not path.startswith('/api/admin'):
+        # 后台管理的请求不记录 本地请求不记录
+        if not path.startswith('/api/admin') and ip not in ['127.0.0.1']:
             request_record = RequestRecord.create_request_record(path, method, ip, user_agent, http_refer, os,
                                                                  computer_name, _username)
             setattr(request, 'request_record', request_record)
