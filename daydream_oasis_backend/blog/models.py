@@ -1,5 +1,4 @@
 import datetime
-import os
 
 import markdown
 from common.models import BaseModel
@@ -9,8 +8,6 @@ from mdeditor.fields import MDTextField
 from user.models import User
 from utils.cache import my_cache
 from utils.collaborative_filltering import cf_user
-
-from daydream_oasis_backend.settings.base import BASE_DIR
 
 
 # 博客分类
