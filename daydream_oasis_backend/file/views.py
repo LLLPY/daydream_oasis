@@ -5,7 +5,6 @@ from rest_framework.decorators import action
 
 from common.drf.decorators import login_required
 from common.drf.response import ErrResponse, SucResponse
-from daydream_oasis_backend.settings.base import HOST
 from file.models import File
 from utils import tools
 
@@ -35,10 +34,10 @@ class FileViewSet(viewsets.ModelViewSet):
         filename = '.'.join(filename_list)
         file.name = filename
         file = File.create(request.user, File.type_size_dict[content_type][1], file)
-        file_url = tools.get_full_media_url(file.path)
+
         data = {
             'filename': filename,
             'content_type': content_type,
-            'url': file_url
+            'url': tools.get_full_media_url(file.path)
         }
         return SucResponse(data=data)
