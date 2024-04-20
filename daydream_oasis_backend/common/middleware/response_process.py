@@ -1,12 +1,15 @@
 # -*- coding: UTF-8 -*-
 # @Author  ：LLL
 # @Date    ：2023/10/14 13:26
+import logging
 import uuid
 
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
 from utils import tools
 from utils.cache import redis_conn
+
+logger = logging.getLogger('daydream_oasis')
 
 
 class ResponseMiddleware(MiddlewareMixin):
@@ -23,6 +26,7 @@ class ResponseMiddleware(MiddlewareMixin):
         # 更新登录状态
         auth_token = request.get_signed_cookie('auth_token', default='', salt=tools.md5('daydream_oasis'))
         user_id = redis_conn.get(auth_token)
+        logger.info(f'auth_token:{auth_token},user_id:{user_id}')
         if auth_token and user_id:
             # cookie过期时间更新
             response.set_signed_cookie('auth_token', auth_token, salt=tools.md5('daydream_oasis'),
