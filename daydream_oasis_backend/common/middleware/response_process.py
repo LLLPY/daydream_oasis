@@ -26,7 +26,6 @@ class ResponseMiddleware(MiddlewareMixin):
         # 更新登录状态
         auth_token = request.get_signed_cookie('auth_token', default='', salt=tools.md5('daydream_oasis'))
         user_id = redis_conn.get(auth_token)
-        logger.info(f'auth_token:{auth_token},user_id:{user_id}')
         if auth_token and user_id:
             # cookie过期时间更新
             response.set_signed_cookie('auth_token', auth_token, salt=tools.md5('daydream_oasis'),
@@ -34,7 +33,9 @@ class ResponseMiddleware(MiddlewareMixin):
                                        samesite='', secure='', httponly='')
             # 缓存过期时间更新
             redis_conn.expire(auth_token, settings.SESSION_COOKIE_AGE)
-        else:
+
+        # 如果前端存在，但是后端不存在，就删除
+        if auth_token and not user_id:
             tools.delete_cookie(response)
 
         # 更新请求的状态
