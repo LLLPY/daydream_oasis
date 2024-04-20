@@ -15,5 +15,6 @@ scipy==1.11.2
 orjson==3.9.7
 django-cors-headers==4.2.0
 markdown==3.5.2
+requests==2.31.0
 pre-commit
 -i  https://mirrors.aliyun.com/pypi/simple/

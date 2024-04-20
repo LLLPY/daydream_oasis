@@ -204,3 +204,6 @@ LOGGING = {
 }
 
 logger = logging.getLogger('daydream_oasis')
+
+# cookie默认过期时间
+SESSION_COOKIE_AGE = 3600 * 24 * 7  # 设置Cookie的过期时间为7天
