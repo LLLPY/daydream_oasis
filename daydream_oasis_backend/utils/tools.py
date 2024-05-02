@@ -89,6 +89,7 @@ def send_email(subject, message, blog_title, blog_id, operator_username, recipie
             name = '收藏'
         else:
             name = '操作'
+        return name
     template = get_template('email.html')
     context = {
         'host': settings.HOST,
