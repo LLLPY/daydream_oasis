@@ -78,9 +78,17 @@ def char2ord(s):
     return res.strip()
 
 
-def send_email(subject, message, blog_title, blog_id, operator_username, recipient_list, block=False):
+def send_email(subject, message, blog_title, blog_id, operator_username, recipient_list, action, block=False):
     """发送邮件"""
-
+    def get_action_name(action):
+        if action == 'comment':
+            name = '评论'
+        elif action == 'like':
+            name = '点赞'
+        elif action == 'collect':
+            name = '收藏'
+        else:
+            name = '操作'
     template = get_template('email.html')
     context = {
         'host': settings.HOST,
@@ -88,7 +96,9 @@ def send_email(subject, message, blog_title, blog_id, operator_username, recipie
         'blog_id': blog_id,
         'operator_username': operator_username,
         'message': message,
-        'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'action': action,
+        'action_name': get_action_name(action)
     }
     html = template.render(context)
     from_email = f'{settings.DEFAULT_FROM_EMAIL}'

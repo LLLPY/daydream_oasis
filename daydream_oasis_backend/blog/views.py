@@ -25,6 +25,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
 from user.models import User
+from utils import tools
 
 
 class BlogViewSet(BaseViewSet):
@@ -184,8 +185,21 @@ class BlogViewSet(BaseViewSet):
         if has_liked:
             raise exception.CustomValidationError('已经点过赞啦!')
         Like.create(blog, user)
+
         # 行为记录
         Action.create(blog.id, Action.DOCALL, 0, request)
+
+        # 邮件通知
+        tools.send_email(
+            subject="收到点赞通知！",
+            message='',
+            blog_title=blog.title,
+            blog_id=blog_id,
+            operator_username=user.username,
+            recipient_list=[blog.author.email],
+            action='like'
+        )
+
         return SucResponse('点赞成功!')
 
     @action(methods=['post'], detail=True)
@@ -216,8 +230,20 @@ class BlogViewSet(BaseViewSet):
         if has_collected:
             raise exception.CustomValidationError('已经收藏啦!')
         Collection.create(blog, user)
+
         # 行为记录
         Action.create(blog.id, Action.COLLECT, 0, request)
+
+        # 邮件通知
+        tools.send_email(
+            subject="收到收藏通知！",
+            message='',
+            blog_title=blog.title,
+            blog_id=blog_id,
+            operator_username=user.username,
+            recipient_list=[blog.author.email],
+            action='collect'
+        )
         return SucResponse('收藏成功!')
 
     @action(methods=['post'], detail=True)
@@ -380,6 +406,20 @@ class CommentViewSet(viewsets.ModelViewSet, InstanceMixin):
             obj.save()
             serializer = self.get_serializer(obj)
             data = {'msg': 'success', 'data': [serializer.data]}
+
+            # 邮件通知
+            blog_id = obj.path.split('?')[1].replace('id=', '')
+            blog = Blog.objects.filter(id=blog_id).first()
+            tools.send_email(
+                subject="新的评论通知！",
+                message=obj.content,
+                blog_title=blog.title,
+                blog_id=blog_id,
+                operator_username=obj.nick,
+                recipient_list=[blog.author.email],
+                action='comment'
+            )
+
         else:
             res = requests.post(url='http://127.0.0.1:6870', data=json.dumps(data))
             data = res.json()
@@ -397,3 +437,17 @@ class CollectionViewSet(viewsets.ModelViewSet):
 class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializers
     queryset = Like.objects.all()
+
+    def create(self, request, *args, **kwargs):
+
+        res = super().create(request, **args, **kwargs)
+        user = self.request.user
+        tools.send_email(
+            subject="收到点赞通知！",
+            message='',
+            blog_title=blog.title,
+            blog_id=blog_id,
+            operator_username=user.username,
+            recipient_list=[blog.author.email],
+            action='like'
+        )

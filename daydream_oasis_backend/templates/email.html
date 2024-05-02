@@ -69,20 +69,13 @@
     </style>
   </head>
   <body>
-    <h3><a href="{{ host }}">🌈白日梦想园</a></h3>
     <div class="header">
-      <div class="logo">
-        {% comment %}
-        <img
-          src="http://www.lll.plus/media/image/default_blog_avatar.jpg"
-          alt="公司logo"
-        />
-        {% endcomment %}
-      </div>
-      <span class="title">博客评论通知</span>
+      <div class="logo"></div>
+      <span class="title">博客{{action_name}}通知</span>
       <a href="{{ host }}">🏝️白日梦想园🏡</a>
     </div>
     <div class="content">
+      {% if action == 'comment' %}
       <p class="body">尊敬的博主，您好！</p>
       <p class="body">
         您的博客
@@ -99,6 +92,18 @@
           >
         </div>
       </div>
+
+      {% elif action == 'like' %}
+      <p class="body">
+        {{operator_username}}点赞了您的博客
+        <a href="{{ host }}blog/content?id={{ blog_id }}">{{ blog_title }}</a>
+        ！
+      </p>
+
+      {% elif action == 'collect' %} {{operator_username}}收藏了您的博客
+      <a href="{{ host }}blog/content?id={{ blog_id }}">{{ blog_title }}</a> ！
+      {% endif %}
+
       <p class="body">
         感谢您对 <strong>白日梦想园</strong> 的支持！希望您每天开心，快乐！🍬🍬
       </p>
