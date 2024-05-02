@@ -15,7 +15,7 @@ onMounted(() => {
       el: "#Discuss-Comments",
       serverURLs: `${API_URL}/discuss/`,
       color: "red",
-      path: get_url_params()["id"],
+      path: `content?id=${get_url_params()["id"]}`,
       visitStat: true,
     });
   };
