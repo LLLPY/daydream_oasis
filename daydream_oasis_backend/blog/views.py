@@ -194,7 +194,7 @@ class BlogViewSet(BaseViewSet):
             subject="收到点赞通知！",
             message='',
             blog_title=blog.title,
-            blog_id=blog_id,
+            blog_id=blog.id,
             operator_username=user.username,
             recipient_list=[blog.author.email],
             action='like'
@@ -239,7 +239,7 @@ class BlogViewSet(BaseViewSet):
             subject="收到收藏通知！",
             message='',
             blog_title=blog.title,
-            blog_id=blog_id,
+            blog_id=blog.id,
             operator_username=user.username,
             recipient_list=[blog.author.email],
             action='collect'
