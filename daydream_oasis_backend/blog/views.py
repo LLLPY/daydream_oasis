@@ -1,5 +1,9 @@
 import datetime
+import json
+import time
+import uuid
 
+import requests
 from blog.models import (Blog, Category, Collection, Comment, Like, Section,
                          Share, Tag)
 from blog.serializers import (BlogCreateSerializers, BlogSerializers,
@@ -19,6 +23,8 @@ from django.views.decorators.cache import cache_page
 from log.models import Action
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import JSONParser
+from user.models import User
 
 
 class BlogViewSet(BaseViewSet):
@@ -340,32 +346,45 @@ class SectionViewSet(CategoryViewSet):
         return self.queryset
 
 
+# XMLParser 默认media_type='application/xml'
+class TextXMLParser(JSONParser):
+    media_type = 'text/plain'
+
 # 评论
+
+
 class CommentViewSet(viewsets.ModelViewSet, InstanceMixin):
     serializer_class = CommentSerializers
     queryset = Comment.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        res = super().list(request, *args, **kwargs)
-        # 指定评论的文章
-        blog_id = request.GET.get('blog')
-        results = res.data['data']['results']
-        if blog_id:
-            results = filter(lambda a: str(a['blog']) == blog_id, results)
-        else:
-            results = []
-        res.data['data']['results'] = results
-
-        return res
-
-    # 将状态改为已删除即可
-    def destroy(self, request, pk=None):
-        super().destroy(request, pk=pk)
-        return SucResponse('删除成功!')
+    parser_classes = (TextXMLParser,)
 
     def create(self, request, *args, **kwargs):
-        super().create(request, *args, **kwargs)
-        return SucResponse()
+        data = self.request.data
+        _type = data.get('type')
+        # 如果是提交评论，就走django的接口；否则就走discuss的接口
+        if _type == 'COMMIT_COMMENT':
+            obj = Comment()
+            obj.content = data['content']
+            obj.mail = data['mail']
+            obj.nick = data['nick']
+            obj.path = data['path']
+            obj.pid = data['pid']
+            obj.rid = data['rid']
+            obj.site = data['site']
+            obj.id = uuid.uuid4().hex[:24]
+            obj.created = time.time_ns()//1000000
+            obj.updated = obj.created
+            obj.ip = request.META.get('REMOTE_ADDR', '')
+            obj.ua = request.META.get('HTTP_USER_AGENT')
+            obj.avatar = User.get_avatar_by_email(obj.mail)
+            obj.save()
+            serializer = self.get_serializer(obj)
+            data = {'msg': 'success', 'data': [serializer.data]}
+        else:
+            res = requests.post(url='http://127.0.0.1:6870', data=json.dumps(data))
+            data = res.json()
+
+        return SucResponse(**data)
 
 
 # 收藏

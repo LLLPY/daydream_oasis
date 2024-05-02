@@ -263,26 +263,51 @@ class Blog(BaseModel):
 
 
 # 用户评论表
-class Comment(BaseModel):
+class Comment(models.Model):
     # 评论人
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='评论人', help_text='评论人')
+    id = models.CharField(max_length=100, verbose_name='.id', help_text='id', primary_key=True)
 
-    # 评论的博客
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE,
-                             verbose_name='被评论的博客', help_text='被评论的博客')
+    # 评论人的昵称
+    nick = models.CharField(max_length=30, verbose_name='评论人的昵称', help_text='评论人的昵称')
 
-    # 评论内容
-    content = models.CharField(max_length=500, verbose_name='评论内容', help_text='评论内容')
+    # mail
+    mail = models.EmailField(verbose_name='mail', help_text='mail')
 
-    # 父评论
-    parent = models.ForeignKey('self', null=True, on_delete=models.CASCADE,
-                               verbose_name='父评论', help_text='父评论')
+    # site
+    site = models.URLField(verbose_name='site', help_text='site')
 
-    # 设备 手机 电脑
-    client = models.CharField(max_length=20, verbose_name='设备', help_text='设备')
+    # 内容
+    content = models.CharField(max_length=1000, verbose_name='内容', help_text='内容')
+
+    # ip
+    ip = models.CharField(max_length=50, blank=True, verbose_name='IP地址', help_text='IP地址')
+
+    # pid
+    pid = models.CharField(max_length=100, verbose_name='父id', help_text='父id', null=True)
+
+    # rid
+    rid = models.CharField(max_length=100, verbose_name='rid', help_text='rid', null=True)
+
+    # 是否置顶
+    stick = models.IntegerField(default=0, verbose_name='是否置顶', help_text='是否置顶')
+
+    # status
+    status = models.CharField(max_length=10, verbose_name='状态', help_text='状态', default='accept')
+
+    # path
+    path = models.CharField(max_length=100, verbose_name='path', help_text='path')
+
+    # avatar
+    avatar = models.CharField(max_length=100, verbose_name='avatar', help_text='avatar')
+
+    created = models.IntegerField(verbose_name='创建时间', help_text='创建时间')
+
+    updated = models.IntegerField(verbose_name='更新时间', help_text='更新时间')
+
+    ua = models.CharField(max_length=500, verbose_name='user agent', help_text='user agent')
 
     class Meta:
-        db_table = 'comment'
+        db_table = 'd_comment'
         verbose_name = verbose_name_plural = '评论'
 
     # 根据博客id获取该博客下的评论量

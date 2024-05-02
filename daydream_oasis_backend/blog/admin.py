@@ -23,7 +23,7 @@ class CategoryAdmin(admin.ModelAdmin, MyBaseAdmin):
     used_count.short_description = '文章数量'
 
 
-# 分类
+# 专栏
 @admin.register(Section, site=my_site)
 class SectionAdmin(admin.ModelAdmin, MyBaseAdmin):
     list_display = ['id', 'title', 'create_time', 'creator']
@@ -94,9 +94,9 @@ class BlogAdmin(admin.ModelAdmin, MyBaseAdmin):
 # 评论
 @admin.register(Comment, site=my_site)
 class CommentAdmin(admin.ModelAdmin, MyBaseAdmin):
-    list_display = ['id', 'user', 'blog', 'content', 'create_time', 'has_deleted']
-    search_fields = ['user__username', 'content']
-    list_filter = ['user__username', 'blog__title', 'create_time', 'has_deleted']
+    list_display = ['id', 'nick', 'mail', 'site', 'content', 'path']
+    search_fields = ['nick', 'content']
+    list_filter = ['nick', 'path']
 
 
 # 收藏

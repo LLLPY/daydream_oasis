@@ -13,7 +13,7 @@ onMounted(() => {
     // 初始化
     discuss.init({
       el: "#Discuss-Comments",
-      serverURLs: `${API_URL}/discuss/`,
+      serverURLs: `${API_URL}/api/comment/`,
       color: "red",
       path: `content?id=${get_url_params()["id"]}`,
       visitStat: true,

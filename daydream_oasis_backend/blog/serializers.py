@@ -2,6 +2,7 @@
 # @Author  ：LLL
 # @Date    ：2023/1/18 10:36
 import re
+import time
 
 from common.drf.serializers import DynamicFieldsSerializer
 from log.models import Action
@@ -77,7 +78,23 @@ class BlogCreateSerializers(DynamicFieldsSerializer):
 
 # 评论
 class CommentSerializers(DynamicFieldsSerializer):
-    ...
+    id = serializers.CharField(required=False, max_length=100)
+    nick = serializers.CharField(required=False, max_length=30)
+    site = serializers.CharField(required=False, max_length=500)
+    content = serializers.CharField(required=False, max_length=1000)
+    pid = serializers.CharField(required=False, max_length=100)
+    rid = serializers.CharField(required=False, max_length=100)
+    stick = serializers.BooleanField(required=False)
+    avatar = serializers.CharField(required=False, max_length=100)
+    rnick = serializers.SerializerMethodField(required=False)
+    master = serializers.BooleanField(required=False, default=True)
+    time = serializers.SerializerMethodField(required=False)
+
+    def get_time(self, obj):
+        return time.time_ns()//1000000
+
+    def get_rnick(self, obj):
+        return obj.nick
 
 
 # 收藏

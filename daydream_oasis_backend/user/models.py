@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Q
+from utils import tools
 
 
 # 定义用户模型
@@ -52,6 +53,16 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
         self.password = make_password(password)
         self.save()
         return self
+
+    @classmethod
+    def get_avatar_by_email(cls, email):
+        obj = cls.objects.filter(email=email).first()
+        if obj:
+            avatar = obj.avatar
+        else:
+            avatar = 'image/default_user_avatar.png'
+
+        return tools.get_full_media_url(avatar)
 
 
 # 聊天记录

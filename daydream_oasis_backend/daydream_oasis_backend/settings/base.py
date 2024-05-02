@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # 跨域请求
     'common.middleware.response_process.ResponseMiddleware',  # 响应中间件
-    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
+
     'common.middleware.rate_limit.RateLimitMixin',  # 限流
 
 ]
@@ -207,3 +208,17 @@ logger = logging.getLogger('daydream_oasis')
 
 # cookie默认过期时间
 SESSION_COOKIE_AGE = 3600 * 24 * 7  # 设置Cookie的过期时间为7天
+
+
+# 邮箱配置
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'  # 如果是 163 改成 smtp.163.com
+EMAIL_PORT = 465
+EMAIL_HOST_USER = '2474605919@qq.com'  # 发送邮件的邮箱帐号
+EMAIL_HOST_PASSWORD = 'zdnqlwmkagbndihh'  # 授权码,各邮箱的设置中启用smtp服务时获取
+DEFAULT_FROM_EMAIL = '2474605919@qq.com'  # 收件人显示发件人的邮箱
+
+# DEFAULT_FROM_EMAIL = '<xxxxx@qq.com>' #也可以随意写
+EMAIL_USE_SSL = True   # 使用ssl
+# EMAIL_USE_TLS = False # 使用tls
+# EMAIL_USE_SSL 和 EMAIL_USE_TLS 是互斥的，即只能有一个为 True

@@ -1,10 +1,15 @@
+import datetime
 import hashlib
 import re
+import threading
 from typing import Union
 from urllib.parse import urlparse
 
 import orjson
 import requests
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import get_template
 
 from daydream_oasis_backend.settings.base import HOST
 
@@ -71,6 +76,37 @@ def char2ord(s):
     for c in str(s):
         res += f'{ord(c)} '
     return res.strip()
+
+
+def send_email(subject, message, blog_title, blog_id, operator_username, recipient_list, block=False):
+    """发送邮件"""
+
+    template = get_template('email.html')
+    context = {
+        'host': settings.HOST,
+        'blog_title': blog_title,
+        'blog_id': blog_id,
+        'operator_username': operator_username,
+        'message': message,
+        'time': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    html = template.render(context)
+    from_email = f'{settings.DEFAULT_FROM_EMAIL}'
+    t = threading.Thread(
+        target=send_mail,
+        args=(
+            subject,  # 邮件标题
+            message,  # 邮件内容（文本），有html_message参数，这里配置失效
+            from_email,  # 用于发送邮件的邮箱地址，配置授权码的邮箱
+            recipient_list,  # 接收邮件的邮件地址，可以写多个
+        ),
+        # html_message中定义的字符串即HTML格式的信息，可以在一个html文件中写好复制出来放在该字符串中
+        kwargs={
+            'html_message': html
+        })
+    t.start()
+    if block:
+        t.join()
 
 
 if __name__ == '__main__':

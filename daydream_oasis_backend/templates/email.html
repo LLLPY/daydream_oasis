@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>博客评论通知</title>
+    <style>
+      /* 通用样式 */
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      /* 邮件头部 */
+      .header {
+        background-color: #f8f9fa;
+        padding: 20px;
+        text-align: center;
+      }
+      .logo {
+        display: inline-block;
+        margin-right: 20px;
+      }
+      .logo img {
+        width: 80px;
+        height: auto;
+      }
+      .title {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      /* 邮件内容 */
+      .content {
+        padding: 20px;
+      }
+      .body {
+        margin-bottom: 20px;
+      }
+      p {
+        line-height: 1.5;
+      }
+      .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .comment-content {
+        display: inline-block;
+        vertical-align: top;
+      }
+      /* 邮件尾部 */
+      .footer {
+        background-color: #f8f9fa;
+        padding: 20px;
+        text-align: center;
+      }
+      .copyright {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h3><a href="{{ host }}">🌈白日梦想园</a></h3>
+    <div class="header">
+      <div class="logo">
+        {% comment %}
+        <img
+          src="http://www.lll.plus/media/image/default_blog_avatar.jpg"
+          alt="公司logo"
+        />
+        {% endcomment %}
+      </div>
+      <span class="title">博客评论通知</span>
+      <a href="{{ host }}">🏝️白日梦想园🏡</a>
+    </div>
+    <div class="content">
+      <p class="body">尊敬的博主，您好！</p>
+      <p class="body">
+        您的博客
+        <a href="{{ host }}blog/content?id={{ blog_id }}">{{ blog_title }}</a>
+        收到了一条新的评论！
+      </p>
+      <div class="body">
+        <div class="comment-content">
+          <p><strong>评论者昵称：{{ operator_username }}</strong></p>
+          <p>评论内容：{{ message }}</p>
+          <p>评论时间：{{ time }}</p>
+          <a href="{{ host }}blog/content?id={{ blog_id }}#Discuss-Comments"
+            >查看评论</a
+          >
+        </div>
+      </div>
+      <p class="body">
+        感谢您对 <strong>白日梦想园</strong> 的支持！希望您每天开心，快乐！🍬🍬
+      </p>
+    </div>
+    <div class="footer">
+      <p class="copyright">
+        copyrights©2024 <a href="{{ host }}">白日梦想园</a> All Rights
+        Reserved.
+      </p>
+    </div>
+  </body>
+</html>
