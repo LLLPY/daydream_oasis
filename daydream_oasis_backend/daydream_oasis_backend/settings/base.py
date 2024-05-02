@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',  # 跨域请求
     'common.middleware.response_process.ResponseMiddleware',  # 响应中间件
-
+    'common.middleware.request_process.RequestMiddleWare',  # 请求处理
     'common.middleware.rate_limit.RateLimitMixin',  # 限流
 
 ]
