@@ -191,7 +191,7 @@ class BlogViewSet(BaseViewSet):
 
         # 邮件通知
         tools.send_email(
-            subject="收到点赞通知！",
+            subject="博客点赞通知！",
             message='',
             blog_title=blog.title,
             blog_id=blog.id,
@@ -236,7 +236,7 @@ class BlogViewSet(BaseViewSet):
 
         # 邮件通知
         tools.send_email(
-            subject="收到收藏通知！",
+            subject="博客收藏通知！",
             message='',
             blog_title=blog.title,
             blog_id=blog.id,
