@@ -75,6 +75,7 @@ class BlogViewSet(BaseViewSet):
         return SucResponse(message='新增博客成功!', data=data)
 
     # 博客列表
+    @method_decorator(cache_page(timeout=5*60, key_prefix='daydream_oasis:list'))
     def list(self, request, *args, **kwargs):
         detail = self.request.query_params.get('detail', 'false')
         detail = detail.lower() == 'true'
@@ -292,7 +293,7 @@ class BlogViewSet(BaseViewSet):
         # 作者
         author = params.get('author')
         if author:
-            filter_dict.update(author=author)
+            filter_dict.update(author__username=author)
 
         queryset = queryset.filter(**filter_dict)
 
