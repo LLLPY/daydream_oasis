@@ -1,4 +1,21 @@
 <template>
+  <el-affix :offset="110">
+    <div id="filter-box">
+      <template v-for="tag in filter_tag_list">
+        <el-tag
+          v-if="tag.visible"
+          :key="tag.label"
+          closable
+          :disable-transitions="false"
+          type="info"
+          @close="handleClose(tag)"
+        >
+          {{ tag.label }}：{{ tag.value }}
+        </el-tag>
+      </template>
+    </div>
+  </el-affix>
+
   <div class="wrap">
     <div class="item" v-for="(blog, index) in blog_list" :key="blog.id">
       <div class="item_title">
@@ -13,7 +30,10 @@
         </div>
       </div>
       <div class="item_extra">
-        <span class="info-box" @click="search({ author: blog.author.id })">
+        <span
+          class="info-box"
+          @click="search({ author: blog.author.username })"
+        >
           <span class="iconfont">&#xe6a4;</span>{{ blog.author.username }}
           {{ blog.update_time }}
         </span>
@@ -22,6 +42,13 @@
           @click="search({ category: blog.category })"
         >
           {{ blog.category }}
+        </span>
+        <span
+          class="info-box section"
+          v-if="blog.section"
+          @click="search({ section: blog.section })"
+        >
+          {{ blog.section }}
         </span>
         <span
           class="info-box tag"
@@ -51,6 +78,9 @@
       @current-change="handleCurrentChange"
     />
   </div>
+
+  <!-- Scroll down to see the bottom-right button. -->
+  <el-backtop :right="40" :bottom="120" style="z-index: 100000" />
 </template>
 
 <script>
@@ -71,6 +101,13 @@ let blog_list_obj = {
       screen_width: computed(() => {
         return window.innerWidth;
       }),
+      filter_tag_list: [
+        { key: "author", label: "作者", value: "", visible: false },
+        { key: "category", label: "分类", value: "", visible: false },
+        { key: "section", label: "专栏", value: "", visible: false },
+        { key: "tag", label: "标签", value: "", visible: false },
+        { key: "keyword", label: "关键词", value: "", visible: false },
+      ],
     };
   },
   methods: {
@@ -106,8 +143,19 @@ let blog_list_obj = {
       this.get_blog_list();
     },
     search(params) {
-      // Object.assign(this.params,params)
-      this.params = params;
+      this.params = { ...this.params, ...params };
+      // 更新过滤标签
+      for (let i = 0; i < this.filter_tag_list.length; i++) {
+        let key = this.filter_tag_list[i].key;
+        let val = this.params[key];
+        if (val) {
+          this.filter_tag_list[i].value = val;
+          this.filter_tag_list[i].visible = true;
+        } else {
+          this.filter_tag_list[i].visible = false;
+        }
+      }
+
       this.page = 1;
       this.get_blog_list();
       window.scrollTo({
@@ -122,6 +170,11 @@ let blog_list_obj = {
         )
         .join("&");
     },
+    handleClose(tag) {
+      // 删除params中当前的参数
+      delete this.params[tag.key];
+      this.search(this.params);
+    },
   },
 
   mounted() {
@@ -129,6 +182,42 @@ let blog_list_obj = {
     this.get_blog_list();
   },
 };
+
+function fade() {
+  // 存储页面滚动前的位置
+  let scrollTopBefore = window.scrollY;
+
+  // 添加滚轮事件监听器
+  window.addEventListener("scroll", () => {
+    // 获取需要渐隐的元素
+    var fadingElement = document.querySelector(".el-affix");
+
+    // 获取页面滚动后的位置
+    const scrollTopAfter = window.scrollY;
+
+    // 判断页面是否真正滚动了
+    if (scrollTopBefore !== scrollTopAfter && fadingElement) {
+      // 如果滚动了，隐藏元素
+      fadingElement.classList.add("_hidden");
+
+      // 如果已经存在延迟隐藏的计时器，则清除它
+      if (fadingElement.fadeTimeout) {
+        clearTimeout(fadingElement.fadeTimeout);
+      }
+
+      // 创建一个新的延迟隐藏计时器，在停止滚动后恢复元素的显示
+      fadingElement.fadeTimeout = setTimeout(() => {
+        fadingElement.classList.remove("_hidden");
+      }, 1000); // 延迟时间要与CSS中transition的时间一致
+
+      // 更新页面滚动前的位置为当前位置
+      scrollTopBefore = scrollTopAfter;
+    }
+  });
+}
+
+fade();
+
 export default blog_list_obj;
 </script>
 
@@ -139,7 +228,6 @@ export default blog_list_obj;
 
 .wrap {
   width: 100%;
-
   .item {
     padding: 12px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -210,6 +298,9 @@ export default blog_list_obj;
       .category {
         background-color: rgba(255, 165, 0, 0.7);
       }
+      .section {
+        background-color: rgba(114, 239, 94, 0.7);
+      }
 
       .tag {
         background-color: rgba(235, 235, 250, 0.7);
@@ -264,11 +355,49 @@ export default blog_list_obj;
   #pagination .el-pagination__sizes {
     display: none;
   }
+
+  .el-affix .el-affix--fixed {
+    top: 80px !important;
+  }
 }
 
 /*分页第一个按钮边距很大*/
 .el-page,
 .vp-doc ul {
   padding-left: 0 !important;
+}
+
+#filter-box {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.1);
+}
+
+.el-affix {
+  transition: opacity 1.5s linear !important; /* 使用transition实现渐变效果 */
+  opacity: 1;
+}
+
+._hidden {
+  opacity: 0;
+}
+
+#filter-box:empty {
+  margin-bottom: 0;
+  border: none;
+}
+
+#filter-box span {
+  margin-left: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#filter-box span:nth-child(1) {
+  margin-left: 0;
 }
 </style>

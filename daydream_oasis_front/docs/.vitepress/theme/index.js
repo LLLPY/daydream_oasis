@@ -29,6 +29,8 @@ import {
   ElAvatar,
   ElSelect,
   ElOption,
+  ElBacktop,
+  ElAffix,
 } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
 
@@ -60,6 +62,8 @@ export default {
     app.component("el-button", ElButton);
     app.component("el-select", ElSelect);
     app.component("el-option", ElOption);
+    app.component("el-backtop", ElBacktop);
+    app.component("el-affix", ElAffix);
     app.component("Plus", Plus);
     app.component("Vditor", Vditor);
     app.component("Write", Write);

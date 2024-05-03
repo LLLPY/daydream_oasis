@@ -30,7 +30,6 @@ const goLogin = () => {
 
 const initView = () => {
   let data = get_user_info();
-  console.log(data);
   if (Object.keys(data).length) {
     isLogin.value = true;
   }
