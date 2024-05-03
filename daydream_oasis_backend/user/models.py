@@ -36,15 +36,15 @@ class User(AbstractUser, BaseModel):  # 模型继承自django自带的User模型
         return cls.objects.filter(Q(username=username) | Q(mobile=username)).first()
 
     @classmethod
-    def get_by_mobile(cls, mobile):
-        return cls.objects.filter(mobile=mobile).first()
+    def get_by_email(cls, email):
+        return cls.objects.filter(email=email).first()
 
     # 创建一个新的用户,初始用户名和手机号相同
     @classmethod
-    def create_user(cls, mobile: str, password: str) -> 'User':
+    def create_user(cls, email: str, password: str) -> 'User':
         tmp_user = cls()
-        tmp_user.username = mobile
-        tmp_user.mobile = mobile
+        tmp_user.username = email
+        tmp_user.email = email
         tmp_user.password = make_password(password)
         tmp_user.save()
         return tmp_user

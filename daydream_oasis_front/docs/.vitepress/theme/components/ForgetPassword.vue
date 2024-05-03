@@ -28,7 +28,7 @@ export default {
     },
     submit() {
       if (this.username.length === 0) {
-        Warning("用户名不能为空!");
+        Warning("邮箱不能为空!");
         return;
       }
       if (this.code.length === 0) {
@@ -41,7 +41,7 @@ export default {
       }
       axios_ins
         .post("/api/user/modify_password/", {
-          username: this.username,
+          email: this.username,
           password: this.password,
           code: this.code,
         })

@@ -437,17 +437,3 @@ class CollectionViewSet(viewsets.ModelViewSet):
 class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializers
     queryset = Like.objects.all()
-
-    def create(self, request, *args, **kwargs):
-
-        res = super().create(request, **args, **kwargs)
-        user = self.request.user
-        tools.send_email(
-            subject="收到点赞通知！",
-            message='',
-            blog_title=blog.title,
-            blog_id=blog_id,
-            operator_username=user.username,
-            recipient_list=[blog.author.email],
-            action='like'
-        )

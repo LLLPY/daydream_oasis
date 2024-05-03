@@ -87,6 +87,8 @@ def send_email(subject, message, blog_title, blog_id, operator_username, recipie
             name = '点赞'
         elif action == 'collect':
             name = '收藏'
+        elif action == 'send_code':
+            name = '收到验证码'
         else:
             name = '操作'
         return name
@@ -102,7 +104,7 @@ def send_email(subject, message, blog_title, blog_id, operator_username, recipie
         'action_name': get_action_name(action)
     }
     html = template.render(context)
-    from_email = f'{settings.DEFAULT_FROM_EMAIL}'
+    from_email = f'"白日梦想园" <{settings.DEFAULT_FROM_EMAIL}>'
     t = threading.Thread(
         target=send_mail,
         args=(
@@ -118,6 +120,8 @@ def send_email(subject, message, blog_title, blog_id, operator_username, recipie
     t.start()
     if block:
         t.join()
+
+    return True
 
 
 if __name__ == '__main__':

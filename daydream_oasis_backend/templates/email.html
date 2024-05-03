@@ -71,7 +71,15 @@
   <body>
     <div class="header">
       <div class="logo"></div>
+
+      {% if action == 'send_code' %}
+      <span class="title">{{action_name}}通知</span>
+
+      {% else %}
       <span class="title">博客{{action_name}}通知</span>
+
+      {% endif %}
+
       <a href="{{ host }}">🏝️白日梦想园🏡</a>
     </div>
     <div class="content">
@@ -102,7 +110,8 @@
 
       {% elif action == 'collect' %} {{operator_username}}收藏了您的博客
       <a href="{{ host }}blog/content?id={{ blog_id }}">{{ blog_title }}</a> ！
-      {% endif %}
+      {% elif action == 'send_code' %}
+      验证码：{{message}}，五分钟内有效，请勿泄漏给他人！ {% endif %}
 
       <p class="body">
         感谢您对 <strong>白日梦想园</strong> 的支持！希望您每天开心，快乐！🍬🍬

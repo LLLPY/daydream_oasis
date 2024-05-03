@@ -40,7 +40,7 @@ export default {
       }
       axios_ins
         .post("/api/user/register/", {
-          username: this.username,
+          email: this.username,
           password: this.password,
           code: this.code,
         })
