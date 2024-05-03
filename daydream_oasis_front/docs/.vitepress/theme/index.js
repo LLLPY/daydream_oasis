@@ -8,7 +8,7 @@ import TopList from "./components/TopList.vue";
 import Logo from "./components/Logo.vue";
 import ActionBox from "./components/ActionBox.vue";
 import BlogInfo from "./components/BlogInfo.vue";
-import BlogList from "./components/BlogList.vue";
+// import BlogList from "./components/BlogList.vue";
 import Vditor from "./components/Vditor.vue";
 import Write from "./components/Write.vue";
 import Nav from "./components/Nav.vue";
@@ -33,6 +33,12 @@ import {
   ElAffix,
 } from "element-plus";
 import { Plus } from "@element-plus/icons-vue";
+import { defineClientComponent } from "vitepress";
+
+// component-that-access-window-on-import
+const BlogList = defineClientComponent(() => {
+  return import("./components/BlogList.vue");
+});
 
 // 扩展默认的主题
 /** @type {import('vitepress').Theme} */
