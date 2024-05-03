@@ -400,4 +400,9 @@ export default blog_list_obj;
 #filter-box span:nth-child(1) {
   margin-left: 0;
 }
+
+#pagination .el-pagination {
+  justify-content: center;
+  align-items: center;
+}
 </style>
