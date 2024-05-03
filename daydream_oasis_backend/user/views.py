@@ -30,14 +30,14 @@ class UserViewSet(BaseViewSet):
     @action(methods=['post'], detail=False)
     def register(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data, include_fields=[
-                                         'mobile', 'code', 'password'])
+                                         'email', 'code', 'password'])
         serializer.is_valid(raise_exception=True)
-        mobile = serializer.data.get('mobile')
+        email = serializer.data.get('email')
         code = serializer.data.get('code')
         password = serializer.data.get('password')
 
         # 比较验证码是否正确
-        local_code = self.redis_conn.get(f'register:code:{mobile}')
+        local_code = self.redis_conn.get(f'register:code:{email}')
         if not local_code:
             raise exception.CustomValidationError('验证码已过期,请重新发送!')
 
@@ -45,34 +45,34 @@ class UserViewSet(BaseViewSet):
             raise exception.CustomValidationError('验证码错误!')
 
         # 检测手机号是否已注册
-        if User.get_by_mobile(mobile):
-            raise exception.CustomValidationError('该手机号已注册!')
+        if User.get_by_email(email):
+            raise exception.CustomValidationError('该邮箱已注册!')
 
         # 注册
-        user = User.create_user(mobile=mobile, password=password)
+        user = User.create_user(email=email, password=password)
         return SucResponse('注册成功!')
 
     @action(methods=['post'], detail=False)
     def modify_password(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data, include_fields=[
-                                         'username', 'code', 'password'])
+                                         'email', 'code', 'password'])
         serializer.is_valid(raise_exception=True)
-        mobile = serializer.data.get('username')
+        email = serializer.data.get('email')
         code = str(serializer.data.get('code'))
         password = serializer.data.get('password')
 
         # 比较验证码是否正确
-        local_code = self.redis_conn.get(f'forget:code:{mobile}')
+        local_code = self.redis_conn.get(f'forget:code:{email}')
         if not local_code:
             raise exception.CustomValidationError('验证码已过期,请重新发送!')
         if code != local_code.decode('utf-8'):
             raise exception.CustomValidationError('验证码错误!')
 
-        # 检测手机号是否已注册
-        if not User.get_by_mobile(mobile):
-            raise exception.CustomValidationError('手机号不存在!')
+        tmp_user = User.get_by_email(email)
+        # 检测邮箱是否已注册
+        if not tmp_user:
+            raise exception.CustomValidationError('邮箱不存在!')
 
-        tmp_user = User.get_by_mobile(mobile)
         tmp_user.update_password(password)
         return SucResponse('密码修改成功!')
 
@@ -80,12 +80,12 @@ class UserViewSet(BaseViewSet):
     @action(methods=['post'], detail=False)
     def login(self, request, *args, **kwargs):
         serializer = self.get_serializer(
-            data=self.request.data, include_fields=['username', 'password'])
+            data=self.request.data, include_fields=['email', 'password'])
         serializer.is_valid(raise_exception=True)
 
-        username = serializer.data.get('username')  # 用户名
+        email = serializer.data.get('email')
         password = serializer.data.get('password')
-        tmp_user = User.get_by_username(username)
+        tmp_user = User.get_by_email(email)
 
         # 检查用户是否存在
         if not tmp_user:
@@ -119,17 +119,17 @@ class UserViewSet(BaseViewSet):
             raise exception.CustomValidationError('非法请求!')
 
         serializer = self.get_serializer(
-            data=self.request.data, include_fields=['mobile', 'action'])
+            data=self.request.data, include_fields=['email', 'action'])
         serializer.is_valid(raise_exception=True)
-        mobile = serializer.data.get('mobile')
+        email = serializer.data.get('email')
         _action = serializer.data.get('action')
 
         if _action == 'register':
-            if User.get_by_mobile(mobile):
-                raise exception.CustomValidationError(f'{mobile}该手机号已注册!')
+            if User.get_by_email(email):
+                raise exception.CustomValidationError(f'{email}已注册!')
 
         # 判断验证码是否已发送 5分钟内只能发一次
-        key = f'{_action}:code:{mobile}'
+        key = f'{_action}:code:{email}'
 
         # 随机验证码
         local_code = ''.join(map(str, choices(range(9), k=4)))
@@ -141,22 +141,32 @@ class UserViewSet(BaseViewSet):
         self.redis_conn.expire(key, 60 * 5)
 
         # 获取今天发送短信的次数
-        used_key = f'used:{mobile}'
+        used_key = f'used:{email}'
         use_count = int(self.redis_conn.get(used_key) or 0)
         if use_count >= 3:
             # 让验证码直接过期
             self.redis_conn.expire(key, 0)
-            raise exception.CustomValidationError('一天最多可发送3次短信!')
+            raise exception.CustomValidationError('一天最多可发送3次!')
 
         # 发送短信
-        send_success = send_message(phone_number=mobile, code=local_code)
+        # send_success = send_message(phone_number=mobile, code=local_code)
+        send_success = tools.send_email(
+            subject='验证码发送',
+            message=local_code,
+            blog_title='',
+            blog_id='',
+            operator_username='',
+            recipient_list=[email],
+            action='send_code',
+            block=True
+        )
         if send_success:
             # 计算当前距离明天的时间 每天只能发送3次短信
             now = datetime.now()
             expired = (timedelta(hours=24, minutes=0, seconds=0) - timedelta(hours=now.hour, minutes=now.minute,
                                                                              seconds=now.second)).seconds
             self.redis_conn.set(used_key, use_count + 1, expired)
-            return SucResponse('验证码已发送至您的手机,请注意查收!')
+            return SucResponse('验证码已发送至您的邮箱,请注意查收!')
         else:
             # 发送失败就删除验证码的缓存
             self.redis_conn.delete(key)
@@ -197,6 +207,7 @@ class UserViewSet(BaseViewSet):
             blog_id=blog_id,
             operator_username=operator_username,
             recipient_list=[email],
+            action='comment',
             block=True
         )
         return SucResponse(message="邮件发送成功！")

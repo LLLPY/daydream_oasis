@@ -17,12 +17,10 @@ const props = defineProps([
 defineEmits(["submit", "updateUsername", "updatePassword", "updateCode"]);
 let code_msg = ref("发送验证码");
 
-function isValidPhoneNumber(phoneNumber) {
-  // 使用正则表达式匹配手机号码
-  let pattern = /^1[3456789]\d{9}$/;
-  return pattern.test(phoneNumber);
+function isValidEmail(email) {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email);
 }
-
 function count_down() {
   let count = 60;
   let interval = setInterval(function () {
@@ -38,13 +36,13 @@ function count_down() {
 
 function send_code() {
   if (code_msg.value === "发送验证码") {
-    // 1.匹配手机号是否合法
-    let phone_number = props.username;
-    if (isValidPhoneNumber(phone_number)) {
+    // 1.匹配邮箱是否合法
+    let email = props.username;
+    if (isValidEmail(email)) {
       // 请求后端发送验证码的接口
       axios_ins
         .post("/api/user/send_code/", {
-          mobile: phone_number,
+          email: email,
           action: props.title.toLowerCase(),
         })
         .then((response) => {
@@ -55,7 +53,7 @@ function send_code() {
           }
         });
     } else {
-      Warning("手机号不合法!");
+      Warning("邮箱不合法!");
     }
   }
 }
@@ -78,8 +76,8 @@ function send_code() {
         @input="$emit('updateUsername', $event.target.value)"
         name="username"
         type="text"
-        placeholder="请输入手机号"
-        maxlength="20"
+        placeholder="请输入邮箱"
+        maxlength="30"
       />
     </div>
     <div v-if="needCode" class="input-box code-box">
