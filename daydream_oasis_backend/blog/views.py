@@ -285,6 +285,10 @@ class BlogViewSet(BaseViewSet):
         category = params.get('category')
         if category:
             filter_dict.update(category__title=category)
+        section = params.get('section')
+        # 专栏
+        if section:
+            filter_dict.update(section__title=section)
         # 标签
         tag = params.get('tag')
         if tag:
