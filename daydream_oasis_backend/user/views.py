@@ -189,25 +189,3 @@ class UserViewSet(BaseViewSet):
         '''用户信息'''
         serializer = self.get_serializer(request.user, include_fields=['username', 'avatar', 'id'])
         return SucResponse(data=serializer.data)
-
-    @action(methods=['get'], detail=False)
-    def email_demo(self, request, *args, **kwargs):
-        ''''''
-        email = 'yangjingge11555@qq.com'
-        email = '2474605919@qq.com'
-        message = '你好👋'
-
-        blog_title = '《Python源码剖析》之PyTypeObject'
-        blog_id = 1439
-        operator_username = '白日梦想猿'
-        tools.send_email(
-            subject="新的评论通知！",
-            message=message,
-            blog_title=blog_title,
-            blog_id=blog_id,
-            operator_username=operator_username,
-            recipient_list=[email],
-            action='comment',
-            block=True
-        )
-        return SucResponse(message="邮件发送成功！")
